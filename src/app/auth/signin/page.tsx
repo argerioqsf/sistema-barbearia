@@ -1,7 +1,7 @@
-import SingInPage from "@/pages/signIn/SingInPage";
+import SingIn from "@/components/template/SingIn";
 
-const SingIn = () => {
-  return <SingInPage />;
+const Page = () => {
+  return <SingIn />;
 };
 
-export default SingIn;
+export default Page;
