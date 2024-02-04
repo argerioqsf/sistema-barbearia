@@ -1,4 +1,4 @@
-import SingIn from "@/pages/SingIn";
+import SingIn from "@/components/template/SingIn";
 
 const Page = () => {
   return <SingIn />;
