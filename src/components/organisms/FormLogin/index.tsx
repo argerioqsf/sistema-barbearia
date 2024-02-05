@@ -1,6 +1,6 @@
 import Button from "@/components/atoms/Button";
 import Form from "@/components/atoms/Form";
-import Link from "@/components/atoms/Link";
+import LinkDefault from "@/components/atoms/LinkDefault";
 import Text from "@/components/atoms/Text";
 import TitleForm from "@/components/atoms/TitleForm";
 import FormFieldCheckBox from "@/components/molecules/FormFieldCheckBox";
@@ -20,24 +20,26 @@ const FormLogin: React.FC = () => {
 
         <div className="flex items-center justify-between">
           <FormFieldCheckBox label={at("remember_me")} id="remember_me" />
-          <Link
+          <LinkDefault
             href="#"
             className="text-sm font-medium text-primary-600 hover:underline"
           >
             {sc("form_login.forgot_password")}
-          </Link>
+          </LinkDefault>
         </div>
 
-        <Button type="submit">{at("login")}</Button>
+        <Button className="w-full" type="submit">
+          {at("login")}
+        </Button>
 
         <Text>
           {at("register")}
-          <Link
+          <LinkDefault
             href="#"
             className="font-medium text-primary-600 hover:underline dark:text-primary-500 pl-2"
           >
             {sc("form_login.not_have_account")}
-          </Link>
+          </LinkDefault>
         </Text>
       </Form>
     </div>

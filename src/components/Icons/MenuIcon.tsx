@@ -10,7 +10,7 @@ export const MenuIcon: React.FC<IconSvgProps> = ({
     <svg
       stroke="currentColor"
       fill="currentColor"
-      stroke-width="0"
+      strokeWidth="0"
       viewBox="0 0 512 512"
       {...props}
       height={size || height}

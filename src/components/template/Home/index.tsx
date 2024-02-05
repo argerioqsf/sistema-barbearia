@@ -5,7 +5,9 @@ const Home = () => {
   const { any } = usePathTranslations("metadata.dashboard.home");
   return (
     <ContainerDashboard>
-      <div className="p-6 flex flex-col justify-start items-start gap-4"></div>
+      <div className="p-6 w-full flex flex-col justify-start items-start gap-4 bg-gray-500">
+        teste
+      </div>
     </ContainerDashboard>
   );
 };

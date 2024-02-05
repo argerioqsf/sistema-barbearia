@@ -1,5 +1,7 @@
 import { MenuIcon } from "@/components/Icons/MenuIcon";
-import { Button } from "@/components/atoms";
+import { Button, Text } from "@/components/atoms";
+import LinkDefault from "@/components/atoms/LinkDefault";
+import Avatar from "@/components/molecules/Avatar";
 import Image from "next/image";
 import Link from "next/link";
 import React, { Dispatch, SetStateAction } from "react";
@@ -18,7 +20,7 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
   return (
     <nav
       className={twMerge(
-        "flex z-40 w-full h-auto items-center justify-center fixed top-0  bg-gray-200 transition-all ease-out duration-1000",
+        "flex z-40 w-full h-auto items-center justify-center fixed top-0  bg-gray-200",
         openMenu === true && "animate-openMenuIcon",
         openMenu === false && "animate-closeMenuIcon"
       )}
@@ -29,25 +31,20 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
             <MenuIcon size={30} />
           </Button>
           <div className="flex flex-row gap-4">
-            {/* Avatar */}
-            <div className="w-[50px] h-[50px] bg-primary-100 rounded-full flex flex-row items-center justify-center border-2 border-primary-100">
-              <Link href={"#"}>
-                <Image
-                  className="align-middle rounded-full m-0 p-0 aspect-square"
-                  src="https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png"
-                  width={50}
-                  height={50}
-                  alt="Picture of the author"
-                />
-              </Link>
-            </div>
+            <Avatar
+              image="https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png"
+              size={50}
+            />
 
             {/* Info Navbar */}
             <div className="pt-1">
-              <p className="text-sm text-indigo-500">Argerio Q. Silva</p>
-              <Link className="text-base text-indigo-600 font-bold" href={"#"}>
+              <Text className="text-indigo-500">Argerio Q. Silva</Text>
+              <LinkDefault
+                className="text-base text-indigo-600 font-bold"
+                href={"#"}
+              >
                 SAIR
-              </Link>
+              </LinkDefault>
             </div>
           </div>
         </div>

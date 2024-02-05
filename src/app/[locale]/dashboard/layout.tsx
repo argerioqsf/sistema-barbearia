@@ -17,15 +17,22 @@ export default function DashBoardLayout({
   params: { locale: string };
 }>) {
   const [openMenu, setOpenMenu] = useState(null);
-  console.log("openMenu: ", openMenu);
   return (
     <html lang={locale}>
       <body>
         <div className={twMerge("flex flex-col", inter.className)}>
           <NavBar setOpenMenu={setOpenMenu} openMenu={openMenu} />
-          <div className="flex flex-row">
+          <div className="flex flex-row justify-start">
             <SideMenu openMenu={openMenu} />
-            {children}
+            <div
+              className={twMerge(
+                "w-full min-w-full translate-x-[calc(var(--width-side-menu)*-1)]",
+                openMenu === true && "animate-openMenu",
+                openMenu === false && "animate-closeMenu"
+              )}
+            >
+              {children}
+            </div>
           </div>
         </div>
       </body>

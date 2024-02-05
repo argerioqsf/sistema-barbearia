@@ -23,33 +23,25 @@ const config: Config = {
         },
       },
       animation: {
-        openMenu: "openMenu 1s ease forwards",
-        closeMenu: "closeMenu 1s ease forwards",
-        openMenuIcon: "openMenuIcon 1s ease forwards",
-        closeMenuIcon: "closeMenuIcon 1s ease forwards",
+        openMenu: "openMenu 0.4s ease forwards",
+        closeMenu: "closeMenu 0.4s ease forwards",
+        openMenuIcon: "openMenuIcon 0.4s ease forwards",
+        closeMenuIcon: "closeMenuIcon 0.4s ease forwards",
       },
       keyframes: {
         openMenu: {
           "0%": {
-            minWidth: "0",
-            width: "0",
             transform: "translateX(calc(var(--width-side-menu)*-1))",
           },
           "100%": {
-            minWidth: "var(--width-side-menu)",
-            width: "var(--width-side-menu)",
             transform: "translateX(0)",
           },
         },
         closeMenu: {
           "0%": {
-            minWidth: "var(--width-side-menu)",
-            width: "var(--width-side-menu)",
             transform: "translateX(0)",
           },
           "100%": {
-            minWidth: "0",
-            width: "0",
             transform: "translateX(-280px)",
           },
         },
