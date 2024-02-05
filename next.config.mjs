@@ -14,7 +14,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'www.pngall.com',
+        hostname: 'cdn-icons-png.flaticon.com',
         port: '',
       },
     ],

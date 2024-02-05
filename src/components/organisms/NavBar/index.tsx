@@ -33,7 +33,7 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
           </Button>
           <div className="flex flex-row gap-4">
             <Avatar
-              image="https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png"
+              image="https://cdn-icons-png.flaticon.com/512/149/149071.png"
               size={50}
             />
             <InfoUserNav nameUser="Argerio Q. Silva" />

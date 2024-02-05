@@ -12,28 +12,28 @@ type AvatarProps = {
   size?: number;
   image?: string;
   alt?: string;
-  icon?: ReactNode;
+  icon?: FC<IconSvgProps>;
 };
 
 const Avatar: React.FC<AvatarProps> = ({
   href = "#",
-  bgColor = "primary-100",
+  bgColor = "white",
   bdColor = "primary-100",
   size = 36,
   image = "",
-  icon,
+  icon = () => <UserIcon size={size} color="white" />,
   alt = "",
 }) => {
   return (
     <div
       className={twMerge(
-        "rounded-full flex flex-row items-center justify-center border-2 p-1 border-primary-100",
-        `w-[${size}px] h-[${size}px]`,
+        "rounded-full flex flex-col items-center justify-center border-2 border-primary-100",
+        "size-[" + size + "px]",
         `bg-${bgColor}`,
         `border-${bdColor}`
       )}
     >
-      <LinkDefault href={href}>
+      <LinkDefault className="flex justify-center items-center" href={href}>
         {image ? (
           <Image
             className="align-middle rounded-full m-0 p-0 aspect-square"
@@ -42,10 +42,8 @@ const Avatar: React.FC<AvatarProps> = ({
             height={size}
             alt={alt}
           />
-        ) : icon ? (
-          icon
         ) : (
-          <UserIcon size={size} color="white" />
+          <div className="p-2">{icon({ size, color: "white" })}</div>
         )}
       </LinkDefault>
     </div>

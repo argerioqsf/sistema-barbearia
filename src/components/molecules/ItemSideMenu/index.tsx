@@ -11,19 +11,27 @@ import { ArrowDownIcon } from "@/components/Icons/ArrowDownIcon";
 type ItemSideMenuProps = {
   onClick?: (state: any) => void;
   label: string;
-  icon?: ReactElement;
+  icon?: FC<IconSvgProps>;
   image?: string;
-  subMenuList?: Array<{ id: string; label: string }>;
+  subMenuList?: Array<{
+    id: string;
+    label: string;
+    href: string;
+    icon: FC<IconSvgProps>;
+  }>;
   href?: string;
+  sizeAvatar?: number;
+  bgcolorAvatar?: string;
 };
 
 const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
-  onClick,
   label,
   icon,
   image,
   subMenuList,
   href = "",
+  sizeAvatar = 30,
+  bgcolorAvatar = "primary-100",
 }) => {
   const [open, setOpen] = useState(false);
   function openSubMenu() {
@@ -33,34 +41,50 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
     setOpen(!open);
   }
   return (
-    <div className="flex w-full flex-col justify-start items-center">
-      <Link className="w-full" href={href}>
+    <div className="flex w-full flex-col min-h-[var(--navbar-height)] justify-start items-center border-b border-primary-50">
+      <Link className="w-full h-full" href={href}>
         <Button
-          className="w-full rounded-none h-full flex flex-row justify-between items-center px-6 pb-4 border-b border-primary-50"
+          className="w-full rounded-none h-full flex flex-row justify-between items-center px-6 py-4"
           type="button"
           onClick={openSubMenu}
         >
           <div className="flex w-full flex-row justify-start items-center gap-4">
-            <Avatar size={30} icon={icon && icon} image={image && image} />
-            <Text className="text-lg font-bold text-white">{label}</Text>
+            <Avatar
+              size={sizeAvatar}
+              icon={icon && icon}
+              image={image && image}
+              bgColor={bgcolorAvatar}
+            />
+            <Text className="text-lg font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
+              {label}
+            </Text>
           </div>
-          {onClick &&
-            (open ? (
-              <ArrowRightIcon size={15} color="white" />
-            ) : (
-              <ArrowDownIcon size={20} color="white" />
-            ))}
+
+          {href.length > 0 ||
+            (subMenuList &&
+              (open ? (
+                <ArrowRightIcon size={15} color="white" />
+              ) : (
+                <ArrowDownIcon size={20} color="white" />
+              )))}
         </Button>
+
         {subMenuList && (
           <div
             className={twMerge(
-              "w-full bg-primary-50 flex flex-col pt-5 pb-3 justify-between items-start gap-4 overflow-y-auto overflow-x-hidden whitespace-nowrap",
+              "w-full bg-primary-50 flex flex-col justify-between items-start  overflow-y-auto overflow-x-hidden whitespace-nowrap",
               open === false && "hidden",
               open === true && "flex"
             )}
           >
             {subMenuList.map((menu) => (
-              <ItemSideMenu label={menu.label} key={menu.id} />
+              <ItemSideMenu
+                sizeAvatar={15}
+                icon={menu.icon}
+                href={menu.href}
+                label={menu.label}
+                key={menu.id}
+              />
             ))}
           </div>
         )}

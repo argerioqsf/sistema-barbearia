@@ -1,6 +1,7 @@
 import { ArrowRightIcon } from "@/components/Icons/ArrowRightIcon";
 import { UserIcon } from "@/components/Icons/UserIcon";
 import { Button, Text } from "@/components/atoms";
+import { siteConfig } from "@/components/config/siteConfig";
 import { Avatar } from "@/components/molecules";
 import ItemSideMenu from "@/components/molecules/ItemSideMenu";
 import React from "react";
@@ -11,21 +12,6 @@ type SideMenuProps = {
 };
 
 const SideMenu: React.FC<SideMenuProps> = ({ openMenu }) => {
-  function openSubmenu(id: string) {}
-  const subMenuList = [
-    {
-      id: "1",
-      label: "NOME do MENU",
-    },
-    {
-      id: "2",
-      label: "NOME do MENU",
-    },
-    {
-      id: "3",
-      label: "NOME do MENU",
-    },
-  ];
   return (
     <div
       className={twMerge(
@@ -34,30 +20,18 @@ const SideMenu: React.FC<SideMenuProps> = ({ openMenu }) => {
         openMenu === false && "animate-closeMenu"
       )}
     >
-      <div className="w-full pt-6 flex flex-col justify-between items-center gap-4">
-        <ItemSideMenu
-          href="home"
-          label="SIM"
-          image="https://www.grupomadretereza.com.br/sim/themes/simadm/assets/images/logo.png"
-        />
-
-        <ItemSideMenu label="ARGÉRIO FILHO" href="profile" />
-
-        <ItemSideMenu
-          subMenuList={subMenuList}
-          label="NOME MENU"
-          onClick={openSubmenu}
-        />
-        <ItemSideMenu
-          subMenuList={subMenuList}
-          label="NOME MENU"
-          onClick={openSubmenu}
-        />
-        <ItemSideMenu
-          subMenuList={subMenuList}
-          label="NOME MENU"
-          onClick={openSubmenu}
-        />
+      <div className="w-full flex flex-col justify-between items-center">
+        {siteConfig.items_side_menu.map((config) => (
+          <ItemSideMenu
+            image={config.image}
+            sizeAvatar={config.size}
+            icon={config.icon}
+            subMenuList={config.subMenuList}
+            key={config.id}
+            label={config.label}
+            href={config.href}
+          />
+        ))}
       </div>
     </div>
   );
