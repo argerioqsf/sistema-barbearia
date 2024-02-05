@@ -1,0 +1,19 @@
+{
+  "general": {
+    "email": "E-mail",
+    "password": "Senha",
+    "register": "Cadastrar",
+    "login": "Entrar",
+    "exit": "Sair",
+    "remember_me": "Lembrar-me"
+  },
+  "organisms": {
+    "form_login": {
+      "forgot_password": "Esqueceu a senha"
+
+    },
+    "form_register": {
+
+    }
+  }
+}
