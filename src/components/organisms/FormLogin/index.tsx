@@ -14,9 +14,9 @@ const FormLogin: React.FC = () => {
     <div className="w-full p-6 space-y-4 md:space-y-6 sm:p-8">
       <TitleForm title="SIM" />
       <Form action="#">
-        <FormFieldText label={at('email')} type="text" id="email" />
+        <FormFieldText label={at("email")} type="text" id="email" />
 
-        <FormFieldText label={at('password')} type="password" id="password" />
+        <FormFieldText label={at("password")} type="password" id="password" />
 
         <div className="flex items-center justify-between">
           <FormFieldCheckBox label={at("remember_me")} id="remember_me" />
@@ -24,19 +24,19 @@ const FormLogin: React.FC = () => {
             href="#"
             className="text-sm font-medium text-primary-600 hover:underline"
           >
-            {or('form_login.forgot_password')}
+            {or("form_login.forgot_password")}
           </Link>
         </div>
 
         <Button type="submit">{at("login")}</Button>
 
         <Text>
-          Não possui conta?
+          {at("register")}
           <Link
             href="#"
             className="font-medium text-primary-600 hover:underline dark:text-primary-500 pl-2"
           >
-            Cadastrar
+            {or("form_login.not_have_account")}
           </Link>
         </Text>
       </Form>
