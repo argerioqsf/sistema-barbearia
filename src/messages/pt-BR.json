@@ -13,5 +13,23 @@
       "not_have_account": "Não possui conta?"
     },
     "form_register": {}
+  },
+  "metadata": {
+    "index": {
+      "title": "SIM | Grupo Madre Tereza",
+      "description": "SIM | Grupo Madre Tereza"
+    },
+    "auth": {
+      "signin": {
+        "title": "Login SIM",
+        "description": "Faça login na plataforma SIM"
+      }
+    },
+    "dashboard": {
+      "home": {
+        "title": "Home SIM",
+        "description": "Home da plataforma SIM"
+      }
+    }
   }
 }
