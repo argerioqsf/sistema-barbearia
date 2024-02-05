@@ -44,8 +44,8 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
 
             {/* Info Navbar */}
             <div className="pt-1">
-              <h2 className="text-sm text-indigo-500">Argerio Q. Silva</h2>
-              <Link className="text-base text-indigo-600" href={"#"}>
+              <p className="text-sm text-indigo-500">Argerio Q. Silva</p>
+              <Link className="text-base text-indigo-600 font-bold" href={"#"}>
                 SAIR
               </Link>
             </div>
