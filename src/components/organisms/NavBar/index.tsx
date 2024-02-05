@@ -2,6 +2,7 @@ import { MenuIcon } from "@/components/Icons/MenuIcon";
 import { Button, Text } from "@/components/atoms";
 import LinkDefault from "@/components/atoms/LinkDefault";
 import Avatar from "@/components/molecules/Avatar";
+import InfoUserNav from "@/components/molecules/InfoUserNav";
 import Image from "next/image";
 import Link from "next/link";
 import React, { Dispatch, SetStateAction } from "react";
@@ -20,7 +21,7 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
   return (
     <nav
       className={twMerge(
-        "flex z-40 w-full h-auto items-center justify-center fixed top-0  bg-gray-200",
+        "flex max-w-full z-40 w-full h-auto items-center justify-center fixed top-0  bg-gray-200",
         openMenu === true && "animate-openMenuIcon",
         openMenu === false && "animate-closeMenuIcon"
       )}
@@ -35,17 +36,7 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
               image="https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png"
               size={50}
             />
-
-            {/* Info Navbar */}
-            <div className="pt-1">
-              <Text className="text-indigo-500">Argerio Q. Silva</Text>
-              <LinkDefault
-                className="text-base text-indigo-600 font-bold"
-                href={"#"}
-              >
-                SAIR
-              </LinkDefault>
-            </div>
+            <InfoUserNav nameUser="Argerio Q. Silva" />
           </div>
         </div>
       </header>

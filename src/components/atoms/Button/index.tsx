@@ -7,7 +7,7 @@ type ButtonProps = {
   type: "submit" | "reset" | "button" | undefined;
   className?: string;
   children: ReactNode;
-  onClick?: () => void;
+  onClick?: (state: any) => void;
 };
 
 const Button = ({
@@ -20,7 +20,7 @@ const Button = ({
     <button
       onClick={onClick}
       type={type}
-      className={twMerge("border rounded-md h-8", className)}
+      className={twMerge("rounded-md h-8", className)}
     >
       {children}
     </button>

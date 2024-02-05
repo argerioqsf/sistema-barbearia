@@ -28,7 +28,7 @@ const FormLogin: React.FC = () => {
           </LinkDefault>
         </div>
 
-        <Button className="w-full" type="submit">
+        <Button className="w-full border" type="submit">
           {at("login")}
         </Button>
 

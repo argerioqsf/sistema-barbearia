@@ -29,6 +29,10 @@
       "home": {
         "title": "Home SIM",
         "description": "Home da plataforma SIM"
+      },
+      "profile": {
+        "title": "Perfil SIM",
+        "description": "Perfil da plataforma SIM"
       }
     }
   }
