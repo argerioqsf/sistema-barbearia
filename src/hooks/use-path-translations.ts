@@ -3,10 +3,10 @@ import { getTranslations } from "next-intl/server";
 
 export const usePathTranslations = (componentPath?: string) => {
   const at = useTranslations("general");
-  const or = useTranslations("organisms");
+  const sc = useTranslations("specific");
   const any = useTranslations(componentPath);
 
-  return { at, or, any };
+  return { at, sc, any };
 };
 
 export const usePathTranslationsMetadata = (

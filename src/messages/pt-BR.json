@@ -7,7 +7,7 @@
     "exit": "Sair",
     "remember_me": "Lembrar-me"
   },
-  "organisms": {
+  "specific": {
     "form_login": {
       "forgot_password": "Esqueceu a senha",
       "not_have_account": "Não possui conta?"

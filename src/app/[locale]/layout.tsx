@@ -1,5 +1,4 @@
 import "./global.css";
-import "./global.css";
 import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({

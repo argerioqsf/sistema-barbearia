@@ -22,6 +22,52 @@ const config: Config = {
           100: "#01DA7C",
         },
       },
+      animation: {
+        openMenu: "openMenu 1s ease forwards",
+        closeMenu: "closeMenu 1s ease forwards",
+        openMenuIcon: "openMenuIcon 1s ease forwards",
+        closeMenuIcon: "closeMenuIcon 1s ease forwards",
+      },
+      keyframes: {
+        openMenu: {
+          "0%": {
+            minWidth: "0",
+            width: "0",
+            transform: "translateX(calc(var(--width-side-menu)*-1))",
+          },
+          "100%": {
+            minWidth: "var(--width-side-menu)",
+            width: "var(--width-side-menu)",
+            transform: "translateX(0)",
+          },
+        },
+        closeMenu: {
+          "0%": {
+            minWidth: "var(--width-side-menu)",
+            width: "var(--width-side-menu)",
+            transform: "translateX(0)",
+          },
+          "100%": {
+            minWidth: "0",
+            width: "0",
+            transform: "translateX(-280px)",
+          },
+        },
+        openMenuIcon: {
+          "0%": {
+            paddingLeft: "0",
+          },
+          "100%": { paddingLeft: "var(--width-side-menu)" },
+        },
+        closeMenuIcon: {
+          "0%": {
+            paddingLeft: "var(--width-side-menu)",
+          },
+          "100%": {
+            paddingLeft: "0",
+          },
+        },
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],

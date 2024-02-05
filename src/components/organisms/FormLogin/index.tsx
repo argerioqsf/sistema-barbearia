@@ -9,7 +9,7 @@ import { usePathTranslations } from "@/hooks/use-path-translations";
 import React from "react";
 
 const FormLogin: React.FC = () => {
-  const { at, or } = usePathTranslations("");
+  const { at, sc } = usePathTranslations("");
   return (
     <div className="w-full p-6 space-y-4 md:space-y-6 sm:p-8">
       <TitleForm title="SIM" />
@@ -24,7 +24,7 @@ const FormLogin: React.FC = () => {
             href="#"
             className="text-sm font-medium text-primary-600 hover:underline"
           >
-            {or("form_login.forgot_password")}
+            {sc("form_login.forgot_password")}
           </Link>
         </div>
 
@@ -36,7 +36,7 @@ const FormLogin: React.FC = () => {
             href="#"
             className="font-medium text-primary-600 hover:underline dark:text-primary-500 pl-2"
           >
-            {or("form_login.not_have_account")}
+            {sc("form_login.not_have_account")}
           </Link>
         </Text>
       </Form>
