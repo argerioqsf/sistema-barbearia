@@ -42,12 +42,8 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   }
   return (
     <div className="flex w-full flex-col min-h-[var(--navbar-height)] justify-start items-center border-b border-primary-50">
-      <Link className="w-full h-full" href={href}>
-        <Button
-          className="w-full rounded-none h-full flex flex-row justify-between items-center px-6 py-4"
-          type="button"
-          onClick={openSubMenu}
-        >
+      <Link className="w-full h-full" href={href} onClick={openSubMenu}>
+        <div className="w-full rounded-none h-full flex flex-row justify-between items-center px-6 py-4">
           <div className="flex w-full flex-row justify-start items-center gap-4">
             <Avatar
               size={sizeAvatar}
@@ -67,7 +63,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
               ) : (
                 <ArrowDownIcon size={20} color="white" />
               )))}
-        </Button>
+        </div>
 
         {subMenuList && (
           <div
