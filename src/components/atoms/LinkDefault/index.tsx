@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
+import Link from "next/link";
 
 type LinkProps = {
   children: ReactNode;
@@ -7,18 +8,15 @@ type LinkProps = {
   className?: string;
 };
 
-const Link = ({ children, href, className }: LinkProps) => {
+const LinkDefault = ({ children, href, className }: LinkProps) => {
   return (
-    <a
+    <Link
       href={href}
-      className={twMerge(
-        "text-sm font-medium text-primary-600 hover:underline",
-        className
-      )}
+      className={twMerge("text-sm font-medium text-primary-600", className)}
     >
       {children}
-    </a>
+    </Link>
   );
 };
 
-export default Link;
+export default LinkDefault;

@@ -8,12 +8,7 @@ type TextProps = {
 
 const Text = ({ children, className }: TextProps) => {
   return (
-    <p
-      className={twMerge(
-        "text-sm font-light text-gray-500 dark:text-gray-400",
-        className
-      )}
-    >
+    <p className={twMerge("text-sm font-light text-gray-500", className)}>
       {children}
     </p>
   );

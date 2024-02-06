@@ -22,6 +22,82 @@ const config: Config = {
           100: "#01DA7C",
         },
       },
+      animation: {
+        openMenuLg: "openMenuLg 0.4s ease forwards",
+        closeMenuLg: "closeMenuLg 0.4s ease forwards",
+        openMenuMd: "openMenuMd 0.4s ease forwards",
+        closeMenuMd: "closeMenuMd 0.4s ease forwards",
+        openMenuChildrenLg: "openMenuChildrenLg 0.4s ease forwards",
+        closeMenuChildrenLg: "closeMenuChildrenLg 0.4s ease forwards",
+        openMenuChildrenMd: "openMenuChildrenMd 0.4s ease forwards",
+        closeMenuChildrenMd: "closeMenuChildrenMd 0.4s ease forwards",
+      },
+      keyframes: {
+        openMenuLg: {
+          "0%": {
+            width: "0",
+          },
+          "100%": {
+            width: "25vw",
+          },
+        },
+        closeMenuLg: {
+          "0%": {
+            width: "25vw",
+          },
+          "100%": {
+            width: "0",
+          },
+        },
+        openMenuMd: {
+          "0%": {
+            width: "0",
+          },
+          "100%": {
+            width: "80vw",
+          },
+        },
+        closeMenuMd: {
+          "0%": {
+            width: "80vw",
+          },
+          "100%": {
+            width: "0",
+          },
+        },
+        openMenuChildrenLg: {
+          "0%": {
+            paddingLeft: "0px",
+          },
+          "100%": {
+            paddingLeft: "25vw",
+          },
+        },
+        closeMenuChildrenLg: {
+          "0%": {
+            paddingLeft: "25vw",
+          },
+          "100%": {
+            paddingLeft: "0px",
+          },
+        },
+        openMenuChildrenMd: {
+          "0%": {
+            paddingLeft: "0px",
+          },
+          "100%": {
+            paddingLeft: "80vw",
+          },
+        },
+        closeMenuChildrenMd: {
+          "0%": {
+            paddingLeft: "80vw",
+          },
+          "100%": {
+            paddingLeft: "0px",
+          },
+        },
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],
