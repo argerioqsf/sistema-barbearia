@@ -21,7 +21,7 @@ export default function DashBoardLayout({
     <html lang={locale}>
       <body>
         <div className={twMerge("flex flex-col", inter.className)}>
-          <SideMenu openMenu={openMenu} />
+          <SideMenu setOpenMenu={setOpenMenu} openMenu={openMenu} />
           <div className="flex flex-row justify-start">
             <div
               className={twMerge(

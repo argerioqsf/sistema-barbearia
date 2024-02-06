@@ -1,10 +1,7 @@
 import { MenuIcon } from "@/components/Icons/MenuIcon";
-import { Button, Text } from "@/components/atoms";
-import LinkDefault from "@/components/atoms/LinkDefault";
+import { Button } from "@/components/atoms";
 import Avatar from "@/components/molecules/Avatar";
 import InfoUserNav from "@/components/molecules/InfoUserNav";
-import Image from "next/image";
-import Link from "next/link";
 import React, { Dispatch, SetStateAction } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -37,6 +34,7 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
           </Button>
           <div className={twMerge("flex flex-row gap-4")}>
             <Avatar
+              href="profile"
               image="https://cdn-icons-png.flaticon.com/512/149/149071.png"
               size={50}
             />

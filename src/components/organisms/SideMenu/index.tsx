@@ -4,14 +4,15 @@ import { Button, Text } from "@/components/atoms";
 import { siteConfig } from "@/components/config/siteConfig";
 import { Avatar } from "@/components/molecules";
 import ItemSideMenu from "@/components/molecules/ItemSideMenu";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { twMerge } from "tailwind-merge";
 
 type SideMenuProps = {
   openMenu: boolean | null;
+  setOpenMenu: Dispatch<SetStateAction<any>>;
 };
 
-const SideMenu: React.FC<SideMenuProps> = ({ openMenu }) => {
+const SideMenu: React.FC<SideMenuProps> = ({ openMenu, setOpenMenu }) => {
   return (
     <div
       className={twMerge(
@@ -26,6 +27,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ openMenu }) => {
       <div className="w-full flex flex-col justify-between items-center">
         {siteConfig.items_side_menu.map((config) => (
           <ItemSideMenu
+            setOpenMenu={setOpenMenu}
             image={config.image}
             sizeAvatar={config.size}
             icon={config.icon}

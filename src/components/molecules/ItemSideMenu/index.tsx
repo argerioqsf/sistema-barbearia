@@ -1,6 +1,12 @@
 "use client";
 
-import React, { FC, ReactElement, useState } from "react";
+import React, {
+  Dispatch,
+  FC,
+  ReactElement,
+  SetStateAction,
+  useState,
+} from "react";
 import { Avatar } from "..";
 import { Button, Link, Text } from "@/components/atoms";
 import { ArrowRightIcon } from "@/components/Icons/ArrowRightIcon";
@@ -23,6 +29,7 @@ type ItemSideMenuProps = {
   href?: string;
   sizeAvatar?: number;
   bgcolorAvatar?: string;
+  setOpenMenu: Dispatch<SetStateAction<boolean>>;
 };
 
 const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
@@ -33,24 +40,27 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   href = "",
   sizeAvatar = 30,
   bgcolorAvatar = "primary-100",
+  setOpenMenu,
 }) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
   function openSubMenu() {
     if (href) {
+      setOpenMenu(false);
       return router.push(href);
     }
     setOpen(!open);
   }
+
   return (
     <div className="flex w-full flex-col min-h-[var(--navbar-height)] justify-start items-center border-b border-primary-50">
       <Button
-        className="w-full rounded-none h-full flex flex-row justify-between items-center px-6 py-4"
+        className="w-full rounded-none h-full flex flex-row justify-start items-center px-4 py-4"
         type="button"
         onClick={openSubMenu}
       >
-        <div className="flex w-full flex-row justify-start items-center gap-4">
+        <div className="w-[80%] flex flex-row justify-start items-center gap-4">
           <Avatar
             size={sizeAvatar}
             icon={icon && icon}
@@ -62,13 +72,15 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
           </Text>
         </div>
 
-        {href.length > 0 ||
-          (subMenuList &&
-            (open ? (
-              <ArrowRightIcon size={15} color="white" />
-            ) : (
-              <ArrowDownIcon size={20} color="white" />
-            )))}
+        <div className="w-[20%] flex flex-row justify-end pr-1">
+          {href.length > 0 ||
+            (subMenuList &&
+              (open ? (
+                <ArrowRightIcon size={15} color="white" />
+              ) : (
+                <ArrowDownIcon size={20} color="white" />
+              )))}
+        </div>
       </Button>
 
       {subMenuList && (
@@ -81,6 +93,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
         >
           {subMenuList.map((menu) => (
             <ItemSideMenu
+              setOpenMenu={setOpenMenu}
               sizeAvatar={15}
               icon={menu.icon}
               href={menu.href}
