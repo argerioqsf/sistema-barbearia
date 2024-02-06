@@ -1,4 +1,3 @@
-import { ArrowDownIcon } from "../Icons/ArrowDownIcon";
 import { CircleIcon } from "../Icons/CircleIcon";
 import { ClipboardIcon } from "../Icons/ClipboardIcon";
 import { DashBoardIcon } from "../Icons/DashBoardIcon";
@@ -11,7 +10,7 @@ export const siteConfig = {
   items_side_menu: [
     {
       id: "1",
-      href: "home",
+      href: "/dashboard/home",
       label: "SIM",
       size: 45,
       image:
@@ -20,12 +19,12 @@ export const siteConfig = {
     {
       id: "2",
       label: "ARGÉRIO FILHO",
-      href: "profile",
+      href: "/dashboard/profile",
     },
     {
       id: "3",
       label: "Dashboard",
-      href: "profile",
+      href: "/dashboard/profile",
       icon: DashBoardIcon,
     },
     {
@@ -36,19 +35,19 @@ export const siteConfig = {
         {
           id: "1",
           label: "Listagem",
-          href: "home",
+          href: "/dashboard/home",
           icon: CircleIcon,
         },
         {
           id: "2",
           label: "Solicitações",
-          href: "home",
+          href: "/dashboard/home",
           icon: CircleIcon,
         },
         {
           id: "3",
           label: "Cadastrar Indicador",
-          href: "profile",
+          href: "/dashboard/profile",
           icon: CircleIcon,
         },
       ],
@@ -61,25 +60,25 @@ export const siteConfig = {
         {
           id: "1",
           label: "Novos Leads",
-          href: "home",
+          href: "/dashboard/home",
           icon: CircleIcon,
         },
         {
           id: "2",
           label: "Listagem",
-          href: "home",
+          href: "/dashboard/home",
           icon: CircleIcon,
         },
         {
           id: "3",
           label: "Confirmados",
-          href: "perfil",
+          href: "/dashboard/perfil",
           icon: CircleIcon,
         },
         {
           id: "4",
           label: "Cadastrar Leads",
-          href: "perfil",
+          href: "/dashboard/perfil",
           icon: CircleIcon,
         },
       ],
@@ -92,13 +91,13 @@ export const siteConfig = {
         {
           id: "1",
           label: "Listagem",
-          href: "home",
+          href: "/dashboard/home",
           icon: CircleIcon,
         },
         {
           id: "2",
           label: "Cadastrar Segmento",
-          href: "home",
+          href: "/dashboard/home",
           icon: CircleIcon,
         },
       ],
@@ -110,13 +109,13 @@ export const siteConfig = {
         {
           id: "1",
           label: "Listagem",
-          href: "home",
+          href: "/dashboard/users",
           icon: CircleIcon,
         },
         {
           id: "2",
           label: "Cadastrar Usuários",
-          href: "home",
+          href: "/dashboard/users/edit",
           icon: CircleIcon,
         },
       ],

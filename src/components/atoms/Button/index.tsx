@@ -20,7 +20,7 @@ const Button = ({
     <button
       onClick={onClick}
       type={type}
-      className={twMerge("rounded-md h-8", className)}
+      className={twMerge("rounded-md p-4", className)}
     >
       {children}
     </button>

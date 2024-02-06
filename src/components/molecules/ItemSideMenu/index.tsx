@@ -13,7 +13,7 @@ import { ArrowRightIcon } from "@/components/Icons/ArrowRightIcon";
 import { IconSvgProps } from "@/types/general";
 import { twMerge } from "tailwind-merge";
 import { ArrowDownIcon } from "@/components/Icons/ArrowDownIcon";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 type ItemSideMenuProps = {
   onClick?: (state: any) => void;
@@ -44,11 +44,13 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const paths = usePathname();
+  const pathNames = paths.split("/").filter((path, index) => path);
 
   function openSubMenu() {
     if (href) {
       setOpenMenu(false);
-      return router.push(href);
+      return router.push(`/${pathNames[0]}/${href}`);
     }
     setOpen(!open);
   }
