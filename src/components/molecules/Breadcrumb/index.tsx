@@ -17,7 +17,6 @@ const Breadcrumb = ({
 }: TBreadCrumbProps) => {
   const paths = usePathname();
   const pathNames = paths.split("/").filter((path, index) => path);
-  console.log("pathNames: ", pathNames);
   function renderItems(link: string, index: number) {
     let href = `/${pathNames.slice(0, index + 1).join("/")}`;
     let itemClasses =

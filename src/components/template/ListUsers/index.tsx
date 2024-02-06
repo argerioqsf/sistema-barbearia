@@ -9,7 +9,6 @@ const ListUsers: React.FC = () => {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <div className="w-full">List Users</div>
       </div>
     </ContainerDashboard>
   );

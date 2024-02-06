@@ -9,7 +9,6 @@ const EditUser: React.FC = () => {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <div className="w-full">Edit User</div>
       </div>
     </ContainerDashboard>
   );
