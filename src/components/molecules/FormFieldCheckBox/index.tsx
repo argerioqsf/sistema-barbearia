@@ -20,7 +20,7 @@ const FormFieldCheckBox = ({ label, id, className }: FormFieldTextProps) => {
         />
       </div>
       <div className="ml-3 text-sm">
-        <LabelForm label={label} />
+        <LabelForm className="text-white" label={label} />
       </div>
     </div>
   );

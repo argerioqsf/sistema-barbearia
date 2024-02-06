@@ -7,13 +7,10 @@ type ContainerProps = React.DetailedHTMLProps<
   HTMLDivElement
 >;
 
-const ContainerSection = ({ children, ...rest }: ContainerProps) => {
+const ContainerSection = ({ children, className }: ContainerProps) => {
   return (
-    <Section>
-      <div
-        {...rest}
-        className={twMerge("mx-auto max-w-7xl sm:px-6 lg:px-8", rest.className)}
-      >
+    <Section className={twMerge(className)}>
+      <div className={twMerge("mx-auto max-w-7xl sm:px-6 lg:px-8")}>
         {children}
       </div>
     </Section>
