@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <ContainerDashboard>
       <div className="p-6 w-full flex flex-col justify-start items-start gap-4 bg-gray-500">
-        Home
+        teste
       </div>
     </ContainerDashboard>
   );

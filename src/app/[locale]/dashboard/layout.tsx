@@ -26,9 +26,9 @@ export default function DashBoardLayout({
             <SideMenu openMenu={openMenu} />
             <div
               className={twMerge(
-                "w-full min-w-full translate-x-[calc(var(--width-side-menu)*-1)]",
-                openMenu === true && "animate-openMenu",
-                openMenu === false && "animate-closeMenu"
+                "w-full pl-0",
+                openMenu === true && "animate-openMenuChildren",
+                openMenu === false && "animate-closeMenuChildren"
               )}
             >
               {children}

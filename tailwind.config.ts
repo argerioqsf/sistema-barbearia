@@ -27,6 +27,8 @@ const config: Config = {
         closeMenu: "closeMenu 0.4s ease forwards",
         openMenuIcon: "openMenuIcon 0.4s ease forwards",
         closeMenuIcon: "closeMenuIcon 0.4s ease forwards",
+        openMenuChildren: "openMenuChildren 0.4s ease forwards",
+        closeMenuChildren: "closeMenuChildren 0.4s ease forwards",
       },
       keyframes: {
         openMenu: {
@@ -43,6 +45,22 @@ const config: Config = {
           },
           "100%": {
             transform: "translateX(-280px)",
+          },
+        },
+        openMenuChildren: {
+          "0%": {
+            paddingLeft: "0px",
+          },
+          "100%": {
+            paddingLeft: "var(--width-side-menu)",
+          },
+        },
+        closeMenuChildren: {
+          "0%": {
+            paddingLeft: "var(--width-side-menu)",
+          },
+          "100%": {
+            paddingLeft: "0px",
           },
         },
         openMenuIcon: {
