@@ -1,3 +1,5 @@
 import FormLogin from "./FormLogin";
+import NavBar from "./NavBar";
+import SideMenu from "./SideMenu";
 
-export { FormLogin };
+export { FormLogin, NavBar, SideMenu };
