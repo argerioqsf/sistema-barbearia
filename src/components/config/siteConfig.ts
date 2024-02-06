@@ -110,13 +110,13 @@ export const siteConfig = {
         {
           id: "1",
           label: "Listagem",
-          href: "home",
+          href: "users",
           icon: CircleIcon,
         },
         {
           id: "2",
           label: "Cadastrar Usuários",
-          href: "home",
+          href: "users/edit",
           icon: CircleIcon,
         },
       ],
