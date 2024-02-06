@@ -2,8 +2,8 @@ import { ArrowDownIcon } from "../Icons/ArrowDownIcon";
 import { CircleIcon } from "../Icons/CircleIcon";
 import { ClipboardIcon } from "../Icons/ClipboardIcon";
 import { DashBoardIcon } from "../Icons/DashBoardIcon";
+import { HandPointLeftIcon } from "../Icons/HandPointLeftIcon";
 import { UsersIcon } from "../Icons/UsersIcon";
-import { HandPointLeftIcon } from "../Icons/handPointLeftIcon";
 
 export type SiteConfig = typeof siteConfig;
 

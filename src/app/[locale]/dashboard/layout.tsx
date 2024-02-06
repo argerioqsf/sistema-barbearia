@@ -21,16 +21,18 @@ export default function DashBoardLayout({
     <html lang={locale}>
       <body>
         <div className={twMerge("flex flex-col", inter.className)}>
-          <NavBar setOpenMenu={setOpenMenu} openMenu={openMenu} />
+          <SideMenu openMenu={openMenu} />
           <div className="flex flex-row justify-start">
-            <SideMenu openMenu={openMenu} />
             <div
               className={twMerge(
                 "w-full pl-0",
-                openMenu === true && "animate-openMenuChildren",
-                openMenu === false && "animate-closeMenuChildren"
+                openMenu === true &&
+                  "animate-openMenuChildrenMd lg:animate-openMenuChildrenLg",
+                openMenu === false &&
+                  "animate-closeMenuChildrenMd lg:animate-closeMenuChildrenLg"
               )}
             >
+              <NavBar setOpenMenu={setOpenMenu} openMenu={openMenu} />
               {children}
             </div>
           </div>

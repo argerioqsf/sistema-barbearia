@@ -23,58 +23,78 @@ const config: Config = {
         },
       },
       animation: {
-        openMenu: "openMenu 0.4s ease forwards",
-        closeMenu: "closeMenu 0.4s ease forwards",
-        openMenuIcon: "openMenuIcon 0.4s ease forwards",
-        closeMenuIcon: "closeMenuIcon 0.4s ease forwards",
-        openMenuChildren: "openMenuChildren 0.4s ease forwards",
-        closeMenuChildren: "closeMenuChildren 0.4s ease forwards",
+        openMenuLg: "openMenuLg 0.4s ease forwards",
+        closeMenuLg: "closeMenuLg 0.4s ease forwards",
+        openMenuMd: "openMenuMd 0.4s ease forwards",
+        closeMenuMd: "closeMenuMd 0.4s ease forwards",
+        openMenuChildrenLg: "openMenuChildrenLg 0.4s ease forwards",
+        closeMenuChildrenLg: "closeMenuChildrenLg 0.4s ease forwards",
+        openMenuChildrenMd: "openMenuChildrenMd 0.4s ease forwards",
+        closeMenuChildrenMd: "closeMenuChildrenMd 0.4s ease forwards",
       },
       keyframes: {
-        openMenu: {
+        openMenuLg: {
           "0%": {
-            transform: "translateX(calc(var(--width-side-menu)*-1))",
+            width: "0",
           },
           "100%": {
-            transform: "translateX(0)",
+            width: "25vw",
           },
         },
-        closeMenu: {
+        closeMenuLg: {
           "0%": {
-            transform: "translateX(0)",
+            width: "25vw",
           },
           "100%": {
-            transform: "translateX(-280px)",
+            width: "0",
           },
         },
-        openMenuChildren: {
+        openMenuMd: {
+          "0%": {
+            width: "0",
+          },
+          "100%": {
+            width: "80vw",
+          },
+        },
+        closeMenuMd: {
+          "0%": {
+            width: "80vw",
+          },
+          "100%": {
+            width: "0",
+          },
+        },
+        openMenuChildrenLg: {
           "0%": {
             paddingLeft: "0px",
           },
           "100%": {
-            paddingLeft: "var(--width-side-menu)",
+            paddingLeft: "25vw",
           },
         },
-        closeMenuChildren: {
+        closeMenuChildrenLg: {
           "0%": {
-            paddingLeft: "var(--width-side-menu)",
+            paddingLeft: "25vw",
           },
           "100%": {
             paddingLeft: "0px",
           },
         },
-        openMenuIcon: {
+        openMenuChildrenMd: {
           "0%": {
-            paddingLeft: "0",
-          },
-          "100%": { paddingLeft: "var(--width-side-menu)" },
-        },
-        closeMenuIcon: {
-          "0%": {
-            paddingLeft: "var(--width-side-menu)",
+            paddingLeft: "0px",
           },
           "100%": {
-            paddingLeft: "0",
+            paddingLeft: "80vw",
+          },
+        },
+        closeMenuChildrenMd: {
+          "0%": {
+            paddingLeft: "80vw",
+          },
+          "100%": {
+            paddingLeft: "0px",
           },
         },
       },
