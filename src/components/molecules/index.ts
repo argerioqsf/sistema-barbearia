@@ -4,6 +4,7 @@ import FormFieldText from "./FormFieldText";
 import InfoUserNav from "./InfoUserNav";
 import Avatar from "./Avatar";
 import ContainerDashboard from "./ContainerDashboard";
+import ItemSideMenu from "./ItemSideMenu";
 
 export {
   ContainerSection,
@@ -12,4 +13,5 @@ export {
   InfoUserNav,
   Avatar,
   ContainerDashboard,
+  ItemSideMenu,
 };
