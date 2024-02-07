@@ -7,33 +7,30 @@ import { twMerge } from "tailwind-merge";
 
 type AvatarProps = {
   href?: string;
-  bgColor?: string;
+  bgColorIcon?: string;
   bdColor?: string;
   size?: number;
   image?: string;
   alt?: string;
   icon?: FC<IconSvgProps>;
+  colorIcon?: string;
+  children?: React.ReactNode;
 };
 
 const Avatar: React.FC<AvatarProps> = ({
   href = "#",
-  bgColor = "white",
+  bgColorIcon = "yellow-300",
   bdColor = "primary-100",
+  colorIcon = "white",
   size = 36,
   image = "",
   icon = () => <UserIcon size={size} color="white" />,
   alt = "",
+  children,
 }) => {
   return (
-    <div
-      className={twMerge(
-        "rounded-full flex flex-col items-center justify-center border-2 border-primary-100",
-        "size-[" + size + "px]",
-        `bg-${bgColor}`,
-        `border-${bdColor}`
-      )}
-    >
-      <LinkDefault className="flex justify-center items-center" href={href}>
+    <div className={twMerge(`size-[${size}px]`)}>
+      <LinkDefault className="flex justify-center items-center " href={href}>
         {image ? (
           <Image
             className="align-middle rounded-full m-0 p-0 aspect-square"
@@ -43,7 +40,16 @@ const Avatar: React.FC<AvatarProps> = ({
             alt={alt}
           />
         ) : (
-          <div className="p-2">{icon({ size, color: "white" })}</div>
+          <div
+            className={twMerge(
+              `size-[${size}px]`,
+              "p-2 rounded-full flex justify-center items-center border-2",
+              `bg-${bgColorIcon}`,
+              `border-${bdColor}`
+            )}
+          >
+            {children ?? icon({ size, color: colorIcon })}
+          </div>
         )}
       </LinkDefault>
     </div>

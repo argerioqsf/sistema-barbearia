@@ -45,7 +45,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const paths = usePathname();
-  const pathNames = paths.split("/").filter((path, index) => path);
+  const pathNames = paths.split("/").filter((path) => path);
 
   function openSubMenu() {
     if (href) {
@@ -67,7 +67,6 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
             size={sizeAvatar}
             icon={icon && icon}
             image={image && image}
-            bgColor={bgcolorAvatar}
           />
           <Text className="text-lg font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
             {label}

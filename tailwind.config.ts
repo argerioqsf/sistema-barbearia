@@ -20,6 +20,7 @@ const config: Config = {
         },
         secondary: {
           100: "#01DA7C",
+          50: "#16B598",
         },
       },
       animation: {
