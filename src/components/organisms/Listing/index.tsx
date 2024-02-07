@@ -84,7 +84,7 @@ const Listing = ({ title }: ListingProps) => {
 
   return (
     <div className="w-full">
-      <div className="w-full flex flex-row justify-between items-center">
+      <div className="w-[90vw] lg:w-[95vw] flex flex-row justify-between items-center">
         <Text className="uppercase font-bold text-2xl lg:text-4xl text-black">
           {title}
         </Text>

@@ -47,14 +47,14 @@ const ItemList = ({
     },
   ];
   return (
-    <div className="w-[90vw] lg:w-[95vw] relative bg-gray-200 flex flex-row justify-start items-center p-3">
+    <div className="w-[90vw] lg:w-[95vw] relative rounded-full bg-gray-200 flex flex-row justify-start items-center p-3">
       <div className="w-[20%] md:w-[10%]">
         <Avatar bgColorIcon="gray-300" bdColor="transparent" size={60}>
           {avatar}
         </Avatar>
       </div>
 
-      <div className="gap-2 sm:w-[40%] ml-4 w-[35%] md:w-[30%] lg:w-[25%]">
+      <div className="gap-2 text-center sm:text-start ml-4 w-[60%] sm:w-[40%] md:w-[30%] lg:w-[25%]">
         <Text className="font-bold text-black">{info1}</Text>
         <Text>{info2}</Text>
       </div>
@@ -79,7 +79,7 @@ const ItemList = ({
         ))}
       </div>
 
-      <div className="w-[40%] flex sm:hidden flex-row justify-end items-center">
+      <div className="w-[20%] flex sm:hidden flex-row justify-end items-center">
         <DropDownDots listActions={listActionsDropDown} />
       </div>
     </div>

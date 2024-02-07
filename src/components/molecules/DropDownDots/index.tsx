@@ -25,7 +25,7 @@ const DropDownDots = ({ listActions, className }: DropDownDotsProps) => {
         id="dropdownMenuIconButton"
         onClick={() => setShow(!show)}
         data-dropdown-toggle="dropdownDots"
-        className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-secondary-50 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-secondary-50 dark:hover:bg-prim dark:focus:ring-gray-600"
+        className="inline-flex rounded-full items-center p-2 text-sm font-medium text-center text-gray-900 bg-white hover:bg-secondary-50 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-secondary-50 dark:hover:bg-prim dark:focus:ring-gray-600"
         type="button"
       >
         <svg

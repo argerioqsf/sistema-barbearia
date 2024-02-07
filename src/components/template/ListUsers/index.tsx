@@ -14,7 +14,7 @@ const ListUsers: React.FC = () => {
         <div className="w-full mt-6">
           <Search />
         </div>
-        <div className="w-full mt-6 lg:mt-12">
+        <div className="w-full mt-6 lg:mt-8">
           <Listing title="Usuários" />
         </div>
       </div>
