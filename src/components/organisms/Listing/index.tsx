@@ -1,9 +1,10 @@
 import { ClipboardIcon } from "@/components/Icons/ClipboardIcon";
+import { EditIcon } from "@/components/Icons/EditIcon";
+import { EyeIcon } from "@/components/Icons/EyeIcon";
+import { LockIcon } from "@/components/Icons/LockIcon";
 import { Button, Text } from "@/components/atoms";
-import { Avatar } from "@/components/molecules";
 import ItemList from "@/components/molecules/ItemList";
-import React, { useState } from "react";
-import { twMerge } from "tailwind-merge";
+import React from "react";
 
 type ListingProps = {
   title: string;
@@ -14,22 +15,23 @@ const Listing = ({ title }: ListingProps) => {
     {
       id: 1,
       onclick: () => {},
-      icon: ClipboardIcon,
+      icon: EditIcon,
       href: "home",
     },
     {
       id: 2,
       onclick: () => {},
-      icon: ClipboardIcon,
+      icon: EyeIcon,
       href: "home",
     },
     {
       id: 3,
       onclick: () => {},
-      icon: ClipboardIcon,
+      icon: LockIcon,
       href: "home",
     },
   ];
+
   const users = [
     {
       id: 1,
@@ -101,7 +103,7 @@ const Listing = ({ title }: ListingProps) => {
           <ItemList
             key={user.id}
             listActions={listActions}
-            avatar={index + 1}
+            avatar={<Text className="text-black">{index + 1}</Text>}
             info1={user.name}
             info2={user.email}
             info3={user.number}

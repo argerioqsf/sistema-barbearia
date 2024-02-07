@@ -1,8 +1,4 @@
-import { ArrowRightIcon } from "@/components/Icons/ArrowRightIcon";
-import { UserIcon } from "@/components/Icons/UserIcon";
-import { Button, Text } from "@/components/atoms";
 import { siteConfig } from "@/components/config/siteConfig";
-import { Avatar } from "@/components/molecules";
 import ItemSideMenu from "@/components/molecules/ItemSideMenu";
 import React, { Dispatch, SetStateAction } from "react";
 import { twMerge } from "tailwind-merge";

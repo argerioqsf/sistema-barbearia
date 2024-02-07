@@ -1,4 +1,4 @@
-import { Avatar, ContainerDashboard } from "@/components/molecules";
+import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";

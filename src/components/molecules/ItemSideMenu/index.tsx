@@ -1,14 +1,8 @@
 "use client";
 
-import React, {
-  Dispatch,
-  FC,
-  ReactElement,
-  SetStateAction,
-  useState,
-} from "react";
+import React, { Dispatch, FC, SetStateAction, useState } from "react";
 import { Avatar } from "..";
-import { Button, Link, Text } from "@/components/atoms";
+import { Button, Text } from "@/components/atoms";
 import { ArrowRightIcon } from "@/components/Icons/ArrowRightIcon";
 import { IconSvgProps } from "@/types/general";
 import { twMerge } from "tailwind-merge";
@@ -28,7 +22,6 @@ type ItemSideMenuProps = {
   }>;
   href?: string;
   sizeAvatar?: number;
-  bgcolorAvatar?: string;
   setOpenMenu: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -39,7 +32,6 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   subMenuList,
   href = "",
   sizeAvatar = 30,
-  bgcolorAvatar = "primary-100",
   setOpenMenu,
 }) => {
   const [open, setOpen] = useState(false);
@@ -64,6 +56,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
       >
         <div className="w-[80%] flex flex-row justify-start items-center gap-4">
           <Avatar
+            classIcon={`size-${[sizeAvatar]}px`}
             size={sizeAvatar}
             icon={icon && icon}
             image={image && image}
