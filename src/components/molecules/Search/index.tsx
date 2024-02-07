@@ -16,8 +16,8 @@ const Search: React.FC = () => {
         placeholder={"Search..."}
       />
       <Avatar
+        classIcon="bg-primary-100-500 border-transparent size-[20px]"
         size={20}
-        bgColorIcon="primary-100"
         colorIcon="white"
         icon={SearchIcon}
       />

@@ -48,8 +48,11 @@ const ItemList = ({
   ];
   return (
     <div className="w-[90vw] lg:w-[95vw] relative rounded-full bg-gray-200 flex flex-row justify-start items-center p-3">
-      <div className="w-[10%] sm:w-[20%] md:w-[10%]">
-        <Avatar bgColorIcon="gray-300" bdColor="transparent" size={60}>
+      <div className="w-[10%] sm:w-[20%] md:w-[10%] flex flex-row justify-start">
+        <Avatar
+          colorIcon="white"
+          classIcon="bg-gray-300 border-transparent size-[60px]"
+        >
           {avatar}
         </Avatar>
       </div>
@@ -72,9 +75,10 @@ const ItemList = ({
           <Avatar
             icon={action.icon}
             key={action.id}
-            bgColorIcon="secondary-50"
-            size={20}
-            bdColor="transparent"
+            // bgColorIcon="secondary-50"
+            size={40}
+            // bdColor="transparent"
+            classIcon="bg-secondary-50 border-transparent size-[40px]"
           />
         ))}
       </div>

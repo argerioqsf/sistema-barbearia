@@ -7,8 +7,7 @@ import { twMerge } from "tailwind-merge";
 
 type AvatarProps = {
   href?: string;
-  bgColorIcon?: string;
-  bdColor?: string;
+  classIcon?: string;
   size?: number;
   image?: string;
   alt?: string;
@@ -19,8 +18,7 @@ type AvatarProps = {
 
 const Avatar: React.FC<AvatarProps> = ({
   href = "#",
-  bgColorIcon = "yellow-300",
-  bdColor = "primary-100",
+  classIcon = "",
   colorIcon = "white",
   size = 36,
   image = "",
@@ -30,7 +28,7 @@ const Avatar: React.FC<AvatarProps> = ({
 }) => {
   return (
     <div className={twMerge(`size-[${size}px]`)}>
-      <LinkDefault className="flex justify-center items-center " href={href}>
+      <LinkDefault className="flex justify-center items-center" href={href}>
         {image ? (
           <Image
             className="align-middle rounded-full m-0 p-0 aspect-square"
@@ -42,10 +40,8 @@ const Avatar: React.FC<AvatarProps> = ({
         ) : (
           <div
             className={twMerge(
-              `size-[${size}px]`,
               "p-2 rounded-full flex justify-center items-center border-2",
-              `bg-${bgColorIcon}`,
-              `border-${bdColor}`
+              classIcon
             )}
           >
             {children ?? icon({ size, color: colorIcon })}
