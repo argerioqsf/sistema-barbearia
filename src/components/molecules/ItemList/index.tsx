@@ -48,13 +48,13 @@ const ItemList = ({
   ];
   return (
     <div className="w-[90vw] lg:w-[95vw] relative rounded-full bg-gray-200 flex flex-row justify-start items-center p-3">
-      <div className="w-[20%] md:w-[10%]">
+      <div className="w-[10%] sm:w-[20%] md:w-[10%]">
         <Avatar bgColorIcon="gray-300" bdColor="transparent" size={60}>
           {avatar}
         </Avatar>
       </div>
 
-      <div className="gap-2 text-center sm:text-start ml-4 w-[60%] sm:w-[40%] md:w-[30%] lg:w-[25%]">
+      <div className="gap-2 text-center sm:text-start ml-4 w-[70%] sm:w-[40%] md:w-[30%] lg:w-[25%]">
         <Text className="font-bold text-black">{info1}</Text>
         <Text>{info2}</Text>
       </div>
@@ -67,7 +67,7 @@ const ItemList = ({
         <Text className="text-black font-medium">{info4}</Text>
       </div>
 
-      <div className="ml-4 hidden sm:w-[40%] md:w-[30%] lg:w-[15%] sm:flex flex-row justify-end items-center gap-4 whitespace-nowrap overflow-hidden text-ellipsis">
+      <div className="ml-4 hidden sm:w-[40%] md:w-[30%] lg:w-[15%] sm:flex flex-row justify-between items-center whitespace-nowrap overflow-hidden text-ellipsis">
         {listActions.map((action) => (
           <Avatar
             icon={action.icon}
