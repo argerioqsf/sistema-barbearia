@@ -1,12 +1,10 @@
 import Button from "@/components/atoms/Button";
 import Form from "@/components/atoms/Form";
 import LinkDefault from "@/components/atoms/LinkDefault";
-import Text from "@/components/atoms/Text";
-import TitleForm from "@/components/atoms/TitleForm";
 import FormFieldCheckBox from "@/components/molecules/FormFieldCheckBox";
 import FormFieldText from "@/components/molecules/FormFieldText";
 import { usePathTranslations } from "@/hooks/use-path-translations";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const FormLogin: React.FC = () => {

@@ -32,7 +32,7 @@ const ItemList = ({
   const listActionsDropDown = [
     {
       id: 1,
-      href: "users/edit",
+      href: "edit",
       name: "Editar",
     },
     {
@@ -73,11 +73,10 @@ const ItemList = ({
       <div className="ml-4 hidden sm:w-[40%] md:w-[30%] lg:w-[15%] sm:flex flex-row justify-between items-center whitespace-nowrap overflow-hidden text-ellipsis">
         {listActions.map((action) => (
           <Avatar
+            href={action.href}
             icon={action.icon}
             key={action.id}
-            // bgColorIcon="secondary-50"
             size={40}
-            // bdColor="transparent"
             classIcon="bg-secondary-50 border-transparent size-[40px]"
           />
         ))}

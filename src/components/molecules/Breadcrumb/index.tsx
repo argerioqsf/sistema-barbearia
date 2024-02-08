@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-type TBreadCrumbProps = {
+type BreadCrumbProps = {
   listClasses?: string;
   activeClasses?: string;
   capitalizeLinks?: boolean;
@@ -14,9 +14,9 @@ const Breadcrumb = ({
   listClasses,
   activeClasses,
   capitalizeLinks = true,
-}: TBreadCrumbProps) => {
+}: BreadCrumbProps) => {
   const paths = usePathname();
-  const pathNames = paths.split("/").filter((path, index) => path);
+  const pathNames = paths.split("/").filter((path) => path);
   function renderItems(link: string, index: number) {
     let href = `/${pathNames.slice(0, index + 1).join("/")}`;
     let itemClasses =

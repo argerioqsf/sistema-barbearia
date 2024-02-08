@@ -115,7 +115,7 @@ export const siteConfig = {
         {
           id: "2",
           label: "Cadastrar Usuários",
-          href: "/dashboard/users/edit",
+          href: "/dashboard/users/register",
           icon: CircleIcon,
         },
       ],

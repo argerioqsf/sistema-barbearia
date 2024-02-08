@@ -17,14 +17,14 @@ const FormFieldText = ({
   id,
   placeholder,
   classInput,
-  bgColor = "-white",
+  type,
 }: FormFieldTextProps) => {
   return (
     <div>
       {label && <LabelForm label={label} />}
       <div className="mt-2">
         <InputForm
-          type="text"
+          type={type}
           id={id}
           placeholder={placeholder}
           className={twMerge(
