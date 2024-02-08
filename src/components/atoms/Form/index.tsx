@@ -5,14 +5,17 @@ type FormProps = {
   children: ReactNode;
   className?: string;
   action?: string;
+  onSubmit?: () => void;
 };
 
-const Form = ({ children, className, action = "#" }: FormProps) => {
+const Form = ({
+  children,
+  className,
+  action = "#",
+  onSubmit = () => {},
+}: FormProps) => {
   return (
-    <form
-      className={twMerge("space-y-4 md:space-y-6", className)}
-      action={action}
-    >
+    <form onSubmit={onSubmit} className={twMerge(className)} action={action}>
       {children}
     </form>
   );

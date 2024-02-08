@@ -1,31 +1,43 @@
+"use client";
+
+import { Text } from "@/components/atoms";
 import InputForm from "@/components/atoms/InputForm";
 import LabelForm from "@/components/atoms/LabelForm";
 import React, { DetailedHTMLProps, HTMLAttributes } from "react";
+import {
+  FieldError,
+  FieldErrorsImpl,
+  Merge,
+  UseFormRegisterReturn,
+} from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
 type FormFieldTextProps = {
-  label?: string;
+  label: string;
   type: string;
-  id: string;
   placeholder?: string;
   classInput?: string;
   bgColor?: string;
+  propsInput: UseFormRegisterReturn<string>;
+  error: any;
 };
 
 const FormFieldText = ({
   label,
-  id,
   placeholder,
   classInput,
   type,
+  propsInput,
+  error,
 }: FormFieldTextProps) => {
+  console.log(error);
   return (
     <div>
       {label && <LabelForm label={label} />}
       <div className="mt-2">
         <InputForm
+          propsInput={{ ...propsInput }}
           type={type}
-          id={id}
           placeholder={placeholder}
           className={twMerge(
             "rounded-md border-0",
@@ -35,6 +47,12 @@ const FormFieldText = ({
           )}
         />
       </div>
+
+      {error && (
+        <Text role="alert" className="text-red-400 font-semibold">
+          {error}
+        </Text>
+      )}
     </div>
   );
 };
