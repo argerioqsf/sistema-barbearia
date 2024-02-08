@@ -13,14 +13,16 @@ type FormRegisterProps = {
   title: string;
 };
 
-const UserSchema = z.object({
+const userSchema = z.object({
   name: z.string(),
   last_name: z.string(),
 });
 
+type UserSchema = z.infer<typeof userSchema>;
+
 const FormRegister = ({ title }: FormRegisterProps) => {
-  const { register, handleSubmit } = useForm({
-    resolver: zodResolver(UserSchema),
+  const { register, handleSubmit } = useForm<UserSchema>({
+    resolver: zodResolver(),
   });
   const router = useRouter();
   function handlerRegister(data: any) {
