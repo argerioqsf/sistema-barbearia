@@ -31,7 +31,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   image,
   subMenuList,
   href = "",
-  sizeAvatar = 30,
+  sizeAvatar = 32,
   setOpenMenu,
 }) => {
   const [open, setOpen] = useState(false);
@@ -56,7 +56,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
       >
         <div className="w-[80%] flex flex-row justify-start items-center gap-4">
           <Avatar
-            classIcon={`size-${[sizeAvatar]}px`}
+            classIcon={`border-transparent size-[${sizeAvatar}px]`}
             size={sizeAvatar}
             icon={icon && icon}
             image={image && image}

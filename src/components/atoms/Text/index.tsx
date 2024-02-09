@@ -4,11 +4,15 @@ import { twMerge } from "tailwind-merge";
 type TextProps = {
   children: ReactNode;
   className?: string;
+  role?: string;
 };
 
-const Text = ({ children, className }: TextProps) => {
+const Text = ({ role, children, className }: TextProps) => {
   return (
-    <p className={twMerge("text-sm font-light text-gray-500", className)}>
+    <p
+      role={role}
+      className={twMerge("text-sm font-light text-gray-500", className)}
+    >
       {children}
     </p>
   );

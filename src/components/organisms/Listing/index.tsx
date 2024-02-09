@@ -1,9 +1,11 @@
-import { ClipboardIcon } from "@/components/Icons/ClipboardIcon";
+"use client";
+
 import { EditIcon } from "@/components/Icons/EditIcon";
 import { EyeIcon } from "@/components/Icons/EyeIcon";
 import { LockIcon } from "@/components/Icons/LockIcon";
 import { Button, Text } from "@/components/atoms";
 import ItemList from "@/components/molecules/ItemList";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type ListingProps = {
@@ -11,12 +13,13 @@ type ListingProps = {
 };
 
 const Listing = ({ title }: ListingProps) => {
+  const router = useRouter();
   const listActions = [
     {
       id: 1,
       onclick: () => {},
       icon: EditIcon,
-      href: "home",
+      href: "users/edit",
     },
     {
       id: 2,
@@ -91,6 +94,7 @@ const Listing = ({ title }: ListingProps) => {
           {title}
         </Text>
         <Button
+          onClick={() => router.push("users/register")}
           className="rounded-xl h-10 flex justify-center items-center px-2 sm:px-5 md:px-10 bg-secondary-50 text-white"
           type="button"
         >
