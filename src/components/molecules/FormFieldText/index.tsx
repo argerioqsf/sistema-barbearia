@@ -33,7 +33,7 @@ const FormFieldText = ({
   console.log(error);
   return (
     <div>
-      {label && <LabelForm label={label} />}
+      {label && <LabelForm htmlFor={propsInput.name} label={label} />}
       <div className="mt-2">
         <InputForm
           propsInput={{ ...propsInput }}
