@@ -1,19 +1,14 @@
+"use client";
+
 import React, { ReactNode, useState } from "react";
 import { Avatar } from "..";
 import { Text } from "@/components/atoms";
-import { IconSvgProps } from "@/types/general";
+import { IconSvgProps, ListActionsProps } from "@/types/general";
 import DropDownDots from "../DropDownDots";
-
-type ActionProps = {
-  id: number;
-  onclick?: () => void;
-  icon: React.FC<IconSvgProps>;
-  href?: string;
-  name?: string;
-};
+import { useHandlerIcons } from "@/hooks/use-handler-Icons";
 
 type ItemListProps = {
-  listActions: Array<ActionProps>;
+  listActions: Array<ListActionsProps>;
   avatar: ReactNode | number;
   info1: string;
   info2: string;
@@ -29,23 +24,6 @@ const ItemList = ({
   info3,
   info4,
 }: ItemListProps) => {
-  const listActionsDropDown = [
-    {
-      id: 1,
-      href: "edit",
-      name: "Editar",
-    },
-    {
-      id: 2,
-      href: "home",
-      name: "Bloquear",
-    },
-    {
-      id: 3,
-      href: "home",
-      name: "Vizualizar",
-    },
-  ];
   return (
     <div className="w-[90vw] lg:w-[95vw] relative rounded-full bg-gray-200 flex flex-row justify-start items-center p-3">
       <div className="w-[10%] sm:w-[20%] md:w-[10%] flex flex-row justify-start">
@@ -70,7 +48,7 @@ const ItemList = ({
         <Text className="text-black font-medium">{info4}</Text>
       </div>
 
-      <div className="ml-4 hidden sm:w-[40%] md:w-[30%] lg:w-[15%] sm:flex flex-row justify-between items-center whitespace-nowrap overflow-hidden text-ellipsis">
+      <div className="ml-4 hidden sm:w-[40%] md:w-[30%] lg:w-[20%] sm:flex flex-row justify-between items-center whitespace-nowrap overflow-hidden text-ellipsis">
         {listActions.map((action) => (
           <Avatar
             href={action.href}
@@ -83,7 +61,7 @@ const ItemList = ({
       </div>
 
       <div className="w-[20%] flex sm:hidden flex-row justify-end items-center">
-        <DropDownDots listActions={listActionsDropDown} />
+        <DropDownDots listActions={listActions} />
       </div>
     </div>
   );

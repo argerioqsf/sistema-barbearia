@@ -1,5 +1,6 @@
 import { UserIcon } from "@/components/Icons/UserIcon";
 import LinkDefault from "@/components/atoms/LinkDefault";
+import { useHandlerIcons } from "@/hooks/use-handler-Icons";
 import { IconSvgProps } from "@/types/general";
 import Image from "next/image";
 import React, { FC, ReactNode, SVGProps } from "react";
@@ -11,7 +12,7 @@ type AvatarProps = {
   size?: number;
   image?: string;
   alt?: string;
-  icon?: FC<IconSvgProps>;
+  icon?: string;
   colorIcon?: string;
   children?: React.ReactNode;
 };
@@ -22,10 +23,12 @@ const Avatar: React.FC<AvatarProps> = ({
   colorIcon = "white",
   size = 36,
   image = "",
-  icon = () => <UserIcon size={size} color="white" />,
+  icon = "",
   alt = "",
   children,
 }) => {
+  const renderIcon = useHandlerIcons(icon);
+
   return (
     <div className={twMerge(`size-[${size}px]`)}>
       <LinkDefault className="flex justify-center items-center" href={href}>
@@ -44,7 +47,7 @@ const Avatar: React.FC<AvatarProps> = ({
               classIcon
             )}
           >
-            {children ?? icon({ size, color: colorIcon })}
+            {children ?? renderIcon({ size, color: colorIcon })}
           </div>
         )}
       </LinkDefault>

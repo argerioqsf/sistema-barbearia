@@ -1,19 +1,11 @@
 "use client";
 
-import { IconSvgProps } from "@/types/general";
+import { IconSvgProps, ListActionsProps } from "@/types/general";
 import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-type ActionProps = {
-  id: number;
-  onclick?: () => void;
-  icon?: React.FC<IconSvgProps>;
-  href?: string;
-  name?: string;
-};
-
 type DropDownDotsProps = {
-  listActions: Array<ActionProps>;
+  listActions: Array<ListActionsProps>;
   className?: string;
 };
 

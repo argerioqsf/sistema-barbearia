@@ -12,13 +12,13 @@ import { usePathname, useRouter } from "next/navigation";
 type ItemSideMenuProps = {
   onClick?: (state: any) => void;
   label: string;
-  icon?: FC<IconSvgProps>;
+  icon?: string;
   image?: string;
   subMenuList?: Array<{
     id: string;
     label: string;
     href: string;
-    icon: FC<IconSvgProps>;
+    icon: string;
   }>;
   href?: string;
   sizeAvatar?: number;
