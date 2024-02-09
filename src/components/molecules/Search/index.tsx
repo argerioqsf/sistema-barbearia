@@ -1,7 +1,6 @@
 import React from "react";
 import { Avatar } from "..";
 import { twMerge } from "tailwind-merge";
-import { SearchIcon } from "@/components/Icons/SearchIcon";
 import { InputForm } from "@/components/atoms";
 import { UseFormRegisterReturn } from "react-hook-form";
 
@@ -24,7 +23,7 @@ const Search = ({ propsInput }: SearchProps) => {
         classIcon="bg-primary-100 border-transparent size-[40px]"
         size={40}
         colorIcon="white"
-        icon={SearchIcon}
+        icon={"Search"}
       />
     </div>
   );
