@@ -57,9 +57,8 @@ const FormRegister = ({ title }: FormRegisterProps) => {
   } = useForm<UserSchemaType>({
     resolver: zodResolver(userSchema),
   });
-  console.log(errors.image?.message);
   function handleRegister(data: UserSchemaType) {
-    console.log(data);
+    console.log("data FormRegister: ", data);
   }
   return (
     <div className="w-full">

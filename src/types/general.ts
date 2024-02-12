@@ -1,4 +1,5 @@
 import { FC, SVGProps } from "react";
+import { FieldErrors } from "react-hook-form";
 
 export type ParamsProp = {
   locale: string;
@@ -48,3 +49,48 @@ export type IndicatorsType = {
 };
 
 export type IndicatorsHookType = "id" | "name" | "cidade" | "link" | "data";
+
+export type Templateform = {
+  title: string;
+  textButton: string;
+  sections: Array<SectionTemplateForm>;
+};
+
+type SectionTemplateForm = {
+  id: number;
+  title: string;
+  boxs: Array<BoxTemplateForm>;
+};
+
+type BoxTemplateForm = {
+  id: number;
+  fields: Array<FieldsTemplateForm>;
+};
+
+type FieldsTemplateForm = {
+  id: typesForIdFieldsForm;
+  required: boolean;
+  type: string;
+  label: string;
+  messageError?: string;
+  classInput?: string;
+};
+
+type typesForIdFieldsForm =
+  | "name"
+  | "last_name"
+  | "image"
+  | "status"
+  | "date"
+  | "whatsapp"
+  | "documento"
+  | "datebirth"
+  | "genero"
+  | "email"
+  | "password"
+  | "nivel"
+  | "permission"
+  | "image"
+  | "key_pix"
+  | "user_at"
+  | "city";

@@ -48,7 +48,7 @@ const ListUsers: React.FC = () => {
           <Listing
             list={list}
             listActions={mockServer.listActionsUsers}
-            hrefButton="users/register"
+            hrefButton="dashboard/users/register"
             textButton="Novo usuário"
             title="Usuários"
           />

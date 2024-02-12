@@ -30,7 +30,6 @@ const FormFieldText = ({
   propsInput,
   error,
 }: FormFieldTextProps) => {
-  console.log(error);
   return (
     <div>
       {label && <LabelForm htmlFor={propsInput.name} label={label} />}

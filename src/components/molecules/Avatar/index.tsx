@@ -1,9 +1,7 @@
-import { UserIcon } from "@/components/Icons/UserIcon";
 import LinkDefault from "@/components/atoms/LinkDefault";
-import { useHandlerIcons } from "@/hooks/use-handler-Icons";
-import { IconSvgProps } from "@/types/general";
+import { useHandlerIcons } from "@/hooks/use-handler-icons";
 import Image from "next/image";
-import React, { FC, ReactNode, SVGProps } from "react";
+import React from "react";
 import { twMerge } from "tailwind-merge";
 
 type AvatarProps = {

@@ -9,7 +9,7 @@
   },
   "specific": {
     "form_login": {
-      "forgot_password": "Esqueceu a senha",
+      "forgot_password": "Esqueceu a senha?",
       "not_have_account": "Não possui conta?"
     },
     "form_register": {}

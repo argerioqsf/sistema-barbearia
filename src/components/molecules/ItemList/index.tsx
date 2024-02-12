@@ -3,9 +3,8 @@
 import React, { ReactNode, useState } from "react";
 import { Avatar } from "..";
 import { Text } from "@/components/atoms";
-import { IconSvgProps, ListActionsProps } from "@/types/general";
+import { ListActionsProps } from "@/types/general";
 import DropDownDots from "../DropDownDots";
-import { useHandlerIcons } from "@/hooks/use-handler-Icons";
 
 type ItemListProps = {
   listActions: Array<ListActionsProps>;

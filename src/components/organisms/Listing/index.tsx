@@ -5,6 +5,7 @@ import { EyeIcon } from "@/components/Icons/EyeIcon";
 import { LockIcon } from "@/components/Icons/LockIcon";
 import { Button, Text } from "@/components/atoms";
 import ItemList from "@/components/molecules/ItemList";
+import { useHandlerRouter } from "@/hooks/use-handler-router";
 import { ItemListType, ListActionsProps } from "@/types/general";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -24,7 +25,7 @@ const Listing = ({
   hrefButton,
   list,
 }: ListingProps) => {
-  const router = useRouter();
+  const { pushRouter } = useHandlerRouter();
   return (
     <div className="w-full">
       <div className="w-[90vw] lg:w-[95vw] flex flex-row justify-between items-center">
@@ -32,7 +33,7 @@ const Listing = ({
           {title}
         </Text>
         <Button
-          onClick={() => router.push(hrefButton)}
+          onClick={() => pushRouter(hrefButton)}
           className="rounded-xl h-10 flex justify-center items-center px-2 sm:px-5 md:px-10 bg-secondary-50 text-white"
           type="button"
         >
