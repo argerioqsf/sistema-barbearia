@@ -1,19 +1,7 @@
+import { Providers } from "./providers";
 import "./global.css";
-import { getTranslations } from "next-intl/server";
 
-export async function generateMetadata({
-  params: { locale },
-}: {
-  params: { locale: string };
-}) {
-  const meta = await getTranslations({ locale, namespace: "metadata.index" });
-  return {
-    title: meta("title"),
-    description: meta("description"),
-  };
-}
-
-export default function LocaleLayout({
+export default function RootLayout({
   children,
   params: { locale },
 }: {
@@ -22,7 +10,9 @@ export default function LocaleLayout({
 }) {
   return (
     <html lang={locale}>
-      <body>{children}</body>
+      <Providers>
+        <body>{children}</body>
+      </Providers>
     </html>
   );
 }

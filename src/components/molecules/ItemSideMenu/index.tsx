@@ -8,6 +8,7 @@ import { IconSvgProps } from "@/types/general";
 import { twMerge } from "tailwind-merge";
 import { ArrowDownIcon } from "@/components/Icons/ArrowDownIcon";
 import { usePathname, useRouter } from "next/navigation";
+import { useHandlerRouter } from "@/hooks/use-handler-router";
 
 type ItemSideMenuProps = {
   onClick?: (state: any) => void;
@@ -38,11 +39,12 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   const router = useRouter();
   const paths = usePathname();
   const pathNames = paths.split("/").filter((path) => path);
+  const { pushRouter } = useHandlerRouter();
 
   function openSubMenu() {
     if (href) {
       setOpenMenu(false);
-      return router.push(`/${pathNames[0]}/${href}`);
+      return pushRouter(href);
     }
     setOpen(!open);
   }

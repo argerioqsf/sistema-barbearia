@@ -7,5 +7,5 @@ export default createMiddleware({
 });
 
 export const config = {
-  matcher: ["/auth/signin", "/(de|pt-BR)/:path*"],
+  matcher: ["/", "/(de|pt-BR)/:path*"],
 };

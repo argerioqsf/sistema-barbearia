@@ -49,7 +49,7 @@ const ListIndicators = () => {
           <Listing
             list={list}
             listActions={mockServer.listActionsIndicators}
-            hrefButton="indicators/register"
+            hrefButton="dashboard/indicators/register"
             textButton="Novo indicador"
             title="Indicadores"
           />

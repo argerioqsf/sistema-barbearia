@@ -4,35 +4,49 @@ import LinkDefault from "@/components/atoms/LinkDefault";
 import FormFieldCheckBox from "@/components/molecules/FormFieldCheckBox";
 import FormFieldText from "@/components/molecules/FormFieldText";
 import { usePathTranslations } from "@/hooks/use-path-translations";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { FieldErrors, UseFormRegister, useForm } from "react-hook-form";
+import { z } from "zod";
 
-const FormLogin: React.FC = () => {
+type FormLoginProps = {
+  onSubmit: (() => void) | undefined;
+  errors: FieldErrors<any>;
+  register: UseFormRegister<any>;
+};
+
+const FormLogin = ({ onSubmit, errors, register }: FormLoginProps) => {
   const { at, sc } = usePathTranslations("");
-  // const router = useRouter();
-  function login() {
-    // router.push("/dashboard/home");
-  }
 
   return (
     <div className="w-full p-6 space-y-4 md:space-y-6 sm:p-8">
-      <Form action="#">
+      <Form onSubmit={onSubmit} action="#">
         <FormFieldText
-          classInput="bg-transparent py-3 pl-6 text-white"
+          classInput={`bg-transparent py-3 pl-6 text-white ${
+            errors.email && "ring-red-500 focus:ring-red-500"
+          }`}
           bgColor="red-300"
           placeholder={at("email")}
           type="text"
-          id="email"
+          propsInput={{ ...register("email") }}
+          label="Email"
+          error={errors.email?.message}
         />
 
         <FormFieldText
-          classInput="bg-transparent py-3 pl-6 text-white"
+          classInput={`bg-transparent py-3 pl-6 text-white ${
+            errors.password && "ring-red-500 focus:ring-red-500"
+          }`}
+          bgColor="red-300"
           placeholder={at("password")}
-          type="password"
-          id="password"
+          type="text"
+          propsInput={{ ...register("password") }}
+          label="Senha"
+          error={errors.email?.message}
         />
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center py-4 justify-between">
           <FormFieldCheckBox
             className="text-white"
             label={at("remember_me")}

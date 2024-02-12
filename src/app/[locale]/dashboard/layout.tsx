@@ -2,14 +2,13 @@
 
 import "../global.css";
 import NavBar from "@/components/organisms/NavBar";
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import SideMenu from "@/components/organisms/SideMenu";
 import { twMerge } from "tailwind-merge";
 import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
-export default function DashBoardLayout({
+export default function RootLayout({
   children,
   params: { locale },
 }: Readonly<{
@@ -33,6 +32,7 @@ export default function DashBoardLayout({
               )}
             >
               <NavBar setOpenMenu={setOpenMenu} openMenu={openMenu} />
+
               {children}
             </div>
           </div>
