@@ -5,6 +5,10 @@ export type ParamsProp = {
   locale: string;
 };
 
+type LimitFields<T> = [T, T, T, T, T];
+
+export type FieldsList = LimitFields<UserHookType | "">;
+
 export type IconSvgProps = {
   size?: number;
   width?: number;
@@ -20,15 +24,40 @@ export type ListActionsProps = {
   name?: string;
 };
 
+export type OrderItemsList = {
+  itemsHeader: Array<string>;
+  itemsList: FieldsList;
+};
+
 export type UserType = {
   id: number;
   name: string;
   email: string;
   number: string;
   status: string;
+  image: string;
 };
 
-export type UserHookType = "id" | "name" | "email" | "number" | "status";
+export type IndicatorType = {
+  id: number;
+  name: string;
+  cidade: string;
+  link: string;
+  data: string;
+};
+
+export type UserHookType =
+  | "id"
+  | "name"
+  | "email"
+  | "number"
+  | "status"
+  | "whatsapp"
+  | "training_course"
+  | `indicator.${string}`
+  | "cidade"
+  | "link"
+  | "data";
 
 export type ItemListType = {
   id: number;
@@ -36,6 +65,7 @@ export type ItemListType = {
   info2: string;
   info3: string;
   info4: string;
+  info5: string;
 };
 
 export type ItemListHookType = "id" | "info1" | "info2" | "info3" | "info4";

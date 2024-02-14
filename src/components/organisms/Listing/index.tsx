@@ -4,11 +4,17 @@ import { EditIcon } from "@/components/Icons/EditIcon";
 import { EyeIcon } from "@/components/Icons/EyeIcon";
 import { LockIcon } from "@/components/Icons/LockIcon";
 import { Button, Text } from "@/components/atoms";
+import { Avatar, HeaderList } from "@/components/molecules";
 import ItemList from "@/components/molecules/ItemList";
 import { useHandlerRouter } from "@/hooks/use-handler-router";
-import { ItemListType, ListActionsProps } from "@/types/general";
+import {
+  IndicatorType,
+  ItemListType,
+  ListActionsProps,
+  UserType,
+} from "@/types/general";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { ReactNode } from "react";
 
 type ListingProps = {
   title: string;
@@ -16,6 +22,8 @@ type ListingProps = {
   hrefButton: string;
   list: Array<ItemListType>;
   listActions: Array<ListActionsProps>;
+  avatar: (item: ItemListType, index: number) => React.JSX.Element;
+  itemsHeader: Array<string>;
 };
 
 const Listing = ({
@@ -24,6 +32,8 @@ const Listing = ({
   textButton,
   hrefButton,
   list,
+  avatar,
+  itemsHeader,
 }: ListingProps) => {
   const { pushRouter } = useHandlerRouter();
   return (
@@ -40,17 +50,18 @@ const Listing = ({
           {textButton}
         </Button>
       </div>
-
-      <div className="w-full mt-10 flex flex-col gap-4 pb-10">
+      <HeaderList itemsHeader={itemsHeader} />
+      <div className="w-full mt-4 flex flex-col gap-4 pb-10">
         {list.map((item, index) => (
           <ItemList
             key={item.id}
             listActions={listActions}
-            avatar={<Text className="text-black">{index + 1}</Text>}
+            avatar={avatar(item, index)}
             info1={item.info1}
             info2={item.info2}
             info3={item.info3}
             info4={item.info4}
+            info5={item.info5}
           />
         ))}
       </div>

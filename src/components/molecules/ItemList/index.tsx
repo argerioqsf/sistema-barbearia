@@ -13,6 +13,7 @@ type ItemListProps = {
   info2: string;
   info3: string;
   info4: string;
+  info5: string;
 };
 
 const ItemList = ({
@@ -22,10 +23,11 @@ const ItemList = ({
   info2,
   info3,
   info4,
+  info5,
 }: ItemListProps) => {
   return (
     <div className="w-[90vw] lg:w-[95vw] relative rounded-full bg-gray-200 flex flex-row justify-start items-center p-3">
-      <div className="w-[10%] sm:w-[20%] md:w-[10%] flex flex-row justify-start">
+      <div className="w-[10%] md:w-[10%] sm:w-[20%] flex flex-row justify-start">
         <Avatar
           colorIcon="white"
           classIcon="bg-gray-300 border-transparent size-[60px]"
@@ -34,20 +36,30 @@ const ItemList = ({
         </Avatar>
       </div>
 
-      <div className="gap-2 text-center sm:text-start ml-4 w-[70%] sm:w-[40%] md:w-[30%] lg:w-[25%]">
-        <Text className="font-bold text-black">{info1}</Text>
-        <Text>{info2}</Text>
+      <div className="gap-2 lg:w-[22.5%] xl:w-[18%] sm:text-start ml-4 w-[70%] sm:w-[40%] md:w-[30%]">
+        <Text className="font-bold w-full text-center text-black">{info1}</Text>
+        <Text className="w-full text-center">{info2}</Text>
       </div>
 
-      <div className="ml-4 hidden md:flex  md:w-[30%] lg:w-[25%]">
-        <Text className="text-black font-medium">{info3}</Text>
+      <div className="ml-4 lg:w-[22.5%] xl:w-[18%] hidden md:flex md:w-[30%]">
+        <Text className="text-black w-full text-center font-medium">
+          {info3}
+        </Text>
       </div>
 
-      <div className="ml-4 lg:w-[25%] hidden lg:flex">
-        <Text className="text-black font-medium">{info4}</Text>
+      <div className="ml-4 lg:w-[22.5%] xl:w-[18%] lg:flex hidden ">
+        <Text className="text-black w-full text-center font-medium">
+          {info4}
+        </Text>
       </div>
 
-      <div className="ml-4 hidden sm:w-[40%] md:w-[30%] lg:w-[20%] sm:flex flex-row justify-between items-center whitespace-nowrap overflow-hidden text-ellipsis">
+      <div className="ml-4 xl:w-[18%] xl:flex hidden">
+        <Text className="text-black w-full text-center font-medium">
+          {info5}
+        </Text>
+      </div>
+
+      <div className="ml-4 lg:w-[22.5%] xl:w-[18%] hidden sm:w-[40%] md:w-[30%] sm:flex flex-row justify-end gap-2 items-center whitespace-nowrap overflow-hidden text-ellipsis">
         {listActions.map((action) => (
           <Avatar
             href={action.href}
