@@ -58,6 +58,50 @@ export const mockServer = {
       data: "22/04/2023",
     },
   ],
+  leads: [
+    {
+      id: 6,
+      name: "Argério Queiroz",
+      whatsapp: "(96) 9 8623-3232",
+      training_course: "Engenahria da Computação",
+      indicator_id: "qweacsdcsdcq31231",
+      indicator: {
+        name: "Damiles Arruda",
+        curso: {
+          name: "Arquitetura",
+        },
+      },
+      status: "Consultor entrou em contato",
+      created_at: "11/02/2024",
+      updated_at: "20/02/2024",
+    },
+    {
+      id: 7,
+      name: "Argério Queiroz",
+      whatsapp: "(96) 9 8623-3232",
+      training_course: "Engenahria da Computação",
+      indicator_id: "23wefsdsdfwr3scds",
+      indicator: {
+        name: "Damiles Arruda",
+      },
+      status: "Consultor entrou em contato",
+      created_at: "11/02/2024",
+      updated_at: "20/02/2024",
+    },
+    {
+      id: 8,
+      name: "Argério Queiroz",
+      whatsapp: "(96) 9 8623-3232",
+      training_course: "Engenahria da Computação",
+      indicator_id: "1234234wfsdfsf",
+      indicator: {
+        name: "Damiles Arruda",
+      },
+      status: "Consultor entrou em contato",
+      created_at: "11/02/2024",
+      updated_at: "20/02/2024",
+    },
+  ],
   users: [
     {
       id: 1,
@@ -65,6 +109,8 @@ export const mockServer = {
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
       status: "Consultor entrou em contato",
+      image:
+        "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
     },
     {
       id: 2,
@@ -72,6 +118,8 @@ export const mockServer = {
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
       status: "Consultor entrou em contato",
+      image:
+        "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
     },
     {
       id: 3,
@@ -79,6 +127,8 @@ export const mockServer = {
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
       status: "Consultor entrou em contato",
+      image:
+        "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
     },
     {
       id: 4,
@@ -86,6 +136,8 @@ export const mockServer = {
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
       status: "Consultor entrou em contato",
+      image:
+        "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
     },
     {
       id: 5,
@@ -93,6 +145,8 @@ export const mockServer = {
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
       status: "Consultor entrou em contato",
+      image:
+        "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
     },
     {
       id: 6,
@@ -100,6 +154,8 @@ export const mockServer = {
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
       status: "Consultor entrou em contato",
+      image:
+        "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
     },
     {
       id: 7,
@@ -107,6 +163,8 @@ export const mockServer = {
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
       status: "Consultor entrou em contato",
+      image:
+        "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
     },
   ],
   listActionsIndicators: [
@@ -156,6 +214,20 @@ export const mockServer = {
       id: 3,
       onclick: () => {},
       icon: "Lock",
+      href: "home",
+    },
+  ],
+  listActionsLeads: [
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "Edit",
+      href: "leads/edit",
+    },
+    {
+      id: 2,
+      onclick: () => {},
+      icon: "Eye",
       href: "home",
     },
   ],

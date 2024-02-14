@@ -17,6 +17,11 @@ const nextConfig = {
         hostname: 'cdn-icons-png.flaticon.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'img.myloview.com.br',
+        port: '',
+      },
     ],
   },
     async redirects() {

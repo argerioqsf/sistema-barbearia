@@ -1,9 +1,3 @@
-import { CircleIcon } from "../Icons/CircleIcon";
-import { ClipboardIcon } from "../Icons/ClipboardIcon";
-import { DashBoardIcon } from "../Icons/DashBoardIcon";
-import { HandPointLeftIcon } from "../Icons/HandPointLeftIcon";
-import { UsersIcon } from "../Icons/UsersIcon";
-
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
@@ -59,14 +53,14 @@ export const siteConfig = {
       subMenuList: [
         {
           id: "1",
-          label: "Novos Leads",
-          href: "/dashboard/home",
+          label: "Listagem",
+          href: "/dashboard/leads",
           icon: "Circle",
         },
         {
           id: "2",
-          label: "Listagem",
-          href: "/dashboard/home",
+          label: "Novos Leads",
+          href: "/dashboard/leads/register",
           icon: "Circle",
         },
         {

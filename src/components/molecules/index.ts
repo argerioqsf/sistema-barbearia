@@ -5,6 +5,7 @@ import InfoUserNav from "./InfoUserNav";
 import Avatar from "./Avatar";
 import ContainerDashboard from "./ContainerDashboard";
 import ItemSideMenu from "./ItemSideMenu";
+import HeaderList from "./HeaderList";
 
 export {
   ContainerSection,
@@ -14,4 +15,5 @@ export {
   Avatar,
   ContainerDashboard,
   ItemSideMenu,
+  HeaderList,
 };

@@ -10,27 +10,19 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import {
-  IndicatorType,
-  IndicatorsType,
-  ItemListType,
-  UserType,
-  OrderItemsList,
-} from "@/types/general";
+import { ItemListType, OrderItemsList } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const ListIndicators = () => {
+const ListLeads: React.FC = () => {
   const { listTransform } = useItemListTransform();
-
   const orderItemsList: OrderItemsList = {
-    itemsHeader: ["NOME", "CIDADE", "DATA", "LINK"],
-    itemsList: ["name", "", "cidade", "data", "link"],
+    itemsHeader: ["NOME", "WHATSAPP", "CURSO", "INDICADOR"],
+    itemsList: ["name", "", "whatsapp", "training_course", "indicator.name"],
   };
-
+  let list = listTransform(mockServer.leads, orderItemsList.itemsList);
   const searchSchema = z.object({
     search: z.string().min(2, { message: "Must be 2 or more characters long" }),
   });
@@ -45,8 +37,6 @@ const ListIndicators = () => {
     resolver: zodResolver(searchSchema),
   });
 
-  let list = listTransform(mockServer.indicators, orderItemsList.itemsList);
-
   const renderAvatar = (item: ItemListType, index: number) => {
     return <Text className="text-black">{index + 1}</Text>;
   };
@@ -54,7 +44,7 @@ const ListIndicators = () => {
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
-        <div className="w-full">
+        <div className="w-full ">
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
@@ -65,10 +55,10 @@ const ListIndicators = () => {
             itemsHeader={orderItemsList.itemsHeader}
             avatar={renderAvatar}
             list={list}
-            listActions={mockServer.listActionsIndicators}
-            hrefButton="dashboard/indicators/register"
-            textButton="Novo indicador"
-            title="Indicadores"
+            listActions={mockServer.listActionsLeads}
+            hrefButton="dashboard/leads/register"
+            textButton="Novo lead"
+            title="Leads"
           />
         </div>
       </div>
@@ -76,4 +66,4 @@ const ListIndicators = () => {
   );
 };
 
-export default ListIndicators;
+export default ListLeads;
