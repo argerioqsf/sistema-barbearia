@@ -3,6 +3,8 @@
 import { Text } from "@/components/atoms";
 import InputForm from "@/components/atoms/InputForm";
 import LabelForm from "@/components/atoms/LabelForm";
+import SelectForm from "@/components/atoms/SelectForm";
+import { OptionsTemplateForm } from "@/types/general";
 import React from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
@@ -13,32 +15,32 @@ type FormFieldTextProps = {
   placeholder?: string;
   classInput?: string;
   bgColor?: string;
-  propsInput: UseFormRegisterReturn<string>;
+  propsSelect: UseFormRegisterReturn<string>;
   error: any;
+  options?: Array<OptionsTemplateForm>;
 };
 
-const FormFieldText = ({
+const FormFieldSelect = ({
   label,
   placeholder,
   classInput,
-  type,
-  propsInput,
+  propsSelect,
   error,
+  options,
 }: FormFieldTextProps) => {
   return (
     <div>
-      {label && <LabelForm htmlFor={propsInput.name} label={label} />}
+      {label && <LabelForm htmlFor={propsSelect.name} label={label} />}
       <div className="mt-2">
-        <InputForm
-          propsInput={{ ...propsInput }}
-          type={type}
-          placeholder={placeholder}
+        <SelectForm
+          options={options}
           className={twMerge(
             "rounded-md border-0",
             "ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100",
             "py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6",
             classInput
           )}
+          propsSelect={{ ...propsSelect }}
         />
       </div>
 
@@ -51,4 +53,4 @@ const FormFieldText = ({
   );
 };
 
-export default FormFieldText;
+export default FormFieldSelect;

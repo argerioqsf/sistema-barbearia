@@ -2,7 +2,9 @@
 
 import { Button, Form, Text } from "@/components/atoms";
 import Box from "@/components/atoms/Box";
+import SelectForm from "@/components/atoms/SelectForm";
 import { FormFieldText } from "@/components/molecules";
+import FormFieldSelect from "@/components/molecules/FormFieldSelect";
 import { Templateform } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -55,20 +57,44 @@ const FormDashboard = ({
                   key={box.id}
                   className={`grid-cols- md:grid-cols-${box.fields.length}`}
                 >
-                  {box.fields.map((field) => (
-                    <FormFieldText
-                      key={field.id}
-                      propsInput={{
-                        ...register(field.id, { required: field.required }),
-                      }}
-                      classInput={`bg-gray-300 ${field.classInput ?? ""} ${
-                        errors[field.id] && "ring-red-500 focus:ring-red-500"
-                      }`}
-                      type={field.type}
-                      label={field.label}
-                      error={errors[field.id]?.message}
-                    />
-                  ))}
+                  {box.fields.map((field) => {
+                    if (field.type == "text" || field.type == "date") {
+                      return (
+                        <FormFieldText
+                          key={field.id}
+                          propsInput={{
+                            ...register(field.id, { required: field.required }),
+                          }}
+                          classInput={`bg-gray-300 ${field.classInput ?? ""} ${
+                            errors[field.id] &&
+                            "ring-red-500 focus:ring-red-500"
+                          }`}
+                          type={field.type}
+                          label={field.label}
+                          error={errors[field.id]?.message}
+                        />
+                      );
+                    }
+
+                    if (field.type == "select") {
+                      return (
+                        <FormFieldSelect
+                          key={field.id}
+                          propsSelect={{
+                            ...register(field.id, { required: field.required }),
+                          }}
+                          type="select"
+                          label={field.label}
+                          options={field.options}
+                          error={errors[field.id]?.message}
+                          classInput={`bg-gray-300 ${field.classInput ?? ""} ${
+                            errors[field.id] &&
+                            "ring-red-500 focus:ring-red-500"
+                          }`}
+                        />
+                      );
+                    }
+                  })}
                 </Box>
               ))}
             </div>

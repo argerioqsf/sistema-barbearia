@@ -104,6 +104,12 @@ type FieldsTemplateForm = {
   label: string;
   messageError?: string;
   classInput?: string;
+  options?: Array<OptionsTemplateForm>;
+};
+
+export type OptionsTemplateForm = {
+  label: string;
+  value: number;
 };
 
 type typesForIdFieldsForm =
@@ -123,4 +129,12 @@ type typesForIdFieldsForm =
   | "image"
   | "key_pix"
   | "user_at"
-  | "city";
+  | "city"
+  | "unit"
+  | "formation"
+  | "course"
+  | "document"
+  | "situation"
+  | "indicator_id"
+  | "consultant"
+  | "lead_at";
