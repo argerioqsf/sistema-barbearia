@@ -41,7 +41,7 @@ export const siteConfig = {
         {
           id: "3",
           label: "Cadastrar Indicador",
-          href: "/dashboard/profile",
+          href: "/dashboard/indicators/register",
           icon: "Circle",
         },
       ],

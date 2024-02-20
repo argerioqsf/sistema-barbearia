@@ -29,7 +29,7 @@ const FormLogin = ({ onSubmit, errors, register }: FormLoginProps) => {
           bgColor="red-300"
           placeholder={at("email")}
           type="text"
-          propsInput={{ ...register("email") }}
+          props={{ ...register("email") }}
           label="Email"
           error={errors.email?.message}
         />
@@ -41,7 +41,7 @@ const FormLogin = ({ onSubmit, errors, register }: FormLoginProps) => {
           bgColor="red-300"
           placeholder={at("password")}
           type="text"
-          propsInput={{ ...register("password") }}
+          props={{ ...register("password") }}
           label="Senha"
           error={errors.email?.message}
         />

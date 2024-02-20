@@ -97,10 +97,10 @@ type BoxTemplateForm = {
   fields: Array<FieldsTemplateForm>;
 };
 
-type FieldsTemplateForm = {
+export type FieldsTemplateForm = {
   id: typesForIdFieldsForm;
   required: boolean;
-  type: string;
+  type: "text" | "date" | "image" | "select" | "password" | "file";
   label: string;
   messageError?: string;
   classInput?: string;
@@ -109,7 +109,7 @@ type FieldsTemplateForm = {
 
 export type OptionsTemplateForm = {
   label: string;
-  value: number;
+  value: number | null;
 };
 
 type typesForIdFieldsForm =

@@ -26,8 +26,8 @@ const userSchema = z.object({
   unit: z.string().min(2),
   course: z.string().min(2),
   situation: z.string().min(2),
-  indicator_id: z.string().min(2),
-  consultant: z.string().min(2),
+  indicator_id: z.string(),
+  consultant: z.string(),
   lead_at: z.string().min(2),
 });
 
@@ -49,6 +49,10 @@ const RegisterLeads: React.FC = () => {
   useEffect(() => {
     templateformState.sections[0].boxs[3].fields[0].options = [
       {
+        label: "",
+        value: null,
+      },
+      {
         label: "option1",
         value: 1,
       },
@@ -62,6 +66,10 @@ const RegisterLeads: React.FC = () => {
       },
     ];
     templateformState.sections[0].boxs[3].fields[1].options = [
+      {
+        label: "",
+        value: null,
+      },
       {
         label: "option4",
         value: 4,

@@ -3,7 +3,6 @@
 import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import FormDashboard from "@/components/organisms/FormDashboard";
-import FormRegister from "@/components/organisms/FormRegister";
 import React from "react";
 import { templateform } from "./templateForm";
 import { z } from "zod";

@@ -15,7 +15,7 @@ type FormFieldTextProps = {
   placeholder?: string;
   classInput?: string;
   bgColor?: string;
-  propsSelect: UseFormRegisterReturn<string>;
+  props: UseFormRegisterReturn<string>;
   error: any;
   options?: Array<OptionsTemplateForm>;
 };
@@ -24,13 +24,13 @@ const FormFieldSelect = ({
   label,
   placeholder,
   classInput,
-  propsSelect,
+  props,
   error,
   options,
 }: FormFieldTextProps) => {
   return (
     <div>
-      {label && <LabelForm htmlFor={propsSelect.name} label={label} />}
+      {label && <LabelForm htmlFor={props.name} label={label} />}
       <div className="mt-2">
         <SelectForm
           options={options}
@@ -40,12 +40,15 @@ const FormFieldSelect = ({
             "py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6",
             classInput
           )}
-          propsSelect={{ ...propsSelect }}
+          propsSelect={{ ...props }}
         />
       </div>
 
       {error && (
-        <Text role="alert" className="text-red-400 font-semibold">
+        <Text
+          role="alert"
+          className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
+        >
           {error}
         </Text>
       )}

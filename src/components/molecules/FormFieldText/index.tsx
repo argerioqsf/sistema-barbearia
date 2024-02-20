@@ -13,7 +13,7 @@ type FormFieldTextProps = {
   placeholder?: string;
   classInput?: string;
   bgColor?: string;
-  propsInput: UseFormRegisterReturn<string>;
+  props: UseFormRegisterReturn<string>;
   error: any;
 };
 
@@ -22,15 +22,15 @@ const FormFieldText = ({
   placeholder,
   classInput,
   type,
-  propsInput,
+  props,
   error,
 }: FormFieldTextProps) => {
   return (
     <div>
-      {label && <LabelForm htmlFor={propsInput.name} label={label} />}
+      {label && <LabelForm htmlFor={props.name} label={label} />}
       <div className="mt-2">
         <InputForm
-          propsInput={{ ...propsInput }}
+          propsInput={{ ...props }}
           type={type}
           placeholder={placeholder}
           className={twMerge(
@@ -43,7 +43,11 @@ const FormFieldText = ({
       </div>
 
       {error && (
-        <Text role="alert" className="text-red-400 font-semibold">
+        <Text
+          title={error}
+          role="alert"
+          className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
+        >
           {error}
         </Text>
       )}
