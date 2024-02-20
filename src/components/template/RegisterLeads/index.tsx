@@ -3,7 +3,7 @@
 import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import FormDashboard from "@/components/organisms/FormDashboard";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { templateform } from "./templateForm";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -19,33 +19,22 @@ const ACCEPTED_IMAGE_TYPES = [
 
 const userSchema = z.object({
   name: z.string().min(2, { message: "Must be 2 or more characters long" }),
-  last_name: z.string().min(2),
-  image: z
-    .any()
-    .refine((files) => files?.length == 1, "Image is required.")
-    .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`
-    )
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
-    ),
   whatsapp: z.string().min(2),
-  documento: z.string().min(2),
-  datebirth: z.string().min(2),
-  genero: z.string().min(2),
+  document: z.string().min(2),
+  formation: z.string().min(2),
   email: z.string().min(2),
-  password: z.string().min(2),
-  nivel: z.string().min(2),
-  status: z.string().min(2),
-  date: z.string().min(2),
-  permission: z.string().min(2),
+  unit: z.string().min(2),
+  course: z.string().min(2),
+  situation: z.string().min(2),
+  indicator_id: z.string(),
+  consultant: z.string(),
+  lead_at: z.string().min(2),
 });
 
 type UserSchema = z.infer<typeof userSchema>;
 
-const RegisterUser: React.FC = () => {
+const RegisterLeads: React.FC = () => {
+  const [templateformState, setTemplateformState] = useState(templateform);
   const {
     register,
     handleSubmit,
@@ -57,16 +46,56 @@ const RegisterUser: React.FC = () => {
   function handleRegister(data: UserSchema) {
     console.log("data FormDashboard: ", data);
   }
+  useEffect(() => {
+    templateformState.sections[0].boxs[3].fields[0].options = [
+      {
+        label: "",
+        value: null,
+      },
+      {
+        label: "option1",
+        value: 1,
+      },
+      {
+        label: "option2",
+        value: 2,
+      },
+      {
+        label: "option3",
+        value: 3,
+      },
+    ];
+    templateformState.sections[0].boxs[3].fields[1].options = [
+      {
+        label: "",
+        value: null,
+      },
+      {
+        label: "option4",
+        value: 4,
+      },
+      {
+        label: "option5",
+        value: 5,
+      },
+      {
+        label: "option6",
+        value: 6,
+      },
+    ];
+    setTemplateformState({ ...templateformState });
+  }, []);
+
   return (
     <ContainerDashboard>
-      <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4 ">
+      <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
         <div className="w-full ">
           <Breadcrumb />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
             handlerForm={handleRegister}
-            templateform={templateform}
+            templateform={templateformState}
             handleSubmit={handleSubmit}
             register={register}
             errors={errors}
@@ -77,4 +106,4 @@ const RegisterUser: React.FC = () => {
   );
 };
 
-export default RegisterUser;
+export default RegisterLeads;

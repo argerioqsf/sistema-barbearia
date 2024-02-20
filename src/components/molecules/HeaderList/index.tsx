@@ -14,14 +14,10 @@ const HeaderList = ({ itemsHeader }: { itemsHeader: Array<string> }) => {
         </Avatar>
       </div>
 
-      {/* {itemsHeader.map((item, index) => {})} */}
-
       {itemsHeader[0] && (
         <div className="ml-4 xl:w-[18%] lg:w-[22.5%] md:w-[30%] sm:w-[40%] w-[70%]">
           <Text className="w-full text-center font-bold text-white">
-            <Text className="w-full text-center font-bold text-white">
-              {itemsHeader[0]}
-            </Text>
+            {itemsHeader[0]}
           </Text>
         </div>
       )}

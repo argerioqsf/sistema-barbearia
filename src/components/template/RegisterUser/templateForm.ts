@@ -68,8 +68,14 @@ export const templateform: Templateform = {
             {
               id: "genero",
               required: true,
-              type: "text",
+              type: "select",
               label: "Genero",
+              options: [
+                {
+                  label: "genero 1",
+                  value: 1,
+                },
+              ],
             },
           ],
         },
@@ -96,19 +102,31 @@ export const templateform: Templateform = {
             {
               id: "nivel",
               required: true,
-              type: "text",
+              type: "select",
               label: "Nivel",
+              options: [
+                {
+                  label: "nivel 1",
+                  value: 1,
+                },
+              ],
             },
             {
               id: "status",
               required: true,
-              type: "text",
+              type: "select",
               label: "Status",
+              options: [
+                {
+                  label: "status 1",
+                  value: 1,
+                },
+              ],
             },
             {
               id: "date",
               required: true,
-              type: "text",
+              type: "date",
               label: "Data",
             },
           ],
@@ -125,9 +143,15 @@ export const templateform: Templateform = {
             {
               id: "permission",
               required: true,
-              type: "text",
+              type: "select",
               label: "Permissão",
               messageError: "Must be 2 or more characters long",
+              options: [
+                {
+                  label: "permissão 1",
+                  value: 1,
+                },
+              ],
             },
           ],
         },

@@ -38,7 +38,6 @@ export const useItemListTransform = () => {
           } else {
             if (fields[i].includes(".")) {
               const fieldObject = fields[i].split(".");
-              console.log("fieldObject: ", fieldObject);
               if (fieldObject.length > 1) {
                 count++;
                 let key: ItemListHookType = ("info" +
@@ -53,7 +52,6 @@ export const useItemListTransform = () => {
                   ...item,
                   [key]: value,
                 };
-                console.log("value: ", value);
               }
             }
           }
@@ -63,8 +61,6 @@ export const useItemListTransform = () => {
       }
       return new_item;
     });
-
-    console.log("listTransform: ", listTransform);
     return listTransform;
   };
   return { listTransform };
