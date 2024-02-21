@@ -16,6 +16,7 @@ import {
   ItemListType,
   UserType,
   OrderItemsList,
+  Searchs,
 } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -45,7 +46,20 @@ const ListIndicators = () => {
     resolver: zodResolver(searchSchema),
   });
 
+  const searchs: Searchs = [
+    {
+      id: 1,
+      propsInput: { ...register("search") },
+      placeholder: "Search...",
+      name: "search",
+    },
+  ];
+
   let list = listTransform(mockServer.indicators, orderItemsList.itemsList);
+
+  function handlerForm(data: SearchSchemaType) {
+    console.log("handlerForm Search: ", data);
+  }
 
   const renderAvatar = (item: ItemListType, index: number) => {
     return <Text className="text-black">{index + 1}</Text>;
@@ -58,7 +72,7 @@ const ListIndicators = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search propsInput={{ ...register("search") }} />
+          <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing

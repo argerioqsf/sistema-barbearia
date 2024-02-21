@@ -203,18 +203,21 @@ export const mockServer = {
       onclick: () => {},
       icon: "Edit",
       href: "users/edit",
+      name: "Editar",
     },
     {
       id: 2,
       onclick: () => {},
       icon: "Eye",
       href: "home",
+      name: "Vizualizar",
     },
     {
       id: 3,
       onclick: () => {},
       icon: "Lock",
       href: "home",
+      name: "Desativar",
     },
   ],
   listActionsLeads: [
@@ -223,12 +226,14 @@ export const mockServer = {
       onclick: () => {},
       icon: "Edit",
       href: "leads/edit",
+      name: "Editar",
     },
     {
       id: 2,
       onclick: () => {},
       icon: "Eye",
       href: "home",
+      name: "Vizualizar",
     },
   ],
 };

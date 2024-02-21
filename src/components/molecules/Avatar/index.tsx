@@ -16,7 +16,7 @@ type AvatarProps = {
 };
 
 const Avatar: React.FC<AvatarProps> = ({
-  href = "#",
+  href = "",
   classIcon = "",
   colorIcon = "white",
   size = 36,
@@ -26,10 +26,10 @@ const Avatar: React.FC<AvatarProps> = ({
   children,
 }) => {
   const renderIcon = useHandlerIcons(icon);
-
+  const Component = href.length > 0 ? LinkDefault : "div";
   return (
     <div className={twMerge(`size-[${size}px]`)}>
-      <LinkDefault className="flex justify-center items-center" href={href}>
+      <Component className="flex justify-center items-center" href={href}>
         {image ? (
           <Image
             className="align-middle rounded-full m-0 p-0 aspect-square"
@@ -48,7 +48,7 @@ const Avatar: React.FC<AvatarProps> = ({
             {children ?? renderIcon({ size, color: colorIcon })}
           </div>
         )}
-      </LinkDefault>
+      </Component>
     </div>
   );
 };
