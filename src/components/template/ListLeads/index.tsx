@@ -10,7 +10,7 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, OrderItemsList } from "@/types/general";
+import { ItemListType, OrderItemsList, Searchs } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -18,13 +18,16 @@ import { z } from "zod";
 
 const ListLeads: React.FC = () => {
   const { listTransform } = useItemListTransform();
+
   const orderItemsList: OrderItemsList = {
     itemsHeader: ["NOME", "WHATSAPP", "CURSO", "INDICADOR"],
     itemsList: ["name", "", "whatsapp", "training_course", "indicator.name"],
   };
+
   let list = listTransform(mockServer.leads, orderItemsList.itemsList);
+
   const searchSchema = z.object({
-    search: z.string().min(2, { message: "Must be 2 or more characters long" }),
+    search: z.string(),
   });
 
   type SearchSchemaType = z.infer<typeof searchSchema>;
@@ -37,6 +40,19 @@ const ListLeads: React.FC = () => {
     resolver: zodResolver(searchSchema),
   });
 
+  const searchs: Searchs = [
+    {
+      id: 1,
+      propsInput: { ...register("search") },
+      placeholder: "Search...",
+      name: "search",
+    },
+  ];
+
+  function handlerForm(data: SearchSchemaType) {
+    console.log("handlerForm Search: ", data);
+  }
+
   const renderAvatar = (item: ItemListType, index: number) => {
     return <Text className="text-black">{index + 1}</Text>;
   };
@@ -48,7 +64,7 @@ const ListLeads: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search propsInput={{ ...register("search") }} />
+          <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
