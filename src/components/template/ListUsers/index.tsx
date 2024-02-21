@@ -50,6 +50,15 @@ const ListUsers: React.FC = () => {
     );
   };
 
+  const searchs = [
+    {
+      id: 1,
+      propsInput: { ...register("search") },
+      placeholder: "Search...",
+      name: "search",
+    },
+  ];
+
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4 ">
@@ -57,7 +66,7 @@ const ListUsers: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search propsInput={{ ...register("search") }} />
+          <Search searchs={searchs} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing

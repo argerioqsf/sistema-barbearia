@@ -1,5 +1,5 @@
 import { FC, SVGProps } from "react";
-import { FieldErrors } from "react-hook-form";
+import { FieldErrors, UseFormRegisterReturn } from "react-hook-form";
 
 export type ParamsProp = {
   locale: string;
@@ -138,3 +138,12 @@ type typesForIdFieldsForm =
   | "indicator_id"
   | "consultant"
   | "lead_at";
+
+type NamesSearchs = "search";
+
+export type Searchs = Array<{
+  id: number;
+  propsInput: UseFormRegisterReturn<string>;
+  placeholder: string;
+  name: NamesSearchs;
+}>;

@@ -46,6 +46,7 @@ const RegisterLeads: React.FC = () => {
   function handleRegister(data: UserSchema) {
     console.log("data FormDashboard: ", data);
   }
+
   useEffect(() => {
     templateformState.sections[0].boxs[3].fields[0].options = [
       {
