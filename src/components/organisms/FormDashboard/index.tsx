@@ -15,6 +15,7 @@ import {
   UseFormRegister,
   useForm,
 } from "react-hook-form";
+import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 
 type FormDashboardProps = {
@@ -44,13 +45,14 @@ const FormDashboard = ({
     if (field.type == "select") {
       return (
         <FormFieldSelect
+          key={field.id}
           {...propsField}
           type="select"
           options={field.options}
         />
       );
     } else {
-      return <FormFieldText {...propsField} type={field.type} />;
+      return <FormFieldText key={field.id} {...propsField} type={field.type} />;
     }
   };
 
@@ -74,18 +76,18 @@ const FormDashboard = ({
               {section.title}
             </div>
             <div className="w-[90vw lg:w-[95vw] border-2 flex flex-col gap-4 bg-gray-200 p-6 rounded-xl rounded-tl-none">
-              {section.boxs.map((box) => (
-                <Box
-                  key={box.id}
-                  className={`grid-cols- md:grid-cols-${box.fields.length}`}
-                >
-                  {box.fields.map((field) => (
-                    <Fragment key={field.id}>
-                      {handlerFieldRender(field)}
-                    </Fragment>
-                  ))}
-                </Box>
-              ))}
+              {section.boxs.map((box) => {
+                return (
+                  <Box
+                    key={box.id}
+                    className={twMerge(
+                      `grid-cols-1 md:grid-cols-${box.fields.length}`
+                    )}
+                  >
+                    {box.fields.map((field) => handlerFieldRender(field))}
+                  </Box>
+                );
+              })}
             </div>
           </div>
         ))}

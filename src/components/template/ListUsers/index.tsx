@@ -9,7 +9,12 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, UserType, OrderItemsList } from "@/types/general";
+import {
+  ItemListType,
+  UserType,
+  OrderItemsList,
+  Searchs,
+} from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import React from "react";
@@ -50,7 +55,11 @@ const ListUsers: React.FC = () => {
     );
   };
 
-  const searchs = [
+  function handlerForm(data: SearchSchemaType) {
+    console.log("handlerForm Search: ", data);
+  }
+
+  const searchs: Searchs = [
     {
       id: 1,
       propsInput: { ...register("search") },
@@ -66,7 +75,7 @@ const ListUsers: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search searchs={searchs} />
+          <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
