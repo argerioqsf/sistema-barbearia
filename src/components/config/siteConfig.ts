@@ -35,7 +35,7 @@ export const siteConfig = {
         {
           id: "2",
           label: "Solicitações",
-          href: "/dashboard/home",
+          href: "/dashboard/indicators/requests",
           icon: "Circle",
         },
         {
@@ -85,7 +85,7 @@ export const siteConfig = {
         {
           id: "1",
           label: "Listagem",
-          href: "/dashboard/home",
+          href: "/dashboard/segments",
           icon: "Circle",
         },
         {

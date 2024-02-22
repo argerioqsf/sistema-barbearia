@@ -75,16 +75,18 @@ const FormDashboard = ({
             <div className="p-4 pb-2 w-max bg-gray-200 rounded-xl rounded-b-none">
               {section.title}
             </div>
-            <div className="w-[90vw lg:w-[95vw] border-2 flex flex-col gap-4 bg-gray-200 p-6 rounded-xl rounded-tl-none">
-              {section.boxs.map((box) => {
+            <div className="w-[90vw] grid-cols-12 lg:w-[95vw] border-2 flex flex-col gap-4 bg-gray-200 p-6 rounded-xl rounded-tl-none">
+              {section.boxs.map((box_) => {
+                let quant_col = `md:grid-cols-${box_?.fields?.length}`;
                 return (
                   <Box
-                    key={box.id}
+                    key={box_.id}
                     className={twMerge(
-                      `grid-cols-1 md:grid-cols-${box.fields.length}`
+                      `grid-cols-1`,
+                      box_?.fields && quant_col
                     )}
                   >
-                    {box.fields.map((field) => handlerFieldRender(field))}
+                    {box_.fields.map((field) => handlerFieldRender(field))}
                   </Box>
                 );
               })}

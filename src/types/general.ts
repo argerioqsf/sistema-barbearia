@@ -57,7 +57,9 @@ export type UserHookType =
   | `indicator.${string}`
   | "cidade"
   | "link"
-  | "data";
+  | "data"
+  | "number_courses"
+  | "created_at";
 
 export type ItemListType = {
   id: number;

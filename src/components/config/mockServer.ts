@@ -167,6 +167,61 @@ export const mockServer = {
         "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
     },
   ],
+  segments: [
+    {
+      id: 1,
+      name: "EAD",
+      units: [
+        {
+          id: 1,
+          name: "EAD-SANTANA",
+          number_courses: "0",
+          created_at: "19/09/2023",
+          courses: [
+            {
+              id: 1,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: "EDUCAÇÃO BÁSICA",
+      units: [
+        {
+          id: 1,
+          name: "SANTANA",
+          number_courses: "0",
+          created_at: "19/09/2023",
+        },
+      ],
+    },
+    {
+      id: 3,
+      name: "GRADUAÇÃO",
+      units: [
+        {
+          id: 1,
+          name: "SANTANA",
+          number_courses: "0",
+          created_at: "19/09/2023",
+        },
+        {
+          id: 2,
+          name: "EAD - UNIDADE 1",
+          number_courses: "0",
+          created_at: "19/09/2023",
+        },
+        {
+          id: 3,
+          name: "EAD - UNIDADE 1",
+          number_courses: "0",
+          created_at: "19/09/2023",
+        },
+      ],
+    },
+  ],
   listActionsIndicators: [
     {
       id: 1,
