@@ -221,6 +221,16 @@ export const mockServer = {
         },
       ],
     },
+    {
+      id: 4,
+      name: "OUTRAS LOCALIDADES",
+      units: [],
+    },
+    {
+      id: 5,
+      name: "OUTRAS LOCALIDADES",
+      units: [],
+    },
   ],
   listActionsIndicators: [
     {
@@ -289,6 +299,24 @@ export const mockServer = {
       icon: "Eye",
       href: "home",
       name: "Vizualizar",
+    },
+  ],
+  listActionsNewLeads: [
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "HandPointLeft",
+      href: "leads/edit",
+      name: "Pegar",
+    },
+  ],
+  listActionsConfirmedLeads: [
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "Eye",
+      href: "leads/edit",
+      name: "Visualizar",
     },
   ],
 };
