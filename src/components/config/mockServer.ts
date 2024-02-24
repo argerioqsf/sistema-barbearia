@@ -1,9 +1,3 @@
-import { CircleIcon } from "../Icons/CircleIcon";
-import { ClipboardIcon } from "../Icons/ClipboardIcon";
-import { DashBoardIcon } from "../Icons/DashBoardIcon";
-import { HandPointLeftIcon } from "../Icons/HandPointLeftIcon";
-import { UsersIcon } from "../Icons/UsersIcon";
-
 export type MockServer = typeof mockServer;
 
 export const mockServer = {
@@ -167,6 +161,75 @@ export const mockServer = {
         "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
     },
   ],
+  segments: [
+    {
+      id: 1,
+      name: "EAD",
+      units: [
+        {
+          id: 1,
+          name: "EAD-SANTANA",
+          number_courses: "0",
+          created_at: "19/09/2023",
+          courses: [
+            {
+              id: 1,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: "EDUCAÇÃO BÁSICA",
+      units: [
+        {
+          id: 1,
+          name: "SANTANA",
+          number_courses: "0",
+          created_at: "19/09/2023",
+        },
+      ],
+    },
+    {
+      id: 3,
+      name: "GRADUAÇÃO",
+      units: [
+        {
+          id: 1,
+          name: "SANTANA",
+          number_courses: "0",
+          created_at: "19/09/2023",
+        },
+        {
+          id: 2,
+          name: "EAD - UNIDADE 1",
+          number_courses: "0",
+          created_at: "19/09/2023",
+        },
+        {
+          id: 3,
+          name: "EAD - UNIDADE 1",
+          number_courses: "0",
+          created_at: "19/09/2023",
+        },
+      ],
+    },
+    {
+      id: 4,
+      name: "OUTRAS LOCALIDADES",
+      units: [],
+    },
+    {
+      id: 5,
+      name: "OUTRAS LOCALIDADES",
+      units: [],
+    },
+  ],
+  //unidades
+  //cursos
+  //permissoes
+  //situacao
   listActionsIndicators: [
     {
       id: 1,
@@ -234,6 +297,47 @@ export const mockServer = {
       icon: "Eye",
       href: "home",
       name: "Vizualizar",
+    },
+  ],
+  listActionsNewLeads: [
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "HandPointLeft",
+      href: "leads/edit",
+      name: "Pegar",
+    },
+  ],
+  listActionsConfirmedLeads: [
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "Eye",
+      href: "leads/edit",
+      name: "Visualizar",
+    },
+  ],
+  listActionsWaitingConfirmationLeads: [
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "Eye",
+      href: "leads/edit",
+      name: "Visualizar",
+    },
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "Edit",
+      href: "leads/edit",
+      name: "Editar",
+    },
+    {
+      id: 2,
+      onclick: () => {},
+      icon: "Link",
+      href: "leads/confirmed",
+      name: "Confirmar matrícula",
     },
   ],
 };

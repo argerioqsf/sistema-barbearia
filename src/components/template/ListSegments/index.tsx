@@ -16,21 +16,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const ListLeads: React.FC = () => {
+const ListSegments: React.FC = () => {
   const { listTransform } = useItemListTransform();
 
   const orderItemsList: OrderItemsList = {
-    itemsHeader: ["N", "NOME / WHATSAPP", "CURSO", "INDICADOR", "STATUS"],
-    itemsList: [
-      "name",
-      "whatsapp",
-      "training_course",
-      "indicator.name",
-      "status",
-    ],
+    itemsHeader: ["N", "Quant. Cursos", "Criado"],
+    itemsList: ["name", "", "number_courses", "created_at", ""],
   };
-
-  let list = listTransform(mockServer.leads, orderItemsList.itemsList);
 
   const searchSchema = z.object({
     search: z.string(),
@@ -65,27 +57,47 @@ const ListLeads: React.FC = () => {
 
   return (
     <ContainerDashboard>
-      <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
-        <div className="w-full ">
+      <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4 mb-6">
+        <div className="w-full">
           <Breadcrumb />
         </div>
+
         <div className="w-full mt-6">
           <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
         </div>
+
         <div className="w-full mt-6 lg:mt-8">
           <Listing
             itemsHeader={orderItemsList.itemsHeader}
             avatar={renderAvatar}
-            list={list}
-            listActions={mockServer.listActionsLeads}
-            hrefButton="dashboard/leads/register"
-            textButton="Novo lead"
-            title="Leads"
+            list={[]}
+            listActions={[]}
+            hrefButton="dashboard/segments/register"
+            textButton="Novo segmento"
+            title="Segmentos"
           />
         </div>
+
+        {mockServer.segments.map((segment) => {
+          let list = listTransform(segment.units, orderItemsList.itemsList);
+          return (
+            <div key={segment.id} className="w-full mt-6 lg:mt-8">
+              <Listing
+                variant="segmented"
+                itemsHeader={[]}
+                avatar={renderAvatar}
+                list={list}
+                listActions={mockServer.listActionsLeads}
+                hrefButton={`dashboard/segments/view/${segment.id}`}
+                textButton="Visualizar"
+                title={segment.name}
+              />
+            </div>
+          );
+        })}
       </div>
     </ContainerDashboard>
   );
 };
 
-export default ListLeads;
+export default ListSegments;

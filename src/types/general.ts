@@ -7,6 +7,10 @@ export type ParamsProp = {
 
 type LimitFields<T> = [T, T, T, T, T];
 
+type LimitFieldsForm<T> = [T, ...T[]] & {
+  length: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+};
+
 export type FieldsList = LimitFields<UserHookType | "">;
 
 export type IconSvgProps = {
@@ -57,7 +61,9 @@ export type UserHookType =
   | `indicator.${string}`
   | "cidade"
   | "link"
-  | "data";
+  | "data"
+  | "number_courses"
+  | "created_at";
 
 export type ItemListType = {
   id: number;
@@ -92,9 +98,9 @@ type SectionTemplateForm = {
   boxs: Array<BoxTemplateForm>;
 };
 
-type BoxTemplateForm = {
+export type BoxTemplateForm = {
   id: number;
-  fields: Array<FieldsTemplateForm>;
+  fields: LimitFieldsForm<FieldsTemplateForm>;
 };
 
 export type FieldsTemplateForm = {
@@ -105,6 +111,7 @@ export type FieldsTemplateForm = {
   messageError?: string;
   classInput?: string;
   options?: Array<OptionsTemplateForm>;
+  value?: string;
 };
 
 export type OptionsTemplateForm = {
@@ -147,3 +154,5 @@ export type Searchs = Array<{
   placeholder: string;
   name: NamesSearchs;
 }>;
+
+export type LimitColsGrid = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;

@@ -35,7 +35,7 @@ export const siteConfig = {
         {
           id: "2",
           label: "Solicitações",
-          href: "/dashboard/home",
+          href: "/dashboard/indicators/requests",
           icon: "Circle",
         },
         {
@@ -60,19 +60,25 @@ export const siteConfig = {
         {
           id: "2",
           label: "Novos Leads",
-          href: "/dashboard/leads/register",
+          href: "/dashboard/leads/new",
           icon: "Circle",
         },
         {
           id: "3",
           label: "Confirmados",
-          href: "/dashboard/perfil",
+          href: "/dashboard/leads/confirmed",
           icon: "Circle",
         },
         {
           id: "4",
+          label: "Aguard. Confirmação",
+          href: "/dashboard/leads/waiting_confirmation",
+          icon: "Circle",
+        },
+        {
+          id: "5",
           label: "Cadastrar Leads",
-          href: "/dashboard/perfil",
+          href: "/dashboard/leads/register",
           icon: "Circle",
         },
       ],
@@ -85,7 +91,7 @@ export const siteConfig = {
         {
           id: "1",
           label: "Listagem",
-          href: "/dashboard/home",
+          href: "/dashboard/segments",
           icon: "Circle",
         },
         {
@@ -110,6 +116,44 @@ export const siteConfig = {
           id: "2",
           label: "Cadastrar Usuários",
           href: "/dashboard/users/register",
+          icon: "Circle",
+        },
+      ],
+    },
+    {
+      id: "8",
+      label: "Unidades",
+      icon: "Clipboard",
+      subMenuList: [
+        {
+          id: "1",
+          label: "Listagem",
+          href: "/dashboard/units",
+          icon: "Circle",
+        },
+        {
+          id: "2",
+          label: "Cadastrar Unidade",
+          href: "/dashboard/units/register",
+          icon: "Circle",
+        },
+      ],
+    },
+    {
+      id: "9",
+      label: "Cursos",
+      icon: "Clipboard",
+      subMenuList: [
+        {
+          id: "1",
+          label: "Listagem",
+          href: "/dashboard/courses",
+          icon: "Circle",
+        },
+        {
+          id: "2",
+          label: "Cadastrar Curso",
+          href: "/dashboard/courses/register",
           icon: "Circle",
         },
       ],

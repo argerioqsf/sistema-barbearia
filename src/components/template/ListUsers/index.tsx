@@ -24,7 +24,7 @@ import { z } from "zod";
 const ListUsers: React.FC = () => {
   const { listTransform } = useItemListTransform();
   const orderItemsList: OrderItemsList = {
-    itemsHeader: ["NOME", "E-MAIL", "NUMERO", "STATUS"],
+    itemsHeader: ["", "NOME", "E-MAIL", "NUMERO", "STATUS"],
     itemsList: ["name", "", "email", "number", "status"],
   };
   let list = listTransform(mockServer.users, orderItemsList.itemsList);
@@ -70,8 +70,8 @@ const ListUsers: React.FC = () => {
 
   return (
     <ContainerDashboard>
-      <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4 ">
-        <div className="w-full ">
+      <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4 ">
+        <div className="w-full">
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">

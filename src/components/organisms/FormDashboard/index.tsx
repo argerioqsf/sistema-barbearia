@@ -2,21 +2,21 @@
 
 import { Button, Form, Text } from "@/components/atoms";
 import Box from "@/components/atoms/Box";
-import SelectForm from "@/components/atoms/SelectForm";
 import { FormFieldText } from "@/components/molecules";
 import FormFieldSelect from "@/components/molecules/FormFieldSelect";
-import { FieldsTemplateForm, Templateform } from "@/types/general";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import React, { Fragment } from "react";
+import {
+  BoxTemplateForm,
+  FieldsTemplateForm,
+  LimitColsGrid,
+  Templateform,
+} from "@/types/general";
+import React from "react";
 import {
   FieldErrors,
   UseFormHandleSubmit,
   UseFormRegister,
-  useForm,
+  UseFormSetValue,
 } from "react-hook-form";
-import { twMerge } from "tailwind-merge";
-import { z } from "zod";
 
 type FormDashboardProps = {
   templateform: Templateform;
@@ -24,6 +24,7 @@ type FormDashboardProps = {
   handleSubmit: UseFormHandleSubmit<any>;
   register: UseFormRegister<any>;
   errors: FieldErrors<any>;
+  setValue: UseFormSetValue<any>;
 };
 
 const FormDashboard = ({
@@ -32,8 +33,10 @@ const FormDashboard = ({
   handleSubmit,
   register,
   errors,
+  setValue,
 }: FormDashboardProps) => {
   const handlerFieldRender = (field: FieldsTemplateForm) => {
+    field.value && setValue(field?.id, field?.value);
     const propsField = {
       props: { ...register(field.id, { required: field.required }) },
       label: field.label,
@@ -56,6 +59,15 @@ const FormDashboard = ({
     }
   };
 
+  const handlerBoxRender = (boxitem: BoxTemplateForm) => {
+    const grid_cols: LimitColsGrid = boxitem?.fields?.length as LimitColsGrid;
+    return (
+      <Box key={boxitem.id} cols={grid_cols}>
+        {boxitem.fields.map((field) => handlerFieldRender(field))}
+      </Box>
+    );
+  };
+
   return (
     <div className="w-full">
       <Form onSubmit={handleSubmit(handlerForm)} className="mb-8">
@@ -75,19 +87,8 @@ const FormDashboard = ({
             <div className="p-4 pb-2 w-max bg-gray-200 rounded-xl rounded-b-none">
               {section.title}
             </div>
-            <div className="w-[90vw lg:w-[95vw] border-2 flex flex-col gap-4 bg-gray-200 p-6 rounded-xl rounded-tl-none">
-              {section.boxs.map((box) => {
-                return (
-                  <Box
-                    key={box.id}
-                    className={twMerge(
-                      `grid-cols-1 md:grid-cols-${box.fields.length}`
-                    )}
-                  >
-                    {box.fields.map((field) => handlerFieldRender(field))}
-                  </Box>
-                );
-              })}
+            <div className="w-[90vw] grid-cols-12 lg:w-[95vw] border-2 flex flex-col gap-4 bg-gray-200 p-6 rounded-xl rounded-tl-none">
+              {section.boxs.map((boxitem) => handlerBoxRender(boxitem))}
             </div>
           </div>
         ))}

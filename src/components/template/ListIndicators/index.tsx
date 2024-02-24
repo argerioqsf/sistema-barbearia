@@ -28,7 +28,7 @@ const ListIndicators = () => {
   const { listTransform } = useItemListTransform();
 
   const orderItemsList: OrderItemsList = {
-    itemsHeader: ["NOME", "CIDADE", "DATA", "LINK"],
+    itemsHeader: ["N", "NOME", "CIDADE", "DATA", "LINK"],
     itemsList: ["name", "", "cidade", "data", "link"],
   };
 

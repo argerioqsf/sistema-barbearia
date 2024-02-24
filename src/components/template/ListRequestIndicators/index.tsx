@@ -10,30 +10,30 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, OrderItemsList, Searchs } from "@/types/general";
+import {
+  IndicatorType,
+  IndicatorsType,
+  ItemListType,
+  UserType,
+  OrderItemsList,
+  Searchs,
+} from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const ListLeads: React.FC = () => {
+const ListRequestIndicators = () => {
   const { listTransform } = useItemListTransform();
 
   const orderItemsList: OrderItemsList = {
-    itemsHeader: ["N", "NOME / WHATSAPP", "CURSO", "INDICADOR", "STATUS"],
-    itemsList: [
-      "name",
-      "whatsapp",
-      "training_course",
-      "indicator.name",
-      "status",
-    ],
+    itemsHeader: ["N", "AVATAR", "NOME", "CIDADE", "DATA", ""],
+    itemsList: ["name", "", "cidade", "data", ""],
   };
 
-  let list = listTransform(mockServer.leads, orderItemsList.itemsList);
-
   const searchSchema = z.object({
-    search: z.string(),
+    search: z.string().min(2, { message: "Must be 2 or more characters long" }),
   });
 
   type SearchSchemaType = z.infer<typeof searchSchema>;
@@ -55,6 +55,8 @@ const ListLeads: React.FC = () => {
     },
   ];
 
+  let list = listTransform(mockServer.indicators, orderItemsList.itemsList);
+
   function handlerForm(data: SearchSchemaType) {
     console.log("handlerForm Search: ", data);
   }
@@ -65,8 +67,8 @@ const ListLeads: React.FC = () => {
 
   return (
     <ContainerDashboard>
-      <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
-        <div className="w-full ">
+      <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4">
+        <div className="w-full">
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
@@ -77,10 +79,10 @@ const ListLeads: React.FC = () => {
             itemsHeader={orderItemsList.itemsHeader}
             avatar={renderAvatar}
             list={list}
-            listActions={mockServer.listActionsLeads}
-            hrefButton="dashboard/leads/register"
-            textButton="Novo lead"
-            title="Leads"
+            listActions={mockServer.listActionsIndicators}
+            hrefButton="dashboard/indicators/register"
+            textButton=""
+            title="Solicitação para indicadores"
           />
         </div>
       </div>
@@ -88,4 +90,4 @@ const ListLeads: React.FC = () => {
   );
 };
 
-export default ListLeads;
+export default ListRequestIndicators;

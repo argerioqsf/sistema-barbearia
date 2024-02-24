@@ -16,7 +16,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const ListLeads: React.FC = () => {
+const ListNewLeads: React.FC = () => {
   const { listTransform } = useItemListTransform();
 
   const orderItemsList: OrderItemsList = {
@@ -77,10 +77,10 @@ const ListLeads: React.FC = () => {
             itemsHeader={orderItemsList.itemsHeader}
             avatar={renderAvatar}
             list={list}
-            listActions={mockServer.listActionsLeads}
+            listActions={mockServer.listActionsNewLeads}
             hrefButton="dashboard/leads/register"
             textButton="Novo lead"
-            title="Leads"
+            title="Novos Leads"
           />
         </div>
       </div>
@@ -88,4 +88,4 @@ const ListLeads: React.FC = () => {
   );
 };
 
-export default ListLeads;
+export default ListNewLeads;

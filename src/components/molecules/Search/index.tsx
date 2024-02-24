@@ -17,7 +17,7 @@ const Search = ({ searchs, handlerForm }: SearchProps) => {
   return (
     <Form
       onSubmit={handlerForm}
-      className="w-full flex flex-col md:flex-row justify-start items-center gap-4 md:gap-2"
+      className="w-[90vw] lg:w-[95vw] flex flex-col md:flex-row justify-start items-center gap-4 md:gap-2"
     >
       {searchs.map((search) => (
         <div
