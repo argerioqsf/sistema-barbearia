@@ -7,6 +7,7 @@ import FormFieldSelect from "@/components/molecules/FormFieldSelect";
 import {
   BoxTemplateForm,
   FieldsTemplateForm,
+  LimitColsGrid,
   Templateform,
 } from "@/types/general";
 import React from "react";
@@ -59,7 +60,7 @@ const FormDashboard = ({
   };
 
   const handlerBoxRender = (boxitem: BoxTemplateForm) => {
-    const grid_cols: number = boxitem?.fields?.length;
+    const grid_cols: LimitColsGrid = boxitem?.fields?.length as LimitColsGrid;
     return (
       <Box key={boxitem.id} cols={grid_cols}>
         {boxitem.fields.map((field) => handlerFieldRender(field))}
