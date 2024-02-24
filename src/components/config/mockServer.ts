@@ -165,69 +165,123 @@ export const mockServer = {
     {
       id: 1,
       name: "EAD",
-      units: [
+    },
+    {
+      id: 2,
+      name: "EDUCAÇÃO BÁSICA",
+    },
+    {
+      id: 3,
+      name: "GRADUAÇÃO",
+    },
+    {
+      id: 4,
+      name: "OUTRAS LOCALIDADES",
+    },
+    {
+      id: 5,
+      name: "OUTRAS LOCALIDADES",
+    },
+  ],
+  unidades: [
+    {
+      id: 1,
+      name: "SANTANA",
+      created_at: "19/09/2023",
+      segments: [
         {
           id: 1,
           name: "EAD-SANTANA",
-          number_courses: "0",
           created_at: "19/09/2023",
-          courses: [
-            {
-              id: 1,
-            },
-          ],
+        },
+      ],
+      courses: [
+        {
+          id: 1,
+          name: "Pedagogia",
+        },
+        {
+          id: 2,
+          name: "Pedagogia",
+        },
+        {
+          id: 3,
+          name: "Pedagogia",
+        },
+        {
+          id: 4,
+          name: "Pedagogia",
         },
       ],
     },
     {
       id: 2,
-      name: "EDUCAÇÃO BÁSICA",
-      units: [
+      name: "SANTANA 2",
+      created_at: "19/09/2023",
+      segments: [
         {
           id: 1,
-          name: "SANTANA",
-          number_courses: "0",
-          created_at: "19/09/2023",
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: "GRADUAÇÃO",
-      units: [
-        {
-          id: 1,
-          name: "SANTANA",
-          number_courses: "0",
+          name: "EAD-SANTANA",
           created_at: "19/09/2023",
         },
         {
           id: 2,
-          name: "EAD - UNIDADE 1",
-          number_courses: "0",
-          created_at: "19/09/2023",
-        },
-        {
-          id: 3,
-          name: "EAD - UNIDADE 1",
-          number_courses: "0",
+          name: "EAD-SANTANA 2",
           created_at: "19/09/2023",
         },
       ],
+      courses: [
+        {
+          id: 1,
+          name: "Pedagogia",
+        },
+        {
+          id: 2,
+          name: "Pedagogia",
+        },
+        {
+          id: 3,
+          name: "Pedagogia",
+        },
+        {
+          id: 4,
+          name: "Pedagogia",
+        },
+      ],
+    },
+  ],
+  cursos: [
+    {
+      id: 1,
+      name: "Curso 1",
+      quant_leads: 2,
+      status: "ativo",
+    },
+    {
+      id: 2,
+      name: "Curso 2",
+      quant_leads: 2,
+      status: "ativo",
+    },
+    {
+      id: 3,
+      name: "Curso 3",
+      quant_leads: 4,
+      status: "ativo",
     },
     {
       id: 4,
-      name: "OUTRAS LOCALIDADES",
-      units: [],
+      name: "Curso 4",
+      quant_leads: 3,
+      status: "ativo",
     },
     {
       id: 5,
-      name: "OUTRAS LOCALIDADES",
-      units: [],
+      name: "Curso 5",
+      quant_leads: 6,
+      status: "ativo",
     },
   ],
-  //unidades
-  //cursos
   //permissoes
   //situacao
   listActionsIndicators: [

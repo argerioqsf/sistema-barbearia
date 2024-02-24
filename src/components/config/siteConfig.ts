@@ -85,25 +85,6 @@ export const siteConfig = {
     },
     {
       id: "6",
-      label: "Segmentos",
-      icon: "Clipboard",
-      subMenuList: [
-        {
-          id: "1",
-          label: "Listagem",
-          href: "/dashboard/segments",
-          icon: "Circle",
-        },
-        {
-          id: "2",
-          label: "Cadastrar Segmento",
-          href: "/dashboard/home",
-          icon: "Circle",
-        },
-      ],
-    },
-    {
-      id: "7",
       label: "Usuários",
       subMenuList: [
         {
@@ -121,9 +102,9 @@ export const siteConfig = {
       ],
     },
     {
-      id: "8",
+      id: "7",
       label: "Unidades",
-      icon: "Clipboard",
+      icon: "Users",
       subMenuList: [
         {
           id: "1",
@@ -135,6 +116,25 @@ export const siteConfig = {
           id: "2",
           label: "Cadastrar Unidade",
           href: "/dashboard/units/register",
+          icon: "Circle",
+        },
+      ],
+    },
+    {
+      id: "8",
+      label: "Segmentos",
+      icon: "Clipboard",
+      subMenuList: [
+        {
+          id: "1",
+          label: "Listagem",
+          href: "/dashboard/segments",
+          icon: "Circle",
+        },
+        {
+          id: "2",
+          label: "Cadastrar Segmento",
+          href: "/dashboard/home",
           icon: "Circle",
         },
       ],

@@ -70,7 +70,7 @@ const Profile: React.FC = () => {
   };
 
   useEffect(() => {
-    setValuesFieldFromData(templateform, user);
+    setValuesFieldFromData(templateform, setValue);
   });
 
   function handleRegister(data: UserSchema) {

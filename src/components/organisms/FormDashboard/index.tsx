@@ -4,13 +4,14 @@ import { Button, Form, Text } from "@/components/atoms";
 import Box from "@/components/atoms/Box";
 import { FormFieldText } from "@/components/molecules";
 import FormFieldSelect from "@/components/molecules/FormFieldSelect";
+import { useHandlerValuesField } from "@/hooks/use-hanlder-values-field";
 import {
   BoxTemplateForm,
   FieldsTemplateForm,
   LimitColsGrid,
   Templateform,
 } from "@/types/general";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FieldErrors,
   UseFormHandleSubmit,
@@ -36,7 +37,6 @@ const FormDashboard = ({
   setValue,
 }: FormDashboardProps) => {
   const handlerFieldRender = (field: FieldsTemplateForm) => {
-    field.value && setValue(field?.id, field?.value);
     const propsField = {
       props: { ...register(field.id, { required: field.required }) },
       label: field.label,
@@ -44,6 +44,7 @@ const FormDashboard = ({
         errors[field.id] && "ring-red-500 focus:ring-red-500"
       }`,
       error: errors[field.id]?.message,
+      value: field.value,
     };
     if (field.type == "select") {
       return (

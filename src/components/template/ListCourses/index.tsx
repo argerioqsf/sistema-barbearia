@@ -10,23 +10,28 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, OrderItemsList, Searchs } from "@/types/general";
+import {
+  ItemListType,
+  UserType,
+  OrderItemsList,
+  Searchs,
+} from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const ListSegments: React.FC = () => {
+const ListCourses: React.FC = () => {
   const { listTransform } = useItemListTransform();
-
   const orderItemsList: OrderItemsList = {
-    itemsHeader: ["N", "Nome", ""],
-    itemsList: ["name", "", "", "", ""],
+    itemsHeader: ["N", "NOME", "STATUS", " QUANT. LEADS", ""],
+    itemsList: ["name", "", "status", "quant_leads", ""],
   };
-  let list = listTransform(mockServer.segments, orderItemsList.itemsList);
+  let list = listTransform(mockServer.cursos, orderItemsList.itemsList);
 
   const searchSchema = z.object({
-    search: z.string(),
+    search: z.string().min(2, { message: "Must be 2 or more characters long" }),
   });
 
   type SearchSchemaType = z.infer<typeof searchSchema>;
@@ -39,6 +44,14 @@ const ListSegments: React.FC = () => {
     resolver: zodResolver(searchSchema),
   });
 
+  const renderAvatar = (item: ItemListType, index: number) => {
+    return <Text className="text-black">{index + 1}</Text>;
+  };
+
+  function handlerForm(data: SearchSchemaType) {
+    console.log("handlerForm Search: ", data);
+  }
+
   const searchs: Searchs = [
     {
       id: 1,
@@ -48,32 +61,26 @@ const ListSegments: React.FC = () => {
     },
   ];
 
-  function handlerForm(data: SearchSchemaType) {
-    console.log("handlerForm Search: ", data);
-  }
-
-  const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>;
-  };
-
   return (
     <ContainerDashboard>
-      <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4">
+      <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4 mb-6">
         <div className="w-full">
           <Breadcrumb />
         </div>
+
         <div className="w-full mt-6">
           <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
         </div>
+
         <div className="w-full mt-6 lg:mt-8">
           <Listing
             itemsHeader={orderItemsList.itemsHeader}
             avatar={renderAvatar}
             list={list}
-            listActions={mockServer.listActionsIndicators}
-            hrefButton="dashboard/segments/register"
-            textButton=""
-            title="Segmentos"
+            listActions={mockServer.listActionsLeads}
+            hrefButton="dashboard/courses/register"
+            textButton="Novo Curso"
+            title="Cursos"
           />
         </div>
       </div>
@@ -81,4 +88,4 @@ const ListSegments: React.FC = () => {
   );
 };
 
-export default ListSegments;
+export default ListCourses;
