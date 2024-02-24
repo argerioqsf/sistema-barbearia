@@ -94,7 +94,7 @@ type SectionTemplateForm = {
   boxs: Array<BoxTemplateForm>;
 };
 
-type BoxTemplateForm = {
+export type BoxTemplateForm = {
   id: number;
   fields: Array<FieldsTemplateForm>;
 };
@@ -107,6 +107,7 @@ export type FieldsTemplateForm = {
   messageError?: string;
   classInput?: string;
   options?: Array<OptionsTemplateForm>;
+  value?: string;
 };
 
 export type OptionsTemplateForm = {

@@ -1,9 +1,3 @@
-import { CircleIcon } from "../Icons/CircleIcon";
-import { ClipboardIcon } from "../Icons/ClipboardIcon";
-import { DashBoardIcon } from "../Icons/DashBoardIcon";
-import { HandPointLeftIcon } from "../Icons/HandPointLeftIcon";
-import { UsersIcon } from "../Icons/UsersIcon";
-
 export type MockServer = typeof mockServer;
 
 export const mockServer = {
@@ -232,6 +226,10 @@ export const mockServer = {
       units: [],
     },
   ],
+  //unidades
+  //cursos
+  //permissoes
+  //situacao
   listActionsIndicators: [
     {
       id: 1,
@@ -317,6 +315,29 @@ export const mockServer = {
       icon: "Eye",
       href: "leads/edit",
       name: "Visualizar",
+    },
+  ],
+  listActionsWaitingConfirmationLeads: [
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "Eye",
+      href: "leads/edit",
+      name: "Visualizar",
+    },
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "Edit",
+      href: "leads/edit",
+      name: "Editar",
+    },
+    {
+      id: 2,
+      onclick: () => {},
+      icon: "Link",
+      href: "leads/confirmed",
+      name: "Confirmar matrícula",
     },
   ],
 };

@@ -78,7 +78,7 @@ export const siteConfig = {
         {
           id: "5",
           label: "Cadastrar Leads",
-          href: "/dashboard/leads",
+          href: "/dashboard/leads/register",
           icon: "Circle",
         },
       ],
@@ -140,7 +140,7 @@ export const siteConfig = {
       ],
     },
     {
-      id: "8",
+      id: "9",
       label: "Cursos",
       icon: "Clipboard",
       subMenuList: [

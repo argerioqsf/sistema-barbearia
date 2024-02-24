@@ -16,7 +16,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const ListConfirmedLeads: React.FC = () => {
+const ListWaitingConfirmationLeads: React.FC = () => {
   const { listTransform } = useItemListTransform();
 
   const orderItemsList: OrderItemsList = {
@@ -77,10 +77,10 @@ const ListConfirmedLeads: React.FC = () => {
             itemsHeader={orderItemsList.itemsHeader}
             avatar={renderAvatar}
             list={list}
-            listActions={mockServer.listActionsConfirmedLeads}
+            listActions={mockServer.listActionsWaitingConfirmationLeads}
             hrefButton="dashboard/leads/register"
-            textButton=""
-            title="Leads Confirmados"
+            textButton="Novo lead"
+            title="Leads Aguardando Confirmação"
           />
         </div>
       </div>
@@ -88,4 +88,4 @@ const ListConfirmedLeads: React.FC = () => {
   );
 };
 
-export default ListConfirmedLeads;
+export default ListWaitingConfirmationLeads;

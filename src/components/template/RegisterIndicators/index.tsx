@@ -29,6 +29,7 @@ const RegisterIndicators: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<IndicatorSchema>({
     resolver: zodResolver(indicatorSchema),
   });
@@ -45,6 +46,7 @@ const RegisterIndicators: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
+            setValue={setValue}
             handlerForm={handleRegister}
             templateform={templateform}
             handleSubmit={handleSubmit}

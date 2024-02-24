@@ -1,7 +1,7 @@
 import { Templateform } from "@/types/general";
 
 export const templateform: Templateform = {
-  title: "Cadastrar Leads",
+  title: "Cadastrar Indicador",
   textButton: "Cadastrar",
   sections: [
     {
@@ -12,37 +12,47 @@ export const templateform: Templateform = {
           id: 1,
           fields: [
             {
-              id: "formation",
+              id: "name",
               required: true,
               type: "text",
-              label: "Formação",
+              label: "Nome",
               messageError: "Must be 2 or more characters long",
             },
             {
-              id: "unit",
+              id: "last_name",
               required: true,
               type: "text",
-              label: "Unidade",
-              messageError: "Must be 2 or more characters long",
-            },
-            {
-              id: "course",
-              required: true,
-              type: "text",
-              label: "Cursos",
+              label: "Sobrenome",
               messageError: "Must be 2 or more characters long",
             },
           ],
         },
         {
-          id: 2,
+          id: 3,
           fields: [
             {
-              id: "name",
+              id: "whatsapp",
               required: true,
               type: "text",
-              label: "Nome",
+              label: "Whatsapp",
             },
+            {
+              id: "documento",
+              required: true,
+              type: "text",
+              label: "Documento",
+            },
+            {
+              id: "key_pix",
+              required: true,
+              type: "text",
+              label: "Chave pix",
+            },
+          ],
+        },
+        {
+          id: 4,
+          fields: [
             {
               id: "email",
               required: true,
@@ -52,50 +62,25 @@ export const templateform: Templateform = {
           ],
         },
         {
-          id: 3,
+          id: 5,
           fields: [
             {
-              id: "document",
+              id: "city",
               required: true,
               type: "text",
-              label: "Documento",
+              label: "Cidade-UF",
             },
             {
-              id: "whatsapp",
+              id: "status",
               required: true,
               type: "text",
-              label: "Whatsapp",
+              label: "Status",
             },
             {
-              id: "situation",
-              required: true,
-              type: "text",
-              label: "Situação",
-            },
-          ],
-        },
-        {
-          id: 4,
-          fields: [
-            {
-              id: "indicator_id",
-              required: true,
-              type: "select",
-              label: "Indicador",
-              options: [],
-            },
-            {
-              id: "consultant",
-              required: true,
-              type: "select",
-              label: "Consultor",
-              options: [],
-            },
-            {
-              id: "lead_at",
+              id: "user_at",
               required: true,
               type: "date",
-              label: "Cadastrado em",
+              label: "Data",
             },
           ],
         },
