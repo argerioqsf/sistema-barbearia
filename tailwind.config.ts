@@ -24,78 +24,42 @@ const config: Config = {
         },
       },
       animation: {
-        openMenuLg: "openMenuLg 0.4s ease forwards",
-        closeMenuLg: "closeMenuLg 0.4s ease forwards",
-        openMenuMd: "openMenuMd 0.4s ease forwards",
-        closeMenuMd: "closeMenuMd 0.4s ease forwards",
-        openMenuChildrenLg: "openMenuChildrenLg 0.4s ease forwards",
-        closeMenuChildrenLg: "closeMenuChildrenLg 0.4s ease forwards",
-        openMenuChildrenMd: "openMenuChildrenMd 0.4s ease forwards",
-        closeMenuChildrenMd: "closeMenuChildrenMd 0.4s ease forwards",
+        openMenu: "openMenu 0.4s ease forwards",
+        closeMenu: "closeMenu 0.4s ease forwards",
+        openMenuChildren: "openMenuChildren 0.4s ease forwards",
+        closeMenuChildren: "closeMenuChildren 0.4s ease forwards",
       },
       keyframes: {
-        openMenuLg: {
+        openMenu: {
           "0%": {
-            width: "0",
+            width: "0vw",
           },
           "100%": {
-            width: "25vw",
+            width: "var(--width-side-menu)",
           },
         },
-        closeMenuLg: {
+        closeMenu: {
           "0%": {
-            width: "25vw",
+            width: "var(--width-side-menu)",
           },
           "100%": {
-            width: "0",
+            width: "0vw",
           },
         },
-        openMenuMd: {
+        openMenuChildren: {
           "0%": {
-            width: "0",
+            paddingLeft: "0vw",
           },
           "100%": {
-            width: "80vw",
+            paddingLeft: "var(--width-side-menu)",
           },
         },
-        closeMenuMd: {
+        closeMenuChildren: {
           "0%": {
-            width: "80vw",
+            paddingLeft: "var(--width-side-menu)",
           },
           "100%": {
-            width: "0",
-          },
-        },
-        openMenuChildrenLg: {
-          "0%": {
-            paddingLeft: "0px",
-          },
-          "100%": {
-            paddingLeft: "25vw",
-          },
-        },
-        closeMenuChildrenLg: {
-          "0%": {
-            paddingLeft: "25vw",
-          },
-          "100%": {
-            paddingLeft: "0px",
-          },
-        },
-        openMenuChildrenMd: {
-          "0%": {
-            paddingLeft: "0px",
-          },
-          "100%": {
-            paddingLeft: "80vw",
-          },
-        },
-        closeMenuChildrenMd: {
-          "0%": {
-            paddingLeft: "80vw",
-          },
-          "100%": {
-            paddingLeft: "0px",
+            paddingLeft: "0vw",
           },
         },
       },

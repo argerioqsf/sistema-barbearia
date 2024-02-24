@@ -25,10 +25,8 @@ export default function RootLayout({
             <div
               className={twMerge(
                 "w-full pl-0",
-                openMenu === true &&
-                  "animate-openMenuChildrenMd lg:animate-openMenuChildrenLg",
-                openMenu === false &&
-                  "animate-closeMenuChildrenMd lg:animate-closeMenuChildrenLg"
+                openMenu === true && "animate-openMenuChildren",
+                openMenu === false && "animate-closeMenuChildren"
               )}
             >
               <NavBar setOpenMenu={setOpenMenu} openMenu={openMenu} />

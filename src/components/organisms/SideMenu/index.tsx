@@ -16,8 +16,8 @@ const SideMenu: React.FC<SideMenuProps> = ({ openMenu, setOpenMenu }) => {
         "w-0 h-screen",
         "flex fixed flex-row items-start justify-start",
         "z-50 overflow-x-hidden whitespace-nowrap",
-        openMenu === true && "animate-openMenuMd lg:animate-openMenuLg",
-        openMenu === false && "animate-closeMenuMd lg:animate-closeMenuLg"
+        openMenu === true && "animate-openMenu",
+        openMenu === false && "animate-closeMenu"
       )}
     >
       <div className="w-full flex flex-col justify-between items-center">
