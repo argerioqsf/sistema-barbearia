@@ -18,7 +18,7 @@ export const siteConfig = {
     {
       id: "3",
       label: "Dashboard",
-      href: "/dashboard/profile",
+      href: "/dashboard/home",
       icon: "DashBoard",
     },
     {
@@ -134,7 +134,7 @@ export const siteConfig = {
         {
           id: "2",
           label: "Cadastrar Segmento",
-          href: "/dashboard/home",
+          href: "/dashboard/segments/register",
           icon: "Circle",
         },
       ],

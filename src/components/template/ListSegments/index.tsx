@@ -72,7 +72,7 @@ const ListSegments: React.FC = () => {
             list={list}
             listActions={mockServer.listActionsIndicators}
             hrefButton="dashboard/segments/register"
-            textButton=""
+            textButton="Novo Segmento"
             title="Segmentos"
           />
         </div>

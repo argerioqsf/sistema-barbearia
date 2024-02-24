@@ -147,7 +147,9 @@ type typesForIdFieldsForm =
   | "situation"
   | "indicator_id"
   | "consultant"
-  | "lead_at";
+  | "lead_at"
+  | "segments"
+  | "courses";
 
 type NamesSearchs = "search";
 
