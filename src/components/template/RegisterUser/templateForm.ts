@@ -1,7 +1,7 @@
 import { Templateform } from "@/types/general";
 
 export const templateform: Templateform = {
-  title: "Cadastrar Indicador",
+  title: "Cadastrar Usuário",
   textButton: "Cadastrar",
   sections: [
     {

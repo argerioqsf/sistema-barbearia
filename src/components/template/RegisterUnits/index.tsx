@@ -3,12 +3,11 @@
 import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import FormDashboard from "@/components/organisms/FormDashboard";
-import React, { useEffect } from "react";
+import React from "react";
 import { templateform } from "./templateForm";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useHandlerValuesField } from "@/hooks/use-hanlder-values-field";
 
 const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -46,7 +45,7 @@ const userSchema = z.object({
 
 type UserSchema = z.infer<typeof userSchema>;
 
-const Profile: React.FC = () => {
+const RegisterUnits: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -55,31 +54,13 @@ const Profile: React.FC = () => {
   } = useForm<UserSchema>({
     resolver: zodResolver(userSchema),
   });
-  const { setValuesFieldFromData } = useHandlerValuesField();
-
-  const user = {
-    name: "Argério",
-    last_name: "Queiroz",
-    whatsapp: "",
-    documento: "",
-    key_pix: "",
-    email: "",
-    city: "",
-    status: "",
-    user_at: "",
-  };
-
-  useEffect(() => {
-    setValuesFieldFromData(templateform, setValue);
-  });
 
   function handleRegister(data: UserSchema) {
     console.log("data FormDashboard: ", data);
   }
-
   return (
     <ContainerDashboard>
-      <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
+      <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4 ">
         <div className="w-full ">
           <Breadcrumb />
         </div>
@@ -98,4 +79,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile;
+export default RegisterUnits;

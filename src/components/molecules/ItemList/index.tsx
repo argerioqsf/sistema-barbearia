@@ -73,8 +73,8 @@ const ItemList = ({
             href={action.href}
             icon={action.icon}
             key={action.id}
-            size={40}
-            classIcon="bg-secondary-50 border-transparent size-[40px]"
+            size={35}
+            classIcon="bg-secondary-50 border-transparent size-[35px]"
           />
         ))}
       </div>

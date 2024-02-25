@@ -4,13 +4,14 @@ import { Button, Form, Text } from "@/components/atoms";
 import Box from "@/components/atoms/Box";
 import { FormFieldText } from "@/components/molecules";
 import FormFieldSelect from "@/components/molecules/FormFieldSelect";
+import { useHandlerValuesField } from "@/hooks/use-hanlder-values-field";
 import {
   BoxTemplateForm,
   FieldsTemplateForm,
   LimitColsGrid,
   Templateform,
 } from "@/types/general";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FieldErrors,
   UseFormHandleSubmit,
@@ -36,7 +37,6 @@ const FormDashboard = ({
   setValue,
 }: FormDashboardProps) => {
   const handlerFieldRender = (field: FieldsTemplateForm) => {
-    field.value && setValue(field?.id, field?.value);
     const propsField = {
       props: { ...register(field.id, { required: field.required }) },
       label: field.label,
@@ -44,6 +44,7 @@ const FormDashboard = ({
         errors[field.id] && "ring-red-500 focus:ring-red-500"
       }`,
       error: errors[field.id]?.message,
+      value: field.value,
     };
     if (field.type == "select") {
       return (
@@ -71,7 +72,7 @@ const FormDashboard = ({
   return (
     <div className="w-full">
       <Form onSubmit={handleSubmit(handlerForm)} className="mb-8">
-        <div className="w-[90vw] lg:w-[95vw] flex flex-row justify-between items-center">
+        <div className="w-[90vw] md:w-full flex flex-row justify-between items-center">
           <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
             {templateform.title}
           </Text>
@@ -83,11 +84,13 @@ const FormDashboard = ({
           </Button>
         </div>
         {templateform.sections.map((section) => (
-          <div key={section.id} className="w-[90vw] lg:w-[95vw] mt-10 lg:mt-8">
-            <div className="p-4 pb-2 w-max bg-gray-200 rounded-xl rounded-b-none">
-              {section.title}
+          <div key={section.id} className="w-[90vw] md:w-full mt-10 lg:mt-8">
+            <div className="p-4 pb-2 bg-gray-200 rounded-xl rounded-b-none w-56 shadow-md shadow-slate-400">
+              <Text className="text-black font-normal text-sm text-center uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+                {section.title}
+              </Text>
             </div>
-            <div className="w-[90vw] grid-cols-12 lg:w-[95vw] border-2 flex flex-col gap-4 bg-gray-200 p-6 rounded-xl rounded-tl-none">
+            <div className="w-[90vw] grid-cols-12 md:w-full border-2 flex flex-col gap-4 bg-gray-200 p-6 rounded-xl rounded-tl-none shadow-md shadow-slate-400">
               {section.boxs.map((boxitem) => handlerBoxRender(boxitem))}
             </div>
           </div>

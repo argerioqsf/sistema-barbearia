@@ -63,7 +63,10 @@ export type UserHookType =
   | "link"
   | "data"
   | "number_courses"
-  | "created_at";
+  | "created_at"
+  | `segments.${string}`
+  | `courses.${string}`
+  | "quant_leads";
 
 export type ItemListType = {
   id: number;
@@ -144,7 +147,9 @@ type typesForIdFieldsForm =
   | "situation"
   | "indicator_id"
   | "consultant"
-  | "lead_at";
+  | "lead_at"
+  | "segments"
+  | "courses";
 
 type NamesSearchs = "search";
 

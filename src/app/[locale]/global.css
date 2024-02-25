@@ -5,5 +5,23 @@
 :root {
   --navbar-height: 80px;
   --max-width-page: 100%;
-  --width-side-menu: 50px;
+  --width-side-menu: 22vw;
+}
+
+@media screen and (max-width: 768px) {
+  :root {
+    --width-side-menu: 80vw;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  :root {
+    --width-side-menu: 30vw;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  :root {
+    --width-side-menu: 22vw;
+  }
 }

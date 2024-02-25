@@ -42,7 +42,7 @@ const Listing = ({
   return (
     <div
       className={twJoin(
-        "w-[90vw] lg:w-[95vw] flex flex-col justify-center items-center",
+        "w-[90vw] md:w-full flex flex-col justify-center items-center",
         variant === "segmented" && "p-[1vw] rounded-xl bg-gray-500"
       )}
     >
@@ -70,8 +70,8 @@ const Listing = ({
         <div
           className={twMerge(
             variant === "segmented"
-              ? "w-[88vw] lg:w-[93vw]"
-              : "w-[90vw] lg:w-[95vw]"
+              ? "w-[88vw] md:w-full"
+              : "w-[90vw] md:w-full"
           )}
         >
           <HeaderList itemsHeader={itemsHeader} />

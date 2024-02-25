@@ -17,12 +17,12 @@ const Search = ({ searchs, handlerForm }: SearchProps) => {
   return (
     <Form
       onSubmit={handlerForm}
-      className="w-[90vw] lg:w-[95vw] flex flex-col md:flex-row justify-start items-center gap-4 md:gap-2"
+      className="w-[90vw] md:w-full flex flex-col md:flex-row justify-start items-center gap-4 md:gap-2"
     >
       {searchs.map((search) => (
         <div
           key={search.id}
-          className="w-[90vw] sm:w-[80vw] md:w-96 flex flex-row justify-start items-center"
+          className="w-[90vw] md:w-96 flex flex-row justify-start items-center"
         >
           <InputForm
             propsInput={search.propsInput}
@@ -36,7 +36,7 @@ const Search = ({ searchs, handlerForm }: SearchProps) => {
       ))}
       <Button
         type="submit"
-        className="bg-primary-100 rounded-full p-0 w-[90vw] sm:w-[80vw] md:w-fit flex justify-center items-center "
+        className="bg-primary-100 rounded-full p-0 w-[90vw] md:w-fit flex justify-center items-center "
       >
         <Avatar
           classIcon="bg-primary-100 border-transparent size-[40px]"
