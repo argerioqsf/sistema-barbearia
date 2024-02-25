@@ -114,7 +114,8 @@ export type FieldsTemplateForm = {
   messageError?: string;
   classInput?: string;
   options?: Array<OptionsTemplateForm>;
-  value?: string;
+  value?: string | number;
+  disabled?: boolean;
 };
 
 export type OptionsTemplateForm = {

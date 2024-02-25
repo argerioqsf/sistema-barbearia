@@ -50,7 +50,6 @@ const RegisterUnits: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<UserSchema>({
     resolver: zodResolver(userSchema),
   });
@@ -58,6 +57,7 @@ const RegisterUnits: React.FC = () => {
   function handleRegister(data: UserSchema) {
     console.log("data FormDashboard: ", data);
   }
+
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4 ">
@@ -66,7 +66,6 @@ const RegisterUnits: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            setValue={setValue}
             handlerForm={handleRegister}
             templateform={templateform}
             handleSubmit={handleSubmit}

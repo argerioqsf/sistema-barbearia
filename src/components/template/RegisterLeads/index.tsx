@@ -39,7 +39,6 @@ const RegisterLeads: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<UserSchema>({
     resolver: zodResolver(userSchema),
   });
@@ -96,7 +95,6 @@ const RegisterLeads: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            setValue={setValue}
             handlerForm={handleRegister}
             templateform={templateformState}
             handleSubmit={handleSubmit}
