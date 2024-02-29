@@ -47,6 +47,5 @@ export const useHandlerIcons = (icon: string): React.FC<IconSvgProps> => {
       return LinkIcon;
     default:
       return UserIcon;
-      break;
   }
 };

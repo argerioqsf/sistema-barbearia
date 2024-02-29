@@ -32,7 +32,7 @@ const userSchema = z.object({
       ".jpg, .jpeg, .png and .webp files are accepted."
     ),
   whatsapp: z.string().min(2),
-  documento: z.string().min(2),
+  document: z.string().min(2),
   datebirth: z.string().min(2),
   genero: z.string().min(2),
   email: z.string().min(2),
@@ -66,12 +66,8 @@ const RegisterUser: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            setValue={setValue}
             handlerForm={handleRegister}
             templateform={templateform}
-            handleSubmit={handleSubmit}
-            register={register}
-            errors={errors}
           />
         </div>
       </div>

@@ -4,46 +4,39 @@ import { Button, Form, Text } from "@/components/atoms";
 import Box from "@/components/atoms/Box";
 import { FormFieldText } from "@/components/molecules";
 import FormFieldSelect from "@/components/molecules/FormFieldSelect";
-import { useHandlerValuesField } from "@/hooks/use-hanlder-values-field";
+import { useHandlerForm } from "@/hooks/use-hanlder-form";
 import {
   BoxTemplateForm,
   FieldsTemplateForm,
   LimitColsGrid,
   Templateform,
 } from "@/types/general";
-import React, { useEffect } from "react";
-import {
-  FieldErrors,
-  UseFormHandleSubmit,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+import React from "react";
 
 type FormDashboardProps = {
   templateform: Templateform;
   handlerForm: (state: any) => void;
-  handleSubmit: UseFormHandleSubmit<any>;
-  register: UseFormRegister<any>;
-  errors: FieldErrors<any>;
   loading?: boolean;
+  getDefaultValues?: ()=> Promise<any>
 };
 
 const FormDashboard = ({
   handlerForm,
   templateform,
-  handleSubmit,
-  register,
-  errors,
   loading = false,
+  getDefaultValues
 }: FormDashboardProps) => {
+
+  const { register, handleSubmit, errors  } = useHandlerForm(templateform.sections,getDefaultValues)
   const handlerFieldRender = (field: FieldsTemplateForm) => {
+    const id = field.id
     const propsField = {
-      props: { ...register(field.id, { required: field.required }) },
+      props: { ...register(id, { required: field.required }) },
       label: field.label,
       classInput: `bg-gray-300 ${field.classInput ?? ""} ${
-        errors[field.id] && "ring-red-500 focus:ring-red-500"
+        errors[id] && "ring-red-500 focus:ring-red-500"
       }`,
-      error: errors[field.id]?.message,
+      error: errors[id]?.message,
       disabled: field.disabled,
     };
     if (field.type == "select") {
@@ -76,12 +69,14 @@ const FormDashboard = ({
           <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
             {templateform?.title}
           </Text>
-          <Button
-            className="rounded-xl h-10 flex justify-center items-center px-2 sm:px-5 md:px-10 bg-secondary-50 text-white"
-            type="submit"
-          >
-            {templateform?.textButton}
-          </Button>
+          {templateform?.textButton && (
+            <Button
+              className="rounded-xl h-10 flex justify-center items-center px-2 sm:px-5 md:px-10 bg-secondary-50 text-white"
+              type="submit"
+            >
+              {templateform?.textButton}
+            </Button>
+          )}
         </div>
 
         {templateform?.sections.map((section) => (

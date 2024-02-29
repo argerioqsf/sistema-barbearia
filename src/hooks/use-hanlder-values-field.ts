@@ -1,7 +1,10 @@
-import { Templateform } from "@/types/general";
-import { UseFormSetValue } from "react-hook-form";
+import { FieldsTemplateForm, Templateform } from "@/types/general";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-export const useHandlerValuesField = () => {
+export const useHanlderValuesField= (schemaList: Array<any>) => {
+
   function handlerDefaultValuesFieldFromData(
     template: Templateform,
     data: any

@@ -1,8 +1,5 @@
 "use client";
 
-import { EditIcon } from "@/components/Icons/EditIcon";
-import { EyeIcon } from "@/components/Icons/EyeIcon";
-import { LockIcon } from "@/components/Icons/LockIcon";
 import { Text } from "@/components/atoms";
 import { mockServer } from "@/components/config/mockServer";
 import { ContainerDashboard } from "@/components/molecules";
@@ -10,52 +7,19 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, OrderItemsList, Searchs } from "@/types/general";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { ItemListType } from "@/types/general";
 import React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { orderItemsHeaderList, templateformSearch } from "./templates";
+import { useHandlerForm } from "@/hooks/use-hanlder-form";
 
 const ListConfirmedLeads: React.FC = () => {
   const { listTransform } = useItemListTransform();
 
-  const orderItemsList: OrderItemsList = {
-    itemsHeader: ["N", "NOME / WHATSAPP", "CURSO", "INDICADOR", "STATUS"],
-    itemsList: [
-      "name",
-      "whatsapp",
-      "training_course",
-      "indicator.name",
-      "status",
-    ],
-  };
+  const { register: registerS, handleSubmit: handleSubmitS, errors: errorsS  } = useHandlerForm(templateformSearch.sections)
 
-  let list = listTransform(mockServer.leads, orderItemsList.itemsList);
+  let list = listTransform(mockServer.leads, orderItemsHeaderList.itemsList);
 
-  const searchSchema = z.object({
-    search: z.string(),
-  });
-
-  type SearchSchemaType = z.infer<typeof searchSchema>;
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SearchSchemaType>({
-    resolver: zodResolver(searchSchema),
-  });
-
-  const searchs: Searchs = [
-    {
-      id: 1,
-      propsInput: { ...register("search") },
-      placeholder: "Search...",
-      name: "search",
-    },
-  ];
-
-  function handlerForm(data: SearchSchemaType) {
+  function handlerForm(data: object) {
     console.log("handlerForm Search: ", data);
   }
 
@@ -70,11 +34,11 @@ const ListConfirmedLeads: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
+          <Search handlerForm={handleSubmitS(handlerForm)} register={registerS} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={orderItemsList.itemsHeader}
+            itemsHeader={orderItemsHeaderList.itemsHeader}
             avatar={renderAvatar}
             list={list}
             listActions={mockServer.listActionsConfirmedLeads}

@@ -10,10 +10,10 @@ import {
 
 export const useItemListTransform = () => {
   const listTransform = (
-    list: Array<UserType | any>,
+    list: Array<UserType | any> | undefined,
     fields: FieldsList
   ): Array<ItemListType> => {
-    const listTransform = list.map((item) => {
+    const listTransform = list?.map((item) => {
       let new_item: ItemListType = {
         id: 0,
         info1: "",
@@ -61,7 +61,7 @@ export const useItemListTransform = () => {
       }
       return new_item;
     });
-    return listTransform;
+    return listTransform??[];
   };
   return { listTransform };
 };

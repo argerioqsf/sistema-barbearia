@@ -15,7 +15,7 @@ import {
   IndicatorsType,
   ItemListType,
   UserType,
-  OrderItemsList,
+  OrderItemsHeaderList,
   Searchs,
 } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,7 +27,7 @@ import { z } from "zod";
 const ListRequestIndicators = () => {
   const { listTransform } = useItemListTransform();
 
-  const orderItemsList: OrderItemsList = {
+  const OrderItemsHeaderList: OrderItemsHeaderList = {
     itemsHeader: ["N", "AVATAR", "NOME", "CIDADE", "DATA", ""],
     itemsList: ["name", "", "cidade", "data", ""],
   };
@@ -55,7 +55,7 @@ const ListRequestIndicators = () => {
     },
   ];
 
-  let list = listTransform(mockServer.indicators, orderItemsList.itemsList);
+  let list = listTransform(mockServer.indicators, OrderItemsHeaderList.itemsList);
 
   function handlerForm(data: SearchSchemaType) {
     console.log("handlerForm Search: ", data);
@@ -72,11 +72,11 @@ const ListRequestIndicators = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
+          <Search handlerForm={handleSubmit(handlerForm)} register={register} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={orderItemsList.itemsHeader}
+            itemsHeader={OrderItemsHeaderList.itemsHeader}
             avatar={renderAvatar}
             list={list}
             listActions={mockServer.listActionsIndicators}

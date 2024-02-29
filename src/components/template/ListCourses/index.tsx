@@ -1,8 +1,5 @@
 "use client";
 
-import { EditIcon } from "@/components/Icons/EditIcon";
-import { EyeIcon } from "@/components/Icons/EyeIcon";
-import { LockIcon } from "@/components/Icons/LockIcon";
 import { Text } from "@/components/atoms";
 import { mockServer } from "@/components/config/mockServer";
 import { ContainerDashboard } from "@/components/molecules";
@@ -12,23 +9,21 @@ import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
 import {
   ItemListType,
-  UserType,
-  OrderItemsList,
+  OrderItemsHeaderList,
   Searchs,
 } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const ListCourses: React.FC = () => {
   const { listTransform } = useItemListTransform();
-  const orderItemsList: OrderItemsList = {
+  const OrderItemsHeaderList: OrderItemsHeaderList = {
     itemsHeader: ["N", "NOME", "STATUS", " QUANT. LEADS", ""],
     itemsList: ["name", "", "status", "quant_leads", ""],
   };
-  let list = listTransform(mockServer.cursos, orderItemsList.itemsList);
+  let list = listTransform(mockServer.cursos, OrderItemsHeaderList.itemsList);
 
   const searchSchema = z.object({
     search: z.string().min(2, { message: "Must be 2 or more characters long" }),
@@ -69,12 +64,12 @@ const ListCourses: React.FC = () => {
         </div>
 
         <div className="w-full mt-6">
-          <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
+          <Search handlerForm={handleSubmit(handlerForm)} register={register} />
         </div>
 
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={orderItemsList.itemsHeader}
+            itemsHeader={OrderItemsHeaderList.itemsHeader}
             avatar={renderAvatar}
             list={list}
             listActions={mockServer.listActionsLeads}
