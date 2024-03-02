@@ -72,6 +72,7 @@ export type Lead = {
   status: string;
   created_at: string;
   updated_at: string;
+  time_line?: TimeLine[];
 };
 
 export type UserHookType =
@@ -225,3 +226,13 @@ export type Searchs = Array<{
 }>;
 
 export type LimitColsGrid = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+
+export type TimeLine = {
+  id: number;
+  lead_id: number;
+  course_id: number;
+  title: string;
+  describe: string;
+  status: string;
+  created_at: string;
+};

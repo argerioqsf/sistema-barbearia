@@ -2,6 +2,7 @@ import { ArrowDownIcon } from "@/components/Icons/ArrowDownIcon";
 import { ArrowRightIcon } from "@/components/Icons/ArrowRightIcon";
 import { CircleIcon } from "@/components/Icons/CircleIcon";
 import { ClipboardIcon } from "@/components/Icons/ClipboardIcon";
+import { ClockIcon } from "@/components/Icons/ClockIcon";
 import { DashBoardIcon } from "@/components/Icons/DashBoardIcon";
 import { EditIcon } from "@/components/Icons/EditIcon";
 import { EyeIcon } from "@/components/Icons/EyeIcon";
@@ -45,6 +46,8 @@ export const useHandlerIcons = (icon: string): React.FC<IconSvgProps> => {
       return UsersIcon;
     case "Link":
       return LinkIcon;
+    case "Clock":
+      return ClockIcon;
     default:
       return UserIcon;
   }

@@ -17,21 +17,23 @@ type FormDashboardProps = {
   templateform?: Templateform;
   handlerForm?: (state: any) => void;
   loading?: boolean;
-  getDefaultValues?: ()=> Promise<any>
-  title?: string
+  getDefaultValues?: () => Promise<any>;
+  title?: string;
 };
 
 const FormDashboard = ({
-  handlerForm = ()=>{},
+  handlerForm = () => {},
   templateform,
   loading = false,
   getDefaultValues,
-  title
+  title,
 }: FormDashboardProps) => {
-
-  const { register, handleSubmit, errors  } = useHandlerForm(templateform?.sections,getDefaultValues)
+  const { register, handleSubmit, errors } = useHandlerForm(
+    templateform?.sections,
+    getDefaultValues
+  );
   const handlerFieldRender = (field: FieldsTemplateForm) => {
-    const id = field.id
+    const id = field.id;
     const propsField = {
       props: { ...register(id, { required: field.required }) },
       label: field.label,
@@ -69,7 +71,7 @@ const FormDashboard = ({
       <Form onSubmit={handleSubmit(handlerForm)} className="mb-8">
         <div className="w-[90vw] md:w-full flex flex-row justify-between items-center">
           <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
-            {title??templateform?.title}
+            {title ?? templateform?.title}
           </Text>
           {templateform?.textButton && (
             <Button

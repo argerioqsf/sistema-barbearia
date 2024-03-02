@@ -8,9 +8,12 @@ import {
   ItemListType,
   OrderItemsHeaderList,
   Templateform,
+  TimeLine,
 } from "@/types/general";
 import React from "react";
 import { useHandlerForm } from "@/hooks/use-hanlder-form";
+import TimeLineComponent from "../TimeLineComponent";
+import { ContainerDashboard } from "@/components/molecules";
 
 type PropTemplates = {
   templates: {
@@ -25,6 +28,7 @@ type PropTemplates = {
   titleForm?: string;
   values?: any;
   list?: Array<any>;
+  time_line?: TimeLine[];
 };
 
 const DetailDefault = ({
@@ -36,6 +40,7 @@ const DetailDefault = ({
   titleForm,
   values,
   list,
+  time_line,
 }: PropTemplates) => {
   const {
     register: registerS,
@@ -44,41 +49,36 @@ const DetailDefault = ({
   } = useHandlerForm(templates?.templateformSearch?.sections, getDefaultValues);
 
   return (
-    <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4">
+    <div className="w-full mt-6 lg:mt-8">
       {templates?.templateform && (
-        <div className="w-full mt-6 lg:mt-8">
-          <FormDashboard
-            title={titleForm}
-            loading={!values}
-            handlerForm={handleRegister}
-            templateform={templates?.templateform}
-            getDefaultValues={getDefaultValues}
-          />
-        </div>
+        <FormDashboard
+          title={titleForm}
+          loading={!values}
+          handlerForm={handleRegister}
+          templateform={templates?.templateform}
+          getDefaultValues={getDefaultValues}
+        />
       )}
       {list && (
         <>
           {handlerFormSearch && (
-            <div className="w-full mt-6">
-              <Search
-                handlerForm={handleSubmitS(handlerFormSearch)}
-                register={registerS}
-              />
-            </div>
-          )}
-          <div className="w-full mt-6 lg:mt-8 mb-4">
-            <Listing
-              itemsHeader={templates?.orderItemsHeaderList?.itemsHeader}
-              avatar={renderAvatar}
-              list={list}
-              listActions={mockServer.listActionsConfirmedLeads}
-              hrefButton="dashboard/leads/register"
-              textButton=""
-              title={`Leads`}
+            <Search
+              handlerForm={handleSubmitS(handlerFormSearch)}
+              register={registerS}
             />
-          </div>
+          )}
+          <Listing
+            itemsHeader={templates?.orderItemsHeaderList?.itemsHeader}
+            avatar={renderAvatar}
+            list={list}
+            listActions={mockServer.listActionsConfirmedLeads}
+            hrefButton="dashboard/leads/register"
+            textButton=""
+            title={`Leads`}
+          />
         </>
       )}
+      {time_line && <TimeLineComponent time_line={time_line} />}
     </div>
   );
 };

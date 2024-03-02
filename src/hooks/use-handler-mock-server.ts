@@ -1,5 +1,5 @@
 import { mockServer } from "@/components/config/mockServer";
-import { IndicatorType, Lead } from "@/types/general";
+import { IndicatorType, Lead, TimeLine } from "@/types/general";
 
 export function useHandlerMockServer() {
   function getIndicatorForId(id: number | string): IndicatorType[] {
@@ -16,5 +16,12 @@ export function useHandlerMockServer() {
     });
   }
 
-  return { getIndicatorForId, getLeadForId };
+  function getTimelineForLeadId(lead_id: number | string): TimeLine[] {
+    const indicators = mockServer.time_line;
+    return indicators.filter((time_line) => {
+      return time_line.lead_id == lead_id;
+    });
+  }
+
+  return { getIndicatorForId, getLeadForId, getTimelineForLeadId };
 }

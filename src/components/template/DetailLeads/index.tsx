@@ -4,22 +4,20 @@ import { Text } from "@/components/atoms";
 import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import { useHandlerMockServer } from "@/hooks/use-handler-mock-server";
-import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { IndicatorType, ItemListType, Lead } from "@/types/general";
+import { ItemListType, Lead } from "@/types/general";
 import React, { useState } from "react";
 import * as templates from "./templates";
 import DetailDefault from "@/components/organisms/DetailDefault";
 
 const DetailLeads = ({ id }: { id: string }) => {
-  const { listTransform } = useItemListTransform();
   const { getLeadForId } = useHandlerMockServer();
-  const [indicator, setIndicator] = useState<Lead | null>();
+  const [lead, setLead] = useState<Lead | null>();
 
-  function getIndicator(): Promise<any> {
+  function getLead(): Promise<any> {
     return new Promise((resolve) => {
       setTimeout(() => {
         const data = getLeadForId(id);
-        setIndicator({ ...data[0] });
+        setLead({ ...data[0] });
         resolve(data[0]);
       }, 2000);
     });
@@ -47,10 +45,11 @@ const DetailLeads = ({ id }: { id: string }) => {
           renderAvatar={renderAvatar}
           handlerFormSearch={handlerFormSearch}
           handleRegister={handleRegister}
-          getDefaultValues={getIndicator}
+          getDefaultValues={getLead}
           templates={templates}
-          titleForm={indicator?.name}
-          values={indicator}
+          titleForm={lead?.name}
+          values={lead}
+          time_line={lead?.time_line}
         />
       </div>
     </ContainerDashboard>
