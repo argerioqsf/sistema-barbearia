@@ -1,8 +1,10 @@
 import { FC, SVGProps } from "react";
 import { FieldErrors, UseFormRegisterReturn } from "react-hook-form";
+import { z } from "zod";
 
 export type ParamsProp = {
   locale: string;
+  id?: string;
 };
 
 type LimitFields<T> = [T, T, T, T, T];
@@ -22,13 +24,13 @@ export type IconSvgProps = {
 
 export type ListActionsProps = {
   id: number;
-  onclick?: () => void;
+  onclick?: (id: any) => void;
   icon: string;
   href?: string;
   name?: string;
 };
 
-export type OrderItemsList = {
+export type OrderItemsHeaderList = {
   itemsHeader: Array<string>;
   itemsList: FieldsList;
 };
@@ -45,9 +47,26 @@ export type UserType = {
 export type IndicatorType = {
   id: number;
   name: string;
-  cidade: string;
+  city: string;
   link: string;
-  data: string;
+  whatsapp: string;
+  user_at: string;
+  document: string;
+  key_pix: string;
+  email: string;
+  status: string;
+  leads?: Lead[];
+};
+
+type Lead = {
+  id: number;
+  name: string;
+  whatsapp: string;
+  training_course: string;
+  indicator_id: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export type UserHookType =
@@ -95,7 +114,7 @@ export type Templateform = {
   sections: Array<SectionTemplateForm>;
 };
 
-type SectionTemplateForm = {
+export type SectionTemplateForm = {
   id: number;
   title: string;
   boxs: Array<BoxTemplateForm>;
@@ -114,8 +133,14 @@ export type FieldsTemplateForm = {
   messageError?: string;
   classInput?: string;
   options?: Array<OptionsTemplateForm>;
-  value?: string;
+  value?: string | number;
+  disabled?: boolean;
+  roles?: Roles
 };
+
+type Roles = {
+  minCaracters?: number
+}
 
 export type OptionsTemplateForm = {
   label: string;
@@ -125,11 +150,10 @@ export type OptionsTemplateForm = {
 type typesForIdFieldsForm =
   | "name"
   | "last_name"
-  | "image"
   | "status"
   | "date"
   | "whatsapp"
-  | "documento"
+  | "document"
   | "datebirth"
   | "genero"
   | "email"
@@ -149,12 +173,42 @@ type typesForIdFieldsForm =
   | "consultant"
   | "lead_at"
   | "segments"
-  | "courses";
+  | "courses"
+  | "search";
+
+export type FieldsFormSchema = {
+  name?: z.ZodString;
+  last_name?: z.ZodString;
+  whatsapp?: z.ZodString;
+  document?: z.ZodString;
+  email?: z.ZodString;
+  password?: z.ZodString;
+  key_pix?: z.ZodString;
+  status?: z.ZodString;
+  user_at?: z.ZodString;
+  city?: z.ZodString;
+  datebirth?: z.ZodString;
+  genero?: z.ZodString;
+  nivel?: z.ZodString;
+  permission?: z.ZodString;
+  image?: z.ZodString;
+  unit?: z.ZodString;
+  formation?: z.ZodString;
+  course?: z.ZodString;
+  situation?: z.ZodString;
+  indicator_id?: z.ZodString;
+  consultant?: z.ZodString;
+  lead_at?: z.ZodString;
+  segments?: z.ZodString;
+  courses?: z.ZodString;
+  date?: z.ZodString;
+  search?: z.ZodString;
+}
 
 type NamesSearchs = "search";
 
 export type Searchs = Array<{
-  id: number;
+  id?: number;
   propsInput: UseFormRegisterReturn<string>;
   placeholder: string;
   name: NamesSearchs;

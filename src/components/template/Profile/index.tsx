@@ -3,77 +3,32 @@
 import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import FormDashboard from "@/components/organisms/FormDashboard";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { templateform } from "./templateForm";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useHandlerValuesField } from "@/hooks/use-hanlder-values-field";
-
-const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-
-const userSchema = z.object({
-  name: z.string().min(2, { message: "Must be 2 or more characters long" }),
-  last_name: z.string().min(2),
-  image: z
-    .any()
-    .refine((files) => files?.length == 1, "Image is required.")
-    .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`
-    )
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
-    ),
-  whatsapp: z.string().min(2),
-  documento: z.string().min(2),
-  datebirth: z.string().min(2),
-  genero: z.string().min(2),
-  email: z.string().min(2),
-  password: z.string().min(2),
-  nivel: z.string().min(2),
-  status: z.string().min(2),
-  date: z.string().min(2),
-  permission: z.string().min(2),
-});
-
-type UserSchema = z.infer<typeof userSchema>;
-
 const Profile: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm<UserSchema>({
-    resolver: zodResolver(userSchema),
-  });
-  const { setValuesFieldFromData } = useHandlerValuesField();
+  const [user, setUser] = useState<{} | null>(null);
 
-  const user = {
-    name: "Argério",
-    last_name: "Queiroz",
-    whatsapp: "",
-    documento: "",
-    key_pix: "",
-    email: "",
-    city: "",
-    status: "",
-    user_at: "",
-  };
+  function getUser(): Promise<any> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const data = {
+          name: "Argério",
+          last_name: "Queiroz",
+          whatsapp: "34234234",
+          document: "23424",
+          key_pix: "23424234",
+          email: "asdasdasds",
+          city: "weewewrw",
+          status: 1,
+          user_at: "2012-12-12",
+        };
+        setUser(data);
+        resolve(data);
+      }, 2000);
+    });
+  }
 
-  useEffect(() => {
-    setValuesFieldFromData(templateform, setValue);
-  });
-
-  function handleRegister(data: UserSchema) {
+  function handleRegister(data: object) {
     console.log("data FormDashboard: ", data);
   }
 
@@ -85,12 +40,10 @@ const Profile: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            setValue={setValue}
+            loading={!user}
             handlerForm={handleRegister}
             templateform={templateform}
-            handleSubmit={handleSubmit}
-            register={register}
-            errors={errors}
+            getDefaultValues={getUser}
           />
         </div>
       </div>

@@ -24,12 +24,14 @@ const FormFieldText = ({
   type,
   props,
   error,
+  ...rest
 }: FormFieldTextProps) => {
   return (
     <div>
       {label && <LabelForm htmlFor={props.name} label={label} />}
       <div className="mt-2">
         <InputForm
+          {...rest}
           propsInput={{ ...props }}
           type={type}
           placeholder={placeholder}

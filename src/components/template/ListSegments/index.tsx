@@ -10,7 +10,7 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, OrderItemsList, Searchs } from "@/types/general";
+import { ItemListType, OrderItemsHeaderList, Searchs } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -19,11 +19,11 @@ import { z } from "zod";
 const ListSegments: React.FC = () => {
   const { listTransform } = useItemListTransform();
 
-  const orderItemsList: OrderItemsList = {
+  const OrderItemsHeaderList: OrderItemsHeaderList = {
     itemsHeader: ["N", "Nome", ""],
     itemsList: ["name", "", "", "", ""],
   };
-  let list = listTransform(mockServer.segments, orderItemsList.itemsList);
+  let list = listTransform(mockServer.segments, OrderItemsHeaderList.itemsList);
 
   const searchSchema = z.object({
     search: z.string(),
@@ -67,7 +67,7 @@ const ListSegments: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={orderItemsList.itemsHeader}
+            itemsHeader={OrderItemsHeaderList.itemsHeader}
             avatar={renderAvatar}
             list={list}
             listActions={mockServer.listActionsIndicators}

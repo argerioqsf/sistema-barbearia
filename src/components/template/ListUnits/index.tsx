@@ -13,7 +13,7 @@ import { useItemListTransform } from "@/hooks/use-item-list-transform";
 import {
   ItemListType,
   UserType,
-  OrderItemsList,
+  OrderItemsHeaderList,
   Searchs,
 } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,11 +24,11 @@ import { z } from "zod";
 
 const ListUnits: React.FC = () => {
   const { listTransform } = useItemListTransform();
-  const orderItemsList: OrderItemsList = {
+  const OrderItemsHeaderList: OrderItemsHeaderList = {
     itemsHeader: ["N", "NOME", "QUANT. SEGMENTOS", " QUANT. CURSOS", ""],
     itemsList: ["name", "", "segments.length", "courses.length", ""],
   };
-  let list = listTransform(mockServer.unidades, orderItemsList.itemsList);
+  let list = listTransform(mockServer.unidades, OrderItemsHeaderList.itemsList);
 
   const searchSchema = z.object({
     search: z.string().min(2, { message: "Must be 2 or more characters long" }),
@@ -74,7 +74,7 @@ const ListUnits: React.FC = () => {
 
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={orderItemsList.itemsHeader}
+            itemsHeader={OrderItemsHeaderList.itemsHeader}
             avatar={renderAvatar}
             list={list}
             listActions={mockServer.listActionsLeads}

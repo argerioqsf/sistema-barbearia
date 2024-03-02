@@ -1,8 +1,5 @@
 "use client";
 
-import { EditIcon } from "@/components/Icons/EditIcon";
-import { EyeIcon } from "@/components/Icons/EyeIcon";
-import { LockIcon } from "@/components/Icons/LockIcon";
 import { Text } from "@/components/atoms";
 import { mockServer } from "@/components/config/mockServer";
 import { ContainerDashboard } from "@/components/molecules";
@@ -10,16 +7,8 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import {
-  IndicatorType,
-  IndicatorsType,
-  ItemListType,
-  UserType,
-  OrderItemsList,
-  Searchs,
-} from "@/types/general";
+import { ItemListType, OrderItemsHeaderList, Searchs } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -27,10 +16,47 @@ import { z } from "zod";
 const ListIndicators = () => {
   const { listTransform } = useItemListTransform();
 
-  const orderItemsList: OrderItemsList = {
+  const OrderItemsHeaderList: OrderItemsHeaderList = {
     itemsHeader: ["N", "NOME", "CIDADE", "DATA", "LINK"],
     itemsList: ["name", "", "cidade", "data", "link"],
   };
+
+  type ListActionsIndicators = {
+    id: number;
+    onclick?: (id: any) => void;
+    icon: string;
+    href?: string;
+    name: string;
+  };
+
+  const listActionsIndicators: ListActionsIndicators[] = [
+    {
+      id: 1,
+      icon: "Edit",
+      name: "Editar",
+      onclick: (id: string) => {
+        console.log("editar: ", id);
+      },
+    },
+    {
+      id: 2,
+      icon: "Eye",
+      href: "indicators/detail/",
+      name: "Vizualizar",
+    },
+    {
+      id: 3,
+      icon: "Lock",
+      href: "home",
+      name: "Desativar",
+    },
+    {
+      id: 4,
+      icon: "Link",
+      href: "home",
+      name: "Link",
+    },
+  ];
 
   const searchSchema = z.object({
     search: z.string().min(2, { message: "Must be 2 or more characters long" }),
@@ -55,7 +81,7 @@ const ListIndicators = () => {
     },
   ];
 
-  let list = listTransform(mockServer.indicators, orderItemsList.itemsList);
+  let list = listTransform(mockServer.indicators, OrderItemsHeaderList.itemsList);
 
   function handlerForm(data: SearchSchemaType) {
     console.log("handlerForm Search: ", data);
@@ -72,14 +98,14 @@ const ListIndicators = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
+          <Search register={register} handlerForm={handleSubmit(handlerForm)} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={orderItemsList.itemsHeader}
+            itemsHeader={OrderItemsHeaderList.itemsHeader}
             avatar={renderAvatar}
             list={list}
-            listActions={mockServer.listActionsIndicators}
+            listActions={listActionsIndicators}
             hrefButton="dashboard/indicators/register"
             textButton="Novo indicador"
             title="Indicadores"

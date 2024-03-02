@@ -5,6 +5,7 @@ import { Avatar } from "..";
 import { Text } from "@/components/atoms";
 import { ListActionsProps } from "@/types/general";
 import DropDownDots from "../DropDownDots";
+import IconAction from "../IconAction";
 
 type ItemListProps = {
   listActions: Array<ListActionsProps>;
@@ -14,6 +15,7 @@ type ItemListProps = {
   info3: string;
   info4: string;
   info5: string;
+  id: number | string;
 };
 
 const ItemList = ({
@@ -24,6 +26,7 @@ const ItemList = ({
   info3,
   info4,
   info5,
+  id,
 }: ItemListProps) => {
   return (
     <div className="w-full relative rounded-full bg-gray-200 flex flex-row justify-start items-center p-3">
@@ -69,8 +72,9 @@ const ItemList = ({
 
       <div className="ml-4 w-full hidden sm:flex flex-row justify-center gap-2 items-center whitespace-nowrap overflow-hidden text-ellipsis">
         {listActions.map((action) => (
-          <Avatar
-            href={action.href}
+          <IconAction
+            href={`${action.href}${id}`}
+            onClick={() => action?.onclick && action?.onclick(id)}
             icon={action.icon}
             key={action.id}
             size={35}

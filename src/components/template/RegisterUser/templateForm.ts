@@ -49,7 +49,7 @@ export const templateform: Templateform = {
               label: "Whatsapp",
             },
             {
-              id: "documento",
+              id: "document",
               required: true,
               type: "text",
               label: "Documento",
@@ -93,6 +93,9 @@ export const templateform: Templateform = {
               required: true,
               type: "password",
               label: "Senha",
+              roles: {
+                minCaracters: 6
+              }
             },
           ],
         },

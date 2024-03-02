@@ -4,7 +4,6 @@ import { twMerge } from "tailwind-merge";
 
 type InputFormPros = {
   type?: string;
-  name?: string;
   placeholder?: string;
   className?: string;
   propsInput: UseFormRegisterReturn<string>;
@@ -12,13 +11,14 @@ type InputFormPros = {
 
 const InputForm = ({
   type,
-  name,
   placeholder,
   className,
   propsInput,
+  ...rest
 }: InputFormPros) => {
   return (
     <input
+      {...rest}
       {...propsInput}
       type={type}
       className={twMerge("block w-full", className)}

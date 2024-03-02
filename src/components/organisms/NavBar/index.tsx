@@ -18,7 +18,7 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
   return (
     <nav
       className={twMerge(
-        "flex max-w-full z-40 w-full h-auto items-center justify-center fixed top-0 bg-gray-200"
+        "flex max-w-full z-40 w-full h-auto items-center justify-center fixed top-0 bg-gray-300"
       )}
     >
       <header

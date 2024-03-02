@@ -1,3 +1,4 @@
+import { Button } from "@/components/atoms";
 import LinkDefault from "@/components/atoms/LinkDefault";
 import { useHandlerIcons } from "@/hooks/use-handler-icons";
 import Image from "next/image";
