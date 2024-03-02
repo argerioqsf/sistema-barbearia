@@ -14,20 +14,22 @@ import {
 import React from "react";
 
 type FormDashboardProps = {
-  templateform: Templateform;
-  handlerForm: (state: any) => void;
+  templateform?: Templateform;
+  handlerForm?: (state: any) => void;
   loading?: boolean;
   getDefaultValues?: ()=> Promise<any>
+  title?: string
 };
 
 const FormDashboard = ({
-  handlerForm,
+  handlerForm = ()=>{},
   templateform,
   loading = false,
-  getDefaultValues
+  getDefaultValues,
+  title
 }: FormDashboardProps) => {
 
-  const { register, handleSubmit, errors  } = useHandlerForm(templateform.sections,getDefaultValues)
+  const { register, handleSubmit, errors  } = useHandlerForm(templateform?.sections,getDefaultValues)
   const handlerFieldRender = (field: FieldsTemplateForm) => {
     const id = field.id
     const propsField = {
@@ -67,7 +69,7 @@ const FormDashboard = ({
       <Form onSubmit={handleSubmit(handlerForm)} className="mb-8">
         <div className="w-[90vw] md:w-full flex flex-row justify-between items-center">
           <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
-            {templateform?.title}
+            {title??templateform?.title}
           </Text>
           {templateform?.textButton && (
             <Button

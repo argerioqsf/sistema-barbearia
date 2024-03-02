@@ -1,5 +1,5 @@
 import { mockServer } from "@/components/config/mockServer";
-import { IndicatorType } from "@/types/general";
+import { IndicatorType, Lead } from "@/types/general";
 
 export function useHandlerMockServer() {
   function getIndicatorForId(id: number | string): IndicatorType[] {
@@ -9,5 +9,12 @@ export function useHandlerMockServer() {
     });
   }
 
-  return { getIndicatorForId };
+  function getLeadForId(id: number | string): Lead[] {
+    const indicators = mockServer.leads;
+    return indicators.filter((lead) => {
+      return lead.id == id;
+    });
+  }
+
+  return { getIndicatorForId, getLeadForId };
 }

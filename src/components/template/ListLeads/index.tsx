@@ -70,7 +70,7 @@ const ListLeads: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
+          <Search handlerForm={handleSubmit(handlerForm)} register={register}/>
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing

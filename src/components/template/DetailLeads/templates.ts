@@ -6,26 +6,34 @@ export const templateform: Templateform = {
   sections: [
     {
       id: 1,
-      title: "Dados do Indicador",
+      title: "Dados Pessoais",
       boxs: [
         {
           id: 1,
+          fields: [
+            {
+              id: "training_course",
+              required: true,
+              type: "text",
+              label: "Formação",
+              messageError: "Must be 2 or more characters long",
+            },
+          ],
+        },
+        {
+          id: 2,
           fields: [
             {
               id: "name",
               required: true,
               type: "text",
               label: "Nome",
-              messageError: "Must be 2 or more characters long",
-              disabled: true,
             },
             {
-              id: "training_course",
+              id: "email",
               required: true,
               type: "text",
-              label: "Curso",
-              messageError: "Must be 2 or more characters long",
-              disabled: true,
+              label: "E-mail",
             },
           ],
         },
@@ -33,25 +41,22 @@ export const templateform: Templateform = {
           id: 3,
           fields: [
             {
-              id: "whatsapp",
-              required: true,
-              type: "text",
-              label: "Whatsapp",
-              disabled: true,
-            },
-            {
               id: "document",
               required: true,
               type: "text",
               label: "Documento",
-              disabled: true,
             },
             {
-              id: "key_pix",
+              id: "whatsapp",
               required: true,
               type: "text",
-              label: "Chave pix",
-              disabled: true,
+              label: "Whatsapp",
+            },
+            {
+              id: "status",
+              required: true,
+              type: "text",
+              label: "Situação",
             },
           ],
         },
@@ -59,37 +64,33 @@ export const templateform: Templateform = {
           id: 4,
           fields: [
             {
-              id: "email",
+              id: "indicator_id",
               required: true,
-              type: "text",
-              label: "E-mail",
-              disabled: true,
-            },
-          ],
-        },
-        {
-          id: 5,
-          fields: [
-            {
-              id: "city",
-              required: true,
-              type: "text",
-              label: "Cidade-UF",
-              disabled: true,
+              type: "select",
+              label: "Indicador",
+              options: [
+                {
+                  value: 2,
+                  label: "Argério Queiroz",
+                },
+                {
+                  value: 3,
+                  label: "Damiles Arruda",
+                },
+              ],
             },
             {
-              id: "status",
+              id: "consultant",
               required: true,
-              type: "text",
-              label: "Status",
-              disabled: true,
+              type: "select",
+              label: "Consultor",
+              options: [],
             },
             {
               id: "created_at",
               required: true,
               type: "date",
-              label: "Data",
-              disabled: true,
+              label: "Cadastrado em",
             },
           ],
         },

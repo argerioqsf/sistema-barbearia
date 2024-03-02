@@ -5,28 +5,21 @@ import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import { useHandlerMockServer } from "@/hooks/use-handler-mock-server";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { IndicatorType, ItemListType } from "@/types/general";
+import { IndicatorType, ItemListType, Lead } from "@/types/general";
 import React, { useState } from "react";
 import * as templates from "./templates";
 import DetailDefault from "@/components/organisms/DetailDefault";
 
-const DetailIndicator = ({ id }: { id: string }) => {
+const DetailLeads = ({ id }: { id: string }) => {
   const { listTransform } = useItemListTransform();
-  const { getIndicatorForId } = useHandlerMockServer();
-  const [indicator, setIndicator] = useState<IndicatorType | null>();
-  const [list, setList] = useState<ItemListType[] | undefined>();
+  const { getLeadForId } = useHandlerMockServer();
+  const [indicator, setIndicator] = useState<Lead | null>();
 
   function getIndicator(): Promise<any> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        const data = getIndicatorForId(id);
+        const data = getLeadForId(id);
         setIndicator({ ...data[0] });
-        const list_: ItemListType[] = listTransform(
-          data[0]?.leads,
-          templates?.orderItemsHeaderList.itemsList
-        );
-        setList(list_);
-        console.log("resolve:", data[0]);
         resolve(data[0]);
       }, 2000);
     });
@@ -58,11 +51,10 @@ const DetailIndicator = ({ id }: { id: string }) => {
           templates={templates}
           titleForm={indicator?.name}
           values={indicator}
-          list={list}
         />
       </div>
     </ContainerDashboard>
   );
 };
 
-export default DetailIndicator;
+export default DetailLeads;

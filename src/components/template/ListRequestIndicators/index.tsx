@@ -28,8 +28,8 @@ const ListRequestIndicators = () => {
   const { listTransform } = useItemListTransform();
 
   const OrderItemsHeaderList: OrderItemsHeaderList = {
-    itemsHeader: ["N", "AVATAR", "NOME", "CIDADE", "DATA", ""],
-    itemsList: ["name", "", "cidade", "data", ""],
+    itemsHeader: ["N", "NOME", "CIDADE", "DATA", ""],
+    itemsList: ["name", "", "city", "user_at", ""],
   };
 
   const searchSchema = z.object({

@@ -4,10 +4,7 @@ import { Button, Text } from "@/components/atoms";
 import { HeaderList } from "@/components/molecules";
 import ItemList from "@/components/molecules/ItemList";
 import { useHandlerRouter } from "@/hooks/use-handler-router";
-import {
-  ItemListType,
-  ListActionsProps,
-} from "@/types/general";
+import { ItemListType, ListActionsProps } from "@/types/general";
 import React from "react";
 import { twJoin, twMerge } from "tailwind-merge";
 
@@ -15,10 +12,10 @@ type ListingProps = {
   title: string;
   textButton: string;
   hrefButton: string;
-  list: Array<ItemListType> | null;
+  list: Array<ItemListType> | undefined;
   listActions: Array<ListActionsProps>;
-  avatar: (item: ItemListType, index: number) => React.JSX.Element;
-  itemsHeader: Array<string>;
+  avatar?: (item: ItemListType, index: number) => React.JSX.Element;
+  itemsHeader?: Array<string>;
   variant?: "default" | "segmented";
 };
 
@@ -28,7 +25,7 @@ const Listing = ({
   textButton,
   hrefButton,
   list,
-  avatar,
+  avatar = (item, index) => <></>,
   itemsHeader,
   variant = "default",
 }: ListingProps) => {
@@ -60,7 +57,7 @@ const Listing = ({
           </Button>
         )}
       </div>
-      {itemsHeader.length > 0 && (
+      {itemsHeader && itemsHeader.length > 0 && (
         <div
           className={twMerge(
             variant === "segmented"
@@ -92,7 +89,11 @@ const Listing = ({
             />
           ))}
         </div>
-      ):<div className="w-full h-[20vh] p-4 flex justify-center items-center"><Text>Loading...</Text></div>}
+      ) : (
+        <div className="w-full h-[20vh] p-4 flex justify-center items-center">
+          <Text>Loading...</Text>
+        </div>
+      )}
     </div>
   );
 };

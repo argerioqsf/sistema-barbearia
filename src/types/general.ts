@@ -58,12 +58,17 @@ export type IndicatorType = {
   leads?: Lead[];
 };
 
-type Lead = {
+export type Lead = {
   id: number;
   name: string;
   whatsapp: string;
+  document: string;
+  key_pix: string;
+  email: string;
+  city: string;
   training_course: string;
-  indicator_id: string;
+  indicator_id?: number;
+  indicator: IndicatorType | {};
   status: string;
   created_at: string;
   updated_at: string;
@@ -78,14 +83,77 @@ export type UserHookType =
   | "whatsapp"
   | "training_course"
   | `indicator.${string}`
-  | "cidade"
+  | "city"
   | "link"
   | "data"
+  | "user_at"
   | "number_courses"
   | "created_at"
   | `segments.${string}`
   | `courses.${string}`
   | "quant_leads";
+
+type typesForIdFieldsForm =
+  | "name"
+  | "last_name"
+  | "status"
+  | "date"
+  | "whatsapp"
+  | "document"
+  | "datebirth"
+  | "genero"
+  | "email"
+  | "password"
+  | "nivel"
+  | "permission"
+  | "image"
+  | "key_pix"
+  | "user_at"
+  | "city"
+  | "unit"
+  | "formation"
+  | "course"
+  | "document"
+  | "situation"
+  | "indicator_id"
+  | "consultant"
+  | "lead_at"
+  | "segments"
+  | "courses"
+  | "search"
+  | "created_at"
+  | "training_course";
+
+export type FieldsFormSchema = {
+  name?: z.ZodString;
+  last_name?: z.ZodString;
+  whatsapp?: z.ZodString;
+  document?: z.ZodString;
+  email?: z.ZodString;
+  password?: z.ZodString;
+  key_pix?: z.ZodString;
+  status?: z.ZodString;
+  user_at?: z.ZodString;
+  city?: z.ZodString;
+  datebirth?: z.ZodString;
+  genero?: z.ZodString;
+  nivel?: z.ZodString;
+  permission?: z.ZodString;
+  image?: z.ZodString;
+  unit?: z.ZodString;
+  formation?: z.ZodString;
+  course?: z.ZodString;
+  situation?: z.ZodString;
+  indicator_id?: z.ZodNumber;
+  consultant?: z.ZodString;
+  lead_at?: z.ZodString;
+  segments?: z.ZodString;
+  courses?: z.ZodString;
+  date?: z.ZodString;
+  search?: z.ZodString;
+  training_course?: z.ZodString;
+  created_at?: z.ZodString;
+};
 
 export type ItemListType = {
   id: number;
@@ -135,75 +203,17 @@ export type FieldsTemplateForm = {
   options?: Array<OptionsTemplateForm>;
   value?: string | number;
   disabled?: boolean;
-  roles?: Roles
+  roles?: Roles;
 };
 
 type Roles = {
-  minCaracters?: number
-}
+  minCaracters?: number;
+};
 
 export type OptionsTemplateForm = {
   label: string;
   value: number | null;
 };
-
-type typesForIdFieldsForm =
-  | "name"
-  | "last_name"
-  | "status"
-  | "date"
-  | "whatsapp"
-  | "document"
-  | "datebirth"
-  | "genero"
-  | "email"
-  | "password"
-  | "nivel"
-  | "permission"
-  | "image"
-  | "key_pix"
-  | "user_at"
-  | "city"
-  | "unit"
-  | "formation"
-  | "course"
-  | "document"
-  | "situation"
-  | "indicator_id"
-  | "consultant"
-  | "lead_at"
-  | "segments"
-  | "courses"
-  | "search";
-
-export type FieldsFormSchema = {
-  name?: z.ZodString;
-  last_name?: z.ZodString;
-  whatsapp?: z.ZodString;
-  document?: z.ZodString;
-  email?: z.ZodString;
-  password?: z.ZodString;
-  key_pix?: z.ZodString;
-  status?: z.ZodString;
-  user_at?: z.ZodString;
-  city?: z.ZodString;
-  datebirth?: z.ZodString;
-  genero?: z.ZodString;
-  nivel?: z.ZodString;
-  permission?: z.ZodString;
-  image?: z.ZodString;
-  unit?: z.ZodString;
-  formation?: z.ZodString;
-  course?: z.ZodString;
-  situation?: z.ZodString;
-  indicator_id?: z.ZodString;
-  consultant?: z.ZodString;
-  lead_at?: z.ZodString;
-  segments?: z.ZodString;
-  courses?: z.ZodString;
-  date?: z.ZodString;
-  search?: z.ZodString;
-}
 
 type NamesSearchs = "search";
 

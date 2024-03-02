@@ -17,8 +17,8 @@ const ListIndicators = () => {
   const { listTransform } = useItemListTransform();
 
   const OrderItemsHeaderList: OrderItemsHeaderList = {
-    itemsHeader: ["N", "NOME", "CIDADE", "DATA", "LINK"],
-    itemsList: ["name", "", "cidade", "data", "link"],
+    itemsHeader: ["N", "NOME", "CIDADE", "DATA", ""],
+    itemsList: ["name", "", "city", "user_at", ""],
   };
 
   type ListActionsIndicators = {
@@ -41,7 +41,7 @@ const ListIndicators = () => {
     {
       id: 2,
       icon: "Eye",
-      href: "indicators/detail/",
+      href: "indicators/",
       name: "Vizualizar",
     },
     {
@@ -71,15 +71,6 @@ const ListIndicators = () => {
   } = useForm<SearchSchemaType>({
     resolver: zodResolver(searchSchema),
   });
-
-  const searchs: Searchs = [
-    {
-      id: 1,
-      propsInput: { ...register("search") },
-      placeholder: "Search...",
-      name: "search",
-    },
-  ];
 
   let list = listTransform(mockServer.indicators, OrderItemsHeaderList.itemsList);
 
