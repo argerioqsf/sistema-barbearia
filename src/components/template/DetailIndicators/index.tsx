@@ -5,29 +5,32 @@ import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import { useHandlerMockServer } from "@/hooks/use-handler-mock-server";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { IndicatorType, ItemListType } from "@/types/general";
-import React, { useState } from "react";
-import * as templates from "./templates";
+import { Form, IndicatorType, InfoList, ItemListType } from "@/types/general";
+import React, { useEffect, useState } from "react";
 import DetailDefault from "@/components/organisms/DetailDefault";
+import { templates } from "./templates";
 
 const DetailIndicator = ({ id }: { id: string }) => {
   const { listTransform } = useItemListTransform();
   const { getIndicatorForId } = useHandlerMockServer();
   const [indicator, setIndicator] = useState<IndicatorType | null>();
-  const [list, setList] = useState<ItemListType[] | undefined>();
+  const [lists, setLists] = useState<InfoList[]>([templates.infoList]);
+  const [loading, setLoading] = useState(false);
 
   function getIndicator(): Promise<any> {
+    setLoading(true);
     return new Promise((resolve) => {
       setTimeout(() => {
-        const data = getIndicatorForId(id);
-        setIndicator({ ...data[0] });
-        const list_: ItemListType[] = listTransform(
-          data[0]?.leads,
-          templates?.orderItemsHeaderList.itemsList
+        const response = getIndicatorForId(id)[0];
+        setIndicator({ ...response });
+        const list: ItemListType[] = listTransform(
+          response?.leads,
+          templates?.infoList?.itemsList
         );
-        setList(list_);
-        console.log("resolve:", data[0]);
-        resolve(data[0]);
+        lists[0].list = list;
+        setLists([...lists]);
+        setLoading(false);
+        resolve(response);
       }, 2000);
     });
   }
@@ -44,6 +47,15 @@ const DetailIndicator = ({ id }: { id: string }) => {
     console.log("data FormDashboard: ", data);
   }
 
+  const forms: Form[] = [
+    {
+      template: templates.templateform,
+      handlerForm: handleRegister,
+      getDefaultValues: getIndicator,
+      loading: loading,
+    },
+  ];
+
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4">
@@ -55,10 +67,10 @@ const DetailIndicator = ({ id }: { id: string }) => {
           handlerFormSearch={handlerFormSearch}
           handleRegister={handleRegister}
           getDefaultValues={getIndicator}
-          templates={templates}
           titleForm={indicator?.name}
           values={indicator}
-          list={list}
+          lists={lists}
+          forms={forms}
         />
       </div>
     </ContainerDashboard>

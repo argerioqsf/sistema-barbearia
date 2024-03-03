@@ -912,7 +912,7 @@ export const mockServer = {
       id: 2,
       onclick: () => {},
       icon: "Eye",
-      href: "home",
+      href: "",
       name: "Vizualizar",
     },
     {
@@ -965,7 +965,7 @@ export const mockServer = {
       id: 2,
       onclick: () => {},
       icon: "Eye",
-      href: "leads/",
+      href: "dashboard/leads/",
       name: "Vizualizar",
     },
   ],

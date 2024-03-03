@@ -71,9 +71,9 @@ const FormDashboard = ({
       <Form onSubmit={handleSubmit(handlerForm)} className="mb-8">
         <div className="w-[90vw] md:w-full flex flex-row justify-between items-center">
           <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
-            {title ?? templateform?.title}
+            {!loading && (title ?? templateform?.title)}
           </Text>
-          {templateform?.textButton && (
+          {!loading && templateform?.textButton && (
             <Button
               className="rounded-xl h-10 flex justify-center items-center px-2 sm:px-5 md:px-10 bg-secondary-50 text-white"
               type="submit"

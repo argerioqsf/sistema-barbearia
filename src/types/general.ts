@@ -30,9 +30,14 @@ export type ListActionsProps = {
   name?: string;
 };
 
-export type OrderItemsHeaderList = {
+export type InfoList = {
   itemsHeader: Array<string>;
   itemsList: FieldsList;
+  listActions?: ListActionsProps[];
+  title?: string;
+  list?: ItemListType[];
+  hrefButton?: string;
+  textButton?: string;
 };
 
 export type UserType = {
@@ -123,7 +128,10 @@ type typesForIdFieldsForm =
   | "courses"
   | "search"
   | "created_at"
-  | "training_course";
+  | "training_course"
+  | "course_id"
+  | "title"
+  | "describe";
 
 export type FieldsFormSchema = {
   name?: z.ZodString;
@@ -154,6 +162,9 @@ export type FieldsFormSchema = {
   search?: z.ZodString;
   training_course?: z.ZodString;
   created_at?: z.ZodString;
+  course_id?: z.ZodNumber;
+  title?: z.ZodString;
+  describe?: z.ZodString;
 };
 
 export type ItemListType = {
@@ -235,4 +246,11 @@ export type TimeLine = {
   describe: string;
   status: string;
   created_at: string;
+};
+
+export type Form = {
+  template: Templateform;
+  handlerForm: (state: any) => void;
+  getDefaultValues?: () => Promise<any>;
+  loading?: boolean;
 };

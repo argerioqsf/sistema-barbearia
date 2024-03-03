@@ -1,6 +1,7 @@
 import { Button } from "@/components/atoms";
 import LinkDefault from "@/components/atoms/LinkDefault";
 import { useHandlerIcons } from "@/hooks/use-handler-icons";
+import { useHandlerRouter } from "@/hooks/use-handler-router";
 import Image from "next/image";
 import React from "react";
 import { twMerge } from "tailwind-merge";
@@ -25,8 +26,12 @@ const IconAction: React.FC<AvatarProps> = ({
   onClick,
 }) => {
   const renderIcon = useHandlerIcons(icon);
+  const { generatePath } = useHandlerRouter();
   return href.length > 0 ? (
-    <LinkDefault className="flex justify-center items-center" href={href}>
+    <LinkDefault
+      className="flex justify-center items-center"
+      href={generatePath(href)}
+    >
       <span
         className={twMerge(
           "p-2 rounded-full flex justify-center items-center border-2",

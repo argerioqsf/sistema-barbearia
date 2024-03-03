@@ -9,11 +9,11 @@ import React from "react";
 import { twJoin, twMerge } from "tailwind-merge";
 
 type ListingProps = {
-  title: string;
-  textButton: string;
-  hrefButton: string;
+  title?: string;
+  textButton?: string;
+  hrefButton?: string;
   list: Array<ItemListType> | undefined;
-  listActions: Array<ListActionsProps>;
+  listActions?: Array<ListActionsProps>;
   avatar?: (item: ItemListType, index: number) => React.JSX.Element;
   itemsHeader?: Array<string>;
   variant?: "default" | "segmented";
@@ -68,26 +68,27 @@ const Listing = ({
           <HeaderList itemsHeader={itemsHeader} />
         </div>
       )}
-      {list && list.length > 0 ? (
+      {list != undefined && list.length > 0 ? (
         <div
           className={twMerge(
             "w-full mt-4 flex flex-col gap-4 pb-4 justify-start items-center",
             variant === "segmented" && "w-[88vw] lg:w-[93vw]"
           )}
         >
-          {list?.map((item, index) => (
-            <ItemList
-              key={item.id}
-              listActions={listActions}
-              avatar={avatar(item, index)}
-              info1={item.info1}
-              info2={item.info2}
-              info3={item.info3}
-              info4={item.info4}
-              info5={item.info5}
-              id={item.id}
-            />
-          ))}
+          {listActions &&
+            list?.map((item, index) => (
+              <ItemList
+                key={item.id}
+                listActions={listActions}
+                avatar={avatar(item, index)}
+                info1={item.info1}
+                info2={item.info2}
+                info3={item.info3}
+                info4={item.info4}
+                info5={item.info5}
+                id={item.id}
+              />
+            ))}
         </div>
       ) : (
         <div className="w-full h-[20vh] p-4 flex justify-center items-center">

@@ -1,8 +1,8 @@
-import { OrderItemsHeaderList, Templateform } from "@/types/general";
+import { ListActionsProps, InfoList, Templateform } from "@/types/general";
 
 export const templateform: Templateform = {
-  title: "Loading...",
-  textButton: "",
+  title: "Lead",
+  textButton: "Editar",
   sections: [
     {
       id: 1,
@@ -99,6 +99,74 @@ export const templateform: Templateform = {
   ],
 };
 
+export const templateformTimeLine: Templateform = {
+  title: "Linha do Tempo",
+  textButton: "Cadastrar",
+  sections: [
+    {
+      id: 1,
+      title: "Registro de status",
+      boxs: [
+        {
+          id: 1,
+          fields: [
+            {
+              id: "course_id",
+              required: true,
+              type: "text",
+              label: "Curso",
+              messageError: "Must be 2 or more characters long",
+            },
+          ],
+        },
+        {
+          id: 2,
+          fields: [
+            {
+              id: "title",
+              required: true,
+              type: "text",
+              label: "Nome",
+            },
+          ],
+        },
+        {
+          id: 3,
+          fields: [
+            {
+              id: "describe",
+              required: true,
+              type: "text",
+              label: "Descrição",
+            },
+          ],
+        },
+        {
+          id: 4,
+          fields: [
+            {
+              id: "status",
+              required: true,
+              type: "select",
+              label: "Status",
+              options: [
+                {
+                  value: 2,
+                  label: "Interessado",
+                },
+                {
+                  value: 3,
+                  label: "Sem interesse",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 export const templateformSearch: Templateform = {
   title: "Search",
   textButton: "",
@@ -123,7 +191,7 @@ export const templateformSearch: Templateform = {
   ],
 };
 
-export const orderItemsHeaderList: OrderItemsHeaderList = {
+export const infoList: InfoList = {
   itemsHeader: ["N", "NOME / WHATSAPP", "CURSO", "INDICADOR", "STATUS"],
   itemsList: [
     "name",
