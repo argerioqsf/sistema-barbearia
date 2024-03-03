@@ -47,7 +47,7 @@ const ListSegments: React.FC = () => {
             itemsHeader={infoList.itemsHeader}
             avatar={renderAvatar}
             list={list}
-            listActions={mockServer.listActionsIndicators}
+            listActions={mockServer.listActionsSegments}
             hrefButton="dashboard/segments/register"
             textButton="Novo Segmento"
             title="Segmentos"

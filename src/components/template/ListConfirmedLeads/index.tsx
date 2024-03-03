@@ -9,17 +9,10 @@ import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
 import { ItemListType } from "@/types/general";
 import React from "react";
-import { infoList, templateformSearch } from "./templates";
-import { useHandlerForm } from "@/hooks/use-hanlder-form";
+import { infoList } from "./templates";
 
 const ListConfirmedLeads: React.FC = () => {
   const { listTransform } = useItemListTransform();
-
-  const {
-    register: registerS,
-    handleSubmit: handleSubmitS,
-    errors: errorsS,
-  } = useHandlerForm(templateformSearch.sections);
 
   let list = listTransform(mockServer.leads, infoList.itemsList);
 
@@ -38,7 +31,7 @@ const ListConfirmedLeads: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handleSubmitS(handlerForm)} />
+          <Search handlerForm={handlerForm} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing

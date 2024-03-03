@@ -8,10 +8,7 @@ import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
 import { ItemListType, InfoList, Searchs } from "@/types/general";
-import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 const ListCourses: React.FC = () => {
   const { listTransform } = useItemListTransform();
@@ -21,36 +18,13 @@ const ListCourses: React.FC = () => {
   };
   let list = listTransform(mockServer.cursos, infoList.itemsList);
 
-  const searchSchema = z.object({
-    search: z.string().min(2, { message: "Must be 2 or more characters long" }),
-  });
-
-  type SearchSchemaType = z.infer<typeof searchSchema>;
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SearchSchemaType>({
-    resolver: zodResolver(searchSchema),
-  });
-
   const renderAvatar = (item: ItemListType, index: number) => {
     return <Text className="text-black">{index + 1}</Text>;
   };
 
-  function handlerForm(data: SearchSchemaType) {
+  function handlerForm(data: any) {
     console.log("handlerForm Search: ", data);
   }
-
-  const searchs: Searchs = [
-    {
-      id: 1,
-      propsInput: { ...register("search") },
-      placeholder: "Search...",
-      name: "search",
-    },
-  ];
 
   return (
     <ContainerDashboard>
@@ -68,7 +42,7 @@ const ListCourses: React.FC = () => {
             itemsHeader={infoList.itemsHeader}
             avatar={renderAvatar}
             list={list}
-            listActions={mockServer.listActionsLeads}
+            listActions={mockServer.listActionsCourses}
             hrefButton="dashboard/courses/register"
             textButton="Novo Curso"
             title="Cursos"

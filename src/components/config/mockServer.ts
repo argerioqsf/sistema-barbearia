@@ -1,6 +1,34 @@
-export type MockServer = typeof mockServer;
+import {
+  Course,
+  IndicatorType,
+  Lead,
+  ListAction,
+  Segment,
+  TimeLine,
+  Unit,
+  UserType,
+} from "@/types/general";
 
-export const mockServer = {
+export type MockServer = {
+  indicators: IndicatorType[];
+  leads: Lead[];
+  users: UserType[];
+  segments: Segment[];
+  unidades: Unit[];
+  cursos: Course[];
+  time_line: TimeLine[];
+  listActionsIndicators: ListAction[];
+  listActionsUsers: ListAction[];
+  listActionsLeads: ListAction[];
+  listActionsNewLeads: ListAction[];
+  listActionsConfirmedLeads: ListAction[];
+  listActionsWaitingConfirmationLeads: ListAction[];
+  listActionsUnits: ListAction[];
+  listActionsCourses: ListAction[];
+  listActionsSegments: ListAction[];
+};
+
+export const mockServer: MockServer = {
   indicators: [
     {
       id: 1,
@@ -686,85 +714,139 @@ export const mockServer = {
       name: "Argério Queiroz",
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
-      status: "Consultor entrou em contato",
+      status: 1,
       image:
         "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
+      last_name: "Queiroz",
+      whatsapp: "123432423324",
+      document: "24223423423444",
+      datebirth: "2012-12-12",
+      genero: 1,
+      nivel: 1,
+      created_at: "2012-12-12",
     },
     {
       id: 2,
       name: "Argério Queiroz",
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
-      status: "Consultor entrou em contato",
+      status: 1,
       image:
         "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
+      last_name: "Queiroz",
+      whatsapp: "123432423324",
+      document: "24223423423444",
+      datebirth: "2012-12-12",
+      genero: 1,
+      nivel: 1,
+      created_at: "2012-12-12",
     },
     {
       id: 3,
       name: "Argério Queiroz",
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
-      status: "Consultor entrou em contato",
+      status: 1,
       image:
         "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
+      last_name: "Queiroz",
+      whatsapp: "123432423324",
+      document: "24223423423444",
+      datebirth: "2012-12-12",
+      genero: 1,
+      nivel: 1,
+      created_at: "2012-12-12",
     },
     {
       id: 4,
       name: "Argério Queiroz",
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
-      status: "Consultor entrou em contato",
+      status: 1,
       image:
         "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
+      last_name: "Queiroz",
+      whatsapp: "123432423324",
+      document: "24223423423444",
+      datebirth: "2012-12-12",
+      genero: 1,
+      nivel: 1,
+      created_at: "2012-12-12",
     },
     {
       id: 5,
       name: "Argério Queiroz",
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
-      status: "Consultor entrou em contato",
+      status: 1,
       image:
         "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
+      last_name: "Queiroz",
+      whatsapp: "123432423324",
+      document: "24223423423444",
+      datebirth: "2012-12-12",
+      genero: 1,
+      nivel: 1,
+      created_at: "2012-12-12",
     },
     {
       id: 6,
       name: "Argério Queiroz",
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
-      status: "Consultor entrou em contato",
+      status: 1,
       image:
         "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
+      last_name: "Queiroz",
+      whatsapp: "123432423324",
+      document: "24223423423444",
+      datebirth: "2012-12-12",
+      genero: 1,
+      nivel: 1,
+      created_at: "2012-12-12",
     },
     {
       id: 7,
       name: "Argério Queiroz",
       email: "argerioaf@gmail.com",
       number: "(96) 9 8623-3232",
-      status: "Consultor entrou em contato",
+      status: 1,
       image:
         "https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg",
+      last_name: "Queiroz",
+      whatsapp: "123432423324",
+      document: "24223423423444",
+      datebirth: "2012-12-12",
+      genero: 1,
+      nivel: 1,
+      created_at: "2012-12-12",
     },
   ],
   segments: [
     {
       id: 1,
       name: "EAD",
+      created_at: "2012-12-12",
     },
     {
       id: 2,
       name: "EDUCAÇÃO BÁSICA",
+      created_at: "2012-12-12",
     },
     {
       id: 3,
       name: "GRADUAÇÃO",
+      created_at: "2012-12-12",
     },
     {
       id: 4,
       name: "OUTRAS LOCALIDADES",
+      created_at: "2012-12-12",
     },
     {
       id: 5,
       name: "OUTRAS LOCALIDADES",
+      created_at: "2012-12-12",
     },
   ],
   unidades: [
@@ -783,18 +865,26 @@ export const mockServer = {
         {
           id: 1,
           name: "Pedagogia",
+          quant_leads: 2,
+          status: 1,
         },
         {
           id: 2,
           name: "Pedagogia",
+          quant_leads: 2,
+          status: 1,
         },
         {
           id: 3,
           name: "Pedagogia",
+          quant_leads: 2,
+          status: 1,
         },
         {
           id: 4,
           name: "Pedagogia",
+          quant_leads: 2,
+          status: 1,
         },
       ],
     },
@@ -818,18 +908,26 @@ export const mockServer = {
         {
           id: 1,
           name: "Pedagogia",
+          quant_leads: 2,
+          status: 1,
         },
         {
           id: 2,
           name: "Pedagogia",
+          quant_leads: 2,
+          status: 1,
         },
         {
           id: 3,
           name: "Pedagogia",
+          quant_leads: 2,
+          status: 1,
         },
         {
           id: 4,
           name: "Pedagogia",
+          quant_leads: 2,
+          status: 1,
         },
       ],
     },
@@ -839,31 +937,31 @@ export const mockServer = {
       id: 1,
       name: "Curso 1",
       quant_leads: 2,
-      status: "ativo",
+      status: 1,
     },
     {
       id: 2,
       name: "Curso 2",
       quant_leads: 2,
-      status: "ativo",
+      status: 1,
     },
     {
       id: 3,
       name: "Curso 3",
       quant_leads: 4,
-      status: "ativo",
+      status: 1,
     },
     {
       id: 4,
       name: "Curso 4",
       quant_leads: 3,
-      status: "ativo",
+      status: 1,
     },
     {
       id: 5,
       name: "Curso 5",
       quant_leads: 6,
-      status: "ativo",
+      status: 1,
     },
   ],
   time_line: [
@@ -912,7 +1010,7 @@ export const mockServer = {
       id: 2,
       onclick: () => {},
       icon: "Eye",
-      href: "",
+      href: "dashboard/indicators/",
       name: "Vizualizar",
     },
     {
@@ -942,7 +1040,7 @@ export const mockServer = {
       id: 2,
       onclick: () => {},
       icon: "Eye",
-      href: "home",
+      href: "dashboard/users/",
       name: "Vizualizar",
     },
     {
@@ -983,7 +1081,7 @@ export const mockServer = {
       id: 1,
       onclick: () => {},
       icon: "Eye",
-      href: "leads/edit",
+      href: "dashboard/leads/",
       name: "Visualizar",
     },
   ],
@@ -992,7 +1090,7 @@ export const mockServer = {
       id: 1,
       onclick: () => {},
       icon: "Eye",
-      href: "leads/edit",
+      href: "dashboard/leads/",
       name: "Visualizar",
     },
     {
@@ -1008,6 +1106,54 @@ export const mockServer = {
       icon: "Link",
       href: "leads/confirmed",
       name: "Confirmar matrícula",
+    },
+  ],
+  listActionsUnits: [
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "Edit",
+      href: "users/edit",
+      name: "Editar",
+    },
+    {
+      id: 2,
+      onclick: () => {},
+      icon: "Eye",
+      href: "dashboard/units/",
+      name: "Vizualizar",
+    },
+  ],
+  listActionsCourses: [
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "Edit",
+      href: "dashboard/courses/edit",
+      name: "Editar",
+    },
+    {
+      id: 2,
+      onclick: () => {},
+      icon: "Eye",
+      href: "dashboard/courses/",
+      name: "Vizualizar",
+    },
+  ],
+  listActionsSegments: [
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "Edit",
+      href: "dashboard/segments/edit",
+      name: "Editar",
+    },
+    {
+      id: 2,
+      onclick: () => {},
+      icon: "Eye",
+      href: "dashboard/segments/",
+      name: "Vizualizar",
     },
   ],
 };

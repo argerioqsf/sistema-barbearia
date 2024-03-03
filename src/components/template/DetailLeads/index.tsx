@@ -65,10 +65,6 @@ const DetailLeads = ({ id }: { id: string }) => {
         <DetailDefault
           renderAvatar={renderAvatar}
           handlerFormSearch={handlerFormSearch}
-          handleRegister={handleRegister}
-          getDefaultValues={getLead}
-          titleForm={lead?.name}
-          values={lead}
           time_line={lead?.time_line}
           forms={forms}
         />

@@ -1,12 +1,12 @@
-import { Templateform } from "@/types/general";
+import { ListActionsProps, InfoList, Templateform } from "@/types/general";
 
 export const templateform: Templateform = {
-  title: "Cadastrar Curso",
-  textButton: "Cadastrar",
+  title: "Seguimento",
+  textButton: "Editar",
   sections: [
     {
       id: 1,
-      title: "Informações do Curso",
+      title: "Dados do Segmento",
       boxs: [
         {
           id: 1,

@@ -49,7 +49,7 @@ const ListUnits: React.FC = () => {
             itemsHeader={infoList.itemsHeader}
             avatar={renderAvatar}
             list={list}
-            listActions={mockServer.listActionsLeads}
+            listActions={mockServer.listActionsUnits}
             hrefButton="dashboard/units/register"
             textButton="Nova Unidade"
             title="Unidades"

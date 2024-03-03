@@ -1,34 +1,21 @@
 "use client";
 
-import { mockServer } from "@/components/config/mockServer";
 import Search from "@/components/molecules/Search";
 import FormDashboard from "@/components/organisms/FormDashboard";
 import Listing from "@/components/organisms/Listing";
-import {
-  Form,
-  InfoList,
-  ItemListType,
-  Templateform,
-  TimeLine,
-} from "@/types/general";
+import { Form, InfoList, ItemListType, TimeLine } from "@/types/general";
 import React from "react";
-import { useHandlerForm } from "@/hooks/use-hanlder-form";
 import TimeLineComponent from "../TimeLineComponent";
 
 type PropTemplates = {
   lists?: InfoList[];
   forms?: Form[];
-  getDefaultValues?: () => Promise<any>;
   renderAvatar?: (item: ItemListType, index: number) => React.JSX.Element;
   handlerFormSearch?: (data: object) => void;
-  handleRegister?: (data: any) => void;
-  titleForm?: string;
-  values?: any;
   time_line?: TimeLine[];
 };
 
 const DetailDefault = ({
-  getDefaultValues,
   renderAvatar,
   handlerFormSearch = () => {},
   lists,

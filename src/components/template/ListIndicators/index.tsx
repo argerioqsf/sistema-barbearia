@@ -9,7 +9,7 @@ import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
 import { ItemListType, InfoList } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -21,42 +21,12 @@ const ListIndicators = () => {
     itemsList: ["name", "", "city", "user_at", ""],
   };
 
-  type ListActionsIndicators = {
-    id: number;
-    onclick?: (id: any) => void;
-    icon: string;
-    href?: string;
-    name: string;
-  };
-
-  const listActionsIndicators: ListActionsIndicators[] = [
-    {
-      id: 1,
-      icon: "Edit",
-      name: "Editar",
-      onclick: (id: string) => {
-        console.log("editar: ", id);
-      },
-    },
-    {
-      id: 2,
-      icon: "Eye",
-      href: "indicators/",
-      name: "Vizualizar",
-    },
-    {
-      id: 3,
-      icon: "Lock",
-      href: "home",
-      name: "Desativar",
-    },
-    {
-      id: 4,
-      icon: "Link",
-      href: "home",
-      name: "Link",
-    },
-  ];
+  useEffect(() => {
+    const editIndicator = (id: string) => {
+      console.log("editar: ", id);
+    };
+    mockServer.listActionsIndicators[0].onclick = editIndicator;
+  }, []);
 
   let list = listTransform(mockServer.indicators, infoList.itemsList);
 
@@ -82,7 +52,7 @@ const ListIndicators = () => {
             itemsHeader={infoList.itemsHeader}
             avatar={renderAvatar}
             list={list}
-            listActions={listActionsIndicators}
+            listActions={mockServer.listActionsIndicators}
             hrefButton="dashboard/indicators/register"
             textButton="Novo indicador"
             title="Indicadores"

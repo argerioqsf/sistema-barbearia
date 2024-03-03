@@ -7,6 +7,27 @@ export type ParamsProp = {
   id?: string;
 };
 
+export type Segment = {
+  id: number;
+  name: string;
+  created_at: string;
+};
+
+export type Course = {
+  id: number;
+  name: string;
+  quant_leads: number;
+  status: number;
+};
+
+export type Unit = {
+  id: number;
+  name: string;
+  created_at: string;
+  segments: Segment[];
+  courses: Course[];
+};
+
 type LimitFields<T> = [T, T, T, T, T];
 
 type LimitFieldsForm<T> = [T, ...T[]] & {
@@ -45,13 +66,21 @@ export type UserType = {
   name: string;
   email: string;
   number: string;
-  status: string;
+  status: number;
   image: string;
+  last_name: string;
+  whatsapp: string;
+  document: string;
+  datebirth: string;
+  genero: number;
+  nivel: number;
+  created_at: string;
 };
 
 export type IndicatorType = {
   id: number;
   name: string;
+  last_name?: string;
   city: string;
   link: string;
   whatsapp: string;
@@ -253,4 +282,12 @@ export type Form = {
   handlerForm: (state: any) => void;
   getDefaultValues?: () => Promise<any>;
   loading?: boolean;
+};
+
+export type ListAction = {
+  id: number;
+  onclick?: (id: any) => void;
+  icon: string;
+  href?: string;
+  name: string;
 };
