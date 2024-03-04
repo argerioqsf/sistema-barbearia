@@ -4,33 +4,24 @@ import { Text } from "@/components/atoms";
 import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import { useHandlerMockServer } from "@/hooks/use-handler-mock-server";
-import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { Form, IndicatorType, InfoList, ItemListType } from "@/types/general";
-import React, { useEffect, useState } from "react";
+import { Course, Form, ItemListType } from "@/types/general";
+import React, { useState } from "react";
+import * as templates from "./templates";
 import DetailDefault from "@/components/organisms/DetailDefault";
-import { templates } from "./templates";
 
-const DetailIndicator = ({ id }: { id: string }) => {
-  const { listTransform } = useItemListTransform();
-  const { getIndicatorForId } = useHandlerMockServer();
-  const [indicator, setIndicator] = useState<IndicatorType | null>();
-  const [lists, setLists] = useState<InfoList[]>([templates.infoList]);
+const DetailCourses = ({ id }: { id: string }) => {
+  const { getCourseForId } = useHandlerMockServer();
+  const [course, setSegment] = useState<Course | null>();
   const [loading, setLoading] = useState(false);
 
-  function getIndicator(): Promise<any> {
+  function getUser(): Promise<any> {
     setLoading(true);
     return new Promise((resolve) => {
       setTimeout(() => {
-        const response = getIndicatorForId(id)[0];
-        setIndicator({ ...response });
-        const list: ItemListType[] = listTransform(
-          response?.leads,
-          templates?.infoList?.itemsList
-        );
-        lists[0].list = list;
-        setLists([...lists]);
+        const data = getCourseForId(id);
+        setSegment({ ...data[0] });
         setLoading(false);
-        resolve(response);
+        resolve(data[0]);
       }, 2000);
     });
   }
@@ -51,7 +42,7 @@ const DetailIndicator = ({ id }: { id: string }) => {
     {
       template: templates.templateform,
       handlerForm: handleRegister,
-      getDefaultValues: getIndicator,
+      getDefaultValues: getUser,
       loading: loading,
     },
   ];
@@ -65,7 +56,6 @@ const DetailIndicator = ({ id }: { id: string }) => {
         <DetailDefault
           renderAvatar={renderAvatar}
           handlerFormSearch={handlerFormSearch}
-          lists={lists}
           forms={forms}
         />
       </div>
@@ -73,4 +63,4 @@ const DetailIndicator = ({ id }: { id: string }) => {
   );
 };
 
-export default DetailIndicator;
+export default DetailCourses;

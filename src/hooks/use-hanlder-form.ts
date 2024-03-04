@@ -1,9 +1,9 @@
-import { FieldsTemplateForm, SectionTemplateForm, Templateform, FieldsFormSchema } from "@/types/general";
+import { SectionTemplateForm, FieldsFormSchema } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { object, z } from "zod";
+import { z } from "zod";
 
-export const useHandlerForm= (sections: SectionTemplateForm[],functionRequest?: ()=> Promise<any> ) => {
+export const useHandlerForm= (sections?: SectionTemplateForm[],functionRequest?: ()=> Promise<any> ) => {
 
     const MAX_FILE_SIZE = 500000;
     const ACCEPTED_IMAGE_TYPES = [
@@ -14,6 +14,7 @@ export const useHandlerForm= (sections: SectionTemplateForm[],functionRequest?: 
     ];
 
     let arraySchema:FieldsFormSchema = {}
+    if (sections) {
       for (let i = 0; i < sections?.length; i++) {
         const boxs = sections[i].boxs
         for (let j = 0; j < boxs.length; j++) {
@@ -46,6 +47,7 @@ export const useHandlerForm= (sections: SectionTemplateForm[],functionRequest?: 
           }
         }
       }
+    }
 
     const schema = z.object(arraySchema);
   

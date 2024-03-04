@@ -9,12 +9,7 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import {
-  ItemListType,
-  UserType,
-  OrderItemsHeaderList,
-  Searchs,
-} from "@/types/general";
+import { ItemListType, UserType, InfoList, Searchs } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import React from "react";
@@ -23,24 +18,14 @@ import { z } from "zod";
 
 const ListUsers: React.FC = () => {
   const { listTransform } = useItemListTransform();
-  const OrderItemsHeaderList: OrderItemsHeaderList = {
+  const infoList: InfoList = {
     itemsHeader: ["", "NOME", "E-MAIL", "NUMERO", "STATUS"],
     itemsList: ["name", "", "email", "number", "status"],
   };
-  let list = listTransform(mockServer.users, OrderItemsHeaderList.itemsList);
+  let list = listTransform(mockServer.users, infoList.itemsList);
 
   const searchSchema = z.object({
     search: z.string().min(2, { message: "Must be 2 or more characters long" }),
-  });
-
-  type SearchSchemaType = z.infer<typeof searchSchema>;
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SearchSchemaType>({
-    resolver: zodResolver(searchSchema),
   });
 
   const renderAvatar = (item: ItemListType, index: number) => {
@@ -55,18 +40,9 @@ const ListUsers: React.FC = () => {
     );
   };
 
-  function handlerForm(data: SearchSchemaType) {
+  function handlerForm(data: any) {
     console.log("handlerForm Search: ", data);
   }
-
-  const searchs: Searchs = [
-    {
-      id: 1,
-      propsInput: { ...register("search") },
-      placeholder: "Search...",
-      name: "search",
-    },
-  ];
 
   return (
     <ContainerDashboard>
@@ -75,11 +51,11 @@ const ListUsers: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
+          <Search handlerForm={handlerForm} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={OrderItemsHeaderList.itemsHeader}
+            itemsHeader={infoList.itemsHeader}
             avatar={renderAvatar}
             list={list}
             listActions={mockServer.listActionsUsers}

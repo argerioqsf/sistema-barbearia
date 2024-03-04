@@ -1,8 +1,8 @@
-import { Templateform } from "@/types/general";
+import { ListActionsProps, InfoList, Templateform } from "@/types/general";
 
 export const templateform: Templateform = {
-  title: "Cadastrar Usuário",
-  textButton: "Cadastrar",
+  title: "Usuário",
+  textButton: "Editar",
   sections: [
     {
       id: 1,
@@ -88,15 +88,6 @@ export const templateform: Templateform = {
               type: "text",
               label: "E-mail",
             },
-            {
-              id: "password",
-              required: true,
-              type: "password",
-              label: "Senha",
-              roles: {
-                minCaracters: 6,
-              },
-            },
           ],
         },
         {
@@ -127,34 +118,10 @@ export const templateform: Templateform = {
               ],
             },
             {
-              id: "date",
+              id: "created_at",
               required: true,
               type: "date",
               label: "Data",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "Permissões",
-      boxs: [
-        {
-          id: 1,
-          fields: [
-            {
-              id: "permission",
-              required: true,
-              type: "select",
-              label: "Permissão",
-              messageError: "Must be 2 or more characters long",
-              options: [
-                {
-                  label: "permissão 1",
-                  value: 1,
-                },
-              ],
             },
           ],
         },

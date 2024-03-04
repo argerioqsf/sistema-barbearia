@@ -10,12 +10,7 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import {
-  ItemListType,
-  UserType,
-  OrderItemsHeaderList,
-  Searchs,
-} from "@/types/general";
+import { ItemListType, UserType, InfoList, Searchs } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import React from "react";
@@ -24,42 +19,19 @@ import { z } from "zod";
 
 const ListUnits: React.FC = () => {
   const { listTransform } = useItemListTransform();
-  const OrderItemsHeaderList: OrderItemsHeaderList = {
+  const infoList: InfoList = {
     itemsHeader: ["N", "NOME", "QUANT. SEGMENTOS", " QUANT. CURSOS", ""],
     itemsList: ["name", "", "segments.length", "courses.length", ""],
   };
-  let list = listTransform(mockServer.unidades, OrderItemsHeaderList.itemsList);
-
-  const searchSchema = z.object({
-    search: z.string().min(2, { message: "Must be 2 or more characters long" }),
-  });
-
-  type SearchSchemaType = z.infer<typeof searchSchema>;
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SearchSchemaType>({
-    resolver: zodResolver(searchSchema),
-  });
+  let list = listTransform(mockServer.unidades, infoList.itemsList);
 
   const renderAvatar = (item: ItemListType, index: number) => {
     return <Text className="text-black">{index + 1}</Text>;
   };
 
-  function handlerForm(data: SearchSchemaType) {
+  function handlerForm(data: any) {
     console.log("handlerForm Search: ", data);
   }
-
-  const searchs: Searchs = [
-    {
-      id: 1,
-      propsInput: { ...register("search") },
-      placeholder: "Search...",
-      name: "search",
-    },
-  ];
 
   return (
     <ContainerDashboard>
@@ -69,15 +41,15 @@ const ListUnits: React.FC = () => {
         </div>
 
         <div className="w-full mt-6">
-          <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
+          <Search handlerForm={handlerForm} />
         </div>
 
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={OrderItemsHeaderList.itemsHeader}
+            itemsHeader={infoList.itemsHeader}
             avatar={renderAvatar}
             list={list}
-            listActions={mockServer.listActionsLeads}
+            listActions={mockServer.listActionsUnits}
             hrefButton="dashboard/units/register"
             textButton="Nova Unidade"
             title="Unidades"

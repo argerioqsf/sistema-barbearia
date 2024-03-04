@@ -10,7 +10,7 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, OrderItemsHeaderList, Searchs } from "@/types/general";
+import { ItemListType, InfoList, Searchs } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -19,7 +19,7 @@ import { z } from "zod";
 const ListLeads: React.FC = () => {
   const { listTransform } = useItemListTransform();
 
-  const OrderItemsHeaderList: OrderItemsHeaderList = {
+  const infoList: InfoList = {
     itemsHeader: ["N", "NOME / WHATSAPP", "CURSO", "INDICADOR", "STATUS"],
     itemsList: [
       "name",
@@ -30,32 +30,9 @@ const ListLeads: React.FC = () => {
     ],
   };
 
-  let list = listTransform(mockServer.leads, OrderItemsHeaderList.itemsList);
+  let list = listTransform(mockServer.leads, infoList.itemsList);
 
-  const searchSchema = z.object({
-    search: z.string(),
-  });
-
-  type SearchSchemaType = z.infer<typeof searchSchema>;
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SearchSchemaType>({
-    resolver: zodResolver(searchSchema),
-  });
-
-  const searchs: Searchs = [
-    {
-      id: 1,
-      propsInput: { ...register("search") },
-      placeholder: "Search...",
-      name: "search",
-    },
-  ];
-
-  function handlerForm(data: SearchSchemaType) {
+  function handlerForm(data: any) {
     console.log("handlerForm Search: ", data);
   }
 
@@ -70,11 +47,11 @@ const ListLeads: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handleSubmit(handlerForm)} searchs={searchs} />
+          <Search handlerForm={handlerForm} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={OrderItemsHeaderList.itemsHeader}
+            itemsHeader={infoList.itemsHeader}
             avatar={renderAvatar}
             list={list}
             listActions={mockServer.listActionsLeads}

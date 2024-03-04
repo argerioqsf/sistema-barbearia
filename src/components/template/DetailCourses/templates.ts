@@ -1,12 +1,12 @@
 import { Templateform } from "@/types/general";
 
 export const templateform: Templateform = {
-  title: "Cadastrar Curso",
-  textButton: "Cadastrar",
+  title: "Curso",
+  textButton: "Editar",
   sections: [
     {
       id: 1,
-      title: "Informações do Curso",
+      title: "Informações do curso",
       boxs: [
         {
           id: 1,

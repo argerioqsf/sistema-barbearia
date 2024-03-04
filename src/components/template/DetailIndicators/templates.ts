@@ -1,6 +1,6 @@
-import { OrderItemsHeaderList, Templateform } from "@/types/general";
+import { InfoList, Templateform } from "@/types/general";
 
-export const templateform: Templateform = {
+const templateform: Templateform = {
   title: "Indicador",
   textButton: "",
   sections: [
@@ -20,10 +20,10 @@ export const templateform: Templateform = {
               disabled: true,
             },
             {
-              id: "last_name",
+              id: "training_course",
               required: true,
               type: "text",
-              label: "Sobrenome",
+              label: "Curso",
               messageError: "Must be 2 or more characters long",
               disabled: true,
             },
@@ -85,7 +85,7 @@ export const templateform: Templateform = {
               disabled: true,
             },
             {
-              id: "user_at",
+              id: "created_at",
               required: true,
               type: "date",
               label: "Data",
@@ -98,29 +98,31 @@ export const templateform: Templateform = {
   ],
 };
 
-export const templateformSearch: Templateform = {
+const templateformSearch: Templateform = {
   title: "Search",
   textButton: "",
-  sections: [{
-    id:1,
-    title:'Search',
-    boxs:[
-      {
-        id:1,
-        fields:[
-          {
-            id:'search',
-            label:'Search',
-            required: true,
-            type:'text',
-          }
-        ]
-      }
-    ]
-  }]
+  sections: [
+    {
+      id: 1,
+      title: "Search",
+      boxs: [
+        {
+          id: 1,
+          fields: [
+            {
+              id: "search",
+              label: "Search",
+              required: true,
+              type: "text",
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
 
-export const orderItemsHeaderList: OrderItemsHeaderList = {
+const infoList: InfoList = {
   itemsHeader: ["N", "NOME / WHATSAPP", "CURSO", "INDICADOR", "STATUS"],
   itemsList: [
     "name",
@@ -129,4 +131,41 @@ export const orderItemsHeaderList: OrderItemsHeaderList = {
     "indicator.name",
     "status",
   ],
+  listActions: [
+    {
+      id: 1,
+      onclick: () => {},
+      icon: "Edit",
+      href: "indicators/edit",
+      name: "Editar",
+    },
+    {
+      id: 2,
+      onclick: () => {},
+      icon: "Eye",
+      href: "dashboard/leads/",
+      name: "Vizualizar",
+    },
+    {
+      id: 3,
+      onclick: () => {},
+      icon: "Lock",
+      href: "home",
+      name: "Desativar",
+    },
+    {
+      id: 4,
+      onclick: () => {},
+      icon: "Link",
+      href: "home",
+      name: "Link",
+    },
+  ],
+  title: "Leads",
+};
+
+export const templates = {
+  templateform,
+  templateformSearch,
+  infoList,
 };

@@ -4,30 +4,38 @@ import { Text } from "@/components/atoms";
 import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import { useHandlerMockServer } from "@/hooks/use-handler-mock-server";
-import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { Form, IndicatorType, InfoList, ItemListType } from "@/types/general";
-import React, { useEffect, useState } from "react";
-import DetailDefault from "@/components/organisms/DetailDefault";
+import { Form, InfoList, ItemListType, Unit } from "@/types/general";
+import React, { useState } from "react";
 import { templates } from "./templates";
+import DetailDefault from "@/components/organisms/DetailDefault";
+import { useItemListTransform } from "@/hooks/use-item-list-transform";
 
-const DetailIndicator = ({ id }: { id: string }) => {
+const DetailUnits = ({ id }: { id: string }) => {
   const { listTransform } = useItemListTransform();
-  const { getIndicatorForId } = useHandlerMockServer();
-  const [indicator, setIndicator] = useState<IndicatorType | null>();
-  const [lists, setLists] = useState<InfoList[]>([templates.infoList]);
+  const { getUnitForId } = useHandlerMockServer();
+  const [unit, setUnit] = useState<Unit | null>();
   const [loading, setLoading] = useState(false);
+  const [lists, setLists] = useState<InfoList[]>([
+    templates.infoListSegments,
+    templates.infoListCourses,
+  ]);
 
-  function getIndicator(): Promise<any> {
+  function getUnit(): Promise<any> {
     setLoading(true);
     return new Promise((resolve) => {
       setTimeout(() => {
-        const response = getIndicatorForId(id)[0];
-        setIndicator({ ...response });
-        const list: ItemListType[] = listTransform(
-          response?.leads,
-          templates?.infoList?.itemsList
+        const response = getUnitForId(id)[0];
+        setUnit({ ...response });
+        const listSegments: ItemListType[] = listTransform(
+          response?.segments,
+          lists[0].itemsList
         );
-        lists[0].list = list;
+        const listCourses: ItemListType[] = listTransform(
+          response?.courses,
+          lists[1].itemsList
+        );
+        lists[0].list = listSegments;
+        lists[1].list = listCourses;
         setLists([...lists]);
         setLoading(false);
         resolve(response);
@@ -51,7 +59,7 @@ const DetailIndicator = ({ id }: { id: string }) => {
     {
       template: templates.templateform,
       handlerForm: handleRegister,
-      getDefaultValues: getIndicator,
+      getDefaultValues: getUnit,
       loading: loading,
     },
   ];
@@ -65,12 +73,12 @@ const DetailIndicator = ({ id }: { id: string }) => {
         <DetailDefault
           renderAvatar={renderAvatar}
           handlerFormSearch={handlerFormSearch}
-          lists={lists}
           forms={forms}
+          lists={lists}
         />
       </div>
     </ContainerDashboard>
   );
 };
 
-export default DetailIndicator;
+export default DetailUnits;

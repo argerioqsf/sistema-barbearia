@@ -15,7 +15,7 @@ import {
   IndicatorsType,
   ItemListType,
   UserType,
-  OrderItemsHeaderList,
+  InfoList,
   Searchs,
 } from "@/types/general";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,37 +27,14 @@ import { z } from "zod";
 const ListRequestIndicators = () => {
   const { listTransform } = useItemListTransform();
 
-  const OrderItemsHeaderList: OrderItemsHeaderList = {
-    itemsHeader: ["N", "AVATAR", "NOME", "CIDADE", "DATA", ""],
-    itemsList: ["name", "", "cidade", "data", ""],
+  const infoList: InfoList = {
+    itemsHeader: ["N", "NOME", "CIDADE", "DATA", ""],
+    itemsList: ["name", "", "city", "user_at", ""],
   };
 
-  const searchSchema = z.object({
-    search: z.string().min(2, { message: "Must be 2 or more characters long" }),
-  });
+  let list = listTransform(mockServer.indicators, infoList.itemsList);
 
-  type SearchSchemaType = z.infer<typeof searchSchema>;
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SearchSchemaType>({
-    resolver: zodResolver(searchSchema),
-  });
-
-  const searchs: Searchs = [
-    {
-      id: 1,
-      propsInput: { ...register("search") },
-      placeholder: "Search...",
-      name: "search",
-    },
-  ];
-
-  let list = listTransform(mockServer.indicators, OrderItemsHeaderList.itemsList);
-
-  function handlerForm(data: SearchSchemaType) {
+  function handlerForm(data: any) {
     console.log("handlerForm Search: ", data);
   }
 
@@ -72,11 +49,11 @@ const ListRequestIndicators = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handleSubmit(handlerForm)} register={register} />
+          <Search handlerForm={handlerForm} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={OrderItemsHeaderList.itemsHeader}
+            itemsHeader={infoList.itemsHeader}
             avatar={renderAvatar}
             list={list}
             listActions={mockServer.listActionsIndicators}
