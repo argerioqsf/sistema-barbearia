@@ -12,16 +12,15 @@ type FormFieldTextProps = {
   type: string;
   placeholder?: string;
   classInput?: string;
-  bgColor?: string;
   props: UseFormRegisterReturn<string>;
   error: any;
 };
 
 const FormFieldText = ({
   label,
+  type,
   placeholder,
   classInput,
-  type,
   props,
   error,
   ...rest

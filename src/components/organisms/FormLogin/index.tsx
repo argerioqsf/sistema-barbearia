@@ -1,49 +1,72 @@
+"use client";
+
+import { Form, Text } from "@/components/atoms";
 import Button from "@/components/atoms/Button";
-import Form from "@/components/atoms/Form";
+// import Form from "@/components/atoms/Form";
 import LinkDefault from "@/components/atoms/LinkDefault";
 import FormFieldCheckBox from "@/components/molecules/FormFieldCheckBox";
 import FormFieldText from "@/components/molecules/FormFieldText";
+import { formSchemaSignin } from "@/components/template/SingIn/schema";
+import { useHandlerRouter } from "@/hooks/use-handler-router";
 import { usePathTranslations } from "@/hooks/use-path-translations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { FieldErrors, UseFormRegister, useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import { useFormState } from "react-dom";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 type FormLoginProps = {
-  onSubmit: (() => void) | undefined;
-  errors: FieldErrors<any>;
-  register: UseFormRegister<any>;
+  action: (prevState: any, formData: FormData) => Promise<any>;
 };
 
-const FormLogin = ({ onSubmit, errors, register }: FormLoginProps) => {
+type LoginSchemaType = z.infer<typeof formSchemaSignin>;
+
+const FormLogin = ({ action }: FormLoginProps) => {
+  const {
+    register,
+    formState: { errors },
+  } = useForm<LoginSchemaType>({
+    resolver: zodResolver(formSchemaSignin),
+  });
   const { at, sc } = usePathTranslations("");
+  const { pushRouter } = useHandlerRouter();
+
+  const initialState = {
+    errors: null,
+    ok: false,
+  };
+
+  const [state, formAction] = useFormState(action, initialState);
+
+  useEffect(() => {
+    if (state.ok) {
+      pushRouter("dashboard/home");
+    }
+  }, [pushRouter, state.ok]);
 
   return (
     <div className="w-full p-6 space-y-4 md:space-y-6 sm:p-8">
-      <Form onSubmit={onSubmit} action="#">
+      <Form method="POST" action={formAction}>
         <FormFieldText
           classInput={`bg-transparent py-3 pl-6 text-white ${
             errors.email && "ring-red-500 focus:ring-red-500"
           }`}
-          bgColor="red-300"
           placeholder={at("email")}
           type="text"
           props={{ ...register("email") }}
           label="Email"
-          error={errors.email?.message}
+          error={state?.errors?.email && state?.errors?.email[0]}
         />
 
         <FormFieldText
           classInput={`bg-transparent py-3 pl-6 text-white ${
             errors.password && "ring-red-500 focus:ring-red-500"
           }`}
-          bgColor="red-300"
           placeholder={at("password")}
           type="text"
           props={{ ...register("password") }}
           label="Senha"
-          error={errors.email?.message}
+          error={state?.errors?.password && state?.errors?.password[0]}
         />
 
         <div className="flex items-center py-4 justify-between">
@@ -59,6 +82,16 @@ const FormLogin = ({ onSubmit, errors, register }: FormLoginProps) => {
             {sc("form_login.forgot_password")}
           </LinkDefault>
         </div>
+
+        {state?.errors?.request && (
+          <Text
+            title={state?.errors?.request[0]}
+            role="alert"
+            className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis pb-4"
+          >
+            {state?.errors?.request[0]}
+          </Text>
+        )}
 
         <Button
           className="w-full bg-secondary-100 text-primary-100 py-3 font-bold"
