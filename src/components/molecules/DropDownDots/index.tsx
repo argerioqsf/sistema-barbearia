@@ -1,5 +1,7 @@
 "use client";
 
+import LinkDefault from "@/components/atoms/LinkDefault";
+import { useHandlerRouter } from "@/hooks/use-handler-router";
 import { IconSvgProps, ListActionsProps } from "@/types/general";
 import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
@@ -7,9 +9,10 @@ import { twMerge } from "tailwind-merge";
 type DropDownDotsProps = {
   listActions: Array<ListActionsProps>;
   className?: string;
+  id: number | string;
 };
 
-const DropDownDots = ({ listActions, className }: DropDownDotsProps) => {
+const DropDownDots = ({ listActions, className, id }: DropDownDotsProps) => {
   const [show, setShow] = useState(false);
   return (
     <div className={className}>
@@ -45,12 +48,12 @@ const DropDownDots = ({ listActions, className }: DropDownDotsProps) => {
         >
           {listActions.map((action) => (
             <li key={action.id}>
-              <a
-                href={action.href}
+              <LinkDefault
+                href={`${action.href}${id}`}
                 className="block px-4 py-2 hover:bg-white dark:hover:bg-white dark:hover:text-secondary-50"
               >
                 {action.name}
-              </a>
+              </LinkDefault>
             </li>
           ))}
         </ul>

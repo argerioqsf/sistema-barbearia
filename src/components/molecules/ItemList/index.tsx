@@ -85,7 +85,7 @@ const ItemList = ({
       </div>
 
       <div className="w-[20%] flex sm:hidden flex-row justify-end items-center">
-        <DropDownDots listActions={listActions} />
+        <DropDownDots listActions={listActions} id={id} />
       </div>
     </div>
   );
