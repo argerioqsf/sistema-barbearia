@@ -1,25 +1,31 @@
 "use server";
 
-import { formSchemaSignin } from "@/components/template/SingIn/schema";
+import { formSchemaRegisterCourse } from "@/components/template/RegisterCourses/schema";
 import { cookies } from "next/headers";
 
-export async function loginUser(prevState: any, formData: FormData) {
-  const validatedFields = formSchemaSignin.safeParse({
-    email: formData.get("email"),
-    password: formData.get("password"),
+export async function registerCourse(prevState: any, formData: FormData) {
+  const validatedFields = formSchemaRegisterCourse.safeParse({
+    name: formData.get("name"),
+    active: formData.get("active"),
   });
 
-  console.log("data SingInSection: ", formData.get("email"));
   if (validatedFields.success) {
     try {
-      const response = await fetch("http://localhost:3333/sessions", {
+      const token_SIM = cookies().get("token_SIM");
+      if (!token_SIM?.value) {
+        return {
+          errors: { request: ["Erro de credenciais"] },
+        };
+      }
+      const response = await fetch("http://localhost:3333/create/course", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token_SIM?.value}`,
         },
         body: JSON.stringify({
-          email: formData.get("email"),
-          password: formData.get("password"),
+          name: formData.get("name"),
+          active: !formData.get("active"),
         }),
       });
       if (!response.ok) {
@@ -28,8 +34,6 @@ export async function loginUser(prevState: any, formData: FormData) {
           errors: { request: [JSON.parse(errorMessage).message] },
         };
       }
-      let resp = await response.json();
-      cookies().set("token_SIM", resp.token);
       return {
         errors: {},
         ok: true,

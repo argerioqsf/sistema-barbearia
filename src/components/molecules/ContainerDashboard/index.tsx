@@ -1,6 +1,8 @@
-import Section from "@/components/atoms/Section";
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { twMerge } from "tailwind-merge";
+import Cookies from "js-cookie";
+import { useHandlerRouter } from "@/hooks/use-handler-router";
 
 type ContainerProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -8,6 +10,14 @@ type ContainerProps = React.DetailedHTMLProps<
 >;
 
 const ContainerDashboard = ({ children, ...rest }: ContainerProps) => {
+  const { pushRouter } = useHandlerRouter();
+
+  useEffect(() => {
+    const value = Cookies.get("token_SIM");
+    if (!value) {
+      pushRouter("auth/signin");
+    }
+  });
   return (
     <div
       className={twMerge(

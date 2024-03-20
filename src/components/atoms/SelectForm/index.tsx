@@ -8,7 +8,7 @@ type SelectFormPros = {
   placeholder?: string;
   className?: string;
   propsSelect?: UseFormRegisterReturn<string>;
-  options: Array<OptionsTemplateForm> | undefined;
+  options?: Array<OptionsTemplateForm>;
 };
 
 const SelectForm = ({

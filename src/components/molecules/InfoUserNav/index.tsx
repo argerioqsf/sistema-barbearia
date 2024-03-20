@@ -1,8 +1,8 @@
 import { Button, Text } from "@/components/atoms";
-import LinkDefault from "@/components/atoms/LinkDefault";
 import { useHandlerRouter } from "@/hooks/use-handler-router";
 import React from "react";
 import { twMerge } from "tailwind-merge";
+import Cookies from "js-cookie";
 
 type InfoUserNavProps = {
   nameUser: string;
@@ -12,6 +12,7 @@ type InfoUserNavProps = {
 const InfoUserNav: React.FC<InfoUserNavProps> = ({ nameUser, className }) => {
   const { pushRouter } = useHandlerRouter();
   function logOut() {
+    Cookies.remove("token_SIM");
     pushRouter("auth/signin");
   }
 
