@@ -2,6 +2,7 @@
 
 import { formSchemaRegisterCourse } from "@/components/template/RegisterCourses/schema";
 import { cookies } from "next/headers";
+import urls from "@/constants/urls.json";
 
 export async function registerCourse(prevState: any, formData: FormData) {
   const validatedFields = formSchemaRegisterCourse.safeParse({
@@ -17,7 +18,7 @@ export async function registerCourse(prevState: any, formData: FormData) {
           errors: { request: ["Erro de credenciais"] },
         };
       }
-      const response = await fetch("http://localhost:3333/create/course", {
+      const response = await fetch(`${urls.url_api}/create/course`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,7 +26,7 @@ export async function registerCourse(prevState: any, formData: FormData) {
         },
         body: JSON.stringify({
           name: formData.get("name"),
-          active: !formData.get("active"),
+          active: formData.get("active") == "1" ? true : false,
         }),
       });
       if (!response.ok) {
@@ -36,7 +37,7 @@ export async function registerCourse(prevState: any, formData: FormData) {
       }
       return {
         errors: {},
-        ok: true,
+        register_success: true,
       };
     } catch (error) {
       return {

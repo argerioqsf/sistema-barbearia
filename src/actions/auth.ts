@@ -2,6 +2,7 @@
 
 import { formSchemaSignin } from "@/components/template/SingIn/schema";
 import { cookies } from "next/headers";
+import urls from "@/constants/urls.json";
 
 export async function loginUser(prevState: any, formData: FormData) {
   const validatedFields = formSchemaSignin.safeParse({
@@ -11,7 +12,7 @@ export async function loginUser(prevState: any, formData: FormData) {
 
   if (validatedFields.success) {
     try {
-      const response = await fetch("http://localhost:3333/sessions", {
+      const response = await fetch(`${urls.url_api}/sessions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

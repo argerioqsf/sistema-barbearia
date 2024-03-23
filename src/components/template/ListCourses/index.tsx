@@ -37,7 +37,7 @@ const ListCourses: React.FC = () => {
           };
         }
         let list = await response.json();
-        list = listTransform(list.courses, infoList.itemsList);
+        list = listTransform(list.courses.courses, infoList.itemsList);
         setList(list);
       } catch (error) {}
     }
@@ -48,7 +48,7 @@ const ListCourses: React.FC = () => {
     return <Text className="text-black">{index + 1}</Text>;
   };
 
-  function handlerForm(data: any) {
+  function handlerFormSearch(data: any) {
     console.log("handlerForm Search: ", data);
   }
 
@@ -60,7 +60,7 @@ const ListCourses: React.FC = () => {
         </div>
 
         <div className="w-full mt-6">
-          <Search handlerForm={handlerForm} />
+          <Search handlerForm={handlerFormSearch} />
         </div>
 
         <div className="w-full mt-6 lg:mt-8">

@@ -23,8 +23,8 @@ type FormDashboardProps = {
   loading?: boolean;
   getDefaultValues?: () => Promise<any>;
   title?: string;
-  action?: (prevState: any, formData: FormData) => Promise<any>;
-  schema?: z.ZodObject<any>;
+  action: (prevState: any, formData: FormData) => Promise<any>;
+  schema: z.ZodObject<any>;
   pathSuccess?: string;
 };
 
@@ -38,31 +38,22 @@ const FormDashboard = ({
   schema,
   pathSuccess,
 }: FormDashboardProps) => {
-  const { register, handleSubmit, errors } = useHandlerForm(
-    templateform?.sections,
-    getDefaultValues,
-    schema
-  );
+  const { register, handleSubmit } = useHandlerForm(schema, getDefaultValues);
+
   const { pushRouter } = useHandlerRouter();
 
-  const defaultAction = (prevState: any, formData: FormData) =>
-    new Promise(() => {});
-
-  const initialState = {
+  const initialStateForm = {
     errors: null,
-    ok: false,
+    register_success: false,
   };
 
-  const [state, formAction] = useFormState(
-    action ?? defaultAction,
-    initialState
-  );
+  const [state, formAction] = useFormState(action, initialStateForm);
 
   useEffect(() => {
-    if (action && state.ok) {
+    if (state.register_success) {
       pushRouter(pathSuccess);
     }
-  }, [action, pathSuccess, pushRouter, state.ok]);
+  }, [action, pathSuccess, pushRouter, state.register_success]);
 
   const handlerFieldRender = (field: FieldsTemplateForm) => {
     const id = field.id;
@@ -70,12 +61,9 @@ const FormDashboard = ({
       props: { ...register(id, { required: field.required }) },
       label: field.label,
       classInput: `bg-gray-300 ${field.classInput ?? ""} ${
-        (action ? state?.errors?.[id] : errors[id]) &&
-        "ring-red-500 focus:ring-red-500"
+        state?.errors?.[id] && "ring-red-500 focus:ring-red-500"
       }`,
-      error: action
-        ? state?.errors?.[id] && state?.errors?.[id][0]
-        : errors[id]?.message,
+      error: state?.errors?.[id] && state?.errors?.[id][0],
       disabled: field.disabled,
     };
     if (field.type == "select") {
@@ -104,7 +92,7 @@ const FormDashboard = ({
   return (
     <div className="w-full">
       <Form
-        action={action && formAction}
+        action={formAction}
         onSubmit={handlerForm && handleSubmit(handlerForm)}
         className="mb-8"
       >
