@@ -9,7 +9,6 @@ export async function loginUser(prevState: any, formData: FormData) {
     password: formData.get("password"),
   });
 
-  console.log("data SingInSection: ", formData.get("email"));
   if (validatedFields.success) {
     try {
       const response = await fetch("http://localhost:3333/sessions", {
