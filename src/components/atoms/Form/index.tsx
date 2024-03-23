@@ -4,14 +4,14 @@ import { twMerge } from "tailwind-merge";
 type FormProps = {
   children: ReactNode;
   className?: string;
-  action?: string;
   onSubmit?: () => void;
+  action?: any;
 };
 
 const Form = ({
   children,
   className,
-  action = "#",
+  action,
   onSubmit = () => {},
 }: FormProps) => {
   return (

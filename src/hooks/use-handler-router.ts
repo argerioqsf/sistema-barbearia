@@ -11,7 +11,6 @@ export const useHandlerRouter = () => {
   const generatePath = (path?: string) => {
     const pathNames = paths.split("/").filter((path) => path);
     const newPath = `/${pathNames[0]}/${path}`;
-    console.log("newPath: ", newPath);
     return newPath;
   };
   return { pushRouter, generatePath };

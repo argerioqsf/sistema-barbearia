@@ -4,6 +4,14 @@ const withNextIntl = createNextIntlPlugin();
  
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://localhost:3333/:path*',
+      },
+    ]
+  },
 
   images: {
     remotePatterns: [
@@ -24,14 +32,6 @@ const nextConfig = {
       },
     ],
   },
-    async redirects() {
-      return [
-        {
-          source: '/',
-          destination: '/auth/signin',
-          permanent: true,
-        },
-      ]
-},};
+};
  
 export default withNextIntl(nextConfig);

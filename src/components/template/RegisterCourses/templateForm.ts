@@ -24,18 +24,22 @@ export const templateform: Templateform = {
           id: 2,
           fields: [
             {
-              id: "status",
+              id: "active",
               required: true,
               type: "select",
-              label: "Status",
+              label: "Ativo",
               options: [
                 {
-                  value: 1,
-                  label: "Ativo",
+                  value: "",
+                  label: "Selecioine",
                 },
                 {
-                  value: 2,
-                  label: "Suspenso",
+                  value: 1,
+                  label: "Sim",
+                },
+                {
+                  value: 0,
+                  label: "Não",
                 },
               ],
               messageError: "Deve ter 2 ou mais caracteres",

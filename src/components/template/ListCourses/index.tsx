@@ -7,22 +7,48 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, InfoList, Searchs } from "@/types/general";
-import React from "react";
+import { ItemListType, InfoList } from "@/types/general";
+import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const ListCourses: React.FC = () => {
   const { listTransform } = useItemListTransform();
   const infoList: InfoList = {
-    itemsHeader: ["N", "NOME", "STATUS", " QUANT. LEADS", ""],
-    itemsList: ["name", "", "status", "quant_leads", ""],
+    itemsHeader: ["N", "NOME", "ATIVO", "", ""],
+    itemsList: ["name", "", "active", "", ""],
   };
-  let list = listTransform(mockServer.cursos, infoList.itemsList);
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    const value = Cookies.get("token_SIM");
+    async function loadCourses() {
+      try {
+        const response = await fetch("/api/courses", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${value}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          return {
+            errors: { request: [JSON.parse(errorMessage).message] },
+          };
+        }
+        let list = await response.json();
+        list = listTransform(list.courses.courses, infoList.itemsList);
+        setList(list);
+      } catch (error) {}
+    }
+    loadCourses();
+  }, []);
 
   const renderAvatar = (item: ItemListType, index: number) => {
     return <Text className="text-black">{index + 1}</Text>;
   };
 
-  function handlerForm(data: any) {
+  function handlerFormSearch(data: any) {
     console.log("handlerForm Search: ", data);
   }
 
@@ -34,7 +60,7 @@ const ListCourses: React.FC = () => {
         </div>
 
         <div className="w-full mt-6">
-          <Search handlerForm={handlerForm} />
+          <Search handlerForm={handlerFormSearch} />
         </div>
 
         <div className="w-full mt-6 lg:mt-8">

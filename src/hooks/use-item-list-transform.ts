@@ -34,7 +34,12 @@ export const useItemListTransform = () => {
                 ...new_item,
                 id: item.id,
                 ...item,
-                [key]: item[fields[i]],
+                [key]:
+                  typeof item[fields[i]] === "boolean"
+                    ? item[fields[i]]
+                      ? "Sim"
+                      : "Não"
+                    : item[fields[i]],
               };
             } else {
               if (fields[i].includes(".")) {
@@ -51,7 +56,12 @@ export const useItemListTransform = () => {
                     ...new_item,
                     id: item.id,
                     ...item,
-                    [key]: value,
+                    [key]:
+                      typeof value === "boolean"
+                        ? value
+                          ? "Sim"
+                          : "Não"
+                        : value,
                   };
                 }
               }
@@ -63,7 +73,7 @@ export const useItemListTransform = () => {
       }
       return new_item;
     });
-    return listTransform??[];
+    return listTransform ?? [];
   };
   return { listTransform };
 };

@@ -4,34 +4,20 @@ import FormLogin from "@/components/organisms/FormLogin";
 import ContainerSection from "@/components/molecules/ContainerSection";
 import { Avatar } from "@/components/molecules";
 import { Text } from "@/components/atoms";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useRouter } from "next/navigation";
+import { loginUser } from "@/actions/auth";
+import { useEffect } from "react";
 import { useHandlerRouter } from "@/hooks/use-handler-router";
-
-const loginSchema = z.object({
-  email: z.string(),
-  password: z.string().min(6),
-});
+import Cookies from "js-cookie";
 
 const SingInSection = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginSchemaType>({
-    resolver: zodResolver(loginSchema),
-  });
-  const router = useRouter();
   const { pushRouter } = useHandlerRouter();
 
-  type LoginSchemaType = z.infer<typeof loginSchema>;
-
-  function handleLogin(data: LoginSchemaType) {
-    console.log("data SingInSection: ", data);
-    pushRouter("dashboard/home");
-  }
+  useEffect(() => {
+    const value = Cookies.get("token_SIM");
+    if (value) {
+      pushRouter("dashboard/home");
+    }
+  });
 
   return (
     <ContainerSection className="bg-primary-100">
@@ -47,11 +33,7 @@ const SingInSection = () => {
           </Text>
         </div>
         <div className="w-full md:w-2/4 flex flex-col justify-center items-start md:border-l-2 pl-0 md:pl-[10vw] h-auto md:h-[60vh]">
-          <FormLogin
-            register={register}
-            errors={errors}
-            onSubmit={handleSubmit(handleLogin)}
-          />
+          <FormLogin action={loginUser} />
         </div>
       </div>
     </ContainerSection>

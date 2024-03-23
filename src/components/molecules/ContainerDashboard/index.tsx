@@ -1,4 +1,4 @@
-import Section from "@/components/atoms/Section";
+"use client";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 

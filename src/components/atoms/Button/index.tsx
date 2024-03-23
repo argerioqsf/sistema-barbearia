@@ -1,6 +1,7 @@
 "use client";
 
 import React, { ReactNode } from "react";
+import { useFormStatus } from "react-dom";
 import { twMerge } from "tailwind-merge";
 
 type ButtonProps = {
@@ -16,13 +17,16 @@ const Button = ({
   children,
   onClick = () => {},
 }: ButtonProps) => {
+  const { pending } = useFormStatus();
   return (
     <button
       onClick={onClick}
       type={type}
-      className={twMerge("rounded-md p-4", className)}
+      className={twMerge("rounded-md p-4", className, pending && "opacity-50")}
+      aria-disabled={pending}
+      disabled={pending}
     >
-      {children}
+      {!pending ? children : "Loading..."}
     </button>
   );
 };

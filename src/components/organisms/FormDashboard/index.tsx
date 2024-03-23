@@ -4,6 +4,8 @@ import { Button, Form, Text } from "@/components/atoms";
 import Box from "@/components/atoms/Box";
 import { FormFieldText } from "@/components/molecules";
 import FormFieldSelect from "@/components/molecules/FormFieldSelect";
+import { formSchemaRegisterCourse } from "@/components/template/RegisterCourses/schema";
+import { useHandlerRouter } from "@/hooks/use-handler-router";
 import { useHandlerForm } from "@/hooks/use-hanlder-form";
 import {
   BoxTemplateForm,
@@ -11,7 +13,9 @@ import {
   LimitColsGrid,
   Templateform,
 } from "@/types/general";
-import React from "react";
+import React, { useEffect } from "react";
+import { useFormState } from "react-dom";
+import { z } from "zod";
 
 type FormDashboardProps = {
   templateform?: Templateform;
@@ -19,28 +23,47 @@ type FormDashboardProps = {
   loading?: boolean;
   getDefaultValues?: () => Promise<any>;
   title?: string;
+  action: (prevState: any, formData: FormData) => Promise<any>;
+  schema: z.ZodObject<any>;
+  pathSuccess?: string;
 };
 
 const FormDashboard = ({
-  handlerForm = () => {},
+  handlerForm,
   templateform,
   loading = false,
   getDefaultValues,
   title,
+  action,
+  schema,
+  pathSuccess,
 }: FormDashboardProps) => {
-  const { register, handleSubmit, errors } = useHandlerForm(
-    templateform?.sections,
-    getDefaultValues
-  );
+  const { register, handleSubmit } = useHandlerForm(schema, getDefaultValues);
+
+  const { pushRouter } = useHandlerRouter();
+
+  const initialStateForm = {
+    errors: null,
+    register_success: false,
+  };
+
+  const [state, formAction] = useFormState(action, initialStateForm);
+
+  useEffect(() => {
+    if (state.register_success) {
+      pushRouter(pathSuccess);
+    }
+  }, [action, pathSuccess, pushRouter, state.register_success]);
+
   const handlerFieldRender = (field: FieldsTemplateForm) => {
     const id = field.id;
     const propsField = {
       props: { ...register(id, { required: field.required }) },
       label: field.label,
       classInput: `bg-gray-300 ${field.classInput ?? ""} ${
-        errors[id] && "ring-red-500 focus:ring-red-500"
+        state?.errors?.[id] && "ring-red-500 focus:ring-red-500"
       }`,
-      error: errors[id]?.message,
+      error: state?.errors?.[id] && state?.errors?.[id][0],
       disabled: field.disabled,
     };
     if (field.type == "select") {
@@ -68,7 +91,11 @@ const FormDashboard = ({
 
   return (
     <div className="w-full">
-      <Form onSubmit={handleSubmit(handlerForm)} className="mb-8">
+      <Form
+        action={formAction}
+        onSubmit={handlerForm && handleSubmit(handlerForm)}
+        className="mb-8"
+      >
         <div className="w-[90vw] md:w-full flex flex-row justify-between items-center">
           <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
             {!loading && (title ?? templateform?.title)}
