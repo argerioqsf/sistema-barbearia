@@ -127,7 +127,8 @@ export type UserHookType =
   | `segments.${string}`
   | `courses.${string}`
   | "quant_leads"
-  | "active";
+  | "active"
+  | "phone";
 
 type typesForIdFieldsForm =
   | "name"
@@ -162,7 +163,13 @@ type typesForIdFieldsForm =
   | "course_id"
   | "title"
   | "describe"
-  | "active";
+  | "active"
+  | "phone"
+  | "cpf"
+  | "pix"
+  | "birthday"
+  | "genre"
+  | "role";
 
 export type FieldsFormSchema = {
   name?: z.ZodString;
@@ -256,7 +263,7 @@ type Roles = {
 
 export type OptionsTemplateForm = {
   label: string;
-  value: number | string;
+  value: number | string | boolean;
 };
 
 type NamesSearchs = "search";

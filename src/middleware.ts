@@ -1,5 +1,6 @@
 import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
+import { getTokenFromCookieRequest } from "./utils/cookieClient";
 
 const middlewareIntl = createMiddleware({
   locales: ["pt-BR"],
@@ -7,7 +8,7 @@ const middlewareIntl = createMiddleware({
 });
 
 export default function middleware(request: NextRequest) {
-  const is_logged = !!request.cookies.get("token_SIM")?.value;
+  const is_logged = !!getTokenFromCookieRequest(request);
   const is_LoginPage = request.nextUrl.pathname.includes("/auth/signin");
   if (!is_logged) {
     if (is_LoginPage) {

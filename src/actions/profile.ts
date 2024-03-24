@@ -1,14 +1,19 @@
 "use server";
 
-import { formSchemaSignin } from "@/components/template/SingIn/schema";
 import urls from "@/constants/urls.json";
+import { formSchemaEditProfile } from "@/components/template/Profile/schema";
 import { setRolesInCookieServer, setTokenInCookieServer, setUserInCookieServer } from "@/utils/cookieServer";
 
-export async function loginUser(prevState: any, formData: FormData) {
-  const validatedFields = formSchemaSignin.safeParse({
-    email: formData.get("email"),
-    password: formData.get("password"),
-  });
+export async function editProfile(prevState: any, formData: FormData) {
+    const validatedFields = formSchemaEditProfile.safeParse({
+        name: formData.get("name"),
+        phone: formData.get("phone"),
+        cpf: formData.get("cpf"),
+        pix: formData.get("pix"),
+        email: formData.get("email"),
+        city: formData.get("city"),
+        status: formData.get("status"),
+    });
 
   if (validatedFields.success) {
     try {

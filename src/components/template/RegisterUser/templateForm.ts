@@ -16,40 +16,38 @@ export const templateform: Templateform = {
               required: true,
               type: "text",
               label: "Nome",
-              messageError: "Must be 2 or more characters long",
             },
             {
-              id: "last_name",
+              id: "pix",
               required: true,
               type: "text",
-              label: "Sobrenome",
-              messageError: "Must be 2 or more characters long",
+              label: "Chave Pix",
             },
           ],
         },
-        {
-          id: 2,
-          fields: [
-            {
-              id: "image",
-              required: true,
-              type: "file",
-              label: "Foto: (600 x 600)",
-              classInput: "pl-2",
-            },
-          ],
-        },
+        // {
+        //   id: 2,
+        //   fields: [
+        //     {
+        //       id: "image",
+        //       required: true,
+        //       type: "file",
+        //       label: "Foto: (600 x 600)",
+        //       classInput: "pl-2",
+        //     },
+        //   ],
+        // },
         {
           id: 3,
           fields: [
             {
-              id: "whatsapp",
+              id: "phone",
               required: true,
               type: "text",
               label: "Whatsapp",
             },
             {
-              id: "document",
+              id: "cpf",
               required: true,
               type: "text",
               label: "Documento",
@@ -60,20 +58,32 @@ export const templateform: Templateform = {
           id: 4,
           fields: [
             {
-              id: "datebirth",
+              id: "birthday",
               required: true,
               type: "text",
               label: "Nascimento",
             },
             {
-              id: "genero",
+              id: "genre",
               required: true,
               type: "select",
               label: "Genero",
               options: [
                 {
-                  label: "genero 1",
-                  value: 1,
+                  label: "Selecioinar",
+                  value: "",
+                },
+                {
+                  label: "Masculino",
+                  value: 'man',
+                },
+                {
+                  label: "Feminino",
+                  value: 'woman',
+                },
+                {
+                  label: "Outro",
+                  value: 'other',
                 },
               ],
             },
@@ -93,44 +103,31 @@ export const templateform: Templateform = {
               required: true,
               type: "password",
               label: "Senha",
-              roles: {
-                minCaracters: 6,
-              },
-            },
+            }
           ],
         },
         {
           id: 6,
           fields: [
             {
-              id: "nivel",
+              id: "active",
               required: true,
               type: "select",
-              label: "Nivel",
+              label: "Ativo",
               options: [
                 {
-                  label: "nivel 1",
-                  value: 1,
+                  label: "Selecionar",
+                  value: "",
                 },
-              ],
-            },
-            {
-              id: "status",
-              required: true,
-              type: "select",
-              label: "Status",
-              options: [
                 {
-                  label: "status 1",
-                  value: 1,
+                  label: "Sim",
+                  value: 'sim',
+                },
+                {
+                  label: "Não",
+                  value: 'nao',
                 },
               ],
-            },
-            {
-              id: "date",
-              required: true,
-              type: "date",
-              label: "Data",
             },
           ],
         },
@@ -144,17 +141,12 @@ export const templateform: Templateform = {
           id: 1,
           fields: [
             {
-              id: "permission",
+              id: "role",
               required: true,
               type: "select",
               label: "Permissão",
               messageError: "Must be 2 or more characters long",
-              options: [
-                {
-                  label: "permissão 1",
-                  value: 1,
-                },
-              ],
+              options: [],
             },
           ],
         },

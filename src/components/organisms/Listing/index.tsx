@@ -17,6 +17,8 @@ type ListingProps = {
   avatar?: (item: ItemListType, index: number) => React.JSX.Element;
   itemsHeader?: Array<string>;
   variant?: "default" | "segmented";
+  loading?: boolean;
+  errorMessage?: string;
 };
 
 const Listing = ({
@@ -28,6 +30,8 @@ const Listing = ({
   avatar = (item, index) => <></>,
   itemsHeader,
   variant = "default",
+  loading,
+  errorMessage,
 }: ListingProps) => {
   const { pushRouter } = useHandlerRouter();
   return (
@@ -68,7 +72,7 @@ const Listing = ({
           <HeaderList itemsHeader={itemsHeader} />
         </div>
       )}
-      {list != undefined && list.length > 0 ? (
+      {list != undefined ? (
         <div
           className={twMerge(
             "w-full mt-4 flex flex-col gap-4 pb-4 justify-start items-center",
@@ -90,10 +94,16 @@ const Listing = ({
               />
             ))}
         </div>
-      ) : (
+      ) : loading ? (
         <div className="w-full h-[20vh] p-4 flex justify-center items-center">
           <Text>Loading...</Text>
         </div>
+      ) : (
+        errorMessage && (
+          <div className="w-full h-[20vh] p-4 flex justify-center items-center">
+            <Text>{errorMessage}</Text>
+          </div>
+        )
       )}
     </div>
   );

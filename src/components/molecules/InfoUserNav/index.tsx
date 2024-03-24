@@ -3,6 +3,7 @@ import { useHandlerRouter } from "@/hooks/use-handler-router";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import Cookies from "js-cookie";
+import { removeRolesCookieClient, removeTokenCookieClient, removeUserCookieClient } from "@/utils/cookieClient";
 
 type InfoUserNavProps = {
   nameUser: string;
@@ -12,7 +13,9 @@ type InfoUserNavProps = {
 const InfoUserNav: React.FC<InfoUserNavProps> = ({ nameUser, className }) => {
   const { pushRouter } = useHandlerRouter();
   function logOut() {
-    Cookies.remove("token_SIM");
+    removeTokenCookieClient();
+    removeUserCookieClient();
+    removeRolesCookieClient();
     pushRouter("auth/signin");
   }
 
