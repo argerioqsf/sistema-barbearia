@@ -3,27 +3,41 @@
 import { Text } from "@/components/atoms";
 import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
-import { useHandlerMockServer } from "@/hooks/use-handler-mock-server";
-import { Form, ItemListType, Lead, UserType } from "@/types/general";
+import { Form, ItemListType } from "@/types/general";
 import React, { useState } from "react";
 import * as templates from "./templates";
 import DetailDefault from "@/components/organisms/DetailDefault";
+import { getTokenFromCookieClient } from "@/utils/cookieClient";
+import { loginUser } from "@/actions/auth";
+import { formSchemaSignin } from "../SingIn/schema";
 
 const DetailUsers = ({ id }: { id: string }) => {
-  const { getUserForId } = useHandlerMockServer();
-  const [user, setUser] = useState<UserType | null>();
   const [loading, setLoading] = useState(false);
 
-  function getUser(): Promise<any> {
+  async function loadProfile() {
     setLoading(true);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const data = getUserForId(id);
-        setUser({ ...data[0] });
-        setLoading(false);
-        resolve(data[0]);
-      }, 2000);
-    });
+    try {
+      const value = getTokenFromCookieClient();
+      const response = await fetch("/api/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${value}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        return {
+          errors: { request: [JSON.parse(errorMessage).message] },
+        };
+      }
+      let { profile } = await response.json();
+      setLoading(false);
+      return profile;
+    } catch (error) {
+      setLoading(false);
+      return null;
+    }
   }
 
   const renderAvatar = (item: ItemListType, index: number) => {
@@ -42,8 +56,11 @@ const DetailUsers = ({ id }: { id: string }) => {
     {
       template: templates.templateform,
       handlerForm: handleRegister,
-      getDefaultValues: getUser,
+      getDefaultValues: loadProfile,
       loading: loading,
+      action: loginUser,
+      schema: formSchemaSignin,
+      pathSuccess: "/",
     },
   ];
 

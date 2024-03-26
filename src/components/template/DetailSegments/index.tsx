@@ -8,6 +8,8 @@ import { Form, ItemListType, Lead, Segment, UserType } from "@/types/general";
 import React, { useState } from "react";
 import * as templates from "./templates";
 import DetailDefault from "@/components/organisms/DetailDefault";
+import { loginUser } from "@/actions/auth";
+import { formSchemaSignin } from "../SingIn/schema";
 
 const DetailSegments = ({ id }: { id: string }) => {
   const { getSegmentForId } = useHandlerMockServer();
@@ -44,6 +46,9 @@ const DetailSegments = ({ id }: { id: string }) => {
       handlerForm: handleRegister,
       getDefaultValues: getUser,
       loading: loading,
+      action: loginUser,
+      schema: formSchemaSignin,
+      pathSuccess: "/",
     },
   ];
 

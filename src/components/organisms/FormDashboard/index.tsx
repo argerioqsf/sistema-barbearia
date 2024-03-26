@@ -19,17 +19,16 @@ import { z } from "zod";
 
 type FormDashboardProps = {
   templateform?: Templateform;
-  handlerForm?: (state: any) => void;
   loading?: boolean;
   getDefaultValues?: () => Promise<any>;
   title?: string;
   action: (prevState: any, formData: FormData) => Promise<any>;
   schema: z.ZodObject<any>;
-  pathSuccess?: string;
+  pathSuccess: string;
+  errorMessage?: string;
 };
 
 const FormDashboard = ({
-  handlerForm,
   templateform,
   loading = false,
   getDefaultValues,
@@ -37,8 +36,9 @@ const FormDashboard = ({
   action,
   schema,
   pathSuccess,
+  errorMessage,
 }: FormDashboardProps) => {
-  const { register, handleSubmit } = useHandlerForm(schema, getDefaultValues);
+  const { register } = useHandlerForm(schema, getDefaultValues);
 
   const { pushRouter } = useHandlerRouter();
 
@@ -48,6 +48,7 @@ const FormDashboard = ({
   };
 
   const [state, formAction] = useFormState(action, initialStateForm);
+  console.log("state: ", state);
 
   useEffect(() => {
     if (state.register_success) {
@@ -91,11 +92,7 @@ const FormDashboard = ({
 
   return (
     <div className="w-full">
-      <Form
-        action={formAction}
-        onSubmit={handlerForm && handleSubmit(handlerForm)}
-        className="mb-8"
-      >
+      <Form action={formAction} className="mb-8">
         <div className="w-[90vw] md:w-full flex flex-row justify-between items-center">
           <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
             {!loading && (title ?? templateform?.title)}
@@ -110,6 +107,15 @@ const FormDashboard = ({
           )}
         </div>
 
+        {state?.errors?.request && (
+          <Text
+            role="alert"
+            className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
+          >
+            {state?.errors?.request}
+          </Text>
+        )}
+
         {templateform?.sections.map((section) => (
           <div key={section.id} className="w-[90vw] md:w-full mt-10 lg:mt-8">
             <div className="p-4 pb-2 bg-gray-200 rounded-xl rounded-b-none w-56 shadow-md shadow-slate-400">
@@ -118,10 +124,16 @@ const FormDashboard = ({
               </Text>
             </div>
             <div className="w-[90vw] grid-cols-12 md:w-full border-2 flex flex-col gap-4 bg-gray-200 p-6 rounded-xl rounded-tl-none shadow-md shadow-slate-400">
-              {!loading ? (
+              {!loading && !errorMessage ? (
                 section?.boxs.map((boxitem) => handlerBoxRender(boxitem))
+              ) : !errorMessage ? (
+                <div className="w-full h-[20vh] p-4 flex justify-center items-center">
+                  <Text>Loading...</Text>
+                </div>
               ) : (
-                <Text>Loading...</Text>
+                <div className="w-full h-[20vh] p-4 flex justify-center items-center">
+                  <Text>{errorMessage}</Text>
+                </div>
               )}
             </div>
           </div>

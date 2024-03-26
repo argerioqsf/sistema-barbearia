@@ -1,11 +1,12 @@
 "use client";
+
 import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import FormDashboard from "@/components/organisms/FormDashboard";
 import React from "react";
 import { templateform } from "./templateForm";
-import { registerCourse } from "@/actions/course";
 import { formSchemaRegisterCourse } from "./schema";
+import { registerCourse } from "@/actions/course";
 
 const RegisterCourses: React.FC = () => {
   return (

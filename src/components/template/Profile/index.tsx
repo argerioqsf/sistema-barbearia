@@ -5,31 +5,41 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import FormDashboard from "@/components/organisms/FormDashboard";
 import React, { useState } from "react";
 import { templateform } from "./templateForm";
+import { formSchemaEditProfile } from "./schema";
+import Cookies from "js-cookie";
+import { editProfile } from "@/actions/profile";
+
 const Profile: React.FC = () => {
-  const [user, setUser] = useState<{} | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string>();
 
-  function getUser(): Promise<any> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const data = {
-          name: "Argério",
-          last_name: "Queiroz",
-          whatsapp: "34234234",
-          document: "23424",
-          key_pix: "23424234",
-          email: "asdasdasds",
-          city: "weewewrw",
-          status: 1,
-          user_at: "2012-12-12",
+  async function loadProfile() {
+    setLoading(true);
+    try {
+      const value = Cookies.get("token_SIM");
+      const response = await fetch("/api/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${value}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        setErrorMessage(JSON.parse(errorMessage).message);
+        return {
+          errors: { request: [JSON.parse(errorMessage).message] },
         };
-        setUser(data);
-        resolve(data);
-      }, 2000);
-    });
-  }
-
-  function handleRegister(data: object) {
-    console.log("data FormDashboard: ", data);
+      }
+      let { profile } = await response.json();
+      console.log("profile: ", profile);
+      setLoading(false);
+      return profile;
+    } catch (error) {
+      setLoading(false);
+      setErrorMessage("Erro ao carregar informações do usuário!");
+      return null;
+    }
   }
 
   return (
@@ -40,10 +50,13 @@ const Profile: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            loading={!user}
-            handlerForm={handleRegister}
+            loading={loading}
+            schema={formSchemaEditProfile}
+            action={editProfile}
             templateform={templateform}
-            getDefaultValues={getUser}
+            pathSuccess="profile"
+            getDefaultValues={loadProfile}
+            errorMessage={errorMessage}
           />
         </div>
       </div>

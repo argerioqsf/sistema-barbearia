@@ -16,14 +16,6 @@ export const templateform: Templateform = {
               required: true,
               type: "text",
               label: "Nome",
-              messageError: "Must be 2 or more characters long",
-            },
-            {
-              id: "last_name",
-              required: true,
-              type: "text",
-              label: "Sobrenome",
-              messageError: "Must be 2 or more characters long",
             },
           ],
         },
@@ -31,19 +23,19 @@ export const templateform: Templateform = {
           id: 3,
           fields: [
             {
-              id: "whatsapp",
+              id: "phone",
               required: true,
               type: "text",
               label: "Whatsapp",
             },
             {
-              id: "document",
+              id: "cpf",
               required: true,
               type: "text",
               label: "Documento",
             },
             {
-              id: "key_pix",
+              id: "pix",
               required: true,
               type: "text",
               label: "Chave pix",
@@ -57,7 +49,7 @@ export const templateform: Templateform = {
               id: "email",
               required: true,
               type: "text",
-              label: "E-mail",
+              label: "E-mail 2",
             },
           ],
         },
@@ -71,27 +63,24 @@ export const templateform: Templateform = {
               label: "Cidade-UF",
             },
             {
-              id: "status",
+              id: "active",
               required: true,
               type: "select",
               label: "Status",
-
               options: [
                 {
-                  value: 1,
+                  value: "",
+                  label: "Selecione",
+                },
+                {
+                  value: 0,
                   label: "ativo",
                 },
                 {
-                  value: 2,
+                  value: 1,
                   label: "desativo",
                 },
               ],
-            },
-            {
-              id: "user_at",
-              required: true,
-              type: "date",
-              label: "Data",
             },
           ],
         },

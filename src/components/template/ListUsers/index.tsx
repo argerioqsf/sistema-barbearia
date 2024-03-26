@@ -1,32 +1,56 @@
 "use client";
 
-import { EditIcon } from "@/components/Icons/EditIcon";
-import { EyeIcon } from "@/components/Icons/EyeIcon";
-import { LockIcon } from "@/components/Icons/LockIcon";
 import { mockServer } from "@/components/config/mockServer";
 import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, UserType, InfoList, Searchs } from "@/types/general";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { ItemListType, InfoList } from "@/types/general";
+import { getTokenFromCookieClient } from "@/utils/cookieClient";
 import Image from "next/image";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import React, { useEffect, useState } from "react";
 
 const ListUsers: React.FC = () => {
   const { listTransform } = useItemListTransform();
   const infoList: InfoList = {
-    itemsHeader: ["", "NOME", "E-MAIL", "NUMERO", "STATUS"],
-    itemsList: ["name", "", "email", "number", "status"],
+    itemsHeader: ["", "NOME", "E-MAIL", "ATIVO"],
+    itemsList: ["name", "", "email", "", "active"],
   };
-  let list = listTransform(mockServer.users, infoList.itemsList);
+  const [list, setList] = useState();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
 
-  const searchSchema = z.object({
-    search: z.string().min(2, { message: "Must be 2 or more characters long" }),
-  });
+  useEffect(() => {
+    const value = getTokenFromCookieClient();
+    async function loadUsers() {
+      setLoading(true);
+      try {
+        const response = await fetch("/api/users", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${value}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          setErrorMessage(JSON.parse(errorMessage).message);
+          return {
+            errors: { request: [JSON.parse(errorMessage).message] },
+          };
+        }
+        let list = await response.json();
+        list = listTransform(list.users, infoList.itemsList);
+        setList(list);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        setErrorMessage("Erro ao carregar lista de usuários!");
+      }
+    }
+    loadUsers();
+  }, [infoList.itemsList, listTransform]);
 
   const renderAvatar = (item: ItemListType, index: number) => {
     return (
@@ -40,18 +64,18 @@ const ListUsers: React.FC = () => {
     );
   };
 
-  function handlerForm(data: any) {
+  function handlerFormSearch(data: any) {
     console.log("handlerForm Search: ", data);
   }
 
   return (
     <ContainerDashboard>
-      <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4 ">
+      <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4">
         <div className="w-full">
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handlerForm} />
+          <Search handlerForm={handlerFormSearch} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
@@ -62,6 +86,8 @@ const ListUsers: React.FC = () => {
             hrefButton="dashboard/users/register"
             textButton="Novo usuário"
             title="Usuários"
+            errorMessage={errorMessage}
+            loading={loading}
           />
         </div>
       </div>

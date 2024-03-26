@@ -9,6 +9,8 @@ import React, { useState } from "react";
 import { templates } from "./templates";
 import DetailDefault from "@/components/organisms/DetailDefault";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
+import { loginUser } from "@/actions/auth";
+import { formSchemaSignin } from "../SingIn/schema";
 
 const DetailUnits = ({ id }: { id: string }) => {
   const { listTransform } = useItemListTransform();
@@ -61,6 +63,9 @@ const DetailUnits = ({ id }: { id: string }) => {
       handlerForm: handleRegister,
       getDefaultValues: getUnit,
       loading: loading,
+      action: loginUser,
+      schema: formSchemaSignin,
+      pathSuccess: "/",
     },
   ];
 

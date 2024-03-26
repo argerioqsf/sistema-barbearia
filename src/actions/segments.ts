@@ -1,13 +1,12 @@
 "use server";
 
-import { formSchemaRegisterCourse } from "@/components/template/RegisterCourses/schema";
 import urls from "@/constants/urls.json";
+import { formSchemaRegisterSegment } from "@/components/template/RegisterSegments/schema";
 import { getTokenFromCookieServer } from "@/utils/cookieServer";
 
-export async function registerCourse(prevState: any, formData: FormData) {
-  const validatedFields = formSchemaRegisterCourse.safeParse({
+export async function registerSegment(prevState: any, formData: FormData) {
+  const validatedFields = formSchemaRegisterSegment.safeParse({
     name: formData.get("name"),
-    active: formData.get("active"),
   });
 
   if (validatedFields.success) {
@@ -18,7 +17,7 @@ export async function registerCourse(prevState: any, formData: FormData) {
           errors: { request: ["Erro de credenciais"] },
         };
       }
-      const response = await fetch(`${urls.url_api}/create/course`, {
+      const response = await fetch(`${urls.url_api}/create/segments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +25,6 @@ export async function registerCourse(prevState: any, formData: FormData) {
         },
         body: JSON.stringify({
           name: formData.get("name"),
-          active: formData.get("active") == "1" ? true : false,
         }),
       });
       if (!response.ok) {
@@ -41,7 +39,7 @@ export async function registerCourse(prevState: any, formData: FormData) {
       };
     } catch (error) {
       return {
-        errors: { request: ["Failed to Login"] },
+        errors: { request: ["Falha ao criar Segmento"] },
       };
     }
   } else if (validatedFields.error) {

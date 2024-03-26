@@ -8,6 +8,8 @@ import { templateform } from "./templateForm";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { loginUser } from "@/actions/auth";
+import { formSchemaEditProfile } from "../Profile/schema";
 
 const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -51,7 +53,7 @@ const RegisterLeads: React.FC = () => {
     templateformState.sections[0].boxs[3].fields[0].options = [
       {
         label: "",
-        value: null,
+        value: "",
       },
       {
         label: "option1",
@@ -69,7 +71,7 @@ const RegisterLeads: React.FC = () => {
     templateformState.sections[0].boxs[3].fields[1].options = [
       {
         label: "",
-        value: null,
+        value: "",
       },
       {
         label: "option4",
@@ -85,7 +87,7 @@ const RegisterLeads: React.FC = () => {
       },
     ];
     setTemplateformState({ ...templateformState });
-  }, []);
+  }, [templateformState]);
 
   return (
     <ContainerDashboard>
@@ -95,11 +97,10 @@ const RegisterLeads: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            handlerForm={handleRegister}
             templateform={templateformState}
-            handleSubmit={handleSubmit}
-            register={register}
-            errors={errors}
+            action={loginUser}
+            schema={formSchemaEditProfile}
+            pathSuccess="/"
           />
         </div>
       </div>

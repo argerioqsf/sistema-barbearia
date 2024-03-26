@@ -4,31 +4,14 @@ import { twMerge } from "tailwind-merge";
 import { Button, Form, InputForm } from "@/components/atoms";
 import { SectionTemplateForm } from "@/types/general";
 import { useHandlerForm } from "@/hooks/use-hanlder-form";
+import { searchSchema } from "./schema";
 
 type SearchProps = {
   handlerForm: (data: any) => void;
 };
 
 const Search = ({ handlerForm }: SearchProps) => {
-  const { register, handleSubmit } = useHandlerForm([
-    {
-      id: 1,
-      title: "Search",
-      boxs: [
-        {
-          id: 1,
-          fields: [
-            {
-              id: "search",
-              label: "Search",
-              required: true,
-              type: "text",
-            },
-          ],
-        },
-      ],
-    },
-  ]);
+  const { register, handleSubmit } = useHandlerForm(searchSchema);
   return (
     <Form
       onSubmit={handleSubmit(handlerForm)}

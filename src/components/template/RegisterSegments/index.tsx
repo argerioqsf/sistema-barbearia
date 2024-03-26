@@ -3,33 +3,12 @@
 import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
 import FormDashboard from "@/components/organisms/FormDashboard";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { templateform } from "./templateForm";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-const userSchema = z.object({
-  name: z.string().min(2, { message: "Must be 2 or more characters long" }),
-});
-
-type UserSchema = z.infer<typeof userSchema>;
+import { formSchemaRegisterSegment } from "./schema";
+import { registerSegment } from "@/actions/segments";
 
 const RegisterSegments: React.FC = () => {
-  const [templateformState, setTemplateformState] = useState(templateform);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm<UserSchema>({
-    resolver: zodResolver(userSchema),
-  });
-
-  function handleRegister(data: UserSchema) {
-    console.log("data FormDashboard: ", data);
-  }
-
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
@@ -38,12 +17,10 @@ const RegisterSegments: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            setValue={setValue}
-            handlerForm={handleRegister}
-            templateform={templateformState}
-            handleSubmit={handleSubmit}
-            register={register}
-            errors={errors}
+            schema={formSchemaRegisterSegment}
+            action={registerSegment}
+            templateform={templateform}
+            pathSuccess="dashboard/segments"
           />
         </div>
       </div>

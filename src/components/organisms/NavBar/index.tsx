@@ -35,7 +35,7 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
           <div className={twMerge("flex flex-row gap-4")}>
             <Avatar
               classIcon={`size-${[50]}px`}
-              href="profile"
+              href="dashboard/profile"
               image="https://cdn-icons-png.flaticon.com/512/149/149071.png"
               size={50}
             />

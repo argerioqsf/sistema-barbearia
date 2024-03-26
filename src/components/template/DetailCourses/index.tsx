@@ -8,6 +8,8 @@ import { Course, Form, ItemListType } from "@/types/general";
 import React, { useState } from "react";
 import * as templates from "./templates";
 import DetailDefault from "@/components/organisms/DetailDefault";
+import { loginUser } from "@/actions/auth";
+import { formSchemaSignin } from "../SingIn/schema";
 
 const DetailCourses = ({ id }: { id: string }) => {
   const { getCourseForId } = useHandlerMockServer();
@@ -44,6 +46,9 @@ const DetailCourses = ({ id }: { id: string }) => {
       handlerForm: handleRegister,
       getDefaultValues: getUser,
       loading: loading,
+      action: loginUser,
+      schema: formSchemaSignin,
+      pathSuccess: "/",
     },
   ];
 

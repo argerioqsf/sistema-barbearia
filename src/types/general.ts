@@ -127,7 +127,8 @@ export type UserHookType =
   | `segments.${string}`
   | `courses.${string}`
   | "quant_leads"
-  | "active";
+  | "active"
+  | "phone";
 
 type typesForIdFieldsForm =
   | "name"
@@ -162,7 +163,13 @@ type typesForIdFieldsForm =
   | "course_id"
   | "title"
   | "describe"
-  | "active";
+  | "active"
+  | "phone"
+  | "cpf"
+  | "pix"
+  | "birthday"
+  | "genre"
+  | "role";
 
 export type FieldsFormSchema = {
   name?: z.ZodString;
@@ -285,6 +292,9 @@ export type Form = {
   handlerForm: (state: any) => void;
   getDefaultValues?: () => Promise<any>;
   loading?: boolean;
+  action: (prevState: any, formData: FormData) => Promise<any>;
+  pathSuccess: string;
+  schema: z.ZodObject<any>;
 };
 
 export type ListAction = {

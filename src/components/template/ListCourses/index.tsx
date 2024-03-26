@@ -9,7 +9,7 @@ import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
 import { ItemListType, InfoList } from "@/types/general";
 import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import { getTokenFromCookieClient } from "@/utils/cookieClient";
 
 const ListCourses: React.FC = () => {
   const { listTransform } = useItemListTransform();
@@ -20,7 +20,7 @@ const ListCourses: React.FC = () => {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    const value = Cookies.get("token_SIM");
+    const value = getTokenFromCookieClient();
     async function loadCourses() {
       try {
         const response = await fetch("/api/courses", {
@@ -42,7 +42,7 @@ const ListCourses: React.FC = () => {
       } catch (error) {}
     }
     loadCourses();
-  }, []);
+  }, [infoList.itemsList, listTransform]);
 
   const renderAvatar = (item: ItemListType, index: number) => {
     return <Text className="text-black">{index + 1}</Text>;

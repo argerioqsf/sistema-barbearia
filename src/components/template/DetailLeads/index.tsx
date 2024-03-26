@@ -8,6 +8,8 @@ import { Form, ItemListType, Lead } from "@/types/general";
 import React, { useState } from "react";
 import * as templates from "./templates";
 import DetailDefault from "@/components/organisms/DetailDefault";
+import { loginUser } from "@/actions/auth";
+import { formSchemaSignin } from "../SingIn/schema";
 
 const DetailLeads = ({ id }: { id: string }) => {
   const { getLeadForId } = useHandlerMockServer();
@@ -48,11 +50,17 @@ const DetailLeads = ({ id }: { id: string }) => {
       handlerForm: handleRegister,
       getDefaultValues: getLead,
       loading: loading,
+      action: loginUser,
+      schema: formSchemaSignin,
+      pathSuccess: "/",
     },
     {
       template: templates.templateformTimeLine,
       handlerForm: handleRegisterTimeLine,
       loading: loading,
+      action: loginUser,
+      schema: formSchemaSignin,
+      pathSuccess: "/",
     },
   ];
 

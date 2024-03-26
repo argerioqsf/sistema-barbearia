@@ -1,8 +1,5 @@
 "use client";
 
-import { EditIcon } from "@/components/Icons/EditIcon";
-import { EyeIcon } from "@/components/Icons/EyeIcon";
-import { LockIcon } from "@/components/Icons/LockIcon";
 import { Text } from "@/components/atoms";
 import { mockServer } from "@/components/config/mockServer";
 import { ContainerDashboard } from "@/components/molecules";
@@ -10,28 +7,52 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import Search from "@/components/molecules/Search";
 import Listing from "@/components/organisms/Listing";
 import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, InfoList, Searchs } from "@/types/general";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { ItemListType, InfoList } from "@/types/general";
+import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const ListSegments: React.FC = () => {
   const { listTransform } = useItemListTransform();
+  const [list, setList] = useState([]);
 
   const infoList: InfoList = {
     itemsHeader: ["N", "Nome", ""],
     itemsList: ["name", "", "", "", ""],
   };
-  let list = listTransform(mockServer.segments, infoList.itemsList);
+  // let list = listTransform(mockServer.segments, infoList.itemsList);
 
-  function handlerForm(data: any) {
-    console.log("handlerForm Search: ", data);
-  }
+  useEffect(() => {
+    const value = Cookies.get("token_SIM");
+    async function loadCourses() {
+      try {
+        const response = await fetch("/api/segments", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${value}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          return {
+            errors: { request: [JSON.parse(errorMessage).message] },
+          };
+        }
+        let list = await response.json();
+        list = listTransform(list.segments, infoList.itemsList);
+        setList(list);
+      } catch (error) {}
+    }
+    loadCourses();
+  }, [infoList.itemsList, listTransform]);
 
   const renderAvatar = (item: ItemListType, index: number) => {
     return <Text className="text-black">{index + 1}</Text>;
   };
+
+  function handlerFormSearch(data: any) {
+    console.log("handlerForm Search: ", data);
+  }
 
   return (
     <ContainerDashboard>
@@ -40,7 +61,7 @@ const ListSegments: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handlerForm} />
+          <Search handlerForm={handlerFormSearch} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing

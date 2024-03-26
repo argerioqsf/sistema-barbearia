@@ -30,10 +30,12 @@ const DetailDefault = ({
           <FormDashboard
             key={index}
             title={form.template.title}
-            handlerForm={form.handlerForm}
             templateform={form.template}
             getDefaultValues={form.getDefaultValues}
             loading={form.loading}
+            action={form.action}
+            pathSuccess=""
+            schema={form.schema}
           />
         ))}
       {lists &&
