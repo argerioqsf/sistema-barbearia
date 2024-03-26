@@ -6,6 +6,7 @@ import Avatar from "./Avatar";
 import ContainerDashboard from "./ContainerDashboard";
 import ItemSideMenu from "./ItemSideMenu";
 import HeaderList from "./HeaderList";
+import IconAction from "./IconAction";
 
 export {
   ContainerSection,
@@ -16,4 +17,5 @@ export {
   ContainerDashboard,
   ItemSideMenu,
   HeaderList,
+  IconAction,
 };

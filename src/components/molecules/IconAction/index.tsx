@@ -1,8 +1,6 @@
 import { Button } from "@/components/atoms";
 import LinkDefault from "@/components/atoms/LinkDefault";
-import { useHandlerIcons } from "@/hooks/use-handler-icons";
-import { useHandlerRouter } from "@/hooks/use-handler-router";
-import Image from "next/image";
+import { useHandlerIcons } from "@/hooks/use-handler-icon";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
