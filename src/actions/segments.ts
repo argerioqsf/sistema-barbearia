@@ -1,6 +1,5 @@
 "use server";
 
-import urls from "@/constants/urls.json";
 import { formSchemaRegisterSegment } from "@/components/template/RegisterSegments/schema";
 import { getTokenFromCookieServer } from "@/utils/cookieServer";
 
@@ -17,7 +16,7 @@ export async function registerSegment(prevState: any, formData: FormData) {
           errors: { request: ["Erro de credenciais"] },
         };
       }
-      const response = await fetch(`${urls.url_api}/create/segments`, {
+      const response = await fetch(`${process.env.URL_API}/create/segments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

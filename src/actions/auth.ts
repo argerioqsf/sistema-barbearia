@@ -1,8 +1,11 @@
 "use server";
 
 import { formSchemaSignin } from "@/components/template/SingIn/schema";
-import urls from "@/constants/urls.json";
-import { setRolesInCookieServer, setTokenInCookieServer, setUserInCookieServer } from "@/utils/cookieServer";
+import {
+  setRolesInCookieServer,
+  setTokenInCookieServer,
+  setUserInCookieServer,
+} from "@/utils/cookieServer";
 
 export async function loginUser(prevState: any, formData: FormData) {
   const validatedFields = formSchemaSignin.safeParse({
@@ -12,7 +15,7 @@ export async function loginUser(prevState: any, formData: FormData) {
 
   if (validatedFields.success) {
     try {
-      const response = await fetch(`${urls.url_api}/sessions`, {
+      const response = await fetch(`${process.env.URL_API}/sessions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,9 +35,9 @@ export async function loginUser(prevState: any, formData: FormData) {
       let token = resp?.token;
       let user = resp?.user;
       let roles = resp?.roles;
-      setTokenInCookieServer(token)
-      setUserInCookieServer(user)
-      setRolesInCookieServer(roles)
+      setTokenInCookieServer(token);
+      setUserInCookieServer(user);
+      setRolesInCookieServer(roles);
       return {
         errors: {},
         ok: true,

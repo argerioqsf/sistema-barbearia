@@ -1,7 +1,6 @@
 "use server";
 
 import { formSchemaRegisterCourse } from "@/components/template/RegisterCourses/schema";
-import urls from "@/constants/urls.json";
 import { getTokenFromCookieServer } from "@/utils/cookieServer";
 
 export async function registerCourse(prevState: any, formData: FormData) {
@@ -18,7 +17,7 @@ export async function registerCourse(prevState: any, formData: FormData) {
           errors: { request: ["Erro de credenciais"] },
         };
       }
-      const response = await fetch(`${urls.url_api}/create/course`, {
+      const response = await fetch(`${process.env.URL_API}/create/course`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

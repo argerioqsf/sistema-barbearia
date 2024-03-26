@@ -1,23 +1,26 @@
 "use server";
 
-import urls from "@/constants/urls.json";
 import { formSchemaEditProfile } from "@/components/template/Profile/schema";
-import { setRolesInCookieServer, setTokenInCookieServer, setUserInCookieServer } from "@/utils/cookieServer";
+import {
+  setRolesInCookieServer,
+  setTokenInCookieServer,
+  setUserInCookieServer,
+} from "@/utils/cookieServer";
 
 export async function editProfile(prevState: any, formData: FormData) {
-    const validatedFields = formSchemaEditProfile.safeParse({
-        name: formData.get("name"),
-        phone: formData.get("phone"),
-        cpf: formData.get("cpf"),
-        pix: formData.get("pix"),
-        email: formData.get("email"),
-        city: formData.get("city"),
-        status: formData.get("status"),
-    });
+  const validatedFields = formSchemaEditProfile.safeParse({
+    name: formData.get("name"),
+    phone: formData.get("phone"),
+    cpf: formData.get("cpf"),
+    pix: formData.get("pix"),
+    email: formData.get("email"),
+    city: formData.get("city"),
+    status: formData.get("status"),
+  });
 
   if (validatedFields.success) {
     try {
-      const response = await fetch(`${urls.url_api}/sessions`, {
+      const response = await fetch(`${process.env.URL_API}/sessions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,9 +40,9 @@ export async function editProfile(prevState: any, formData: FormData) {
       let token = resp?.token;
       let user = resp?.user;
       let roles = resp?.roles;
-      setTokenInCookieServer(token)
-      setUserInCookieServer(user)
-      setRolesInCookieServer(roles)
+      setTokenInCookieServer(token);
+      setUserInCookieServer(user);
+      setRolesInCookieServer(roles);
       return {
         errors: {},
         ok: true,
