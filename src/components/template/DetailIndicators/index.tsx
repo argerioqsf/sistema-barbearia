@@ -9,6 +9,8 @@ import { Form, IndicatorType, InfoList, ItemListType } from "@/types/general";
 import React, { useEffect, useState } from "react";
 import DetailDefault from "@/components/organisms/DetailDefault";
 import { templates } from "./templates";
+import { loginUser } from "@/actions/auth";
+import { formSchemaSignin } from "../SingIn/schema";
 
 const DetailIndicator = ({ id }: { id: string }) => {
   const { listTransform } = useItemListTransform();
@@ -53,6 +55,9 @@ const DetailIndicator = ({ id }: { id: string }) => {
       handlerForm: handleRegister,
       getDefaultValues: getIndicator,
       loading: loading,
+      action: loginUser,
+      schema: formSchemaSignin,
+      pathSuccess: "/",
     },
   ];
 

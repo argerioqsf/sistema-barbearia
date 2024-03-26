@@ -50,7 +50,7 @@ const ListUsers: React.FC = () => {
       }
     }
     loadUsers();
-  }, []);
+  }, [infoList.itemsList, listTransform]);
 
   const renderAvatar = (item: ItemListType, index: number) => {
     return (

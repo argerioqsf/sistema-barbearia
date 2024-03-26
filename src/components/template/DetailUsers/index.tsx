@@ -3,11 +3,13 @@
 import { Text } from "@/components/atoms";
 import { ContainerDashboard } from "@/components/molecules";
 import Breadcrumb from "@/components/molecules/Breadcrumb";
-import { Form, ItemListType} from "@/types/general";
+import { Form, ItemListType } from "@/types/general";
 import React, { useState } from "react";
 import * as templates from "./templates";
 import DetailDefault from "@/components/organisms/DetailDefault";
 import { getTokenFromCookieClient } from "@/utils/cookieClient";
+import { loginUser } from "@/actions/auth";
+import { formSchemaSignin } from "../SingIn/schema";
 
 const DetailUsers = ({ id }: { id: string }) => {
   const [loading, setLoading] = useState(false);
@@ -31,10 +33,10 @@ const DetailUsers = ({ id }: { id: string }) => {
       }
       let { profile } = await response.json();
       setLoading(false);
-      return profile
+      return profile;
     } catch (error) {
       setLoading(false);
-      return null
+      return null;
     }
   }
 
@@ -56,6 +58,9 @@ const DetailUsers = ({ id }: { id: string }) => {
       handlerForm: handleRegister,
       getDefaultValues: loadProfile,
       loading: loading,
+      action: loginUser,
+      schema: formSchemaSignin,
+      pathSuccess: "/",
     },
   ];
 

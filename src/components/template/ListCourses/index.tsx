@@ -42,7 +42,7 @@ const ListCourses: React.FC = () => {
       } catch (error) {}
     }
     loadCourses();
-  }, []);
+  }, [infoList.itemsList, listTransform]);
 
   const renderAvatar = (item: ItemListType, index: number) => {
     return <Text className="text-black">{index + 1}</Text>;

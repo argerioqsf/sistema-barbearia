@@ -46,7 +46,7 @@ const FormLogin = ({ action }: FormLoginProps) => {
 
   return (
     <div className="w-full p-6 space-y-4 md:space-y-6 sm:p-8">
-      <Form method="POST" action={formAction}>
+      <Form action={formAction}>
         <FormFieldText
           classInput={`bg-transparent py-3 pl-6 text-white ${
             errors.email && "ring-red-500 focus:ring-red-500"
@@ -70,11 +70,11 @@ const FormLogin = ({ action }: FormLoginProps) => {
         />
 
         <div className="flex items-center py-4 justify-between">
-          <FormFieldCheckBox
+          {/* <FormFieldCheckBox
             className="text-white"
             label={at("remember_me")}
             id="remember_me"
-          />
+          /> */}
           <LinkDefault
             href="#"
             className="text-sm font-medium text-primary-600 hover:underline text-white"

@@ -5,9 +5,10 @@ import Breadcrumb from "@/components/molecules/Breadcrumb";
 import FormDashboard from "@/components/organisms/FormDashboard";
 import React from "react";
 import { templateform } from "./templateForm";
+import { loginUser } from "@/actions/auth";
+import { formSchemaSignin } from "../SingIn/schema";
 
 const RegisterUnits: React.FC = () => {
-
   function handleRegister(data: object) {
     console.log("data FormDashboard: ", data);
   }
@@ -20,8 +21,10 @@ const RegisterUnits: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            handlerForm={handleRegister}
             templateform={templateform}
+            action={loginUser}
+            schema={formSchemaSignin}
+            pathSuccess="dashboard/indicators"
           />
         </div>
       </div>

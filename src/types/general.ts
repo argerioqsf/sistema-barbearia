@@ -263,7 +263,7 @@ type Roles = {
 
 export type OptionsTemplateForm = {
   label: string;
-  value: number | string | boolean;
+  value: number | string;
 };
 
 type NamesSearchs = "search";
@@ -292,6 +292,9 @@ export type Form = {
   handlerForm: (state: any) => void;
   getDefaultValues?: () => Promise<any>;
   loading?: boolean;
+  action: (prevState: any, formData: FormData) => Promise<any>;
+  pathSuccess: string;
+  schema: z.ZodObject<any>;
 };
 
 export type ListAction = {

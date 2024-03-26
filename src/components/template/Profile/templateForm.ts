@@ -73,15 +73,15 @@ export const templateform: Templateform = {
                   label: "Selecione",
                 },
                 {
-                  value: true,
+                  value: 0,
                   label: "ativo",
                 },
                 {
-                  value: false,
+                  value: 1,
                   label: "desativo",
                 },
               ],
-            }
+            },
           ],
         },
       ],
