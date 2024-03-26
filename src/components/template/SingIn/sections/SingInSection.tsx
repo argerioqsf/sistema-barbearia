@@ -29,7 +29,7 @@ const SingInSection = () => {
             image="https://www.grupomadretereza.com.br/sim/themes/simadm/assets/images/logo.png"
           />
           <Text className="text-6xl font-bold text-white pl-0 pt-4 md:pt-0 md:pl-6">
-            SIM teste
+            SIM
           </Text>
         </div>
         <div className="w-full md:w-2/4 flex flex-col justify-center items-start md:border-l-2 pl-0 md:pl-[10vw] h-auto md:h-[60vh]">
