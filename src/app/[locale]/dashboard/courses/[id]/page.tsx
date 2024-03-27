@@ -1,5 +1,4 @@
 import DetailCourses from "@/components/template/DetailCourses";
-import DetailSegments from "@/components/template/DetailSegments";
 import { ParamsProp } from "@/types/general";
 import { getTranslations } from "next-intl/server";
 

@@ -1,8 +1,4 @@
 import DetailIndicator from "@/components/template/DetailIndicators";
-import Home from "@/components/template/Home";
-import ListIndicators from "@/components/template/ListIndicators";
-import Profile from "@/components/template/Profile";
-import RegisterIndicators from "@/components/template/RegisterIndicators";
 import { ParamsProp } from "@/types/general";
 import { getTranslations } from "next-intl/server";
 

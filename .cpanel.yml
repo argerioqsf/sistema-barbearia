@@ -1,0 +1,10 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/example/public_html/new_sim
+    - /bin/cp package.json $DEPLOYPATH
+    - /bin/cp package-lock.json $DEPLOYPATH
+    - /bin/cp next.config.js $DEPLOYPATH
+    - /bin/cp public $DEPLOYPATH/public
+    - /bin/cp .next/standalone $DEPLOYPATH
+    - /bin/cp .next/static $DEPLOYPATH/.next/static
