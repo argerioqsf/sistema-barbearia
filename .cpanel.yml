@@ -6,5 +6,10 @@ deployment:
     - /bin/cp package-lock.json $DEPLOYPATH/
     - /bin/cp next.config.mjs $DEPLOYPATH/
     - /bin/cp -r public/ $DEPLOYPATH/public
+    - export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    - nvm use 16.20.2
+    - npm install
+    - npm run build
     - /bin/cp -r .next/standalone/ $DEPLOYPATH/
     - /bin/cp -r .next/static/ $DEPLOYPATH/.next/static
