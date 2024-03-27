@@ -1,10 +1,10 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home2/grup2857/public_html/new_sim/
-    - /bin/cp package.json $DEPLOYPATH
-    - /bin/cp package-lock.json $DEPLOYPATH
-    - /bin/cp next.config.js $DEPLOYPATH
+    - export DEPLOYPATH=/home2/grup2857/public_html/new_sim
+    - /bin/cp package.json $DEPLOYPATH/
+    - /bin/cp package-lock.json $DEPLOYPATH/
+    - /bin/cp next.config.mjs $DEPLOYPATH/
     - /bin/cp public $DEPLOYPATH/public
-    - /bin/cp .next/standalone $DEPLOYPATH
+    - /bin/cp .next/standalone $DEPLOYPATH/
     - /bin/cp .next/static $DEPLOYPATH/.next/static
