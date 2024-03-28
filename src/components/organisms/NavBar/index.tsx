@@ -18,39 +18,42 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
   return (
     <nav
       className={twMerge(
-        "flex max-w-full z-40 w-full h-auto items-center justify-center fixed top-0 whitespace-nowrap bg-gray-300"
+        "w-screen z-40 h-auto items-center fixed whitespace-nowrap bg-gray-300",
+        openMenu === true && "animate-openNavBar",
+        openMenu === false && "animate-closeNavBar"
       )}
     >
       <div
         className={twMerge(
-          "gap-4",
           "h-[var(--navbar-height)]",
           "flex w-full flex-row relative flex-nowrap items-center justify-between",
-          !openMenu ? "px-6" : ""
+          !openMenu ? "px-6" : "md:px-6"
         )}
       >
-        <div className="w-full h-full flex flex-row items-center justify-between bg-slate-400">
-          <Button
-            className={twMerge(
-              openMenu ? "p-0 w-[calc(100vw - var(--width-side-menu))]" : ""
-            )}
-            onClick={openCloseMenu}
-            type="button"
-          >
-            <MenuIcon size={30} />
-          </Button>
-          <div className={twMerge("flex flex-row gap-4")}>
-            <Avatar
-              classIcon={`size-${[50]}px`}
-              href="dashboard/profile"
-              image="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-              size={50}
-            />
-            <InfoUserNav
-              className="hidden md:flex"
-              nameUser="Argerio Q. Silva"
-            />
-          </div>
+        <Button
+          className={twMerge(
+            openMenu
+              ? "md:p-4 p-0 md:w-auto w-[var(--width-nav-bar)] flex justify-center items-center"
+              : ""
+          )}
+          onClick={openCloseMenu}
+          type="button"
+        >
+          <MenuIcon size={30} />
+        </Button>
+        <div
+          className={twMerge(
+            "flex flex-row gap-4",
+            openMenu && "hidden md:flex"
+          )}
+        >
+          <Avatar
+            classIcon={`size-${[50]}px`}
+            href="dashboard/profile"
+            image="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            size={50}
+          />
+          <InfoUserNav className="hidden md:flex" nameUser="Argerio Q. Silva" />
         </div>
       </div>
     </nav>
