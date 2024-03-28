@@ -1,11 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --navbar-height: 80px;
-  --max-width-page: 100%;
-  --width-side-menu: 22vw;
+@layer base {
+  :root {
+    --navbar-height: 80px;
+    --max-width-page: 100%;
+    --width-side-menu: 22vw;
+  }
 }
 
 @media screen and (max-width: 768px) {

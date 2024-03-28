@@ -13,9 +13,9 @@ const SideMenu: React.FC<SideMenuProps> = ({ openMenu, setOpenMenu }) => {
     <div
       className={twMerge(
         "bg-primary-100",
-        "w-0 h-screen",
+        "w-0 h-svh",
         "flex fixed flex-row items-start justify-start",
-        "z-50 overflow-x-hidden whitespace-nowrap",
+        "z-50 whitespace-nowrap overflow-scroll",
         openMenu === true && "animate-openMenu",
         openMenu === false && "animate-closeMenu"
       )}
