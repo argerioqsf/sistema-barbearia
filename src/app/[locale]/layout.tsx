@@ -10,9 +10,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang={locale}>
-      <Providers>
-        <body>{children}</body>
-      </Providers>
+      <Providers>{children}</Providers>
     </html>
   );
 }

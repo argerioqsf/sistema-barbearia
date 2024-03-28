@@ -82,7 +82,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
       {subMenuList && (
         <div
           className={twMerge(
-            "w-full bg-primary-50 flex flex-col justify-between items-start  overflow-y-auto overflow-x-hidden whitespace-nowrap",
+            "w-full bg-primary-50 flex flex-col justify-between items-start overflow-y-auto overflow-x-hidden whitespace-nowrap",
             open === false && "hidden",
             open === true && "flex"
           )}
