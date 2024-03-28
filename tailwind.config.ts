@@ -28,6 +28,8 @@ const config: Config = {
         closeMenu: "closeMenu 0.4s ease forwards",
         openMenuChildren: "openMenuChildren 0.4s ease forwards",
         closeMenuChildren: "closeMenuChildren 0.4s ease forwards",
+        openNavBar: "openNavBar 0.4s ease forwards",
+        closeNavBar: "closeNavBar 0.4s ease forwards",
       },
       keyframes: {
         openMenu: {
@@ -60,6 +62,22 @@ const config: Config = {
           },
           "100%": {
             paddingLeft: "0vw",
+          },
+        },
+        openNavBar: {
+          "0%": {
+            width: "w-screen",
+          },
+          "100%": {
+            width: "var(--width-nav-bar)",
+          },
+        },
+        closeNavBar: {
+          "0%": {
+            width: "var(--width-nav-bar)",
+          },
+          "100%": {
+            width: "w-screen",
           },
         },
       },

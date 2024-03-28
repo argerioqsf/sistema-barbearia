@@ -6,6 +6,7 @@
     --navbar-height: 80px;
     --max-width-page: 100%;
     --width-side-menu: 22vw;
+    --width-nav-bar: calc((100vw - var(--width-side-menu)));
   }
 }
 
