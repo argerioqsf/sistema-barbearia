@@ -48,7 +48,6 @@ const FormDashboard = ({
   };
 
   const [state, formAction] = useFormState(action, initialStateForm);
-  console.log("state: ", state);
 
   useEffect(() => {
     if (state.register_success) {
@@ -95,7 +94,7 @@ const FormDashboard = ({
       <Form action={formAction} className="mb-8">
         <div className="w-[90vw] md:w-full flex flex-row justify-between items-center">
           <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
-            {!loading && (title ?? templateform?.title)}
+            {title ?? templateform?.title}
           </Text>
           {!loading && templateform?.textButton && (
             <Button

@@ -26,7 +26,7 @@ export async function registerUserProfile(prevState: any, formData: FormData) {
           errors: { request: ["Erro de credenciais"] },
         };
       }
-      const response = await fetch(`${process.env.URL_API}/userProfile`, {
+      const response = await fetch(`${process.env.URL_API}/create/user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

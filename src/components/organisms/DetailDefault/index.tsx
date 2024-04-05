@@ -4,7 +4,7 @@ import Search from "@/components/molecules/Search";
 import FormDashboard from "@/components/organisms/FormDashboard";
 import Listing from "@/components/organisms/Listing";
 import { Form, InfoList, ItemListType, TimeLine } from "@/types/general";
-import React from "react";
+import React, { Fragment } from "react";
 import TimeLineComponent from "../TimeLineComponent";
 
 type PropTemplates = {
@@ -39,8 +39,8 @@ const DetailDefault = ({
           />
         ))}
       {lists &&
-        lists.map((list) => (
-          <>
+        lists.map((list, idx) => (
+          <Fragment key={idx}>
             {handlerFormSearch && <Search handlerForm={handlerFormSearch} />}
             <Listing
               itemsHeader={list?.itemsHeader}
@@ -51,7 +51,7 @@ const DetailDefault = ({
               textButton={list?.textButton}
               title={list?.title}
             />
-          </>
+          </Fragment>
         ))}
       {time_line && <TimeLineComponent time_line={time_line} />}
     </div>
