@@ -1,6 +1,8 @@
 import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
 import { getTokenFromCookieRequest } from "./utils/cookieClient";
+import { siteConfig } from "./components/config/siteConfig";
+import { verifyPageRole } from "./utils/verifyPageRole";
 
 const middlewareIntl = createMiddleware({
   locales: ["pt-BR"],
@@ -18,9 +20,14 @@ export default function middleware(request: NextRequest) {
   }
   if (is_LoginPage) {
     return NextResponse.redirect(new URL("/pt-BR/dashboard/home", request.url));
+  }else{
+    const  path_redirect = verifyPageRole(siteConfig.items_side_menu, request)
+    if (path_redirect) {
+      return NextResponse.redirect(new URL(path_redirect, request.url));
+    }else{
+      return middlewareIntl(request);
+    }
   }
-
-  return middlewareIntl(request);
 }
 
 export const config = {

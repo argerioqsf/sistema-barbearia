@@ -52,7 +52,7 @@ const FormLogin = ({ action }: FormLoginProps) => {
             errors.email && "ring-red-500 focus:ring-red-500"
           }`}
           placeholder={at("email")}
-          type="text"
+          type="email"
           props={{ ...register("email") }}
           label="Email"
           error={state?.errors?.email && state?.errors?.email[0]}
@@ -63,7 +63,7 @@ const FormLogin = ({ action }: FormLoginProps) => {
             errors.password && "ring-red-500 focus:ring-red-500"
           }`}
           placeholder={at("password")}
-          type="text"
+          type="password"
           props={{ ...register("password") }}
           label="Senha"
           error={state?.errors?.password && state?.errors?.password[0]}

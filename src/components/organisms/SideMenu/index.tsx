@@ -33,6 +33,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ openMenu, setOpenMenu }) => {
               key={config.id}
               label={config.label}
               href={config.href}
+              roles={config.roles}
             />
           ))}
         </div>

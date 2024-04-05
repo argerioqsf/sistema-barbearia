@@ -77,6 +77,26 @@ export type UserType = {
   created_at: string;
 };
 
+export type Profile ={
+  id: string;
+  phone: number;
+  cpf: string;
+  genre: string;
+  birthday: string;
+  pix: string;
+  role: string;
+  user?: User;
+  userId: string;
+}
+
+export type User = {
+  id: number;
+  name: string;
+  email: string;
+  active: string;
+  profile: Profile;
+};
+
 export type IndicatorType = {
   id: number;
   name: string;
