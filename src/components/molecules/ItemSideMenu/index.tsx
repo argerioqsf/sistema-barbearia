@@ -94,8 +94,8 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
             open === true && "flex"
           )}
         >
-          {subMenuList.map((menu: ItemMenu) => (
-            <ItemSideMenu
+          {subMenuList.map((menu: ItemMenu) => {
+            return !menu.hidden && <ItemSideMenu
               setOpenMenu={setOpenMenu}
               sizeAvatar={15}
               icon={menu.icon}
@@ -104,7 +104,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
               key={menu.id}
               roles={menu.roles}
             />
-          ))}
+          })}
         </div>
       )}
     </div>

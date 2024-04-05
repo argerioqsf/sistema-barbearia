@@ -7,11 +7,12 @@ export const verifyPageRole = (items:ItemMenu[], request: NextRequest): string |
     for (let i = 0; i < items.length; i++) {
      const href = items[i].href??null
      const roles = items[i].roles??[]
+     const absolute_path = items[i].absolute_path??false
      let pathname = request.nextUrl.pathname
      pathname = pathname.includes('/') ? pathname.substring(pathname.indexOf('/', pathname.indexOf('/') + 1)) : '';
 
      if (href) {
-       const is_page = href.includes(pathname);
+       const is_page = absolute_path?pathname.includes(href):href.includes(pathname);
        if (is_page) {
          if (roles.includes(role_user)) {
            return null
