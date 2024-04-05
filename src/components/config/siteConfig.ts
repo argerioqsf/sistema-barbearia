@@ -11,6 +11,8 @@ export type ItemMenu = {
   icon?: string;
   roles: Role[];
   subMenuList?: ItemMenu[]
+  hidden?: boolean
+  absolute_path?: boolean
 };
 
 export const siteConfig: SiteConfig = {
@@ -62,6 +64,15 @@ export const siteConfig: SiteConfig = {
           href: "/dashboard/indicators/register",
           icon: "Circle",
           roles: ['administrator']
+        },
+        {
+          id: "4",
+          label: "Detail",
+          href: "/dashboard/indicators/detail",
+          icon: "Circle",
+          roles: ['administrator'],
+          hidden: true,
+          absolute_path: true
         }
       ],
       roles: ['administrator']
@@ -106,6 +117,15 @@ export const siteConfig: SiteConfig = {
           icon: "Circle",
           roles: ['administrator']
         },
+        {
+          id: "6",
+          label: "Detail",
+          href: "/dashboard/leads/detail",
+          icon: "Circle",
+          roles: ['administrator'],
+          hidden: true,
+          absolute_path: true
+        }
       ],
       roles: ['administrator']
     },
@@ -127,6 +147,15 @@ export const siteConfig: SiteConfig = {
           icon: "Circle",
           roles: ['administrator']
         },
+        {
+          id: "3",
+          label: "Detail",
+          href: "/dashboard/users/detail",
+          icon: "Circle",
+          roles: ['administrator'],
+          hidden: true,
+          absolute_path: true
+        }
       ],
       roles: ['administrator']
     },
@@ -149,6 +178,15 @@ export const siteConfig: SiteConfig = {
           icon: "Circle",
           roles: ['administrator']
         },
+        {
+          id: "3",
+          label: "Detail",
+          href: "/dashboard/units/detail",
+          icon: "Circle",
+          roles: ['administrator'],
+          hidden: true,
+          absolute_path: true
+        }
       ],
       roles: ['administrator']
     },
@@ -171,6 +209,15 @@ export const siteConfig: SiteConfig = {
           icon: "Circle",
           roles: ['coordinator', 'administrator']
         },
+        {
+          id: "3",
+          label: "Detail",
+          href: "/dashboard/segments/detail",
+          icon: "Circle",
+          roles: ['coordinator', 'administrator'],
+          hidden: true,
+          absolute_path: true
+        }
       ],
       roles: ['coordinator', 'administrator']
     },
@@ -193,6 +240,15 @@ export const siteConfig: SiteConfig = {
           icon: "Circle",
           roles: ['coordinator', 'administrator'] 
         },
+        {
+          id: "3",
+          label: "Detail",
+          href: "/dashboard/courses/detail",
+          icon: "Circle",
+          roles: ['coordinator', 'administrator'],
+          hidden: true,
+          absolute_path: true
+        }
       ],
       roles: ['coordinator', 'administrator']
     },
