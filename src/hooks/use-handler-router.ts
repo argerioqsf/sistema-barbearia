@@ -1,17 +1,16 @@
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from 'next/navigation'
 
 export const useHandlerRouter = () => {
-  const router = useRouter();
-  const paths = usePathname();
+  const router = useRouter()
+  const paths = usePathname()
   const pushRouter = (path?: string) => {
-    const pathNames = paths.split("/").filter((path) => path);
-    return router.push(`/${pathNames[0]}/${path}`);
-  };
+    const pathNames = paths.split('/').filter((path) => path)
+    return router.push(`/${pathNames[0]}/${path}`)
+  }
   const generatePath = (path?: string) => {
-    const pathNames = paths.split("/").filter((path) => path);
-    const newPath = `/${pathNames[0]}/${path}`;
-    return newPath;
-  };
-  return { pushRouter, generatePath };
-};
+    const pathNames = paths.split('/').filter((path) => path)
+    const newPath = `/${pathNames[0]}/${path}`
+    return newPath
+  }
+  return { pushRouter, generatePath }
+}

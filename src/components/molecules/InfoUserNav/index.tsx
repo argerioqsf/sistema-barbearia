@@ -1,26 +1,29 @@
-import { Button, Text } from "@/components/atoms";
-import { useHandlerRouter } from "@/hooks/use-handler-router";
-import React from "react";
-import { twMerge } from "tailwind-merge";
-import Cookies from "js-cookie";
-import { removeRolesCookieClient, removeTokenCookieClient, removeUserCookieClient } from "@/utils/cookieClient";
+import { Button, Text } from '@/components/atoms'
+import { useHandlerRouter } from '@/hooks/use-handler-router'
+import React from 'react'
+import { twMerge } from 'tailwind-merge'
+import {
+  removeRolesCookieClient,
+  removeTokenCookieClient,
+  removeUserCookieClient,
+} from '@/utils/cookieClient'
 
 type InfoUserNavProps = {
-  nameUser: string;
-  className?: string;
-};
+  nameUser: string
+  className?: string
+}
 
 const InfoUserNav: React.FC<InfoUserNavProps> = ({ nameUser, className }) => {
-  const { pushRouter } = useHandlerRouter();
+  const { pushRouter } = useHandlerRouter()
   function logOut() {
-    removeTokenCookieClient();
-    removeUserCookieClient();
-    removeRolesCookieClient();
-    pushRouter("auth/signin");
+    removeTokenCookieClient()
+    removeUserCookieClient()
+    removeRolesCookieClient()
+    pushRouter('auth/signIn')
   }
 
   return (
-    <div className={twMerge("pt-1 flex-col", className)}>
+    <div className={twMerge('pt-1 flex-col', className)}>
       <Text className="text-indigo-600 font-bold">{nameUser}</Text>
       <Button
         type="button"
@@ -30,7 +33,7 @@ const InfoUserNav: React.FC<InfoUserNavProps> = ({ nameUser, className }) => {
         SAIR
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default InfoUserNav;
+export default InfoUserNav

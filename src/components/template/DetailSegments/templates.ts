@@ -1,26 +1,25 @@
-import { ListActionsProps, InfoList, Templateform } from "@/types/general";
+import { TemplateForm } from '@/types/general'
 
-export const templateform: Templateform = {
-  title: "Seguimento",
-  textButton: "Editar",
+export const templateForm: TemplateForm = {
+  title: 'Seguimento',
+  textButton: 'Editar',
   sections: [
     {
       id: 1,
-      title: "Dados do Segmento",
-      boxs: [
+      title: 'Dados do Seguimento',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "name",
+              id: 'name',
               required: true,
-              type: "text",
-              label: "Nome",
-              messageError: "Deve ter 2 ou mais caracteres",
+              type: 'text',
+              label: 'Nome',
             },
           ],
         },
       ],
     },
   ],
-};
+}

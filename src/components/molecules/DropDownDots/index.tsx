@@ -1,19 +1,18 @@
-"use client";
+'use client'
 
-import LinkDefault from "@/components/atoms/LinkDefault";
-import { useHandlerRouter } from "@/hooks/use-handler-router";
-import { IconSvgProps, ListActionsProps } from "@/types/general";
-import React, { useState } from "react";
-import { twMerge } from "tailwind-merge";
+import LinkDefault from '@/components/atoms/LinkDefault'
+import { ListActionsProps } from '@/types/general'
+import React, { useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 type DropDownDotsProps = {
-  listActions: Array<ListActionsProps>;
-  className?: string;
-  id: number | string;
-};
+  listActions: Array<ListActionsProps>
+  className?: string
+  id: number | string
+}
 
 const DropDownDots = ({ listActions, className, id }: DropDownDotsProps) => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false)
   return (
     <div className={className}>
       <button
@@ -37,9 +36,9 @@ const DropDownDots = ({ listActions, className, id }: DropDownDotsProps) => {
       <div
         id="dropdownDots"
         className={twMerge(
-          !show && "hidden",
-          "absolute top-6 right-16",
-          "z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-secondary-50 dark:divide-gray-600"
+          !show && 'hidden',
+          'absolute top-6 right-16',
+          'z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-secondary-50 dark:divide-gray-600',
         )}
       >
         <ul
@@ -59,7 +58,7 @@ const DropDownDots = ({ listActions, className, id }: DropDownDotsProps) => {
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DropDownDots;
+export default DropDownDots

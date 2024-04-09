@@ -1,56 +1,44 @@
-import { Templateform } from "@/types/general";
+import { TemplateForm } from '@/types/general'
 
-export const templateform: Templateform = {
-  title: "Cadastrar Usuário",
-  textButton: "Cadastrar",
+export const templateForm: TemplateForm = {
+  title: 'Cadastrar Usuário',
+  textButton: 'Cadastrar',
   sections: [
     {
       id: 1,
-      title: "Dados Pessoais",
-      boxs: [
+      title: 'Dados Pessoais',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "name",
+              id: 'name',
               required: true,
-              type: "text",
-              label: "Nome",
+              type: 'text',
+              label: 'Nome',
             },
             {
-              id: "pix",
+              id: 'pix',
               required: true,
-              type: "text",
-              label: "Chave Pix",
+              type: 'text',
+              label: 'Chave Pix',
             },
           ],
         },
-        // {
-        //   id: 2,
-        //   fields: [
-        //     {
-        //       id: "image",
-        //       required: true,
-        //       type: "file",
-        //       label: "Foto: (600 x 600)",
-        //       classInput: "pl-2",
-        //     },
-        //   ],
-        // },
         {
           id: 3,
           fields: [
             {
-              id: "phone",
+              id: 'phone',
               required: true,
-              type: "text",
-              label: "Whatsapp",
+              type: 'text',
+              label: 'Whatsapp',
             },
             {
-              id: "cpf",
+              id: 'cpf',
               required: true,
-              type: "text",
-              label: "Documento",
+              type: 'text',
+              label: 'Documento',
             },
           ],
         },
@@ -58,31 +46,31 @@ export const templateform: Templateform = {
           id: 4,
           fields: [
             {
-              id: "birthday",
+              id: 'birthday',
               required: true,
-              type: "text",
-              label: "Nascimento",
+              type: 'text',
+              label: 'Nascimento',
             },
             {
-              id: "genre",
+              id: 'genre',
               required: true,
-              type: "select",
-              label: "Genero",
+              type: 'select',
+              label: 'Genero',
               options: [
                 {
-                  label: "Selecioinar",
-                  value: "",
+                  label: 'Selecioinar',
+                  value: '',
                 },
                 {
-                  label: "Masculino",
+                  label: 'Masculino',
                   value: 'man',
                 },
                 {
-                  label: "Feminino",
+                  label: 'Feminino',
                   value: 'woman',
                 },
                 {
-                  label: "Outro",
+                  label: 'Outro',
                   value: 'other',
                 },
               ],
@@ -93,38 +81,38 @@ export const templateform: Templateform = {
           id: 5,
           fields: [
             {
-              id: "email",
+              id: 'email',
               required: true,
-              type: "text",
-              label: "E-mail",
+              type: 'text',
+              label: 'E-mail',
             },
             {
-              id: "password",
+              id: 'password',
               required: true,
-              type: "password",
-              label: "Senha",
-            }
+              type: 'password',
+              label: 'Senha',
+            },
           ],
         },
         {
           id: 6,
           fields: [
             {
-              id: "active",
+              id: 'active',
               required: true,
-              type: "select",
-              label: "Ativo",
+              type: 'select',
+              label: 'Ativo',
               options: [
                 {
-                  label: "Selecionar",
-                  value: "",
+                  label: 'Selecionar',
+                  value: '',
                 },
                 {
-                  label: "Sim",
+                  label: 'Sim',
                   value: 'sim',
                 },
                 {
-                  label: "Não",
+                  label: 'Não',
                   value: 'nao',
                 },
               ],
@@ -135,17 +123,16 @@ export const templateform: Templateform = {
     },
     {
       id: 2,
-      title: "Permissões",
-      boxs: [
+      title: 'Permissões',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "role",
+              id: 'role',
               required: true,
-              type: "select",
-              label: "Permissão",
-              messageError: "Must be 2 or more characters long",
+              type: 'select',
+              label: 'Permissão',
               options: [],
             },
           ],
@@ -153,4 +140,4 @@ export const templateform: Templateform = {
       ],
     },
   ],
-};
+}

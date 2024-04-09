@@ -1,26 +1,25 @@
-import { Templateform } from "@/types/general";
+import { TemplateForm } from '@/types/general'
 
-export const templateform: Templateform = {
-  title: "Cadastrar Segmento",
-  textButton: "Cadastrar",
+export const templateForm: TemplateForm = {
+  title: 'Cadastrar Segmento',
+  textButton: 'Cadastrar',
   sections: [
     {
       id: 1,
-      title: "Dados Pessoais",
-      boxs: [
+      title: 'Dados Pessoais',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "name",
+              id: 'name',
               required: true,
-              type: "text",
-              label: "Nome",
-              messageError: "Deve ter 2 ou mais caracteres",
+              type: 'text',
+              label: 'Nome',
             },
           ],
         },
       ],
     },
   ],
-};
+}

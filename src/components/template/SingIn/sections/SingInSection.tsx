@@ -1,23 +1,23 @@
-"use client";
+'use client'
 
-import FormLogin from "@/components/organisms/FormLogin";
-import ContainerSection from "@/components/molecules/ContainerSection";
-import { Avatar } from "@/components/molecules";
-import { Text } from "@/components/atoms";
-import { loginUser } from "@/actions/auth";
-import { useEffect } from "react";
-import { useHandlerRouter } from "@/hooks/use-handler-router";
-import Cookies from "js-cookie";
+import FormLogin from '@/components/organisms/FormLogin'
+import ContainerSection from '@/components/molecules/ContainerSection'
+import { Avatar } from '@/components/molecules'
+import { Text } from '@/components/atoms'
+import { loginUser } from '@/actions/auth'
+import { useEffect } from 'react'
+import { useHandlerRouter } from '@/hooks/use-handler-router'
+import Cookies from 'js-cookie'
 
 const SingInSection = () => {
-  const { pushRouter } = useHandlerRouter();
+  const { pushRouter } = useHandlerRouter()
 
   useEffect(() => {
-    const value = Cookies.get("token_SIM");
+    const value = Cookies.get('token_SIM')
     if (value) {
-      pushRouter("dashboard/home");
+      pushRouter('dashboard/home')
     }
-  });
+  })
 
   return (
     <ContainerSection className="bg-primary-100">
@@ -37,7 +37,7 @@ const SingInSection = () => {
         </div>
       </div>
     </ContainerSection>
-  );
-};
+  )
+}
 
-export default SingInSection;
+export default SingInSection

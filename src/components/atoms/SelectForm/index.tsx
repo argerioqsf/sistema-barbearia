@@ -1,29 +1,23 @@
-import { OptionsTemplateForm } from "@/types/general";
-import React from "react";
-import { UseFormRegisterReturn } from "react-hook-form";
-import { twMerge } from "tailwind-merge";
+import { OptionsTemplateForm } from '@/types/general'
+import React from 'react'
+import { UseFormRegisterReturn } from 'react-hook-form'
+import { twMerge } from 'tailwind-merge'
 
 type SelectFormPros = {
-  type?: string;
-  placeholder?: string;
-  className?: string;
-  propsSelect?: UseFormRegisterReturn<string>;
-  options?: Array<OptionsTemplateForm>;
-};
+  type?: string
+  placeholder?: string
+  className?: string
+  propsSelect?: UseFormRegisterReturn<string>
+  options?: Array<OptionsTemplateForm>
+}
 
-const SelectForm = ({
-  type,
-  placeholder,
-  className,
-  propsSelect,
-  options,
-}: SelectFormPros) => {
+const SelectForm = ({ className, propsSelect, options }: SelectFormPros) => {
   return (
     <>
       <select
         className={twMerge(
-          "appearance-none border-0 outline-0 w-full",
-          className
+          'appearance-none border-0 outline-0 w-full',
+          className,
         )}
         {...propsSelect}
       >
@@ -35,7 +29,7 @@ const SelectForm = ({
           ))}
       </select>
     </>
-  );
-};
+  )
+}
 
-export default SelectForm;
+export default SelectForm

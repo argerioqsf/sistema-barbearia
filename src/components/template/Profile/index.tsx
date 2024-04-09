@@ -1,44 +1,46 @@
-"use client";
+'use client'
 
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import FormDashboard from "@/components/organisms/FormDashboard";
-import React, { useState } from "react";
-import { templateform } from "./templateForm";
-import { formSchemaEditProfile } from "./schema";
-import Cookies from "js-cookie";
-import { editProfile } from "@/actions/profile";
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import FormDashboard from '@/components/organisms/FormDashboard'
+import React, { useState } from 'react'
+import { templateForm } from './templateForm'
+import { formSchemaEditProfile } from './schema'
+import Cookies from 'js-cookie'
+import { editProfile } from '@/actions/profile'
 
 const Profile: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState<string>()
 
   async function loadProfile() {
-    setLoading(true);
+    setLoading(true)
     try {
-      const value = Cookies.get("token_SIM");
-      const response = await fetch("/api/me", {
-        method: "GET",
+      const value = Cookies.get('token_SIM')
+      const response = await fetch('/api/me', {
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${value}`,
         },
-      });
+      })
 
       if (!response.ok) {
-        const errorMessage = await response.text();
-        setErrorMessage(JSON.parse(errorMessage).message);
+        const errorMessage = await response.text()
+        setErrorMessage(JSON.parse(errorMessage).message)
         return {
           errors: { request: [JSON.parse(errorMessage).message] },
-        };
+        }
       }
-      let { profile } = await response.json();
-      console.log("profile: ", profile);
-      setLoading(false);
-      return profile;
+      const { profile } = await response.json()
+      console.log('profile: ', profile)
+      setLoading(false)
+      return profile
     } catch (error) {
-      setLoading(false);
-      setErrorMessage("Erro ao carregar informações do usuário!");
-      return null;
+      setLoading(false)
+      setErrorMessage('Erro ao carregar informações do usuário!')
+      return {
+        errors: { request: 'Error unknown' },
+      }
     }
   }
 
@@ -53,7 +55,7 @@ const Profile: React.FC = () => {
             loading={loading}
             schema={formSchemaEditProfile}
             action={editProfile}
-            templateform={templateform}
+            templateForm={templateForm}
             pathSuccess="profile"
             getDefaultValues={loadProfile}
             errorMessage={errorMessage}
@@ -61,7 +63,7 @@ const Profile: React.FC = () => {
         </div>
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

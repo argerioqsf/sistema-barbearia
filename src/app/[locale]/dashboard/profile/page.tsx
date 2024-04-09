@@ -1,25 +1,29 @@
-import Home from "@/components/template/Home";
-import Profile from "@/components/template/Profile";
-import { ParamsProp } from "@/types/general";
-import { getTranslations } from "next-intl/server";
+import Profile from '@/components/template/Profile'
+import { ParamsProp } from '@/types/general'
+import { getTranslations } from 'next-intl/server'
+import { Suspense } from 'react'
 
 export async function generateMetadata({
   params: { locale },
 }: {
-  params: ParamsProp;
+  params: ParamsProp
 }) {
   const meta = await getTranslations({
     locale,
-    namespace: "metadata.dashboard.profile",
-  });
+    namespace: 'metadata.dashboard.profile',
+  })
   return {
-    title: meta("title"),
-    description: meta("description"),
-  };
+    title: meta('title'),
+    description: meta('description'),
+  }
 }
 
 const page = () => {
-  return <Profile />;
-};
+  return (
+    <Suspense fallback={<>Loading...</>}>
+      <Profile />
+    </Suspense>
+  )
+}
 
-export default page;
+export default page

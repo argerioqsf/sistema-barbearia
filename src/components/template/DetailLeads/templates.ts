@@ -1,39 +1,27 @@
-import { ListActionsProps, InfoList, Templateform } from "@/types/general";
+import { InfoList, TemplateForm } from '@/types/general'
 
-export const templateform: Templateform = {
-  title: "Lead",
-  textButton: "Editar",
+export const templateForm: TemplateForm = {
+  title: 'Lead',
+  textButton: 'Editar',
   sections: [
     {
       id: 1,
-      title: "Dados Pessoais",
-      boxs: [
+      title: 'Dados Pessoais',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "training_course",
+              id: 'name',
               required: true,
-              type: "text",
-              label: "Formação",
-              messageError: "Must be 2 or more characters long",
-            },
-          ],
-        },
-        {
-          id: 2,
-          fields: [
-            {
-              id: "name",
-              required: true,
-              type: "text",
-              label: "Nome",
+              type: 'text',
+              label: 'Nome',
             },
             {
-              id: "email",
+              id: 'email',
               required: true,
-              type: "text",
-              label: "E-mail",
+              type: 'text',
+              label: 'E-mail',
             },
           ],
         },
@@ -41,22 +29,22 @@ export const templateform: Templateform = {
           id: 3,
           fields: [
             {
-              id: "document",
+              id: 'cpf',
               required: true,
-              type: "text",
-              label: "Documento",
+              type: 'text',
+              label: 'Documento',
             },
             {
-              id: "whatsapp",
+              id: 'phone',
               required: true,
-              type: "text",
-              label: "Whatsapp",
+              type: 'text',
+              label: 'Whatsapp',
             },
             {
-              id: "status",
+              id: 'status',
               required: true,
-              type: "text",
-              label: "Situação",
+              type: 'text',
+              label: 'Situação',
             },
           ],
         },
@@ -64,58 +52,57 @@ export const templateform: Templateform = {
           id: 4,
           fields: [
             {
-              id: "indicator_id",
+              id: 'indicatorId',
               required: true,
-              type: "select",
-              label: "Indicador",
+              type: 'select',
+              label: 'Indicador',
               options: [
                 {
                   value: 2,
-                  label: "Argério Queiroz",
+                  label: 'Argério Queiroz',
                 },
                 {
                   value: 3,
-                  label: "Damiles Arruda",
+                  label: 'Damiles Arruda',
                 },
               ],
             },
             {
-              id: "consultant",
+              id: 'consultantId',
               required: true,
-              type: "select",
-              label: "Consultor",
+              type: 'select',
+              label: 'Consultor',
               options: [],
             },
             {
-              id: "created_at",
+              id: 'created_at',
               required: true,
-              type: "date",
-              label: "Cadastrado em",
+              type: 'date',
+              label: 'Cadastrado em',
             },
           ],
         },
       ],
     },
   ],
-};
+}
 
-export const templateformTimeLine: Templateform = {
-  title: "Linha do Tempo",
-  textButton: "Cadastrar",
+export const templateFormTimeLine: TemplateForm = {
+  title: 'Linha do Tempo',
+  textButton: 'Cadastrar',
   sections: [
     {
       id: 1,
-      title: "Registro de status",
-      boxs: [
+      title: 'Registro de status',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "course_id",
+              id: 'course_id',
               required: true,
-              type: "text",
-              label: "Curso",
-              messageError: "Must be 2 or more characters long",
+              type: 'text',
+              label: 'Curso',
             },
           ],
         },
@@ -123,10 +110,10 @@ export const templateformTimeLine: Templateform = {
           id: 2,
           fields: [
             {
-              id: "title",
+              id: 'title',
               required: true,
-              type: "text",
-              label: "Nome",
+              type: 'text',
+              label: 'Nome',
             },
           ],
         },
@@ -134,10 +121,10 @@ export const templateformTimeLine: Templateform = {
           id: 3,
           fields: [
             {
-              id: "describe",
+              id: 'describe',
               required: true,
-              type: "text",
-              label: "Descrição",
+              type: 'text',
+              label: 'Descrição',
             },
           ],
         },
@@ -145,18 +132,18 @@ export const templateformTimeLine: Templateform = {
           id: 4,
           fields: [
             {
-              id: "status",
+              id: 'status',
               required: true,
-              type: "select",
-              label: "Status",
+              type: 'select',
+              label: 'Status',
               options: [
                 {
                   value: 2,
-                  label: "Interessado",
+                  label: 'Interessado',
                 },
                 {
                   value: 3,
-                  label: "Sem interesse",
+                  label: 'Sem interesse',
                 },
               ],
             },
@@ -165,39 +152,33 @@ export const templateformTimeLine: Templateform = {
       ],
     },
   ],
-};
+}
 
-export const templateformSearch: Templateform = {
-  title: "Search",
-  textButton: "",
+export const templateFormSearch: TemplateForm = {
+  title: 'Search',
+  textButton: '',
   sections: [
     {
       id: 1,
-      title: "Search",
-      boxs: [
+      title: 'Search',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "search",
-              label: "Search",
+              id: 'search',
+              label: 'Search',
               required: true,
-              type: "text",
+              type: 'text',
             },
           ],
         },
       ],
     },
   ],
-};
+}
 
 export const infoList: InfoList = {
-  itemsHeader: ["N", "NOME / WHATSAPP", "CURSO", "INDICADOR", "STATUS"],
-  itemsList: [
-    "name",
-    "whatsapp",
-    "training_course",
-    "indicator.name",
-    "status",
-  ],
-};
+  itemsHeader: ['N', 'NOME / WHATSAPP', 'CURSO', 'INDICADOR', 'STATUS'],
+  itemsList: ['name', 'phone', '', 'indicator.name', 'status'],
+}

@@ -1,68 +1,64 @@
-"use client";
+'use client'
 
-import { Text } from "@/components/atoms";
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import { Form, ItemListType } from "@/types/general";
-import React, { useState } from "react";
-import * as templates from "./templates";
-import DetailDefault from "@/components/organisms/DetailDefault";
-import { getTokenFromCookieClient } from "@/utils/cookieClient";
-import { loginUser } from "@/actions/auth";
-import { formSchemaSignin } from "../SingIn/schema";
+import { Text } from '@/components/atoms'
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import { Form, ItemListType, User } from '@/types/general'
+import React, { useState } from 'react'
+import * as templates from './templates'
+import DetailDefault from '@/components/organisms/DetailDefault'
+import { getTokenFromCookieClient } from '@/utils/cookieClient'
+import { loginUser } from '@/actions/auth'
+import { formSchemaSignIn } from '../SingIn/schema'
 
 const DetailUsers = ({ id }: { id: string }) => {
-  const [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(false)
+  console.log(id)
   async function loadProfile() {
-    setLoading(true);
+    setLoading(true)
     try {
-      const value = getTokenFromCookieClient();
-      const response = await fetch("/api/me", {
-        method: "GET",
+      const value = getTokenFromCookieClient()
+      const response = await fetch('/api/me', {
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${value}`,
         },
-      });
+      })
 
       if (!response.ok) {
-        const errorMessage = await response.text();
+        const errorMessage = await response.text()
         return {
           errors: { request: [JSON.parse(errorMessage).message] },
-        };
+        }
       }
-      let { profile } = await response.json();
-      setLoading(false);
-      return profile;
+      const { profile } = await response.json()
+      setLoading(false)
+      return profile
     } catch (error) {
-      setLoading(false);
-      return null;
+      setLoading(false)
+      return null
     }
   }
 
   const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>;
-  };
-
-  function handlerFormSearch(data: object) {
-    console.log("handlerForm Search: ", data);
+    return <Text className="text-black">{index + 1}</Text>
   }
 
-  function handleRegister(data: any) {
-    console.log("data FormDashboard: ", data);
+  function handleRegister(data: User) {
+    console.log('data FormDashboard: ', data)
   }
 
   const forms: Form[] = [
     {
-      template: templates.templateform,
+      template: templates.templateForm,
       handlerForm: handleRegister,
       getDefaultValues: loadProfile,
-      loading: loading,
+      loading,
       action: loginUser,
-      schema: formSchemaSignin,
-      pathSuccess: "/",
+      schema: formSchemaSignIn,
+      pathSuccess: '/',
     },
-  ];
+  ]
 
   return (
     <ContainerDashboard>
@@ -70,14 +66,10 @@ const DetailUsers = ({ id }: { id: string }) => {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <DetailDefault
-          renderAvatar={renderAvatar}
-          handlerFormSearch={handlerFormSearch}
-          forms={forms}
-        />
+        <DetailDefault renderAvatar={renderAvatar} forms={forms} />
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default DetailUsers;
+export default DetailUsers

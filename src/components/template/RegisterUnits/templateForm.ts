@@ -1,22 +1,21 @@
-import { Templateform } from "@/types/general";
+import { TemplateForm } from '@/types/general'
 
-export const templateform: Templateform = {
-  title: "Cadastrar Unidade",
-  textButton: "Cadastrar",
+export const templateForm: TemplateForm = {
+  title: 'Cadastrar Unidade',
+  textButton: 'Cadastrar',
   sections: [
     {
       id: 1,
-      title: "Informações da Unidade",
-      boxs: [
+      title: 'Informações da Unidade',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "name",
+              id: 'name',
               required: true,
-              type: "text",
-              label: "Nome da Unidade",
-              messageError: "Must be 2 or more characters long",
+              type: 'text',
+              label: 'Nome da Unidade',
             },
           ],
         },
@@ -24,19 +23,19 @@ export const templateform: Templateform = {
     },
     {
       id: 2,
-      title: "Segmentos",
-      boxs: [
+      title: 'Segmentos',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "segments",
+              id: 'segments',
               required: true,
-              type: "select",
-              label: "Segmentos",
+              type: 'select',
+              label: 'Segmentos',
               options: [
                 {
-                  label: "segmento 1",
+                  label: 'segmento 1',
                   value: 1,
                 },
               ],
@@ -47,19 +46,19 @@ export const templateform: Templateform = {
     },
     {
       id: 3,
-      title: "Cursos",
-      boxs: [
+      title: 'Cursos',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "courses",
+              id: 'courses',
               required: true,
-              type: "select",
-              label: "Cursos",
+              type: 'select',
+              label: 'Cursos',
               options: [
                 {
-                  label: "curso 1",
+                  label: 'curso 1',
                   value: 1,
                 },
               ],
@@ -69,4 +68,4 @@ export const templateform: Templateform = {
       ],
     },
   ],
-};
+}

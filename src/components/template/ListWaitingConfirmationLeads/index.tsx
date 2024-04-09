@@ -1,38 +1,29 @@
-"use client";
+'use client'
 
-import { Text } from "@/components/atoms";
-import { mockServer } from "@/components/config/mockServer";
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import Search from "@/components/molecules/Search";
-import Listing from "@/components/organisms/Listing";
-import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, InfoList, Searchs } from "@/types/general";
-import React from "react";
+import { searchUsers } from '@/actions/user'
+import { Text } from '@/components/atoms'
+import { mockServer } from '@/components/config/mockServer'
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import Search from '@/components/molecules/Search'
+import Listing from '@/components/organisms/Listing'
+import { useItemListTransform } from '@/hooks/use-item-list-transform'
+import { ItemListType, InfoList } from '@/types/general'
+import React from 'react'
 
 const ListWaitingConfirmationLeads: React.FC = () => {
-  const { listTransform } = useItemListTransform();
+  const { listTransform } = useItemListTransform()
 
   const infoList: InfoList = {
-    itemsHeader: ["N", "NOME / WHATSAPP", "CURSO", "INDICADOR", "STATUS"],
-    itemsList: [
-      "name",
-      "whatsapp",
-      "training_course",
-      "indicator.name",
-      "status",
-    ],
-  };
-
-  let list = listTransform(mockServer.leads, infoList.itemsList);
-
-  function handlerForm(data: any) {
-    console.log("handlerForm Search: ", data);
+    itemsHeader: ['N', 'NOME / WHATSAPP', 'INDICADOR', 'STATUS'],
+    itemsList: ['name', 'phone', '', 'indicator.name', 'status'],
   }
 
+  const list = listTransform(mockServer.leads, infoList.itemsList)
+
   const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>;
-  };
+    return <Text className="text-black">{index + 1}</Text>
+  }
 
   return (
     <ContainerDashboard>
@@ -41,7 +32,7 @@ const ListWaitingConfirmationLeads: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handlerForm} />
+          <Search action={searchUsers} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
@@ -56,7 +47,7 @@ const ListWaitingConfirmationLeads: React.FC = () => {
         </div>
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default ListWaitingConfirmationLeads;
+export default ListWaitingConfirmationLeads

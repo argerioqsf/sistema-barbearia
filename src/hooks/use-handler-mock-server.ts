@@ -1,62 +1,54 @@
-import { mockServer } from "@/components/config/mockServer";
-import {
-  Course,
-  IndicatorType,
-  Lead,
-  Segment,
-  TimeLine,
-  Unit,
-  UserType,
-} from "@/types/general";
+import { mockServer } from '@/components/config/mockServer'
+import { Course, Lead, Segment, TimeLine, Unit, User } from '@/types/general'
 
 export function useHandlerMockServer() {
-  function getIndicatorForId(id: number | string): IndicatorType[] {
-    const indicators = mockServer.indicators;
+  function getIndicatorForId(id: number | string): User[] {
+    const indicators = mockServer.indicators
     return indicators.filter((indicator) => {
-      return indicator.id == id;
-    });
+      return indicator.id === id
+    })
   }
 
   function getLeadForId(id: number | string): Lead[] {
-    const indicators = mockServer.leads;
+    const indicators = mockServer.leads
     return indicators.filter((lead) => {
-      return lead.id == id;
-    });
+      return lead.id === id
+    })
   }
 
-  function getTimelineForLeadId(lead_id: number | string): TimeLine[] {
-    const indicators = mockServer.time_line;
-    return indicators.filter((time_line) => {
-      return time_line.lead_id == lead_id;
-    });
+  function getTimelineForLeadId(leadId: string): TimeLine[] {
+    const indicators = mockServer.time_line
+    return indicators.filter((timeLine) => {
+      return timeLine.lead_id === leadId
+    })
   }
 
-  function getUserForId(id: number | string): UserType[] {
-    const users = mockServer.users;
+  function getUserForId(id: number | string): User[] {
+    const users = mockServer.users
     return users.filter((user) => {
-      return user.id == id;
-    });
+      return user.id === id
+    })
   }
 
   function getUnitForId(id: number | string): Unit[] {
-    const units = mockServer.unidades;
+    const units = mockServer.unidades
     return units.filter((unit) => {
-      return unit.id == id;
-    });
+      return unit.id === id
+    })
   }
 
   function getSegmentForId(id: number | string): Segment[] {
-    const segments = mockServer.segments;
+    const segments = mockServer.segments
     return segments.filter((segment) => {
-      return segment.id == id;
-    });
+      return segment.id === id
+    })
   }
 
   function getCourseForId(id: number | string): Course[] {
-    const courses = mockServer.cursos;
+    const courses = mockServer.cursos
     return courses.filter((course) => {
-      return course.id == id;
-    });
+      return course.id === id
+    })
   }
 
   return {
@@ -67,5 +59,5 @@ export function useHandlerMockServer() {
     getUnitForId,
     getSegmentForId,
     getCourseForId,
-  };
+  }
 }

@@ -1,51 +1,58 @@
-"use server";
+'use server'
 
-import { formSchemaRegisterCourse } from "@/components/template/RegisterCourses/schema";
-import { getTokenFromCookieServer } from "@/utils/cookieServer";
+import { formSchemaRegisterCourse } from '@/components/template/RegisterCourses/schema'
+import { Errors, InitialState } from '@/types/general'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
 
-export async function registerCourse(prevState: any, formData: FormData) {
+export async function registerCourse(
+  prevState: InitialState,
+  formData: FormData,
+): Promise<InitialState> {
   const validatedFields = formSchemaRegisterCourse.safeParse({
-    name: formData.get("name"),
-    active: formData.get("active"),
-  });
+    name: formData.get('name'),
+    active: formData.get('active'),
+  })
 
   if (validatedFields.success) {
     try {
-      const token_SIM = getTokenFromCookieServer();
-      if (!token_SIM) {
+      const TOKEN_SIM = getTokenFromCookieServer()
+      if (!TOKEN_SIM) {
         return {
-          errors: { request: ["Erro de credenciais"] },
-        };
+          errors: { request: 'Erro de credenciais' },
+        }
       }
       const response = await fetch(`${process.env.URL_API}/create/course`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token_SIM}`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN_SIM}`,
         },
         body: JSON.stringify({
-          name: formData.get("name"),
-          active: formData.get("active") == "1" ? true : false,
+          name: formData.get('name'),
+          active: formData.get('active') === '1',
         }),
-      });
+      })
       if (!response.ok) {
-        const errorMessage = await response.text();
+        const errorMessage = await response.text()
         return {
-          errors: { request: [JSON.parse(errorMessage).message] },
-        };
+          errors: { request: JSON.parse(errorMessage).message },
+        }
       }
       return {
         errors: {},
-        register_success: true,
-      };
+        ok: true,
+      }
     } catch (error) {
       return {
-        errors: { request: ["Failed to Login"] },
-      };
+        errors: { request: 'Failed to Login' },
+      }
     }
   } else if (validatedFields.error) {
+    const error = validatedFields.error.flatten().fieldErrors as Errors
     return {
-      errors: { ...validatedFields.error.flatten().fieldErrors },
-    };
+      errors: { ...error },
+    }
+  } else {
+    return { errors: { request: 'Error unknown' } }
   }
 }

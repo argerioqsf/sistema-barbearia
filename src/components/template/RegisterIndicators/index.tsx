@@ -1,18 +1,14 @@
-"use client";
+'use client'
 
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import FormDashboard from "@/components/organisms/FormDashboard";
-import React from "react";
-import { templateform } from "./templateForm";
-import { loginUser } from "@/actions/auth";
-import { formSchemaSignin } from "../SingIn/schema";
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import FormDashboard from '@/components/organisms/FormDashboard'
+import React from 'react'
+import { templateForm } from './templateForm'
+import { loginUser } from '@/actions/auth'
+import { formSchemaSignIn } from '../SingIn/schema'
 
 const RegisterIndicators: React.FC = () => {
-  function handleRegister(data: object) {
-    console.log("data FormDashboard: ", data);
-  }
-
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
@@ -21,15 +17,15 @@ const RegisterIndicators: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            templateform={templateform}
+            templateForm={templateForm}
             action={loginUser}
-            schema={formSchemaSignin}
+            schema={formSchemaSignIn}
             pathSuccess="dashboard/indicators"
           />
         </div>
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default RegisterIndicators;
+export default RegisterIndicators

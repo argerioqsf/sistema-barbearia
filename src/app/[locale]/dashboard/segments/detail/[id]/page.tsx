@@ -1,24 +1,24 @@
-import DetailSegments from "@/components/template/DetailSegments";
-import { ParamsProp } from "@/types/general";
-import { getTranslations } from "next-intl/server";
+import DetailSegments from '@/components/template/DetailSegments'
+import { ParamsProp } from '@/types/general'
+import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata({
-  params: { locale, id },
+  params: { locale },
 }: {
-  params: ParamsProp;
+  params: ParamsProp
 }) {
   const meta = await getTranslations({
     locale,
-    namespace: "metadata.dashboard.profile",
-  });
+    namespace: 'metadata.dashboard.profile',
+  })
   return {
-    title: meta("title"),
-    description: meta("description"),
-  };
+    title: meta('title'),
+    description: meta('description'),
+  }
 }
 
 const page = ({ params: { id } }: { params: { id: string } }) => {
-  return <DetailSegments id={id} />;
-};
+  return <DetailSegments id={id} />
+}
 
-export default page;
+export default page

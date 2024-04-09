@@ -1,79 +1,54 @@
-import {
-  FieldsList,
-  IndicatorsHookType,
-  IndicatorsType,
-  ItemListHookType,
-  ItemListType,
-  UserHookType,
-  UserType,
-} from "@/types/general";
+import { FieldsList, ItemListType, Models } from '@/types/general'
 
 export const useItemListTransform = () => {
   const listTransform = (
-    list: Array<UserType | any> | undefined,
-    fields?: FieldsList
-  ): Array<ItemListType> => {
-    const listTransform = list?.map((item) => {
-      let new_item: ItemListType = {
-        id: 0,
-        info1: "",
-        info2: "",
-        info3: "",
-        info4: "",
-        info5: "",
-      };
-      let props: Array<any> = Object.keys(item) as Array<UserHookType>;
-      let count = 0;
+    list: Models[],
+    fields: FieldsList,
+  ): ItemListType[] => {
+    console.log(list)
+    if (!list) return []
+    return list?.map((item) => {
+      const newItem: ItemListType = {
+        id: '0',
+        info1: '',
+        info2: '',
+        info3: '',
+        info4: '',
+        info5: '',
+      }
+
+      let count = 0
+
       if (fields) {
-        for (let i = 0; i < fields.length; i++) {
-          if (fields[i] != "") {
-            if (props.includes(fields[i])) {
-              count++;
-              let key: ItemListHookType = ("info" + count) as ItemListHookType;
-              new_item = {
-                ...new_item,
-                id: item.id,
-                ...item,
-                [key]:
-                  typeof item[fields[i]] === "boolean"
-                    ? item[fields[i]]
-                      ? "Sim"
-                      : "Não"
-                    : item[fields[i]],
-              };
-            } else {
-              if (fields[i].includes(".")) {
-                const fieldObject = fields[i].split(".");
-                if (fieldObject.length > 1) {
-                  count++;
-                  let key: ItemListHookType = ("info" +
-                    count) as ItemListHookType;
-                  let value = item?.[fieldObject[0]];
-                  for (let i = 1; i < fieldObject.length; i++) {
-                    value = value?.[fieldObject[i]];
-                  }
-                  new_item = {
-                    ...new_item,
-                    id: item.id,
-                    ...item,
-                    [key]:
-                      typeof value === "boolean"
-                        ? value
-                          ? "Sim"
-                          : "Não"
-                        : value,
-                  };
-                }
-              }
+        fields.forEach((field) => {
+          if (field !== '') {
+            const value = getItemValue(item, field)
+            if (value !== undefined) {
+              count++
+              const key = `info${count}` as keyof ItemListType
+              newItem[key] =
+                typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value
             }
           } else {
-            count++;
+            count++
           }
-        }
+        })
       }
-      return new_item;
-    });
-    return listTransform ?? [];
-  };
-  return { listTransform };
-};
+
+      return newItem
+    })
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getItemValue = (item: Models, field: string): any => {
+    const keys = field.split('.')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let value: any = item
+    for (const key of keys) {
+      value = value?.[key]
+    }
+    return value
+  }
+
+  return { listTransform }
+}

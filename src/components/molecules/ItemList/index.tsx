@@ -1,23 +1,22 @@
-"use client";
+'use client'
 
-import React, { ReactNode, useState } from "react";
-import { Avatar } from "..";
-import { Text } from "@/components/atoms";
-import { ListActionsProps } from "@/types/general";
-import DropDownDots from "../DropDownDots";
-import IconAction from "../IconAction";
-import { useHandlerRouter } from "@/hooks/use-handler-router";
+import React, { ReactNode } from 'react'
+import { Avatar } from '..'
+import { Text } from '@/components/atoms'
+import { ListActionsProps } from '@/types/general'
+import DropDownDots from '../DropDownDots'
+import IconAction from '../IconAction'
 
 type ItemListProps = {
-  listActions: Array<ListActionsProps>;
-  avatar: ReactNode | number;
-  info1: string;
-  info2: string;
-  info3: string;
-  info4: string;
-  info5: string;
-  id: number | string;
-};
+  listActions: Array<ListActionsProps>
+  avatar: ReactNode | number
+  info1: string
+  info2: string
+  info3: string
+  info4: string
+  info5: string
+  id: string
+}
 
 const ItemList = ({
   listActions,
@@ -88,7 +87,7 @@ const ItemList = ({
         <DropDownDots listActions={listActions} id={id} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ItemList;
+export default ItemList

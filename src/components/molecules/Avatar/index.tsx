@@ -1,39 +1,38 @@
-import { Button } from "@/components/atoms";
-import LinkDefault from "@/components/atoms/LinkDefault";
-import { useHandlerIcons } from "@/hooks/use-handler-icon";
-import Image from "next/image";
-import React from "react";
-import { twMerge } from "tailwind-merge";
+import LinkDefault from '@/components/atoms/LinkDefault'
+import { useHandlerIcons } from '@/hooks/use-handler-icon'
+import Image from 'next/image'
+import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
 type AvatarProps = {
-  href?: string;
-  classIcon?: string;
-  size?: number;
-  image?: string;
-  alt?: string;
-  icon?: string;
-  colorIcon?: string;
-  children?: React.ReactNode;
-  classAvatar?: string;
-};
+  href?: string
+  classIcon?: string
+  size?: number
+  image?: string
+  alt?: string
+  icon?: string
+  colorIcon?: string
+  children?: React.ReactNode
+  classAvatar?: string
+}
 
 const Avatar: React.FC<AvatarProps> = ({
-  href = "",
-  classIcon = "",
-  colorIcon = "white",
+  href = '',
+  classIcon = '',
+  colorIcon = 'white',
   size = 36,
-  image = "",
-  icon = "",
-  alt = "",
+  image = '',
+  icon = '',
+  alt = '',
   children,
   classAvatar,
 }) => {
-  const renderIcon = useHandlerIcons(icon);
-  const Component = href.length > 0 ? LinkDefault : "div";
+  const renderIcon = useHandlerIcons(icon)
+  const Component = href.length > 0 ? LinkDefault : 'div'
   return (
     <div className={twMerge(`size-[${size}px]`)}>
       <Component
-        className={twMerge("flex justify-center items-center", classAvatar)}
+        className={twMerge('flex justify-center items-center', classAvatar)}
         href={href}
       >
         {image ? (
@@ -47,8 +46,8 @@ const Avatar: React.FC<AvatarProps> = ({
         ) : (
           <div
             className={twMerge(
-              "p-2 rounded-full flex justify-center items-center border-2",
-              classIcon
+              'p-2 rounded-full flex justify-center items-center border-2',
+              classIcon,
             )}
           >
             {children ?? renderIcon({ size, color: colorIcon })}
@@ -56,7 +55,7 @@ const Avatar: React.FC<AvatarProps> = ({
         )}
       </Component>
     </div>
-  );
-};
+  )
+}
 
-export default Avatar;
+export default Avatar

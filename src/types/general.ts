@@ -1,326 +1,268 @@
-import { FC, SVGProps } from "react";
-import { FieldErrors, UseFormRegisterReturn } from "react-hook-form";
-import { z } from "zod";
-
-export type ParamsProp = {
-  locale: string;
-  id?: string;
-};
-
-export type Segment = {
-  id: number;
-  name: string;
-  created_at: string;
-};
-
-export type Course = {
-  id: number;
-  name: string;
-  quant_leads: number;
-  status: number;
-};
-
-export type Unit = {
-  id: number;
-  name: string;
-  created_at: string;
-  segments: Segment[];
-  courses: Course[];
-};
-
-type LimitFields<T> = [T, T, T, T, T];
+import { z } from 'zod'
 
 type LimitFieldsForm<T> = [T, ...T[]] & {
-  length: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
-};
+  length: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+}
+type LimitFields<T> = [T, T, T, T, T]
 
-export type FieldsList = LimitFields<UserHookType | "">;
-
-export type IconSvgProps = {
-  size?: number;
-  width?: number;
-  height?: number;
-  color?: string;
-};
-
-export type ListActionsProps = {
-  id: number;
-  onclick?: (id: any) => void;
-  icon: string;
-  href?: string;
-  name?: string;
-};
-
-export type InfoList = {
-  itemsHeader: Array<string>;
-  itemsList: FieldsList;
-  listActions?: ListActionsProps[];
-  title?: string;
-  list?: ItemListType[];
-  hrefButton?: string;
-  textButton?: string;
-};
-
-export type UserType = {
-  id: number;
-  name: string;
-  email: string;
-  number: string;
-  status: number;
-  image: string;
-  last_name: string;
-  whatsapp: string;
-  document: string;
-  datebirth: string;
-  genero: number;
-  nivel: number;
-  created_at: string;
-};
-
-export type Profile ={
-  id: string;
-  phone: number;
-  cpf: string;
-  genre: string;
-  birthday: string;
-  pix: string;
-  role: string;
-  user?: User;
-  userId: string;
+export type Segment = {
+  id: string
+  name: string
+  created_at: string
 }
 
+export type SegmentProps = keyof Segment
+
+export type Course = {
+  id: string
+  name: string
+  quant_leads: number
+  status: number
+}
+
+export type CourseProps = keyof Course
+
+export type Unit = {
+  id: string
+  name: string
+  created_at: string
+  segments: Segment[]
+  courses: Course[]
+}
+
+export type UnitProps = keyof Unit
+
 export type User = {
-  id: number;
-  name: string;
-  email: string;
-  active: string;
-  profile: Profile;
-};
+  id: string
+  name: string
+  email: string
+  active: string
+  // eslint-disable-next-line no-use-before-define
+  profile: Profile
+  created_at: string
+}
 
-export type IndicatorType = {
-  id: number;
-  name: string;
-  last_name?: string;
-  city: string;
-  link: string;
-  whatsapp: string;
-  user_at: string;
-  document: string;
-  key_pix: string;
-  email: string;
-  status: string;
-  leads?: Lead[];
-};
+export type UserProps = keyof User
 
-export type Lead = {
-  id: number;
-  name: string;
-  whatsapp: string;
-  document: string;
-  key_pix: string;
-  email: string;
-  city: string;
-  training_course: string;
-  indicator_id?: number;
-  indicator: IndicatorType | {};
-  status: string;
-  created_at: string;
-  updated_at: string;
-  time_line?: TimeLine[];
-};
+export type Profile = {
+  id: string
+  phone: string
+  cpf: string
+  genre: string
+  birthday: string
+  pix: string
+  role: string
+  user?: User
+  userId: string
+  // eslint-disable-next-line no-use-before-define
+  leadsIndicator?: Lead[]
+}
 
-export type UserHookType =
-  | "id"
-  | "name"
-  | "email"
-  | "number"
-  | "status"
-  | "whatsapp"
-  | "training_course"
-  | `indicator.${string}`
-  | "city"
-  | "link"
-  | "data"
-  | "user_at"
-  | "number_courses"
-  | "created_at"
-  | `segments.${string}`
-  | `courses.${string}`
-  | "quant_leads"
-  | "active"
-  | "phone";
-
-type typesForIdFieldsForm =
-  | "name"
-  | "last_name"
-  | "status"
-  | "date"
-  | "whatsapp"
-  | "document"
-  | "datebirth"
-  | "genero"
-  | "email"
-  | "password"
-  | "nivel"
-  | "permission"
-  | "image"
-  | "key_pix"
-  | "user_at"
-  | "city"
-  | "unit"
-  | "formation"
-  | "course"
-  | "document"
-  | "situation"
-  | "indicator_id"
-  | "consultant"
-  | "lead_at"
-  | "segments"
-  | "courses"
-  | "search"
-  | "created_at"
-  | "training_course"
-  | "course_id"
-  | "title"
-  | "describe"
-  | "active"
-  | "phone"
-  | "cpf"
-  | "pix"
-  | "birthday"
-  | "genre"
-  | "role";
-
-export type FieldsFormSchema = {
-  name?: z.ZodString;
-  last_name?: z.ZodString;
-  whatsapp?: z.ZodString;
-  document?: z.ZodString;
-  email?: z.ZodString;
-  password?: z.ZodString;
-  key_pix?: z.ZodString;
-  status?: z.ZodString;
-  user_at?: z.ZodString;
-  city?: z.ZodString;
-  datebirth?: z.ZodString;
-  genero?: z.ZodString;
-  nivel?: z.ZodString;
-  permission?: z.ZodString;
-  image?: z.ZodString;
-  unit?: z.ZodString;
-  formation?: z.ZodString;
-  course?: z.ZodString;
-  situation?: z.ZodString;
-  indicator_id?: z.ZodNumber;
-  consultant?: z.ZodString;
-  lead_at?: z.ZodString;
-  segments?: z.ZodString;
-  courses?: z.ZodString;
-  date?: z.ZodString;
-  search?: z.ZodString;
-  training_course?: z.ZodString;
-  created_at?: z.ZodString;
-  course_id?: z.ZodNumber;
-  title?: z.ZodString;
-  describe?: z.ZodString;
-  active?: z.ZodBoolean;
-};
-
-export type ItemListType = {
-  id: number;
-  info1: string;
-  info2: string;
-  info3: string;
-  info4: string;
-  info5: string;
-};
-
-export type ItemListHookType = "id" | "info1" | "info2" | "info3" | "info4";
-
-export type IndicatorsType = {
-  id: number;
-  name: string;
-  cidade: string;
-  link: string;
-  data: string;
-};
-
-export type IndicatorsHookType = "id" | "name" | "cidade" | "link" | "data";
-
-export type Templateform = {
-  title: string;
-  textButton: string;
-  sections: Array<SectionTemplateForm>;
-};
-
-export type SectionTemplateForm = {
-  id: number;
-  title: string;
-  boxs: Array<BoxTemplateForm>;
-};
-
-export type BoxTemplateForm = {
-  id: number;
-  fields: LimitFieldsForm<FieldsTemplateForm>;
-};
-
-export type FieldsTemplateForm = {
-  id: typesForIdFieldsForm;
-  required: boolean;
-  type: "text" | "date" | "image" | "select" | "password" | "file";
-  label: string;
-  messageError?: string;
-  classInput?: string;
-  options?: Array<OptionsTemplateForm>;
-  value?: string | number;
-  disabled?: boolean;
-  roles?: Roles;
-};
-
-type Roles = {
-  minCaracters?: number;
-};
-
-export type OptionsTemplateForm = {
-  label: string;
-  value: number | string;
-};
-
-type NamesSearchs = "search";
-
-export type Searchs = Array<{
-  id?: number;
-  propsInput: UseFormRegisterReturn<string>;
-  placeholder: string;
-  name: NamesSearchs;
-}>;
-
-export type LimitColsGrid = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export type ProfileProps = keyof Profile
 
 export type TimeLine = {
-  id: number;
-  lead_id: number;
-  course_id: number;
-  title: string;
-  describe: string;
-  status: string;
-  created_at: string;
-};
+  id: string
+  lead_id: string
+  course_id: string
+  title: string
+  describe: string
+  status: string
+  created_at: string
+}
+
+export type TimeLineProps = keyof TimeLine
+
+export type Lead = {
+  id: string
+  name: string
+  phone: string
+  document: string
+  email: string
+  city: string
+  indicator?: Profile
+  indicatorId: string
+  consultant?: Profile
+  consultantId?: string
+  timeline: TimeLine[]
+}
+
+export type LeadProps = keyof Lead
+
+const fieldsForm = [
+  'id',
+  'name',
+  'created_at',
+  'quant_leads',
+  'status',
+  'segments',
+  'courses',
+  'email',
+  'active',
+  'profile',
+  'phone',
+  'cpf',
+  'genre',
+  'birthday',
+  'pix',
+  'role',
+  'user',
+  'userId',
+  'lead_id',
+  'course_id',
+  'title',
+  'describe',
+  '',
+  'profile.cpf',
+  'indicator.name',
+  'segments.length',
+  'courses.length',
+  'password',
+  'search',
+  'indicatorId',
+  'consultantId',
+  'image',
+  'request',
+] as const
+
+export type ParamsProp = {
+  locale: string
+  id?: string
+}
+
+type BaseUserHookType = {
+  [K in (typeof fieldsForm)[number]]: string
+}
+
+export type UserHookType = keyof BaseUserHookType
+
+export type TypesForIdFieldsForm = (typeof fieldsForm)[number]
+
+export type FieldsList = LimitFields<UserHookType>
+
+export type IconSvgProps = {
+  size?: number
+  width?: number
+  height?: number
+  color?: string
+}
+
+export type ListActionsProps = {
+  id: number
+  onclick?: (id: string) => void
+  icon: string
+  href?: string
+  name?: string
+}
+
+export type ItemListType = {
+  id: string
+  info1: string
+  info2: string
+  info3: string
+  info4: string
+  info5: string
+}
+
+export type InfoList = {
+  itemsHeader: Array<string>
+  itemsList: FieldsList
+  listActions?: ListActionsProps[]
+  title?: string
+  list?: ItemListType[]
+  hrefButton?: string
+  textButton?: string
+}
+
+export type Errors = {
+  request?: string
+} & { [key in (typeof fieldsForm)[number]]?: string }
+
+export type FieldsFormSchema = {
+  [key in (typeof fieldsForm)[number]]?: z.ZodTypeAny
+}
+
+export type OptionsTemplateForm = {
+  label: string
+  value: number | string
+}
+
+export type FieldsTemplateForm = {
+  id: TypesForIdFieldsForm
+  required: boolean
+  type: 'text' | 'date' | 'image' | 'select' | 'password' | 'file'
+  label: string
+  classInput?: string
+  options?: Array<OptionsTemplateForm>
+  value?: string | number
+  disabled?: boolean
+}
+
+export type BoxTemplateForm = {
+  id: number
+  fields: LimitFieldsForm<FieldsTemplateForm>
+}
+
+export type SectionTemplateForm = {
+  id: number
+  title: string
+  boxes: Array<BoxTemplateForm>
+}
+
+export type TemplateForm = {
+  title: string
+  textButton: string
+  sections: Array<SectionTemplateForm>
+}
+
+export type LimitColsGrid = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+
+export type Models = Segment | User | Unit | Course | TimeLine | Profile | Lead
+
+export type ModelsAll = Segment &
+  User &
+  Unit &
+  Course &
+  TimeLine &
+  Profile &
+  Lead & {
+    search: string
+  }
+
+export type SchemaForm = z.ZodObject<FieldsFormSchema>
+
+export type InitialState = {
+  errors: Errors | null
+  ok?: boolean
+  resp?: Models | Models[]
+}
+
+export type ServerAction = (
+  prevState: InitialState,
+  formData: FormData,
+) => InitialState | Promise<InitialState>
+
+export type GetDefaultValues = () => Promise<InitialState | Models>
 
 export type Form = {
-  template: Templateform;
-  handlerForm: (state: any) => void;
-  getDefaultValues?: () => Promise<any>;
-  loading?: boolean;
-  action: (prevState: any, formData: FormData) => Promise<any>;
-  pathSuccess: string;
-  schema: z.ZodObject<any>;
-};
+  template: TemplateForm
+  loading?: boolean
+  getDefaultValues?: GetDefaultValues
+  title?: string
+  action: ServerAction
+  schema: SchemaForm
+  pathSuccess: string
+  handlerForm: (data: ModelsAll) => void
+  errorMessage?: string
+}
 
 export type ListAction = {
-  id: number;
-  onclick?: (id: any) => void;
-  icon: string;
-  href?: string;
-  name: string;
-};
+  id: number
+  onclick?: (id: string) => void
+  icon: string
+  href?: string
+  name: string
+}
+
+export type SearchType = {
+  search: string
+}

@@ -1,56 +1,50 @@
-"use client";
+'use client'
 
-import { Text } from "@/components/atoms";
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import { useHandlerMockServer } from "@/hooks/use-handler-mock-server";
-import { Course, Form, ItemListType } from "@/types/general";
-import React, { useState } from "react";
-import * as templates from "./templates";
-import DetailDefault from "@/components/organisms/DetailDefault";
-import { loginUser } from "@/actions/auth";
-import { formSchemaSignin } from "../SingIn/schema";
+import { Text } from '@/components/atoms'
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import { useHandlerMockServer } from '@/hooks/use-handler-mock-server'
+import { Course, Form, ItemListType } from '@/types/general'
+import React, { useState } from 'react'
+import * as templates from './templates'
+import DetailDefault from '@/components/organisms/DetailDefault'
+import { loginUser } from '@/actions/auth'
+import { formSchemaSignIn } from '../SingIn/schema'
 
 const DetailCourses = ({ id }: { id: string }) => {
-  const { getCourseForId } = useHandlerMockServer();
-  const [course, setSegment] = useState<Course | null>();
-  const [loading, setLoading] = useState(false);
+  const { getCourseForId } = useHandlerMockServer()
+  const [loading, setLoading] = useState(false)
 
-  function getUser(): Promise<any> {
-    setLoading(true);
+  function getUser(): Promise<Course> {
+    setLoading(true)
     return new Promise((resolve) => {
       setTimeout(() => {
-        const data = getCourseForId(id);
-        setSegment({ ...data[0] });
-        setLoading(false);
-        resolve(data[0]);
-      }, 2000);
-    });
+        const data = getCourseForId(id)
+        setLoading(false)
+        resolve(data[0])
+      }, 2000)
+    })
   }
 
   const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>;
-  };
-
-  function handlerFormSearch(data: object) {
-    console.log("handlerForm Search: ", data);
+    return <Text className="text-black">{index + 1}</Text>
   }
 
-  function handleRegister(data: any) {
-    console.log("data FormDashboard: ", data);
+  function handleRegister(data: Course) {
+    console.log('data FormDashboard: ', data)
   }
 
   const forms: Form[] = [
     {
-      template: templates.templateform,
+      template: templates.templateForm,
       handlerForm: handleRegister,
       getDefaultValues: getUser,
-      loading: loading,
+      loading,
       action: loginUser,
-      schema: formSchemaSignin,
-      pathSuccess: "/",
+      schema: formSchemaSignIn,
+      pathSuccess: '/',
     },
-  ];
+  ]
 
   return (
     <ContainerDashboard>
@@ -58,14 +52,10 @@ const DetailCourses = ({ id }: { id: string }) => {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <DetailDefault
-          renderAvatar={renderAvatar}
-          handlerFormSearch={handlerFormSearch}
-          forms={forms}
-        />
+        <DetailDefault renderAvatar={renderAvatar} forms={forms} />
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default DetailCourses;
+export default DetailCourses

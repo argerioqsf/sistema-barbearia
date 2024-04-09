@@ -1,25 +1,24 @@
-"use client";
+'use client'
 
-import Search from "@/components/molecules/Search";
-import FormDashboard from "@/components/organisms/FormDashboard";
-import Listing from "@/components/organisms/Listing";
-import { Form, InfoList, ItemListType, TimeLine } from "@/types/general";
-import React, { Fragment } from "react";
-import TimeLineComponent from "../TimeLineComponent";
+import Search from '@/components/molecules/Search'
+import FormDashboard from '@/components/organisms/FormDashboard'
+import Listing from '@/components/organisms/Listing'
+import { Form, InfoList, ItemListType, TimeLine } from '@/types/general'
+import React, { Fragment } from 'react'
+import TimeLineComponent from '../TimeLineComponent'
+import { searchUsers } from '@/actions/user'
 
 type PropTemplates = {
-  lists?: InfoList[];
-  forms?: Form[];
-  renderAvatar?: (item: ItemListType, index: number) => React.JSX.Element;
-  handlerFormSearch?: (data: object) => void;
-  time_line?: TimeLine[];
-};
+  lists?: InfoList[]
+  forms?: Form[]
+  renderAvatar?: (item: ItemListType, index: number) => React.JSX.Element
+  timeLine?: TimeLine[]
+}
 
 const DetailDefault = ({
   renderAvatar,
-  handlerFormSearch = () => {},
   lists,
-  time_line,
+  timeLine,
   forms,
 }: PropTemplates) => {
   return (
@@ -30,7 +29,7 @@ const DetailDefault = ({
           <FormDashboard
             key={index}
             title={form.template.title}
-            templateform={form.template}
+            templateForm={form.template}
             getDefaultValues={form.getDefaultValues}
             loading={form.loading}
             action={form.action}
@@ -41,7 +40,7 @@ const DetailDefault = ({
       {lists &&
         lists.map((list, idx) => (
           <Fragment key={idx}>
-            {handlerFormSearch && <Search handlerForm={handlerFormSearch} />}
+            <Search action={searchUsers} />
             <Listing
               itemsHeader={list?.itemsHeader}
               avatar={renderAvatar}
@@ -53,9 +52,9 @@ const DetailDefault = ({
             />
           </Fragment>
         ))}
-      {time_line && <TimeLineComponent time_line={time_line} />}
+      {timeLine && <TimeLineComponent timeLine={timeLine} />}
     </div>
-  );
-};
+  )
+}
 
-export default DetailDefault;
+export default DetailDefault
