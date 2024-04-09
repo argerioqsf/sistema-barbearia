@@ -1,33 +1,20 @@
 'use client'
 
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { Avatar } from '..'
 import { Text } from '@/components/atoms'
-import { ListActionsProps } from '@/types/general'
+import { ItemListType, ListActionsProps } from '@/types/general'
 import DropDownDots from '../DropDownDots'
 import IconAction from '../IconAction'
 
 type ItemListProps = {
   listActions: Array<ListActionsProps>
-  avatar: ReactNode | number
-  info1: string
-  info2: string
-  info3: string
-  info4: string
-  info5: string
+  idx?: number
+  item: ItemListType
   id: string
 }
 
-const ItemList = ({
-  listActions,
-  avatar,
-  info1,
-  info2,
-  info3,
-  info4,
-  info5,
-  id,
-}: ItemListProps) => {
+const ItemList = ({ listActions, idx, item, id }: ItemListProps) => {
   return (
     <div className="w-full relative rounded-full bg-gray-200 flex flex-row justify-start items-center p-3">
       <div className="w-[10%] md:w-[10%] sm:w-[20%] flex flex-row justify-start">
@@ -35,37 +22,37 @@ const ItemList = ({
           colorIcon="white"
           classIcon="bg-gray-300 border-transparent size-[60px]"
         >
-          {avatar}
+          {idx ?? ''}
         </Avatar>
       </div>
-      {(info1 || info2) && (
+      {(item.info1 || item.info2) && (
         <div className="ml-4 gap-2 w-full sm:text-start">
           <Text className="font-bold w-full text-center text-black">
-            {info1}
+            {item.info1}
           </Text>
-          <Text className="w-full text-center">{info2}</Text>
+          <Text className="w-full text-center">{item.info2}</Text>
         </div>
       )}
-      {info3 && (
+      {item.info3 && (
         <div className="ml-4 w-full hidden md:flex ">
           <Text className="text-black w-full text-center font-medium">
-            {info3}
+            {item.info3}
           </Text>
         </div>
       )}
 
-      {info4 && (
+      {item.info4 && (
         <div className="ml-4 w-full lg:flex hidden ">
           <Text className="text-black w-full text-center font-medium">
-            {info4}
+            {item.info4}
           </Text>
         </div>
       )}
 
-      {info5 && (
+      {item.info5 && (
         <div className="ml-4 w-full xl:flex hidden">
           <Text className="text-black w-full text-center font-medium">
-            {info5}
+            {item.info5}
           </Text>
         </div>
       )}

@@ -1,14 +1,13 @@
+'use client'
+
 import { siteConfig } from '@/components/config/siteConfig'
 import ItemSideMenu from '@/components/molecules/ItemSideMenu'
-import React, { Dispatch, SetStateAction } from 'react'
+import { useGeneral } from '@/contexts/general-context'
+import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
-type SideMenuProps = {
-  openMenu: boolean | null
-  setOpenMenu: Dispatch<SetStateAction<boolean>>
-}
-
-const SideMenu: React.FC<SideMenuProps> = ({ openMenu, setOpenMenu }) => {
+function SideMenu() {
+  const { openMenu, setOpenMenu } = useGeneral()
   return (
     <div className="fixed flex flex-row w-auto z-50">
       <div

@@ -17,7 +17,8 @@ export async function generateMetadata({
   }
 }
 
-const page = () => {
+const page = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 2000))
   return <ListSegments />
 }
 

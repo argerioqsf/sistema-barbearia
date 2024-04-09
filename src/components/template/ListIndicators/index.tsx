@@ -46,7 +46,6 @@ const ListIndicators = () => {
         <div className="w-full mt-6 lg:mt-8">
           <Listing
             itemsHeader={infoList.itemsHeader}
-            avatar={renderAvatar}
             list={list}
             listActions={mockServer.listActionsIndicators}
             hrefButton="dashboard/indicators/register"

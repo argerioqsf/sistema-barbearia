@@ -264,5 +264,5 @@ export type ListAction = {
 }
 
 export type SearchType = {
-  search: string
+  q: string
 }

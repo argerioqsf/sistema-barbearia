@@ -54,18 +54,6 @@ const ListUsers: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const renderAvatar = () => {
-    return (
-      <Image
-        className="align-middle rounded-full m-0 p-0 aspect-square"
-        src="https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg"
-        width={40}
-        height={40}
-        alt={'avatar'}
-      />
-    )
-  }
-
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4">
@@ -78,7 +66,6 @@ const ListUsers: React.FC = () => {
         <div className="w-full mt-6 lg:mt-8">
           <Listing
             itemsHeader={infoList.itemsHeader}
-            avatar={renderAvatar}
             list={list}
             listActions={mockServer.listActionsUsers}
             hrefButton="dashboard/users/register"

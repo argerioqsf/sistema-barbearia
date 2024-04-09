@@ -19,10 +19,6 @@ const ListUnits: React.FC = () => {
   }
   const list = listTransform(mockServer.unidades, infoList.itemsList)
 
-  const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>
-  }
-
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4 mb-6">
@@ -37,7 +33,6 @@ const ListUnits: React.FC = () => {
         <div className="w-full mt-6 lg:mt-8">
           <Listing
             itemsHeader={infoList.itemsHeader}
-            avatar={renderAvatar}
             list={list}
             listActions={mockServer.listActionsUnits}
             hrefButton="dashboard/units/register"

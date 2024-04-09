@@ -43,7 +43,6 @@ const DetailDefault = ({
             <Search action={searchUsers} />
             <Listing
               itemsHeader={list?.itemsHeader}
-              avatar={renderAvatar}
               list={list?.list}
               listActions={list?.listActions}
               hrefButton={list?.hrefButton}

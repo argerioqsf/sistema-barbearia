@@ -64,7 +64,6 @@ const ListCourses: React.FC = () => {
         <div className="w-full mt-6 lg:mt-8">
           <Listing
             itemsHeader={infoList.itemsHeader}
-            avatar={renderAvatar}
             list={list}
             listActions={mockServer.listActionsCourses}
             hrefButton="dashboard/courses/register"

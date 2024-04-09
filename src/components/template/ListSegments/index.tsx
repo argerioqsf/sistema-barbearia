@@ -1,73 +1,58 @@
-'use client'
-
 import { Text } from '@/components/atoms'
 import { mockServer } from '@/components/config/mockServer'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { useItemListTransform } from '@/hooks/use-item-list-transform'
 import { ItemListType, InfoList, Models, Errors } from '@/types/general'
-import React, { useEffect, useState } from 'react'
-import Cookies from 'js-cookie'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import React from 'react'
 
-interface ResponseLoad {
-  errors?: Errors
+async function loadSegments(): Promise<{
   response?: Models[]
+  error?: Errors
+}> {
+  try {
+    const token = getTokenFromCookieServer()
+    console.log('token: ', token)
+    const response = await fetch('http://localhost:3333/segments', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    console.log('response: ', response)
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+
+    const list = await response.json()
+    console.log('list: ', list)
+    return { response: list.segments }
+  } catch (error) {
+    console.log('error: ', error)
+    return { error: { request: 'Error unknown' } }
+  }
 }
 
-const ListSegments: React.FC = () => {
-  const { listTransform } = useItemListTransform()
-  const [list, setList] = useState<ItemListType[]>([])
-
+export default async function ListSegments() {
   const infoList: InfoList = {
     itemsHeader: ['N', 'Nome', ''],
     itemsList: ['name', '', '', '', ''],
   }
-  // let list = listTransform(mockServer.segments, infoList.itemsList);
 
-  async function loadSegments(): Promise<ResponseLoad> {
-    try {
-      const value = Cookies.get('token_SIM')
-      const response = await fetch('/api/segments', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${value}`,
-        },
-      })
-
-      if (!response.ok) {
-        const errorMessage = await response.text()
-        return {
-          errors: { request: JSON.parse(errorMessage).message },
-        }
-      }
-      const list = await response.json()
-      const listTransformResp = listTransform(list.segments, infoList.itemsList)
-      setList(listTransformResp)
-      return { response: list.segments }
-    } catch (error) {
-      return { errors: { request: 'Error unknown' } }
-    }
-  }
-
-  useEffect(() => {
-    loadSegments()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const renderAvatar = (item: ItemListType, index: number) => {
+  async function renderAvatar(item: ItemListType, index: string) {
+    'use server'
     return <Text className="text-black">{index + 1}</Text>
   }
 
-  const handlerFormSearch = async () => {
-    const segments = await loadSegments()
-    const listTransformResp = listTransform(
-      segments.response ?? [],
-      infoList.itemsList,
-    )
-    setList(listTransformResp)
-  }
+  const response = await loadSegments()
+  const list = response?.response ?? null
+  const errorRequest = response.error?.request ?? null
 
   return (
     <ContainerDashboard>
@@ -76,22 +61,20 @@ const ListSegments: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handleForm={handlerFormSearch} />
+          <Search errorRequest={errorRequest} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
             itemsHeader={infoList.itemsHeader}
-            avatar={renderAvatar}
             list={list}
+            infoList={infoList}
             listActions={mockServer.listActionsSegments}
             hrefButton="dashboard/segments/register"
-            textButton="Novo Segmento"
-            title="Segmentos"
+            textButton="Novo Seguimento"
+            title="Seguimentos"
           />
         </div>
       </div>
     </ContainerDashboard>
   )
 }
-
-export default ListSegments

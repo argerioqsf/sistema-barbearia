@@ -806,14 +806,18 @@ export const mockServer: MockServer = {
   listActionsSegments: [
     {
       id: 1,
-      onclick: () => {},
+      onclick: async () => {
+        'use server'
+      },
       icon: 'Edit',
       href: 'dashboard/segments/edit',
       name: 'Editar',
     },
     {
       id: 2,
-      onclick: () => {},
+      onclick: async () => {
+        'use server'
+      },
       icon: 'Eye',
       href: 'dashboard/segments/detail/',
       name: 'Vizualizar',
