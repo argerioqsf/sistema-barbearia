@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import ContainerSection from "@/components/molecules/ContainerSection";
+import ContainerSection from '@/components/molecules/ContainerSection'
 
 const Error = () => {
   return (
@@ -28,7 +28,7 @@ const Error = () => {
         </div>
       </main>
     </ContainerSection>
-  );
-};
+  )
+}
 
-export default Error;
+export default Error

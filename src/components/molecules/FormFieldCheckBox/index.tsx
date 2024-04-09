@@ -1,25 +1,24 @@
-import InputForm from "@/components/atoms/InputForm";
-import LabelForm from "@/components/atoms/LabelForm";
-import React from "react";
-import { UseFormRegisterReturn } from "react-hook-form";
-import { twMerge } from "tailwind-merge";
+import InputForm from '@/components/atoms/InputForm'
+import LabelForm from '@/components/atoms/LabelForm'
+import React from 'react'
+import { UseFormRegisterReturn } from 'react-hook-form'
+import { twMerge } from 'tailwind-merge'
 
 type FormFieldTextProps = {
-  label: string;
-  id: string;
-  className?: string;
-  props: UseFormRegisterReturn<string>;
-};
+  label: string
+  id: string
+  className?: string
+  props: UseFormRegisterReturn<string>
+}
 
 const FormFieldCheckBox = ({
   label,
-  id,
   className,
   props,
   ...rest
 }: FormFieldTextProps) => {
   return (
-    <div className={twMerge("flex items-start", className)}>
+    <div className={twMerge('flex items-start', className)}>
       <div className="flex items-center h-5">
         <InputForm
           {...rest}
@@ -32,7 +31,7 @@ const FormFieldCheckBox = ({
         <LabelForm className="text-white" label={label} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FormFieldCheckBox;
+export default FormFieldCheckBox

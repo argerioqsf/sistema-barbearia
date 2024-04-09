@@ -1,12 +1,12 @@
-"use client";
+'use client'
 
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import FormDashboard from "@/components/organisms/FormDashboard";
-import React from "react";
-import { templateform } from "./templateForm";
-import { formSchemaRegisterCourse } from "./schema";
-import { registerCourse } from "@/actions/course";
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import FormDashboard from '@/components/organisms/FormDashboard'
+import React from 'react'
+import { templateForm } from './templateForm'
+import { formSchemaRegisterCourse } from './schema'
+import { registerCourse } from '@/actions/course'
 
 const RegisterCourses: React.FC = () => {
   return (
@@ -19,13 +19,13 @@ const RegisterCourses: React.FC = () => {
           <FormDashboard
             schema={formSchemaRegisterCourse}
             action={registerCourse}
-            templateform={templateform}
+            templateForm={templateForm}
             pathSuccess="dashboard/courses"
           />
         </div>
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default RegisterCourses;
+export default RegisterCourses

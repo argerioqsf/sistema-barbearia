@@ -1,68 +1,64 @@
-"use client";
+'use client'
 
-import { Text } from "@/components/atoms";
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import { useHandlerMockServer } from "@/hooks/use-handler-mock-server";
-import { Form, ItemListType, Lead } from "@/types/general";
-import React, { useState } from "react";
-import * as templates from "./templates";
-import DetailDefault from "@/components/organisms/DetailDefault";
-import { loginUser } from "@/actions/auth";
-import { formSchemaSignin } from "../SingIn/schema";
+import { Text } from '@/components/atoms'
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import { useHandlerMockServer } from '@/hooks/use-handler-mock-server'
+import { Form, ItemListType, Lead, TimeLine } from '@/types/general'
+import React, { useState } from 'react'
+import * as templates from './templates'
+import DetailDefault from '@/components/organisms/DetailDefault'
+import { loginUser } from '@/actions/auth'
+import { formSchemaSignIn } from '../SingIn/schema'
 
 const DetailLeads = ({ id }: { id: string }) => {
-  const { getLeadForId } = useHandlerMockServer();
-  const [lead, setLead] = useState<Lead | null>();
-  const [loading, setLoading] = useState(false);
+  const { getLeadForId } = useHandlerMockServer()
+  const [lead, setLead] = useState<Lead | null>()
+  const [loading, setLoading] = useState(false)
 
-  function handleRegisterTimeLine(data: any) {
-    console.log("data handleRegisterTimeLine: ", data);
+  function handleRegisterTimeLine(data: TimeLine) {
+    console.log('data handleRegisterTimeLine: ', data)
   }
 
-  function getLead(): Promise<any> {
-    setLoading(true);
+  function getLead(): Promise<Lead> {
+    setLoading(true)
     return new Promise((resolve) => {
       setTimeout(() => {
-        const data = getLeadForId(id);
-        setLead({ ...data[0] });
-        setLoading(false);
-        resolve(data[0]);
-      }, 2000);
-    });
+        const data = getLeadForId(id)
+        setLead({ ...data[0] })
+        setLoading(false)
+        resolve(data[0])
+      }, 2000)
+    })
   }
 
   const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>;
-  };
-
-  function handlerFormSearch(data: object) {
-    console.log("handlerForm Search: ", data);
+    return <Text className="text-black">{index + 1}</Text>
   }
 
-  function handleRegister(data: any) {
-    console.log("data FormDashboard: ", data);
+  function handleRegister(data: Lead) {
+    console.log('data FormDashboard: ', data)
   }
 
   const forms: Form[] = [
     {
-      template: templates.templateform,
+      template: templates.templateForm,
       handlerForm: handleRegister,
       getDefaultValues: getLead,
-      loading: loading,
+      loading,
       action: loginUser,
-      schema: formSchemaSignin,
-      pathSuccess: "/",
+      schema: formSchemaSignIn,
+      pathSuccess: '/',
     },
     {
-      template: templates.templateformTimeLine,
+      template: templates.templateFormTimeLine,
       handlerForm: handleRegisterTimeLine,
-      loading: loading,
+      loading,
       action: loginUser,
-      schema: formSchemaSignin,
-      pathSuccess: "/",
+      schema: formSchemaSignIn,
+      pathSuccess: '/',
     },
-  ];
+  ]
 
   return (
     <ContainerDashboard>
@@ -72,13 +68,12 @@ const DetailLeads = ({ id }: { id: string }) => {
         </div>
         <DetailDefault
           renderAvatar={renderAvatar}
-          handlerFormSearch={handlerFormSearch}
-          time_line={lead?.time_line}
+          timeLine={lead?.timeline}
           forms={forms}
         />
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default DetailLeads;
+export default DetailLeads

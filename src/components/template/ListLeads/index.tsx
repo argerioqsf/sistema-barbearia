@@ -1,44 +1,29 @@
-"use client";
+'use client'
 
-import { EditIcon } from "@/components/Icons/EditIcon";
-import { EyeIcon } from "@/components/Icons/EyeIcon";
-import { LockIcon } from "@/components/Icons/LockIcon";
-import { Text } from "@/components/atoms";
-import { mockServer } from "@/components/config/mockServer";
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import Search from "@/components/molecules/Search";
-import Listing from "@/components/organisms/Listing";
-import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, InfoList, Searchs } from "@/types/general";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { searchUsers } from '@/actions/user'
+import { Text } from '@/components/atoms'
+import { mockServer } from '@/components/config/mockServer'
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import Search from '@/components/molecules/Search'
+import Listing from '@/components/organisms/Listing'
+import { useItemListTransform } from '@/hooks/use-item-list-transform'
+import { ItemListType, InfoList } from '@/types/general'
+import React from 'react'
 
 const ListLeads: React.FC = () => {
-  const { listTransform } = useItemListTransform();
+  const { listTransform } = useItemListTransform()
 
   const infoList: InfoList = {
-    itemsHeader: ["N", "NOME / WHATSAPP", "CURSO", "INDICADOR", "STATUS"],
-    itemsList: [
-      "name",
-      "whatsapp",
-      "training_course",
-      "indicator.name",
-      "status",
-    ],
-  };
-
-  let list = listTransform(mockServer.leads, infoList.itemsList);
-
-  function handlerForm(data: any) {
-    console.log("handlerForm Search: ", data);
+    itemsHeader: ['N', 'NOME / WHATSAPP', 'INDICADOR', 'STATUS'],
+    itemsList: ['name', 'phone', '', 'indicator.name', 'status'],
   }
 
+  const list = listTransform(mockServer.leads, infoList.itemsList)
+
   const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>;
-  };
+    return <Text className="text-black">{index + 1}</Text>
+  }
 
   return (
     <ContainerDashboard>
@@ -47,7 +32,7 @@ const ListLeads: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handlerForm} />
+          <Search action={searchUsers} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
@@ -62,7 +47,7 @@ const ListLeads: React.FC = () => {
         </div>
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default ListLeads;
+export default ListLeads

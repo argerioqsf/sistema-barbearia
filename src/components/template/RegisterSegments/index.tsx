@@ -1,12 +1,12 @@
-"use client";
+'use client'
 
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import FormDashboard from "@/components/organisms/FormDashboard";
-import React from "react";
-import { templateform } from "./templateForm";
-import { formSchemaRegisterSegment } from "./schema";
-import { registerSegment } from "@/actions/segments";
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import FormDashboard from '@/components/organisms/FormDashboard'
+import React from 'react'
+import { templateForm } from './templateForm'
+import { formSchemaRegisterSegment } from './schema'
+import { registerSegment } from '@/actions/segments'
 
 const RegisterSegments: React.FC = () => {
   return (
@@ -19,13 +19,13 @@ const RegisterSegments: React.FC = () => {
           <FormDashboard
             schema={formSchemaRegisterSegment}
             action={registerSegment}
-            templateform={templateform}
+            templateForm={templateForm}
             pathSuccess="dashboard/segments"
           />
         </div>
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default RegisterSegments;
+export default RegisterSegments

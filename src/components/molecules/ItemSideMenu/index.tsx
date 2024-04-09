@@ -1,57 +1,52 @@
-"use client";
+'use client'
 
-import React, { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { Avatar } from "..";
-import { Button, Text } from "@/components/atoms";
-import { ArrowRightIcon } from "@/components/Icons/ArrowRightIcon";
-import { IconSvgProps } from "@/types/general";
-import { twMerge } from "tailwind-merge";
-import { ArrowDownIcon } from "@/components/Icons/ArrowDownIcon";
-import { usePathname, useRouter } from "next/navigation";
-import { useHandlerRouter } from "@/hooks/use-handler-router";
-import { getRoleFromCookie } from "@/utils/cookieClient";
-import { ItemMenu } from "@/components/config/siteConfig";
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Avatar } from '..'
+import { Button, Text } from '@/components/atoms'
+import { ArrowRightIcon } from '@/components/Icons/ArrowRightIcon'
+import { twMerge } from 'tailwind-merge'
+import { ArrowDownIcon } from '@/components/Icons/ArrowDownIcon'
+import { useHandlerRouter } from '@/hooks/use-handler-router'
+import { getRoleFromCookie } from '@/utils/cookieClient'
+import { ItemMenu } from '@/components/config/siteConfig'
 
 type ItemSideMenuProps = {
-  onClick?: (state: any) => void;
-  label: string;
-  icon?: string;
-  image?: string;
-  subMenuList?: ItemMenu[] | undefined;
-  href?: string;
-  sizeAvatar?: number;
-  setOpenMenu: Dispatch<SetStateAction<boolean>>;
+  onClick?: () => void
+  label: string
+  icon?: string
+  image?: string
+  subMenuList?: ItemMenu[] | undefined
+  href?: string
+  sizeAvatar?: number
+  setOpenMenu: Dispatch<SetStateAction<boolean>>
   roles: string[]
-};
+}
 
 const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   label,
   icon,
   image,
   subMenuList,
-  href = "",
+  href = '',
   sizeAvatar = 32,
   setOpenMenu,
-  roles
+  roles,
 }) => {
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
-  const paths = usePathname();
-  const pathNames = paths.split("/").filter((path) => path);
-  const { pushRouter } = useHandlerRouter();
-  const [ role, setRole ] = useState<string>('');
+  const [open, setOpen] = useState(false)
+  const { pushRouter } = useHandlerRouter()
+  const [role, setRole] = useState<string>('')
 
-  useEffect(()=>{
-    const role_user = getRoleFromCookie()
-    setRole(role_user)
-  },[])
+  useEffect(() => {
+    const roleUser = getRoleFromCookie()
+    setRole(roleUser)
+  }, [])
 
   function openSubMenu() {
     if (href) {
-      setOpenMenu(false);
-      return pushRouter(href);
+      setOpenMenu(false)
+      return pushRouter(href)
     }
-    setOpen(!open);
+    setOpen(!open)
   }
 
   if (!roles.includes(role)) return null
@@ -89,26 +84,30 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
       {subMenuList && (
         <div
           className={twMerge(
-            "w-full bg-primary-50 flex flex-col justify-between items-start overflow-y-auto overflow-x-hidden whitespace-nowrap",
-            open === false && "hidden",
-            open === true && "flex"
+            'w-full bg-primary-50 flex flex-col justify-between items-start overflow-y-auto overflow-x-hidden whitespace-nowrap',
+            open === false && 'hidden',
+            open === true && 'flex',
           )}
         >
           {subMenuList.map((menu: ItemMenu) => {
-            return !menu.hidden && <ItemSideMenu
-              setOpenMenu={setOpenMenu}
-              sizeAvatar={15}
-              icon={menu.icon}
-              href={menu.href}
-              label={menu.label}
-              key={menu.id}
-              roles={menu.roles}
-            />
+            return (
+              !menu.hidden && (
+                <ItemSideMenu
+                  setOpenMenu={setOpenMenu}
+                  sizeAvatar={15}
+                  icon={menu.icon}
+                  href={menu.href}
+                  label={menu.label}
+                  key={menu.id}
+                  roles={menu.roles}
+                />
+              )
+            )
           })}
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ItemSideMenu;
+export default ItemSideMenu

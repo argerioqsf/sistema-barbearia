@@ -1,13 +1,13 @@
-import React from "react";
-import { UseFormRegisterReturn } from "react-hook-form";
-import { twMerge } from "tailwind-merge";
+import React from 'react'
+import { UseFormRegisterReturn } from 'react-hook-form'
+import { twMerge } from 'tailwind-merge'
 
 type InputFormPros = {
-  type?: string;
-  placeholder?: string;
-  className?: string;
-  propsInput: UseFormRegisterReturn<string>;
-};
+  type?: string
+  placeholder?: string
+  className?: string
+  propsInput: UseFormRegisterReturn<string>
+}
 
 const InputForm = ({
   type,
@@ -21,10 +21,10 @@ const InputForm = ({
       {...rest}
       {...propsInput}
       type={type}
-      className={twMerge("block w-full", className)}
+      className={twMerge('block w-full', className)}
       placeholder={placeholder}
     />
-  );
-};
+  )
+}
 
-export default InputForm;
+export default InputForm

@@ -1,6 +1,6 @@
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import React from "react";
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import React from 'react'
 
 const EditUser: React.FC = () => {
   return (
@@ -11,7 +11,7 @@ const EditUser: React.FC = () => {
         </div>
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default EditUser;
+export default EditUser

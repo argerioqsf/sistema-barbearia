@@ -1,27 +1,27 @@
-import { SectionTemplateForm, FieldsFormSchema } from "@/types/general";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { GetDefaultValues, SchemaForm } from '@/types/general'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 export const useHandlerForm = (
-  schema: z.ZodObject<any>,
-  functionRequest?: () => Promise<any>
+  schema: SchemaForm,
+  functionRequest?: GetDefaultValues,
 ) => {
-  type Schema = z.infer<typeof schema>;
+  type SchemaDefault = z.infer<typeof schema>
 
-  function requestdefault() {
-    return {};
+  function requestDefault() {
+    return {}
   }
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Schema>({
+  } = useForm<SchemaDefault>({
     defaultValues: async () =>
-      functionRequest ? functionRequest() : requestdefault(),
+      functionRequest ? functionRequest() : requestDefault(),
     resolver: zodResolver(schema),
-  });
+  })
 
-  return { register, handleSubmit, errors };
-};
+  return { register, handleSubmit, errors }
+}

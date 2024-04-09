@@ -1,42 +1,38 @@
-"use client";
+'use client'
 
-import { Text } from "@/components/atoms";
-import { mockServer } from "@/components/config/mockServer";
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import Search from "@/components/molecules/Search";
-import Listing from "@/components/organisms/Listing";
-import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, InfoList } from "@/types/general";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { searchUsers } from '@/actions/user'
+import { Text } from '@/components/atoms'
+import { mockServer } from '@/components/config/mockServer'
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import Search from '@/components/molecules/Search'
+import Listing from '@/components/organisms/Listing'
+import { useItemListTransform } from '@/hooks/use-item-list-transform'
+import { ItemListType, InfoList, User } from '@/types/general'
+import React, { useEffect } from 'react'
 
 const ListIndicators = () => {
-  const { listTransform } = useItemListTransform();
+  const { listTransform } = useItemListTransform()
 
   const infoList: InfoList = {
-    itemsHeader: ["N", "NOME", "CIDADE", "DATA", ""],
-    itemsList: ["name", "", "city", "user_at", ""],
-  };
+    itemsHeader: ['N', 'NOME', '', '', ''],
+    itemsList: ['name', '', '', '', ''],
+  }
 
   useEffect(() => {
     const editIndicator = (id: string) => {
-      console.log("editar: ", id);
-    };
-    mockServer.listActionsIndicators[0].onclick = editIndicator;
-  }, []);
+      console.log('editar: ', id)
+    }
+    mockServer.listActionsIndicators[0].onclick = editIndicator
+  }, [])
 
-  let list = listTransform(mockServer.indicators, infoList.itemsList);
+  const indicator: User[] = mockServer.indicators
 
-  function handlerForm(data: any) {
-    console.log("handlerForm Search: ", data);
-  }
+  const list = listTransform(indicator, infoList.itemsList)
 
   const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>;
-  };
+    return <Text className="text-black">{index + 1}</Text>
+  }
 
   return (
     <ContainerDashboard>
@@ -45,7 +41,7 @@ const ListIndicators = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handlerForm} />
+          <Search action={searchUsers} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
@@ -60,7 +56,7 @@ const ListIndicators = () => {
         </div>
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default ListIndicators;
+export default ListIndicators

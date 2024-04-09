@@ -1,53 +1,27 @@
-import { Templateform } from "@/types/general";
+import { TemplateForm } from '@/types/general'
 
-export const templateform: Templateform = {
-  title: "Cadastrar Leads",
-  textButton: "Cadastrar",
+export const templateForm: TemplateForm = {
+  title: 'Cadastrar Leads',
+  textButton: 'Cadastrar',
   sections: [
     {
       id: 1,
-      title: "Dados Pessoais",
-      boxs: [
-        {
-          id: 1,
-          fields: [
-            {
-              id: "formation",
-              required: true,
-              type: "text",
-              label: "Formação",
-              messageError: "Must be 2 or more characters long",
-            },
-            {
-              id: "unit",
-              required: true,
-              type: "text",
-              label: "Unidade",
-              messageError: "Must be 2 or more characters long",
-            },
-            {
-              id: "course",
-              required: true,
-              type: "text",
-              label: "Cursos",
-              messageError: "Must be 2 or more characters long",
-            },
-          ],
-        },
+      title: 'Dados Pessoais',
+      boxes: [
         {
           id: 2,
           fields: [
             {
-              id: "name",
+              id: 'name',
               required: true,
-              type: "text",
-              label: "Nome",
+              type: 'text',
+              label: 'Nome',
             },
             {
-              id: "email",
+              id: 'email',
               required: true,
-              type: "text",
-              label: "E-mail",
+              type: 'text',
+              label: 'E-mail',
             },
           ],
         },
@@ -55,22 +29,22 @@ export const templateform: Templateform = {
           id: 3,
           fields: [
             {
-              id: "document",
+              id: 'cpf',
               required: true,
-              type: "text",
-              label: "Documento",
+              type: 'text',
+              label: 'Documento',
             },
             {
-              id: "whatsapp",
+              id: 'phone',
               required: true,
-              type: "text",
-              label: "Whatsapp",
+              type: 'text',
+              label: 'Whatsapp',
             },
             {
-              id: "situation",
+              id: 'active',
               required: true,
-              type: "text",
-              label: "Situação",
+              type: 'text',
+              label: 'Situação',
             },
           ],
         },
@@ -78,28 +52,29 @@ export const templateform: Templateform = {
           id: 4,
           fields: [
             {
-              id: "indicator_id",
+              id: 'indicatorId',
               required: true,
-              type: "select",
-              label: "Indicador",
+              type: 'select',
+              label: 'Indicador',
               options: [],
             },
             {
-              id: "consultant",
+              id: 'consultantId',
               required: true,
-              type: "select",
-              label: "Consultor",
+              type: 'select',
+              label: 'Consultor',
               options: [],
             },
             {
-              id: "lead_at",
+              id: 'created_at',
               required: true,
-              type: "date",
-              label: "Cadastrado em",
+              type: 'date',
+              label: 'Cadastrado em',
+              disabled: true,
             },
           ],
         },
       ],
     },
   ],
-};
+}

@@ -1,12 +1,12 @@
-import React, { ReactNode } from "react";
-import { twMerge } from "tailwind-merge";
+import React, { ReactNode } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 type FormProps = {
-  children: ReactNode;
-  className?: string;
-  onSubmit?: () => void;
-  action?: any;
-};
+  children: ReactNode
+  className?: string
+  onSubmit?: () => void
+  action?: (payload: FormData) => void
+}
 
 const Form = ({
   children,
@@ -18,7 +18,7 @@ const Form = ({
     <form onSubmit={onSubmit} className={twMerge(className)} action={action}>
       {children}
     </form>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form

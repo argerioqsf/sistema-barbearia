@@ -1,28 +1,26 @@
-"use client";
+'use client'
 
-import { Text } from "@/components/atoms";
-import { mockServer } from "@/components/config/mockServer";
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import Search from "@/components/molecules/Search";
-import Listing from "@/components/organisms/Listing";
-import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType } from "@/types/general";
-import React from "react";
-import { infoList } from "./templates";
+import { Text } from '@/components/atoms'
+import { mockServer } from '@/components/config/mockServer'
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import Search from '@/components/molecules/Search'
+import Listing from '@/components/organisms/Listing'
+import { useItemListTransform } from '@/hooks/use-item-list-transform'
+import { ItemListType, User } from '@/types/general'
+import React from 'react'
+import { infoList } from './templates'
+import { searchUsers } from '@/actions/user'
 
 const ListConfirmedLeads: React.FC = () => {
-  const { listTransform } = useItemListTransform();
+  const { listTransform } = useItemListTransform()
 
-  let list = listTransform(mockServer.leads, infoList.itemsList);
-
-  function handlerForm(data: object) {
-    console.log("handlerForm Search: ", data);
-  }
+  const leads: User[] = mockServer.indicators
+  const list = listTransform(leads, infoList.itemsList)
 
   const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>;
-  };
+    return <Text className="text-black">{index + 1}</Text>
+  }
 
   return (
     <ContainerDashboard>
@@ -31,7 +29,7 @@ const ListConfirmedLeads: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handlerForm} />
+          <Search action={searchUsers} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
@@ -46,7 +44,7 @@ const ListConfirmedLeads: React.FC = () => {
         </div>
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default ListConfirmedLeads;
+export default ListConfirmedLeads

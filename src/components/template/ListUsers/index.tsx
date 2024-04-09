@@ -1,71 +1,69 @@
-"use client";
+'use client'
 
-import { mockServer } from "@/components/config/mockServer";
-import { ContainerDashboard } from "@/components/molecules";
-import Breadcrumb from "@/components/molecules/Breadcrumb";
-import Search from "@/components/molecules/Search";
-import Listing from "@/components/organisms/Listing";
-import { useItemListTransform } from "@/hooks/use-item-list-transform";
-import { ItemListType, InfoList } from "@/types/general";
-import { getTokenFromCookieClient } from "@/utils/cookieClient";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import { searchUsers } from '@/actions/user'
+import { mockServer } from '@/components/config/mockServer'
+import { ContainerDashboard } from '@/components/molecules'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
+import Search from '@/components/molecules/Search'
+import Listing from '@/components/organisms/Listing'
+import { useItemListTransform } from '@/hooks/use-item-list-transform'
+import { InfoList } from '@/types/general'
+import { getTokenFromCookieClient } from '@/utils/cookieClient'
+import Image from 'next/image'
+import React, { useEffect, useState } from 'react'
 
 const ListUsers: React.FC = () => {
-  const { listTransform } = useItemListTransform();
+  const { listTransform } = useItemListTransform()
   const infoList: InfoList = {
-    itemsHeader: ["", "NOME", "E-MAIL", "ATIVO"],
-    itemsList: ["name", "", "email", "", "active"],
-  };
-  const [list, setList] = useState();
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string>();
+    itemsHeader: ['', 'NOME', 'E-MAIL', 'CPF'],
+    itemsList: ['name', '', 'email', '', 'profile.cpf'],
+  }
+  const [list, setList] = useState()
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string>()
 
   useEffect(() => {
-    const value = getTokenFromCookieClient();
+    const value = getTokenFromCookieClient()
     async function loadUsers() {
-      setLoading(true);
+      setLoading(true)
       try {
-        const response = await fetch("/api/users", {
-          method: "GET",
+        const response = await fetch('/api/users', {
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${value}`,
           },
-        });
+        })
 
         if (!response.ok) {
-          const errorMessage = await response.text();
-          setErrorMessage(JSON.parse(errorMessage).message);
+          const errorMessage = await response.text()
+          setErrorMessage(JSON.parse(errorMessage).message)
           return {
             errors: { request: [JSON.parse(errorMessage).message] },
-          };
+          }
         }
-        let list = await response.json();
-        list = listTransform(list.users, infoList.itemsList);
-        setList(list);
-        setLoading(false);
+        let list = await response.json()
+        list = listTransform(list.users, infoList.itemsList)
+        setList(list)
+        setLoading(false)
       } catch (error) {
-        setLoading(false);
-        setErrorMessage("Erro ao carregar lista de usuários!");
+        setLoading(false)
+        setErrorMessage('Erro ao carregar lista de usuários!')
       }
     }
-    loadUsers();
-  }, []);
+    loadUsers()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  const renderAvatar = (item: ItemListType, index: number) => {
+  const renderAvatar = () => {
     return (
       <Image
         className="align-middle rounded-full m-0 p-0 aspect-square"
         src="https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg"
         width={40}
         height={40}
-        alt={"avatar"}
+        alt={'avatar'}
       />
-    );
-  };
-
-  function handlerFormSearch(data: any) {
-    console.log("handlerForm Search: ", data);
+    )
   }
 
   return (
@@ -75,7 +73,7 @@ const ListUsers: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search handlerForm={handlerFormSearch} />
+          <Search action={searchUsers} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
@@ -92,7 +90,7 @@ const ListUsers: React.FC = () => {
         </div>
       </div>
     </ContainerDashboard>
-  );
-};
+  )
+}
 
-export default ListUsers;
+export default ListUsers

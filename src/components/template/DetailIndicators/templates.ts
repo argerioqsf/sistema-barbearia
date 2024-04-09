@@ -1,30 +1,21 @@
-import { InfoList, Templateform } from "@/types/general";
+import { InfoList, TemplateForm } from '@/types/general'
 
-const templateform: Templateform = {
-  title: "Indicador",
-  textButton: "",
+const templateForm: TemplateForm = {
+  title: 'Indicador',
+  textButton: '',
   sections: [
     {
       id: 1,
-      title: "Dados do Indicador",
-      boxs: [
+      title: 'Dados do Indicador',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "name",
+              id: 'name',
               required: true,
-              type: "text",
-              label: "Nome",
-              messageError: "Must be 2 or more characters long",
-              disabled: true,
-            },
-            {
-              id: "training_course",
-              required: true,
-              type: "text",
-              label: "Curso",
-              messageError: "Must be 2 or more characters long",
+              type: 'text',
+              label: 'Nome',
               disabled: true,
             },
           ],
@@ -33,24 +24,24 @@ const templateform: Templateform = {
           id: 3,
           fields: [
             {
-              id: "whatsapp",
+              id: 'phone',
               required: true,
-              type: "text",
-              label: "Whatsapp",
+              type: 'text',
+              label: 'Whatsapp',
               disabled: true,
             },
             {
-              id: "document",
+              id: 'cpf',
               required: true,
-              type: "text",
-              label: "Documento",
+              type: 'text',
+              label: 'Documento',
               disabled: true,
             },
             {
-              id: "key_pix",
+              id: 'pix',
               required: true,
-              type: "text",
-              label: "Chave pix",
+              type: 'text',
+              label: 'Chave pix',
               disabled: true,
             },
           ],
@@ -59,10 +50,10 @@ const templateform: Templateform = {
           id: 4,
           fields: [
             {
-              id: "email",
+              id: 'email',
               required: true,
-              type: "text",
-              label: "E-mail",
+              type: 'text',
+              label: 'E-mail',
               disabled: true,
             },
           ],
@@ -71,24 +62,17 @@ const templateform: Templateform = {
           id: 5,
           fields: [
             {
-              id: "city",
+              id: 'status',
               required: true,
-              type: "text",
-              label: "Cidade-UF",
+              type: 'text',
+              label: 'Status',
               disabled: true,
             },
             {
-              id: "status",
+              id: 'created_at',
               required: true,
-              type: "text",
-              label: "Status",
-              disabled: true,
-            },
-            {
-              id: "created_at",
-              required: true,
-              type: "date",
-              label: "Data",
+              type: 'date',
+              label: 'Data',
               disabled: true,
             },
           ],
@@ -96,76 +80,70 @@ const templateform: Templateform = {
       ],
     },
   ],
-};
+}
 
-const templateformSearch: Templateform = {
-  title: "Search",
-  textButton: "",
+const templateFormSearch: TemplateForm = {
+  title: 'Search',
+  textButton: '',
   sections: [
     {
       id: 1,
-      title: "Search",
-      boxs: [
+      title: 'Search',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "search",
-              label: "Search",
+              id: 'search',
+              label: 'Search',
               required: true,
-              type: "text",
+              type: 'text',
             },
           ],
         },
       ],
     },
   ],
-};
+}
 
 const infoList: InfoList = {
-  itemsHeader: ["N", "NOME / WHATSAPP", "CURSO", "INDICADOR", "STATUS"],
-  itemsList: [
-    "name",
-    "whatsapp",
-    "training_course",
-    "indicator.name",
-    "status",
-  ],
+  itemsHeader: ['N', 'NOME / WHATSAPP', 'CURSO', 'INDICADOR', 'STATUS'],
+  itemsList: ['name', 'phone', '', 'indicator.name', 'status'],
   listActions: [
     {
       id: 1,
       onclick: () => {},
-      icon: "Edit",
-      href: "indicators/edit",
-      name: "Editar",
+      icon: 'Edit',
+      href: 'indicators/edit',
+      name: 'Editar',
     },
     {
       id: 2,
       onclick: () => {},
-      icon: "Eye",
-      href: "dashboard/leads/",
-      name: "Vizualizar",
+      icon: 'Eye',
+      href: 'dashboard/leads/',
+      name: 'Vizualizar',
     },
     {
       id: 3,
       onclick: () => {},
-      icon: "Lock",
-      href: "home",
-      name: "Desativar",
+      icon: 'Lock',
+      href: 'home',
+      name: 'Desativar',
     },
     {
       id: 4,
       onclick: () => {},
-      icon: "Link",
-      href: "home",
-      name: "Link",
+      icon: 'Link',
+      href: 'home',
+      name: 'Link',
     },
   ],
-  title: "Leads",
-};
+  title: 'Leads',
+}
 
 export const templates = {
-  templateform,
-  templateformSearch,
+  templateForm,
+  templateFormSearch,
   infoList,
-};
+}

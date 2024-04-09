@@ -1,29 +1,21 @@
-import { Templateform } from "@/types/general";
+import { TemplateForm } from '@/types/general'
 
-export const templateform: Templateform = {
-  title: "Cadastrar Indicador",
-  textButton: "Cadastrar",
+export const templateForm: TemplateForm = {
+  title: 'Cadastrar Indicador',
+  textButton: 'Cadastrar',
   sections: [
     {
       id: 1,
-      title: "Dados Pessoais",
-      boxs: [
+      title: 'Dados Pessoais',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "name",
+              id: 'name',
               required: true,
-              type: "text",
-              label: "Nome",
-              messageError: "Must be 2 or more characters long",
-            },
-            {
-              id: "last_name",
-              required: true,
-              type: "text",
-              label: "Sobrenome",
-              messageError: "Must be 2 or more characters long",
+              type: 'text',
+              label: 'Nome',
             },
           ],
         },
@@ -31,22 +23,22 @@ export const templateform: Templateform = {
           id: 3,
           fields: [
             {
-              id: "whatsapp",
+              id: 'phone',
               required: true,
-              type: "text",
-              label: "Whatsapp",
+              type: 'text',
+              label: 'Whatsapp',
             },
             {
-              id: "document",
+              id: 'cpf',
               required: true,
-              type: "text",
-              label: "Documento",
+              type: 'text',
+              label: 'Documento',
             },
             {
-              id: "key_pix",
+              id: 'pix',
               required: true,
-              type: "text",
-              label: "Chave pix",
+              type: 'text',
+              label: 'Chave pix',
             },
           ],
         },
@@ -54,16 +46,16 @@ export const templateform: Templateform = {
           id: 4,
           fields: [
             {
-              id: "email",
+              id: 'email',
               required: true,
-              type: "text",
-              label: "E-mail",
+              type: 'text',
+              label: 'E-mail',
             },
             {
-              id: "password",
+              id: 'password',
               required: true,
-              type: "password",
-              label: "Senha",
+              type: 'password',
+              label: 'Senha',
             },
           ],
         },
@@ -71,26 +63,20 @@ export const templateform: Templateform = {
           id: 5,
           fields: [
             {
-              id: "city",
+              id: 'status',
               required: true,
-              type: "text",
-              label: "Cidade-UF",
+              type: 'text',
+              label: 'Status',
             },
             {
-              id: "status",
+              id: 'created_at',
               required: true,
-              type: "text",
-              label: "Status",
-            },
-            {
-              id: "user_at",
-              required: true,
-              type: "date",
-              label: "Data",
+              type: 'date',
+              label: 'Data',
             },
           ],
         },
       ],
     },
   ],
-};
+}

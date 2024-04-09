@@ -1,24 +1,24 @@
-import SingIn from "@/components/template/SingIn";
-import { ParamsProp } from "@/types/general";
-import { getTranslations } from "next-intl/server";
+import SingIn from '@/components/template/SingIn'
+import { ParamsProp } from '@/types/general'
+import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata({
   params: { locale },
 }: {
-  params: ParamsProp;
+  params: ParamsProp
 }) {
   const meta = await getTranslations({
     locale,
-    namespace: "metadata.auth.signin",
-  });
+    namespace: 'metadata.auth.signIn',
+  })
   return {
-    title: meta("title"),
-    description: meta("description"),
-  };
+    title: meta('title'),
+    description: meta('description'),
+  }
 }
 
 const Page = () => {
-  return <SingIn />;
-};
+  return <SingIn />
+}
 
-export default Page;
+export default Page

@@ -1,29 +1,29 @@
-"use client";
+'use client'
 
-import { usePathname } from "next/navigation";
-import React from "react";
-import { twMerge } from "tailwind-merge";
+import { usePathname } from 'next/navigation'
+import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
 type BreadCrumbProps = {
-  listClasses?: string;
-  activeClasses?: string;
-  capitalizeLinks?: boolean;
-};
+  listClasses?: string
+  activeClasses?: string
+  capitalizeLinks?: boolean
+}
 
 const Breadcrumb = ({
   listClasses,
   activeClasses,
   capitalizeLinks = true,
 }: BreadCrumbProps) => {
-  const paths = usePathname();
-  const pathNames = paths.split("/").filter((path) => path);
+  const paths = usePathname()
+  const pathNames = paths.split('/').filter((path) => path)
   function renderItems(link: string, index: number) {
-    let href = `/${pathNames.slice(0, index + 1).join("/")}`;
-    let itemClasses =
-      paths === href ? `${listClasses} ${activeClasses}` : listClasses;
-    let itemLink = capitalizeLinks
+    const href = `/${pathNames.slice(0, index + 1).join('/')}`
+    const itemClasses =
+      paths === href ? `${listClasses} ${activeClasses}` : listClasses
+    const itemLink = capitalizeLinks
       ? link[0].toUpperCase() + link.slice(1, link.length)
-      : link;
+      : link
 
     return (
       <li className={twMerge(itemClasses)}>
@@ -60,7 +60,7 @@ const Breadcrumb = ({
           )}
         </div>
       </li>
-    );
+    )
   }
 
   return (
@@ -106,12 +106,14 @@ const Breadcrumb = ({
               <React.Fragment key={index}>
                 {renderItems(link, index)}
               </React.Fragment>
-            );
+            )
+          } else {
+            return null
           }
         })}
       </ol>
     </nav>
-  );
-};
+  )
+}
 
-export default Breadcrumb;
+export default Breadcrumb

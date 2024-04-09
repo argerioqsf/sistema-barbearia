@@ -1,15 +1,15 @@
-"use client";
+'use client'
 
-import React, { ReactNode } from "react";
-import { useFormStatus } from "react-dom";
-import { twMerge } from "tailwind-merge";
+import React, { ReactNode } from 'react'
+import { useFormStatus } from 'react-dom'
+import { twMerge } from 'tailwind-merge'
 
 type ButtonProps = {
-  type: "submit" | "reset" | "button" | undefined;
-  className?: string;
-  children: ReactNode;
-  onClick?: (state: any) => void;
-};
+  type: 'submit' | 'reset' | 'button' | undefined
+  className?: string
+  children: ReactNode
+  onClick?: (state: unknown) => void
+}
 
 const Button = ({
   type,
@@ -17,18 +17,18 @@ const Button = ({
   children,
   onClick = () => {},
 }: ButtonProps) => {
-  const { pending } = useFormStatus();
+  const { pending } = useFormStatus()
   return (
     <button
       onClick={onClick}
       type={type}
-      className={twMerge("rounded-md p-4", className, pending && "opacity-50")}
+      className={twMerge('rounded-md p-4', className, pending && 'opacity-50')}
       aria-disabled={pending}
       disabled={pending}
     >
-      {!pending ? children : "Loading..."}
+      {!pending ? children : 'Loading...'}
     </button>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button

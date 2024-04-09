@@ -1,21 +1,21 @@
-import { Templateform } from "@/types/general";
+import { TemplateForm } from '@/types/general'
 
-export const templateform: Templateform = {
-  title: "Perfil",
-  textButton: "Editar",
+export const templateForm: TemplateForm = {
+  title: 'Perfil',
+  textButton: 'Editar',
   sections: [
     {
       id: 1,
-      title: "Dados Pessoais",
-      boxs: [
+      title: 'Dados Pessoais',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "name",
+              id: 'name',
               required: true,
-              type: "text",
-              label: "Nome",
+              type: 'text',
+              label: 'Nome',
             },
           ],
         },
@@ -23,22 +23,22 @@ export const templateform: Templateform = {
           id: 3,
           fields: [
             {
-              id: "phone",
+              id: 'phone',
               required: true,
-              type: "text",
-              label: "Whatsapp",
+              type: 'text',
+              label: 'Whatsapp',
             },
             {
-              id: "cpf",
+              id: 'cpf',
               required: true,
-              type: "text",
-              label: "Documento",
+              type: 'text',
+              label: 'Documento',
             },
             {
-              id: "pix",
+              id: 'pix',
               required: true,
-              type: "text",
-              label: "Chave pix",
+              type: 'text',
+              label: 'Chave pix',
             },
           ],
         },
@@ -46,10 +46,10 @@ export const templateform: Templateform = {
           id: 4,
           fields: [
             {
-              id: "email",
+              id: 'email',
               required: true,
-              type: "text",
-              label: "E-mail 2",
+              type: 'text',
+              label: 'E-mail 2',
             },
           ],
         },
@@ -57,28 +57,22 @@ export const templateform: Templateform = {
           id: 5,
           fields: [
             {
-              id: "city",
+              id: 'active',
               required: true,
-              type: "text",
-              label: "Cidade-UF",
-            },
-            {
-              id: "active",
-              required: true,
-              type: "select",
-              label: "Status",
+              type: 'select',
+              label: 'Status',
               options: [
                 {
-                  value: "",
-                  label: "Selecione",
+                  value: '',
+                  label: 'Selecione',
                 },
                 {
                   value: 0,
-                  label: "ativo",
+                  label: 'ativo',
                 },
                 {
                   value: 1,
-                  label: "desativo",
+                  label: 'desativo',
                 },
               ],
             },
@@ -87,4 +81,4 @@ export const templateform: Templateform = {
       ],
     },
   ],
-};
+}

@@ -1,36 +1,30 @@
-import { InfoList, Templateform } from "@/types/general";
+import { InfoList, TemplateForm } from '@/types/general'
 
-export const templateformSearch: Templateform = {
-  title: "Search",
-  textButton: "",
+export const templateFormSearch: TemplateForm = {
+  title: 'Search',
+  textButton: '',
   sections: [
     {
       id: 1,
-      title: "Search",
-      boxs: [
+      title: 'Search',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "search",
-              label: "Search",
+              id: 'search',
+              label: 'Search',
               required: true,
-              type: "text",
+              type: 'text',
             },
           ],
         },
       ],
     },
   ],
-};
+}
 
 export const infoList: InfoList = {
-  itemsHeader: ["N", "NOME / WHATSAPP", "CURSO", "INDICADOR", "STATUS"],
-  itemsList: [
-    "name",
-    "whatsapp",
-    "training_course",
-    "indicator.name",
-    "status",
-  ],
-};
+  itemsHeader: ['N', 'NOME / WHATSAPP', 'CURSO', 'INDICADOR', 'STATUS'],
+  itemsList: ['name', 'phone', '', 'indicator.name', 'status'],
+}

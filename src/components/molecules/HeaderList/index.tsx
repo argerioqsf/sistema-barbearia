@@ -1,6 +1,6 @@
-import React from "react";
-import { Avatar } from "..";
-import { Text } from "@/components/atoms";
+import React from 'react'
+import { Avatar } from '..'
+import { Text } from '@/components/atoms'
 
 const HeaderList = ({ itemsHeader }: { itemsHeader: Array<string> }) => {
   return (
@@ -55,7 +55,9 @@ const HeaderList = ({ itemsHeader }: { itemsHeader: Array<string> }) => {
                   {item}
                 </Text>
               </div>
-            );
+            )
+          } else {
+            return null
           }
         })}
 
@@ -69,7 +71,7 @@ const HeaderList = ({ itemsHeader }: { itemsHeader: Array<string> }) => {
       </div>
       <div className="w-[20%] flex sm:hidden flex-row justify-end items-center" />
     </div>
-  );
-};
+  )
+}
 
-export default HeaderList;
+export default HeaderList

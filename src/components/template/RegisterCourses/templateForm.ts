@@ -1,22 +1,21 @@
-import { Templateform } from "@/types/general";
+import { TemplateForm } from '@/types/general'
 
-export const templateform: Templateform = {
-  title: "Cadastrar Curso",
-  textButton: "Cadastrar",
+export const templateForm: TemplateForm = {
+  title: 'Cadastrar Curso',
+  textButton: 'Cadastrar',
   sections: [
     {
       id: 1,
-      title: "Informações do Curso",
-      boxs: [
+      title: 'Informações do Curso',
+      boxes: [
         {
           id: 1,
           fields: [
             {
-              id: "name",
+              id: 'name',
               required: true,
-              type: "text",
-              label: "Nome",
-              messageError: "Deve ter 2 ou mais caracteres",
+              type: 'text',
+              label: 'Nome',
             },
           ],
         },
@@ -24,29 +23,28 @@ export const templateform: Templateform = {
           id: 2,
           fields: [
             {
-              id: "active",
+              id: 'active',
               required: true,
-              type: "select",
-              label: "Ativo",
+              type: 'select',
+              label: 'Ativo',
               options: [
                 {
-                  value: "",
-                  label: "Selecioine",
+                  value: '',
+                  label: 'Selecioine',
                 },
                 {
                   value: 1,
-                  label: "Sim",
+                  label: 'Sim',
                 },
                 {
                   value: 0,
-                  label: "Não",
+                  label: 'Não',
                 },
               ],
-              messageError: "Deve ter 2 ou mais caracteres",
             },
           ],
         },
       ],
     },
   ],
-};
+}
