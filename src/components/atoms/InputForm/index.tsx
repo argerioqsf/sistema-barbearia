@@ -7,6 +7,7 @@ type InputFormPros = {
   placeholder?: string
   className?: string
   propsInput: UseFormRegisterReturn<string>
+  defaultValue?: string
 }
 
 const InputForm = ({
@@ -14,12 +15,14 @@ const InputForm = ({
   placeholder,
   className,
   propsInput,
+  defaultValue,
   ...rest
 }: InputFormPros) => {
   return (
     <input
       {...rest}
       {...propsInput}
+      defaultValue={defaultValue}
       type={type}
       className={twMerge('block w-full', className)}
       placeholder={placeholder}

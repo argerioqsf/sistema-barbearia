@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge'
 import { Button, Form, InputForm, Text } from '@/components/atoms'
 import { searchSchema } from './schema'
 import { SearchType } from '@/types/general'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -23,6 +23,8 @@ const Search = ({ errorRequest }: { errorRequest: string | null }) => {
     resolver: zodResolver(searchSchema),
   })
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const query = searchParams.get('q')
 
   const handleSearch: SubmitHandler<SearchType> = (data: SearchType) => {
     const query = data.q
@@ -40,6 +42,7 @@ const Search = ({ errorRequest }: { errorRequest: string | null }) => {
       >
         <div className="w-[90vw] md:w-96 flex flex-row justify-start items-center">
           <InputForm
+            defaultValue={query ?? ''}
             propsInput={{ ...register('q') }}
             type="text"
             className={twMerge(

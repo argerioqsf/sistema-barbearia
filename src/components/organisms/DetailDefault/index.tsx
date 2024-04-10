@@ -3,7 +3,7 @@
 import Search from '@/components/molecules/Search'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import Listing from '@/components/organisms/Listing'
-import { Form, InfoList, ItemListType, TimeLine } from '@/types/general'
+import { Form, InfoList, TimeLine } from '@/types/general'
 import React, { Fragment } from 'react'
 import TimeLineComponent from '../TimeLineComponent'
 import { searchUsers } from '@/actions/user'
@@ -11,16 +11,10 @@ import { searchUsers } from '@/actions/user'
 type PropTemplates = {
   lists?: InfoList[]
   forms?: Form[]
-  renderAvatar?: (item: ItemListType, index: number) => React.JSX.Element
   timeLine?: TimeLine[]
 }
 
-const DetailDefault = ({
-  renderAvatar,
-  lists,
-  timeLine,
-  forms,
-}: PropTemplates) => {
+const DetailDefault = ({ lists, timeLine, forms }: PropTemplates) => {
   return (
     <div className="w-full mt-6 lg:mt-8 grid gap-8">
       {forms &&
