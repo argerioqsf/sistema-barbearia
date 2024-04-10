@@ -122,6 +122,7 @@ const fieldsForm = [
   'consultantId',
   'image',
   'request',
+  'indicator.cpf',
 ] as const
 
 export type ParamsProp = {
@@ -257,7 +258,6 @@ export type Form = {
 
 export type ListAction = {
   id: number
-  onclick?: (id: string) => void
   icon: string
   href?: string
   name: string
@@ -265,4 +265,9 @@ export type ListAction = {
 
 export type SearchType = {
   q: string
+}
+
+export interface ReturnLoadList {
+  response?: Models[]
+  error?: Errors
 }

@@ -1,7 +1,6 @@
 import Profile from '@/components/template/Profile'
 import { ParamsProp } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
-import { Suspense } from 'react'
 
 export async function generateMetadata({
   params: { locale },
@@ -19,11 +18,7 @@ export async function generateMetadata({
 }
 
 const page = () => {
-  return (
-    <Suspense fallback={<>Loading...</>}>
-      <Profile />
-    </Suspense>
-  )
+  return <Profile />
 }
 
 export default page

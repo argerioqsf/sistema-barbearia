@@ -1,28 +1,28 @@
-import { Text } from '@/components/atoms'
 import { mockServer } from '@/components/config/mockServer'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { ItemListType, InfoList, Models, Errors } from '@/types/general'
+import { api } from '@/data/api'
+import { InfoList, Models, Errors } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import React from 'react'
 
-async function loadSegments(): Promise<{
+interface ReturnLoadList {
   response?: Models[]
   error?: Errors
-}> {
+}
+
+async function loadSegments(): Promise<ReturnLoadList> {
   try {
     const token = getTokenFromCookieServer()
-    console.log('token: ', token)
-    const response = await fetch('http://localhost:3333/segments', {
+    const response = await api('/segments', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
 
-    console.log('response: ', response)
     if (!response.ok) {
       const errorMessage = await response.text()
       return {
@@ -31,10 +31,8 @@ async function loadSegments(): Promise<{
     }
 
     const list = await response.json()
-    console.log('list: ', list)
     return { response: list.segments }
   } catch (error) {
-    console.log('error: ', error)
     return { error: { request: 'Error unknown' } }
   }
 }
@@ -43,11 +41,6 @@ export default async function ListSegments() {
   const infoList: InfoList = {
     itemsHeader: ['N', 'Nome', ''],
     itemsList: ['name', '', '', '', ''],
-  }
-
-  async function renderAvatar(item: ItemListType, index: string) {
-    'use server'
-    return <Text className="text-black">{index + 1}</Text>
   }
 
   const response = await loadSegments()
@@ -65,7 +58,6 @@ export default async function ListSegments() {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={infoList.itemsHeader}
             list={list}
             infoList={infoList}
             listActions={mockServer.listActionsSegments}

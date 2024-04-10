@@ -1,54 +1,45 @@
-'use client'
-
-import { Text } from '@/components/atoms'
 import { mockServer } from '@/components/config/mockServer'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { useItemListTransform } from '@/hooks/use-item-list-transform'
-import { ItemListType, InfoList } from '@/types/general'
-import React, { useEffect, useState } from 'react'
-import { getTokenFromCookieClient } from '@/utils/cookieClient'
-import { searchUsers } from '@/actions/user'
+import { InfoList, ReturnLoadList } from '@/types/general'
+import React from 'react'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { api } from '@/data/api'
 
-const ListCourses: React.FC = () => {
-  const { listTransform } = useItemListTransform()
+async function loadCourses(): Promise<ReturnLoadList> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api('/courses', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const list = await response.json()
+    return { response: list.courses.courses }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
+  }
+}
+
+export default async function ListCourses() {
   const infoList: InfoList = {
     itemsHeader: ['N', 'NOME', 'ATIVO', '', ''],
     itemsList: ['name', '', 'active', '', ''],
   }
-  const [list, setList] = useState([])
 
-  useEffect(() => {
-    const value = getTokenFromCookieClient()
-    async function loadCourses() {
-      try {
-        const response = await fetch('/api/courses', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        })
-
-        if (!response.ok) {
-          const errorMessage = await response.text()
-          return {
-            errors: { request: [JSON.parse(errorMessage).message] },
-          }
-        }
-        let list = await response.json()
-        list = listTransform(list.courses.courses, infoList.itemsList)
-        setList(list)
-      } catch (error) {}
-    }
-    loadCourses()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>
-  }
+  const response = await loadCourses()
+  const list = response?.response ?? null
+  const errorRequest = response.error?.request ?? null
 
   return (
     <ContainerDashboard>
@@ -58,12 +49,12 @@ const ListCourses: React.FC = () => {
         </div>
 
         <div className="w-full mt-6">
-          <Search action={searchUsers} />
+          <Search errorRequest={errorRequest} />
         </div>
 
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={infoList.itemsHeader}
+            infoList={infoList}
             list={list}
             listActions={mockServer.listActionsCourses}
             hrefButton="dashboard/courses/register"
@@ -75,5 +66,3 @@ const ListCourses: React.FC = () => {
     </ContainerDashboard>
   )
 }
-
-export default ListCourses

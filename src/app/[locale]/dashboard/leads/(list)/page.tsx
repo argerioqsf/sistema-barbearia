@@ -1,4 +1,4 @@
-import ListSegments from '@/components/template/ListSegments'
+import ListLeads from '@/components/template/ListLeads'
 import { ParamsProp } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
@@ -18,8 +18,7 @@ export async function generateMetadata({
 }
 
 const page = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 2000))
-  return <ListSegments />
+  return <ListLeads />
 }
 
 export default page

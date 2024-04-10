@@ -61,7 +61,6 @@ const ItemList = ({ listActions, idx, item, id }: ItemListProps) => {
         {listActions.map((action) => (
           <IconAction
             href={`${action.href}${id}`}
-            onClick={() => action?.onclick && action?.onclick(id)}
             icon={action.icon}
             key={action.id}
             size={35}

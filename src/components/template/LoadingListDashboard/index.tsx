@@ -24,6 +24,7 @@ export default function LoadingListDashboard() {
           <Skeleton className="col-span-9 row-span-1 h-20 rounded-full mt-5" />
           <Skeleton className="col-span-9 row-span-1 h-20 rounded-full mt-5" />
           <Skeleton className="col-span-9 row-span-1 h-20 rounded-full mt-5" />
+          <Skeleton className="col-span-9 row-span-1 h-20 rounded-full mt-5" />
         </div>
       </div>
     </ContainerDashboard>

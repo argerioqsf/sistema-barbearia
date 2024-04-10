@@ -5,12 +5,7 @@ import { HeaderList } from '@/components/molecules'
 import ItemList from '@/components/molecules/ItemList'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { useItemListTransform } from '@/hooks/use-item-list-transform'
-import {
-  InfoList,
-  ItemListType,
-  ListActionsProps,
-  Models,
-} from '@/types/general'
+import { InfoList, ListActionsProps, Models } from '@/types/general'
 import React from 'react'
 import { twJoin, twMerge } from 'tailwind-merge'
 
@@ -20,7 +15,6 @@ type ListingProps = {
   hrefButton?: string
   list: Models[] | null
   listActions?: Array<ListActionsProps>
-  itemsHeader?: Array<string>
   variant?: 'default' | 'segmented'
   loading?: boolean
   errorMessage?: string
@@ -33,7 +27,6 @@ const Listing = ({
   textButton,
   hrefButton,
   list,
-  itemsHeader,
   variant = 'default',
   loading,
   errorMessage,
@@ -69,7 +62,7 @@ const Listing = ({
           </Button>
         )}
       </div>
-      {itemsHeader && itemsHeader.length > 0 && (
+      {infoList.itemsHeader && infoList.itemsHeader.length > 0 && (
         <div
           className={twMerge(
             variant === 'segmented'
@@ -77,7 +70,7 @@ const Listing = ({
               : 'w-[90vw] md:w-full',
           )}
         >
-          <HeaderList itemsHeader={itemsHeader} />
+          <HeaderList itemsHeader={infoList.itemsHeader} />
         </div>
       )}
 

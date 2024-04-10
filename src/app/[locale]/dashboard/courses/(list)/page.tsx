@@ -1,4 +1,4 @@
-import ListLeads from '@/components/template/ListLeads'
+import ListCourses from '@/components/template/ListCourses'
 import { ParamsProp } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
@@ -18,7 +18,7 @@ export async function generateMetadata({
 }
 
 const page = () => {
-  return <ListLeads />
+  return <ListCourses />
 }
 
 export default page
