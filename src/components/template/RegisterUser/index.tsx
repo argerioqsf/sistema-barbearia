@@ -20,7 +20,6 @@ const RegisterUser: React.FC = () => {
     ]
     const roles = getRolesFromCookie()
     for (const key in roles) {
-      console.log(key, roles[key])
       options = [
         ...options,
         {

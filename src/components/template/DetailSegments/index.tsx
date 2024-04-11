@@ -1,50 +1,46 @@
-'use client'
-
-import { Text } from '@/components/atoms'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import { useHandlerMockServer } from '@/hooks/use-handler-mock-server'
-import { Form, ItemListType, Segment } from '@/types/general'
-import React, { useState } from 'react'
+import { Errors, User } from '@/types/general'
+import React from 'react'
 import * as templates from './templates'
-import DetailDefault from '@/components/organisms/DetailDefault'
-import { loginUser } from '@/actions/auth'
-import { formSchemaSignIn } from '../SingIn/schema'
+import FormDashboard from '@/components/organisms/FormDashboard'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { api } from '@/data/api'
+import { updateSegment } from '@/actions/segments'
 
-const DetailSegments = ({ id }: { id: string }) => {
-  const { getSegmentForId } = useHandlerMockServer()
-  const [loading, setLoading] = useState(false)
-
-  function getUser(): Promise<Segment> {
-    setLoading(true)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const data = getSegmentForId(id)
-        setLoading(false)
-        resolve(data[0])
-      }, 2000)
+async function getSegmentForId(id: string): Promise<{
+  response?: User
+  error?: Errors
+}> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/segment/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: {
+        revalidate: 15,
+      },
     })
-  }
 
-  const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const user = await response.json()
+    return { response: user }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
   }
+}
 
-  function handleRegister(data: Segment) {
-    console.log('data FormDashboard: ', data)
-  }
-
-  const forms: Form[] = [
-    {
-      template: templates.templateForm,
-      handlerForm: handleRegister,
-      getDefaultValues: getUser,
-      loading,
-      action: loginUser,
-      schema: formSchemaSignIn,
-      pathSuccess: '/',
-    },
-  ]
+export default async function DetailSegments({ id }: { id: string }) {
+  const response = await getSegmentForId(id)
+  const segment = response.response
+  const errorRequest = response.error?.request ?? undefined
 
   return (
     <ContainerDashboard>
@@ -52,10 +48,16 @@ const DetailSegments = ({ id }: { id: string }) => {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <DetailDefault renderAvatar={renderAvatar} forms={forms} />
+        <FormDashboard
+          title={templates.templateForm.title}
+          templateForm={templates.templateForm}
+          defaultValues={segment ?? undefined}
+          action={updateSegment}
+          pathSuccess="/"
+          schemaName={'UpdateIndicator'}
+          errorRequest={errorRequest}
+        />
       </div>
     </ContainerDashboard>
   )
 }
-
-export default DetailSegments

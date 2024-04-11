@@ -1,64 +1,66 @@
-'use client'
-
-import { Text } from '@/components/atoms'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import { Form, ItemListType, User } from '@/types/general'
-import React, { useState } from 'react'
+import { Errors, OptionsTemplateForm, User } from '@/types/general'
+import React from 'react'
 import * as templates from './templates'
-import DetailDefault from '@/components/organisms/DetailDefault'
-import { getTokenFromCookieClient } from '@/utils/cookieClient'
-import { loginUser } from '@/actions/auth'
-import { formSchemaSignIn } from '../SingIn/schema'
+import {
+  getRolesFromCookieServer,
+  getTokenFromCookieServer,
+} from '@/utils/cookieServer'
+import { api } from '@/data/api'
+import FormDashboard from '@/components/organisms/FormDashboard'
+import { updateUserProfile } from '@/actions/user'
 
-const DetailUsers = ({ id }: { id: string }) => {
-  const [loading, setLoading] = useState(false)
-  console.log(id)
-  async function loadProfile() {
-    setLoading(true)
-    try {
-      const value = getTokenFromCookieClient()
-      const response = await fetch('/api/me', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${value}`,
-        },
-      })
+async function getUserForId(id: string): Promise<{
+  response?: User
+  error?: Errors
+}> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/user/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
-      if (!response.ok) {
-        const errorMessage = await response.text()
-        return {
-          errors: { request: [JSON.parse(errorMessage).message] },
-        }
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
       }
-      const { profile } = await response.json()
-      setLoading(false)
-      return profile
-    } catch (error) {
-      setLoading(false)
-      return null
     }
+    const user = await response.json()
+    return { response: user }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
   }
+}
 
-  const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>
-  }
+export default async function DetailUsers({ id }: { id: string }) {
+  const response = await getUserForId(id)
+  const user = response.response
+  console.log('user 2: ', user)
+  const errorRequest = response.error?.request ?? undefined
 
-  function handleRegister(data: User) {
-    console.log('data FormDashboard: ', data)
-  }
-
-  const forms: Form[] = [
+  let options: OptionsTemplateForm[] = [
     {
-      template: templates.templateForm,
-      handlerForm: handleRegister,
-      getDefaultValues: loadProfile,
-      loading,
-      action: loginUser,
-      schema: formSchemaSignIn,
-      pathSuccess: '/',
+      label: 'Selecione',
+      value: '',
     },
   ]
+
+  const roles = getRolesFromCookieServer()
+  for (const key in roles) {
+    options = [
+      ...options,
+      {
+        label: roles[key] as string,
+        value: roles[key] as string,
+      },
+    ]
+  }
+  templates.templateForm.sections[1].boxes[0].fields[0].options = options
 
   return (
     <ContainerDashboard>
@@ -66,10 +68,18 @@ const DetailUsers = ({ id }: { id: string }) => {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <DetailDefault renderAvatar={renderAvatar} forms={forms} />
+        <div className="w-full mt-6 lg:mt-8 grid gap-8">
+          <FormDashboard
+            title={templates.templateForm.title}
+            templateForm={templates.templateForm}
+            defaultValues={user}
+            action={updateUserProfile}
+            pathSuccess="/"
+            schemaName={'formSchemaUpdateUserProfile'}
+            errorRequest={errorRequest}
+          />
+        </div>
       </div>
     </ContainerDashboard>
   )
 }
-
-export default DetailUsers

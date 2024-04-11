@@ -26,6 +26,7 @@ export const useItemListTransform = () => {
             if (value !== undefined) {
               count++
               const key = `info${count}` as keyof ItemListType
+              newItem.id = item.id
               newItem[key] =
                 typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value
             }

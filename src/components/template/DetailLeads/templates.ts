@@ -96,17 +96,6 @@ export const templateFormTimeLine: TemplateForm = {
       title: 'Registro de status',
       boxes: [
         {
-          id: 1,
-          fields: [
-            {
-              id: 'course_id',
-              required: true,
-              type: 'text',
-              label: 'Curso',
-            },
-          ],
-        },
-        {
           id: 2,
           fields: [
             {
@@ -114,6 +103,12 @@ export const templateFormTimeLine: TemplateForm = {
               required: true,
               type: 'text',
               label: 'Nome',
+            },
+            {
+              id: 'lead.id',
+              required: true,
+              type: 'hidden',
+              label: '',
             },
           ],
         },
@@ -144,6 +139,27 @@ export const templateFormTimeLine: TemplateForm = {
                 {
                   value: 3,
                   label: 'Sem interesse',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 1,
+          fields: [
+            {
+              id: 'course_id',
+              required: true,
+              type: 'select',
+              label: 'Curso',
+              options: [
+                {
+                  value: 2,
+                  label: 'curso 1',
+                },
+                {
+                  value: 3,
+                  label: 'curso 2',
                 },
               ],
             },

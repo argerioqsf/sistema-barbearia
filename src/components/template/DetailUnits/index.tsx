@@ -1,67 +1,59 @@
-'use client'
-
-import { Text } from '@/components/atoms'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import { useHandlerMockServer } from '@/hooks/use-handler-mock-server'
-import { Form, InfoList, ItemListType, Unit } from '@/types/general'
-import React, { useState } from 'react'
+import { Errors, Models, Unit } from '@/types/general'
+import React from 'react'
 import { templates } from './templates'
-import DetailDefault from '@/components/organisms/DetailDefault'
-import { useItemListTransform } from '@/hooks/use-item-list-transform'
-import { loginUser } from '@/actions/auth'
-import { formSchemaSignIn } from '../SingIn/schema'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { api } from '@/data/api'
+import { updateUnit } from '@/actions/unit'
+import FormDashboard from '@/components/organisms/FormDashboard'
+import Search from '@/components/molecules/Search'
+import Listing from '@/components/organisms/Listing'
 
-const DetailUnits = ({ id }: { id: string }) => {
-  const { listTransform } = useItemListTransform()
-  const { getUnitForId } = useHandlerMockServer()
-  const [loading, setLoading] = useState(false)
-  const [lists, setLists] = useState<InfoList[]>([
-    templates.infoListSegments,
-    templates.infoListCourses,
-  ])
-
-  function getUnit(): Promise<Unit> {
-    setLoading(true)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const response = getUnitForId(id)[0]
-        const listSegments: ItemListType[] = listTransform(
-          response?.segments,
-          lists[0].itemsList,
-        )
-        const listCourses: ItemListType[] = listTransform(
-          response?.courses,
-          lists[1].itemsList,
-        )
-        lists[0].list = listSegments
-        lists[1].list = listCourses
-        setLists([...lists])
-        setLoading(false)
-        resolve(response)
-      }, 2000)
+async function getUnitForId(id: string): Promise<{
+  response?: Unit
+  error?: Errors
+}> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/unit/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: {
+        revalidate: 15,
+      },
     })
-  }
 
-  const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const list = await response.json()
+    console.log('list: ', list)
+    return { response: list }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
   }
+}
 
-  function handleRegister(data: Unit) {
-    console.log('data FormDashboard: ', data)
-  }
-
-  const forms: Form[] = [
-    {
-      template: templates.templateForm,
-      handlerForm: handleRegister,
-      getDefaultValues: getUnit,
-      loading,
-      action: loginUser,
-      schema: formSchemaSignIn,
-      pathSuccess: '/',
-    },
-  ]
+export default async function DetailUnits({ id }: { id: string }) {
+  const response = await getUnitForId(id)
+  const unit = response?.response ?? null
+  const errorRequest = response.error?.request ?? null
+  const segments = unit?.segments?.map((segment) => {
+    return {
+      ...segment.segment,
+    }
+  })
+  const courses = unit?.courses?.map((course) => {
+    return {
+      ...course.course,
+    }
+  })
 
   return (
     <ContainerDashboard>
@@ -69,14 +61,35 @@ const DetailUnits = ({ id }: { id: string }) => {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <DetailDefault
-          renderAvatar={renderAvatar}
-          forms={forms}
-          lists={lists}
-        />
+        <div className="w-full mt-6 lg:mt-8 grid gap-8">
+          <FormDashboard
+            title={templates.templateForm.title}
+            templateForm={templates.templateForm}
+            defaultValues={unit ?? undefined}
+            action={updateUnit}
+            pathSuccess="/"
+            schemaName={'UpdateUnit'}
+          />
+          <Search errorRequest={errorRequest} />
+          <Listing
+            infoList={templates.infoListSegments}
+            list={segments as Models[]}
+            listActions={templates.infoListSegments?.listActions}
+            hrefButton={templates.infoListSegments?.hrefButton}
+            textButton={templates.infoListSegments?.textButton}
+            title={templates.infoListSegments?.title}
+          />
+          <Search errorRequest={errorRequest} />
+          <Listing
+            infoList={templates.infoListCourses}
+            list={courses as Models[]}
+            listActions={templates.infoListCourses?.listActions}
+            hrefButton={templates.infoListCourses?.hrefButton}
+            textButton={templates.infoListCourses?.textButton}
+            title={templates.infoListCourses?.title}
+          />
+        </div>
       </div>
     </ContainerDashboard>
   )
 }
-
-export default DetailUnits

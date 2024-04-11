@@ -17,6 +17,12 @@ export const templateForm: TemplateForm = {
               type: 'text',
               label: 'Nome',
             },
+            {
+              id: 'id',
+              required: true,
+              type: 'hidden',
+              label: '',
+            },
           ],
         },
       ],

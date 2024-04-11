@@ -5,7 +5,6 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import React, { useState } from 'react'
 import { templateForm } from './templateForm'
-import { formSchemaEditProfile } from './schema'
 import Cookies from 'js-cookie'
 import { editProfile } from '@/actions/profile'
 
@@ -17,7 +16,7 @@ const Profile: React.FC = () => {
     setLoading(true)
     try {
       const value = Cookies.get('token_SIM')
-      const response = await fetch('/api/me', {
+      const response = await fetch('/api/profile', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${value}`,
@@ -53,7 +52,7 @@ const Profile: React.FC = () => {
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
             loading={loading}
-            schema={formSchemaEditProfile}
+            schemaName="EditProfile"
             action={editProfile}
             templateForm={templateForm}
             pathSuccess="profile"

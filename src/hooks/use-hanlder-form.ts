@@ -1,4 +1,4 @@
-import { GetDefaultValues, SchemaForm } from '@/types/general'
+import { GetDefaultValues, Models, SchemaForm } from '@/types/general'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -6,6 +6,7 @@ import { z } from 'zod'
 export const useHandlerForm = (
   schema: SchemaForm,
   functionRequest?: GetDefaultValues,
+  defaultValues?: Models,
 ) => {
   type SchemaDefault = z.infer<typeof schema>
 
@@ -16,12 +17,13 @@ export const useHandlerForm = (
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<SchemaDefault>({
     defaultValues: async () =>
-      functionRequest ? functionRequest() : requestDefault(),
+      functionRequest ? functionRequest() : defaultValues ?? requestDefault(),
     resolver: zodResolver(schema),
   })
 
-  return { register, handleSubmit, errors }
+  return { register, handleSubmit, errors, setValue }
 }

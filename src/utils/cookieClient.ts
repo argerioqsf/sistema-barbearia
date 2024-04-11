@@ -52,12 +52,13 @@ export const getRoleFromCookie = () => {
 }
 
 export const getRolesFromCookie = (): EnumLike => {
-  return getCookie(
+  const roles = getCookie(
     'client',
     cookiesName.ROLES_SIM_COOKIE,
     undefined,
     true,
   ) as EnumLike
+  return roles
 }
 
 export const getTokenFromCookieClient = () => {

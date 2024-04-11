@@ -1,26 +1,18 @@
-'use client'
-
 import Search from '@/components/molecules/Search'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import Listing from '@/components/organisms/Listing'
-import { Form, InfoList, ItemListType, TimeLine } from '@/types/general'
+import { Form, InfoList, SchemaForm, TimeLine } from '@/types/general'
 import React, { Fragment } from 'react'
 import TimeLineComponent from '../TimeLineComponent'
-import { searchUsers } from '@/actions/user'
 
 type PropTemplates = {
-  lists?: InfoList[]
-  forms?: Form[]
-  renderAvatar?: (item: ItemListType, index: number) => React.JSX.Element
+  lists: InfoList[]
+  forms: Form[]
   timeLine?: TimeLine[]
+  schema: SchemaForm
 }
 
-const DetailDefault = ({
-  renderAvatar,
-  lists,
-  timeLine,
-  forms,
-}: PropTemplates) => {
+const DetailDefault = ({ lists, timeLine, forms }: PropTemplates) => {
   return (
     <div className="w-full mt-6 lg:mt-8 grid gap-8">
       {forms &&
@@ -30,21 +22,20 @@ const DetailDefault = ({
             key={index}
             title={form.template.title}
             templateForm={form.template}
-            getDefaultValues={form.getDefaultValues}
+            defaultValues={form.defaultValues}
             loading={form.loading}
             action={form.action}
             pathSuccess=""
-            schema={form.schema}
+            schemaName={'UpdateUnit'}
           />
         ))}
       {lists &&
         lists.map((list, idx) => (
           <Fragment key={idx}>
-            <Search action={searchUsers} />
+            <Search errorRequest={list.errorRequest} />
             <Listing
-              itemsHeader={list?.itemsHeader}
-              avatar={renderAvatar}
-              list={list?.list}
+              infoList={list}
+              list={null}
               listActions={list?.listActions}
               hrefButton={list?.hrefButton}
               textButton={list?.textButton}
