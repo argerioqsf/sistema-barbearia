@@ -1,4 +1,3 @@
-import Search from '@/components/molecules/Search'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import Listing from '@/components/organisms/Listing'
 import { Form, InfoList, SchemaForm, TimeLine } from '@/types/general'
@@ -32,7 +31,7 @@ const DetailDefault = ({ lists, timeLine, forms }: PropTemplates) => {
       {lists &&
         lists.map((list, idx) => (
           <Fragment key={idx}>
-            <Search errorRequest={list.errorRequest} />
+            {/* <Search errorRequest={list.errorRequest} /> */}
             <Listing
               infoList={list}
               list={null}
