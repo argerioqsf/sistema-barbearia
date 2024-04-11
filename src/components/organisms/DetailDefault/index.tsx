@@ -6,8 +6,8 @@ import React, { Fragment } from 'react'
 import TimeLineComponent from '../TimeLineComponent'
 
 type PropTemplates = {
-  lists: InfoList[]
-  forms: Form[]
+  lists?: InfoList[]
+  forms?: Form[]
   timeLine?: TimeLine[]
   schema: SchemaForm
 }

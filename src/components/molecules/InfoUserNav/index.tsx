@@ -19,7 +19,7 @@ const InfoUserNav: React.FC<InfoUserNavProps> = ({ nameUser, className }) => {
     removeTokenCookieClient()
     removeUserCookieClient()
     removeRolesCookieClient()
-    pushRouter('auth/signIn')
+    pushRouter('auth/signin')
   }
 
   return (

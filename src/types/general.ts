@@ -275,7 +275,6 @@ export type Form = {
 
 export type ListAction = {
   id: number
-  onclick?: (id: string) => void
   icon: string
   href?: string
   name: string
@@ -285,7 +284,7 @@ export type SearchType = {
   q: string
 }
 
-export interface ReturnLoadDetails {
-  response?: Models
+export interface ReturnLoadList {
+  response?: Models[]
   error?: Errors
 }

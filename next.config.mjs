@@ -8,7 +8,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/auth/signIn',
+        destination: '/auth/signin',
         permanent: true,
       },
     ]
@@ -17,7 +17,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.URL_API}/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_API_BASE_URL}/:path*`,
       },
     ]
   },

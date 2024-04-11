@@ -5,7 +5,7 @@ import { api } from '@/data/api'
 import { Errors, InitialState } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 
-export async function upadteLead(
+export async function updateLead(
   prevState: InitialState,
   formData: FormData,
 ): Promise<InitialState> {

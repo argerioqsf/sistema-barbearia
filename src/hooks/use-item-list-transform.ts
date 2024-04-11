@@ -5,7 +5,6 @@ export const useItemListTransform = () => {
     list: Models[],
     fields: FieldsList,
   ): ItemListType[] => {
-    console.log(list)
     if (!list) return []
     return list?.map((item) => {
       const newItem: ItemListType = {

@@ -1,4 +1,4 @@
-import ListSegments from '@/components/template/ListSegments'
+import ListCourses from '@/components/template/ListCourses'
 import { ParamsProp } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
@@ -18,7 +18,7 @@ export async function generateMetadata({
 }
 
 const page = () => {
-  return <ListSegments />
+  return <ListCourses />
 }
 
 export default page
