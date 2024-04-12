@@ -1,6 +1,7 @@
 'use server'
 
 import { formSchemaSignIn } from '@/components/template/SingIn/schema'
+import { api } from '@/data/api'
 import { Errors, InitialState } from '@/types/general'
 import {
   setRolesInCookieServer,
@@ -19,7 +20,7 @@ export async function loginUser(
 
   if (validatedFields.success) {
     try {
-      const response = await fetch(`${process.env.URL_API}/sessions`, {
+      const response = await api(`/sessions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

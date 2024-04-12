@@ -6,7 +6,6 @@ import FormDashboard from '@/components/organisms/FormDashboard'
 import React from 'react'
 import { templateForm } from './templateForm'
 import { loginUser } from '@/actions/auth'
-import { formSchemaSignIn } from '../SingIn/schema'
 
 const RegisterUnits: React.FC = () => {
   return (
@@ -19,7 +18,7 @@ const RegisterUnits: React.FC = () => {
           <FormDashboard
             templateForm={templateForm}
             action={loginUser}
-            schema={formSchemaSignIn}
+            schemaName="EditProfile"
             pathSuccess="dashboard/indicators"
           />
         </div>

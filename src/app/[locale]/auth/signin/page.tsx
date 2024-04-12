@@ -9,7 +9,7 @@ export async function generateMetadata({
 }) {
   const meta = await getTranslations({
     locale,
-    namespace: 'metadata.auth.signIn',
+    namespace: 'metadata.auth.signin',
   })
   return {
     title: meta('title'),

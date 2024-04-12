@@ -1,64 +1,48 @@
-'use client'
-
-import { Text } from '@/components/atoms'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import { useHandlerMockServer } from '@/hooks/use-handler-mock-server'
-import { Form, ItemListType, Lead, TimeLine } from '@/types/general'
-import React, { useState } from 'react'
+import React from 'react'
 import * as templates from './templates'
-import DetailDefault from '@/components/organisms/DetailDefault'
-import { loginUser } from '@/actions/auth'
-import { formSchemaSignIn } from '../SingIn/schema'
+import FormDashboard from '@/components/organisms/FormDashboard'
+import { updateLead } from '@/actions/lead'
+import { registerTimeLine } from '@/actions/timeLine'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { api } from '@/data/api'
+import { Errors, Lead } from '@/types/general'
+import TimeLineComponent from '@/components/organisms/TimeLineComponent'
 
-const DetailLeads = ({ id }: { id: string }) => {
-  const { getLeadForId } = useHandlerMockServer()
-  const [lead, setLead] = useState<Lead | null>()
-  const [loading, setLoading] = useState(false)
-
-  function handleRegisterTimeLine(data: TimeLine) {
-    console.log('data handleRegisterTimeLine: ', data)
-  }
-
-  function getLead(): Promise<Lead> {
-    setLoading(true)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const data = getLeadForId(id)
-        setLead({ ...data[0] })
-        setLoading(false)
-        resolve(data[0])
-      }, 2000)
+async function getLeadForId(id: string): Promise<{
+  response?: Lead
+  error?: Errors
+}> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/lead/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: {
+        revalidate: 15,
+      },
     })
-  }
 
-  const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const lead = await response.json()
+    return { response: lead }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
   }
+}
 
-  function handleRegister(data: Lead) {
-    console.log('data FormDashboard: ', data)
-  }
-
-  const forms: Form[] = [
-    {
-      template: templates.templateForm,
-      handlerForm: handleRegister,
-      getDefaultValues: getLead,
-      loading,
-      action: loginUser,
-      schema: formSchemaSignIn,
-      pathSuccess: '/',
-    },
-    {
-      template: templates.templateFormTimeLine,
-      handlerForm: handleRegisterTimeLine,
-      loading,
-      action: loginUser,
-      schema: formSchemaSignIn,
-      pathSuccess: '/',
-    },
-  ]
+export default async function DetailLeads({ id }: { id: string }) {
+  const response = await getLeadForId(id)
+  const lead = response.response
+  const errorRequest = response.error?.request ?? undefined
 
   return (
     <ContainerDashboard>
@@ -66,14 +50,26 @@ const DetailLeads = ({ id }: { id: string }) => {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <DetailDefault
-          renderAvatar={renderAvatar}
-          timeLine={lead?.timeline}
-          forms={forms}
+        <FormDashboard
+          title={templates.templateForm.title}
+          templateForm={templates.templateForm}
+          defaultValues={lead ?? undefined}
+          action={updateLead}
+          pathSuccess="/"
+          schemaName={'UpdateUnit'}
+          errorRequest={errorRequest}
         />
+        <FormDashboard
+          title={templates.templateFormTimeLine.title}
+          templateForm={templates.templateFormTimeLine}
+          action={registerTimeLine}
+          pathSuccess="/"
+          schemaName={'UpdateUnit'}
+          errorRequest={errorRequest}
+        />
+
+        {lead?.timeline && <TimeLineComponent timeLine={lead?.timeline} />}
       </div>
     </ContainerDashboard>
   )
 }
-
-export default DetailLeads

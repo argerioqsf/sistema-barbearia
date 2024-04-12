@@ -1,59 +1,46 @@
-'use client'
-
-import { Text } from '@/components/atoms'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import { useHandlerMockServer } from '@/hooks/use-handler-mock-server'
-import { useItemListTransform } from '@/hooks/use-item-list-transform'
-import { Form, InfoList, ItemListType, User } from '@/types/general'
-import React, { useState } from 'react'
-import DetailDefault from '@/components/organisms/DetailDefault'
+import { Errors, User } from '@/types/general'
+import React from 'react'
 import { templates } from './templates'
-import { loginUser } from '@/actions/auth'
-import { formSchemaSignIn } from '../SingIn/schema'
+import FormDashboard from '@/components/organisms/FormDashboard'
+import { api } from '@/data/api'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { updateUserProfile } from '@/actions/user'
 
-const DetailIndicator = ({ id }: { id: string }) => {
-  const { listTransform } = useItemListTransform()
-  const { getIndicatorForId } = useHandlerMockServer()
-  const [lists, setLists] = useState<InfoList[]>([templates.infoList])
-  const [loading, setLoading] = useState(false)
-
-  function getIndicator(): Promise<User> {
-    setLoading(true)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const response = getIndicatorForId(id)[0]
-        const list: ItemListType[] = listTransform(
-          response?.profile?.leadsIndicator ?? [],
-          templates?.infoList?.itemsList,
-        )
-        lists[0].list = list
-        setLists([...lists])
-        setLoading(false)
-        resolve(response)
-      }, 2000)
+async function getIndicatorForId(id: string): Promise<{
+  response?: User
+  error?: Errors
+}> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/indicator/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: {
+        revalidate: 15,
+      },
     })
-  }
 
-  const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const user = await response.json()
+    return { response: user }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
   }
+}
 
-  function handleRegister(data: User) {
-    console.log('data FormDashboard: ', data)
-  }
-
-  const forms: Form[] = [
-    {
-      template: templates.templateForm,
-      handlerForm: handleRegister,
-      getDefaultValues: getIndicator,
-      loading,
-      action: loginUser,
-      schema: formSchemaSignIn,
-      pathSuccess: '/',
-    },
-  ]
+export default async function DetailIndicator({ id }: { id: string }) {
+  const response = await getIndicatorForId(id)
+  const indicator = response.response
+  const errorRequest = response.error?.request ?? undefined
 
   return (
     <ContainerDashboard>
@@ -61,14 +48,16 @@ const DetailIndicator = ({ id }: { id: string }) => {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <DetailDefault
-          renderAvatar={renderAvatar}
-          lists={lists}
-          forms={forms}
+        <FormDashboard
+          title={templates.templateForm.title}
+          templateForm={templates.templateForm}
+          defaultValues={indicator ?? undefined}
+          action={updateUserProfile}
+          pathSuccess="/"
+          schemaName={'UpdateIndicator'}
+          errorRequest={errorRequest}
         />
       </div>
     </ContainerDashboard>
   )
 }
-
-export default DetailIndicator

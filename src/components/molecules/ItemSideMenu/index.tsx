@@ -18,7 +18,7 @@ type ItemSideMenuProps = {
   subMenuList?: ItemMenu[] | undefined
   href?: string
   sizeAvatar?: number
-  setOpenMenu: Dispatch<SetStateAction<boolean>>
+  setOpenMenu: Dispatch<SetStateAction<boolean | null>>
   roles: string[]
 }
 

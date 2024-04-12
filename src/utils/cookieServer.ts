@@ -40,6 +40,10 @@ export const setUserInCookieServer = (user: User) => {
   setCookie(cookiesName.USER_SIM_COOKIE, JSON.stringify(user))
 }
 
+export const getRolesFromCookieServer = (): EnumLike => {
+  return getCookie(cookiesName.ROLES_SIM_COOKIE, true) as EnumLike
+}
+
 export const setRolesInCookieServer = (roles: EnumLike) => {
   setCookie(cookiesName.ROLES_SIM_COOKIE, JSON.stringify(roles))
 }

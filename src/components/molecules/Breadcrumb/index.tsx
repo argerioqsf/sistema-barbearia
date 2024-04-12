@@ -24,7 +24,7 @@ const Breadcrumb = ({
     const itemLink = capitalizeLinks
       ? link[0].toUpperCase() + link.slice(1, link.length)
       : link
-
+    if (itemLink === 'Detail') return null
     return (
       <li className={twMerge(itemClasses)}>
         <div className="flex items-center">

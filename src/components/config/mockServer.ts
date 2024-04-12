@@ -519,35 +519,45 @@ export const mockServer: MockServer = {
       created_at: '19/09/2023',
       segments: [
         {
-          id: '1',
-          name: 'EAD-SANTANA',
-          created_at: '19/09/2023',
+          segment: {
+            id: '1',
+            name: 'EAD-SANTANA',
+            created_at: '19/09/2023',
+          },
         },
       ],
       courses: [
         {
-          id: '1',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '1',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
         {
-          id: '2',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '2',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
         {
-          id: '3',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '3',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
         {
-          id: '4',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '4',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
       ],
     },
@@ -557,40 +567,52 @@ export const mockServer: MockServer = {
       created_at: '19/09/2023',
       segments: [
         {
-          id: '1',
-          name: 'EAD-SANTANA',
-          created_at: '19/09/2023',
+          segment: {
+            id: '1',
+            name: 'EAD-SANTANA',
+            created_at: '19/09/2023',
+          },
         },
         {
-          id: '2',
-          name: 'EAD-SANTANA 2',
-          created_at: '19/09/2023',
+          segment: {
+            id: '2',
+            name: 'EAD-SANTANA 2',
+            created_at: '19/09/2023',
+          },
         },
       ],
       courses: [
         {
-          id: '1',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '1',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
         {
-          id: '2',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '2',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
         {
-          id: '3',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '3',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
         {
-          id: '4',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '4',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
       ],
     },
@@ -664,28 +686,24 @@ export const mockServer: MockServer = {
   listActionsIndicators: [
     {
       id: 1,
-      onclick: () => {},
       icon: 'Edit',
       href: 'indicators/edit',
       name: 'Editar',
     },
     {
       id: 2,
-      onclick: () => {},
       icon: 'Eye',
       href: 'dashboard/indicators/detail/',
       name: 'Vizualizar',
     },
     {
       id: 3,
-      onclick: () => {},
       icon: 'Lock',
       href: 'home',
       name: 'Desativar',
     },
     {
       id: 4,
-      onclick: () => {},
       icon: 'Link',
       href: 'home',
       name: 'Link',
@@ -694,21 +712,18 @@ export const mockServer: MockServer = {
   listActionsUsers: [
     {
       id: 1,
-      onclick: () => {},
       icon: 'Edit',
       href: 'users/edit',
       name: 'Editar',
     },
     {
       id: 2,
-      onclick: () => {},
       icon: 'Eye',
       href: 'dashboard/users/detail/',
       name: 'Vizualizar',
     },
     {
       id: 3,
-      onclick: () => {},
       icon: 'Lock',
       href: 'home',
       name: 'Desativar',
@@ -717,14 +732,12 @@ export const mockServer: MockServer = {
   listActionsLeads: [
     {
       id: 1,
-      onclick: () => {},
       icon: 'Edit',
       href: 'leads/edit',
       name: 'Editar',
     },
     {
       id: 2,
-      onclick: () => {},
       icon: 'Eye',
       href: 'dashboard/leads/detail/',
       name: 'Vizualizar',
@@ -733,7 +746,6 @@ export const mockServer: MockServer = {
   listActionsNewLeads: [
     {
       id: 1,
-      onclick: () => {},
       icon: 'HandPointLeft',
       href: 'leads/edit',
       name: 'Pegar',
@@ -742,7 +754,6 @@ export const mockServer: MockServer = {
   listActionsConfirmedLeads: [
     {
       id: 1,
-      onclick: () => {},
       icon: 'Eye',
       href: 'dashboard/leads/',
       name: 'Visualizar',
@@ -751,21 +762,18 @@ export const mockServer: MockServer = {
   listActionsWaitingConfirmationLeads: [
     {
       id: 1,
-      onclick: () => {},
       icon: 'Eye',
       href: 'dashboard/leads/',
       name: 'Visualizar',
     },
     {
       id: 1,
-      onclick: () => {},
       icon: 'Edit',
       href: 'leads/edit',
       name: 'Editar',
     },
     {
       id: 2,
-      onclick: () => {},
       icon: 'Link',
       href: 'leads/confirmed',
       name: 'Confirmar matrícula',
@@ -774,14 +782,12 @@ export const mockServer: MockServer = {
   listActionsUnits: [
     {
       id: 1,
-      onclick: () => {},
       icon: 'Edit',
       href: 'users/edit',
       name: 'Editar',
     },
     {
       id: 2,
-      onclick: () => {},
       icon: 'Eye',
       href: 'dashboard/units/detail/',
       name: 'Vizualizar',
@@ -790,14 +796,12 @@ export const mockServer: MockServer = {
   listActionsCourses: [
     {
       id: 1,
-      onclick: () => {},
       icon: 'Edit',
       href: 'dashboard/courses/edit',
       name: 'Editar',
     },
     {
       id: 2,
-      onclick: () => {},
       icon: 'Eye',
       href: 'dashboard/courses/detail/',
       name: 'Vizualizar',
@@ -806,14 +810,12 @@ export const mockServer: MockServer = {
   listActionsSegments: [
     {
       id: 1,
-      onclick: () => {},
       icon: 'Edit',
       href: 'dashboard/segments/edit',
       name: 'Editar',
     },
     {
       id: 2,
-      onclick: () => {},
       icon: 'Eye',
       href: 'dashboard/segments/detail/',
       name: 'Vizualizar',

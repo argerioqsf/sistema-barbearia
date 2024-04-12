@@ -1,70 +1,45 @@
-'use client'
-
-import { searchUsers } from '@/actions/user'
 import { mockServer } from '@/components/config/mockServer'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { useItemListTransform } from '@/hooks/use-item-list-transform'
-import { InfoList } from '@/types/general'
-import { getTokenFromCookieClient } from '@/utils/cookieClient'
-import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import { api } from '@/data/api'
+import { InfoList, ReturnLoadList } from '@/types/general'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import React from 'react'
 
-const ListUsers: React.FC = () => {
-  const { listTransform } = useItemListTransform()
+async function loadUsers(): Promise<ReturnLoadList> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api('/users', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const list = await response.json()
+    return { response: list.users }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
+  }
+}
+
+export default async function ListUsers() {
   const infoList: InfoList = {
     itemsHeader: ['', 'NOME', 'E-MAIL', 'CPF'],
     itemsList: ['name', '', 'email', '', 'profile.cpf'],
   }
-  const [list, setList] = useState()
-  const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string>()
 
-  useEffect(() => {
-    const value = getTokenFromCookieClient()
-    async function loadUsers() {
-      setLoading(true)
-      try {
-        const response = await fetch('/api/users', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        })
-
-        if (!response.ok) {
-          const errorMessage = await response.text()
-          setErrorMessage(JSON.parse(errorMessage).message)
-          return {
-            errors: { request: [JSON.parse(errorMessage).message] },
-          }
-        }
-        let list = await response.json()
-        list = listTransform(list.users, infoList.itemsList)
-        setList(list)
-        setLoading(false)
-      } catch (error) {
-        setLoading(false)
-        setErrorMessage('Erro ao carregar lista de usuários!')
-      }
-    }
-    loadUsers()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const renderAvatar = () => {
-    return (
-      <Image
-        className="align-middle rounded-full m-0 p-0 aspect-square"
-        src="https://img.myloview.com.br/adesivos/humano-homem-pessoa-avatar-perfil-do-usuario-vector-icon-ilustracao-700-80949473.jpg"
-        width={40}
-        height={40}
-        alt={'avatar'}
-      />
-    )
-  }
+  const response = await loadUsers()
+  const list = response?.response ?? null
+  const errorRequest = response.error?.request ?? null
 
   return (
     <ContainerDashboard>
@@ -73,24 +48,19 @@ const ListUsers: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search action={searchUsers} />
+          <Search errorRequest={errorRequest} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={infoList.itemsHeader}
-            avatar={renderAvatar}
+            infoList={infoList}
             list={list}
             listActions={mockServer.listActionsUsers}
             hrefButton="dashboard/users/register"
             textButton="Novo usuário"
             title="Usuários"
-            errorMessage={errorMessage}
-            loading={loading}
           />
         </div>
       </div>
     </ContainerDashboard>
   )
 }
-
-export default ListUsers

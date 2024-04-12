@@ -1,14 +1,11 @@
-'use client'
-
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import React from 'react'
 import { templateForm } from './templateForm'
-import { formSchemaRegisterCourse } from './schema'
 import { registerCourse } from '@/actions/course'
 
-const RegisterCourses: React.FC = () => {
+export default function RegisterCourses() {
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
@@ -17,7 +14,7 @@ const RegisterCourses: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            schema={formSchemaRegisterCourse}
+            schemaName="EditProfile"
             action={registerCourse}
             templateForm={templateForm}
             pathSuccess="dashboard/courses"
@@ -27,5 +24,3 @@ const RegisterCourses: React.FC = () => {
     </ContainerDashboard>
   )
 }
-
-export default RegisterCourses

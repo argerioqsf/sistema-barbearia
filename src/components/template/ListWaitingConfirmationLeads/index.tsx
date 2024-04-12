@@ -1,29 +1,48 @@
-'use client'
-
-import { searchUsers } from '@/actions/user'
-import { Text } from '@/components/atoms'
 import { mockServer } from '@/components/config/mockServer'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { useItemListTransform } from '@/hooks/use-item-list-transform'
-import { ItemListType, InfoList } from '@/types/general'
+import { api } from '@/data/api'
+import { InfoList, ReturnLoadList } from '@/types/general'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import React from 'react'
 
-const ListWaitingConfirmationLeads: React.FC = () => {
-  const { listTransform } = useItemListTransform()
+async function loadLeads(): Promise<ReturnLoadList> {
+  try {
+    const listMock = mockServer.leads
 
+    return { response: listMock }
+    const token = getTokenFromCookieServer()
+    const response = await api('/leads', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const list = await response.json()
+    return { response: list }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
+  }
+}
+
+export default async function ListWaitingConfirmationLeads() {
   const infoList: InfoList = {
     itemsHeader: ['N', 'NOME / WHATSAPP', 'INDICADOR', 'STATUS'],
     itemsList: ['name', 'phone', '', 'indicator.name', 'status'],
   }
 
-  const list = listTransform(mockServer.leads, infoList.itemsList)
-
-  const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>
-  }
+  const response = await loadLeads()
+  const list = response?.response ?? null
+  const errorRequest = response.error?.request ?? null
 
   return (
     <ContainerDashboard>
@@ -32,12 +51,11 @@ const ListWaitingConfirmationLeads: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search action={searchUsers} />
+          <Search errorRequest={errorRequest} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            itemsHeader={infoList.itemsHeader}
-            avatar={renderAvatar}
+            infoList={infoList}
             list={list}
             listActions={mockServer.listActionsWaitingConfirmationLeads}
             hrefButton="dashboard/leads/register"
@@ -49,5 +67,3 @@ const ListWaitingConfirmationLeads: React.FC = () => {
     </ContainerDashboard>
   )
 }
-
-export default ListWaitingConfirmationLeads

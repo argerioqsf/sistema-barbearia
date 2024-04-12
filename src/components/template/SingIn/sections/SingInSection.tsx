@@ -1,24 +1,10 @@
-'use client'
-
 import FormLogin from '@/components/organisms/FormLogin'
 import ContainerSection from '@/components/molecules/ContainerSection'
 import { Avatar } from '@/components/molecules'
 import { Text } from '@/components/atoms'
 import { loginUser } from '@/actions/auth'
-import { useEffect } from 'react'
-import { useHandlerRouter } from '@/hooks/use-handler-router'
-import Cookies from 'js-cookie'
 
 const SingInSection = () => {
-  const { pushRouter } = useHandlerRouter()
-
-  useEffect(() => {
-    const value = Cookies.get('token_SIM')
-    if (value) {
-      pushRouter('dashboard/home')
-    }
-  })
-
   return (
     <ContainerSection className="bg-primary-100">
       <div className="w-full bg-primary-100 flex flex-col md:flex-row items-center justify-center px-6 py-8 mx-auto h-svh lg:py-0">

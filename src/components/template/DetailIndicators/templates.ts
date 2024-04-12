@@ -2,11 +2,11 @@ import { InfoList, TemplateForm } from '@/types/general'
 
 const templateForm: TemplateForm = {
   title: 'Indicador',
-  textButton: '',
+  textButton: 'Editar',
   sections: [
     {
       id: 1,
-      title: 'Dados do Indicador',
+      title: 'Dados Pessoais',
       boxes: [
         {
           id: 1,
@@ -16,7 +16,12 @@ const templateForm: TemplateForm = {
               required: true,
               type: 'text',
               label: 'Nome',
-              disabled: true,
+            },
+            {
+              id: 'id',
+              required: true,
+              type: 'hidden',
+              label: '',
             },
           ],
         },
@@ -24,25 +29,16 @@ const templateForm: TemplateForm = {
           id: 3,
           fields: [
             {
-              id: 'phone',
+              id: 'profile.phone',
               required: true,
               type: 'text',
               label: 'Whatsapp',
-              disabled: true,
             },
             {
-              id: 'cpf',
+              id: 'profile.cpf',
               required: true,
               type: 'text',
               label: 'Documento',
-              disabled: true,
-            },
-            {
-              id: 'pix',
-              required: true,
-              type: 'text',
-              label: 'Chave pix',
-              disabled: true,
             },
           ],
         },
@@ -50,11 +46,30 @@ const templateForm: TemplateForm = {
           id: 4,
           fields: [
             {
-              id: 'email',
+              id: 'profile.birthday',
               required: true,
-              type: 'text',
-              label: 'E-mail',
-              disabled: true,
+              type: 'date',
+              label: 'Nascimento',
+            },
+            {
+              id: 'profile.genre',
+              required: true,
+              type: 'select',
+              label: 'Genero',
+              options: [
+                {
+                  label: 'Maculino',
+                  value: 'man',
+                },
+                {
+                  label: 'Feminino',
+                  value: 'woman',
+                },
+                {
+                  label: 'Outro',
+                  value: 'other',
+                },
+              ],
             },
           ],
         },
@@ -62,11 +77,41 @@ const templateForm: TemplateForm = {
           id: 5,
           fields: [
             {
-              id: 'status',
+              id: 'email',
               required: true,
               type: 'text',
-              label: 'Status',
-              disabled: true,
+              label: 'E-mail',
+            },
+            {
+              id: 'profile.pix',
+              required: true,
+              type: 'text',
+              label: 'Chave pix',
+            },
+          ],
+        },
+        {
+          id: 6,
+          fields: [
+            {
+              id: 'active',
+              required: true,
+              type: 'select',
+              label: 'Ativo',
+              options: [
+                {
+                  label: 'Selecionar',
+                  value: '',
+                },
+                {
+                  label: 'Sim',
+                  value: 'true',
+                },
+                {
+                  label: 'Não',
+                  value: 'false',
+                },
+              ],
             },
             {
               id: 'created_at',
@@ -74,30 +119,6 @@ const templateForm: TemplateForm = {
               type: 'date',
               label: 'Data',
               disabled: true,
-            },
-          ],
-        },
-      ],
-    },
-  ],
-}
-
-const templateFormSearch: TemplateForm = {
-  title: 'Search',
-  textButton: '',
-  sections: [
-    {
-      id: 1,
-      title: 'Search',
-      boxes: [
-        {
-          id: 1,
-          fields: [
-            {
-              id: 'search',
-              label: 'Search',
-              required: true,
-              type: 'text',
             },
           ],
         },
@@ -144,6 +165,5 @@ const infoList: InfoList = {
 
 export const templates = {
   templateForm,
-  templateFormSearch,
   infoList,
 }

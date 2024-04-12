@@ -20,7 +20,7 @@
       "description": "SIM | Grupo Madre Tereza"
     },
     "auth": {
-      "signIn": {
+      "signin": {
         "title": "Login SIM",
         "description": "Faça login na plataforma SIM"
       }

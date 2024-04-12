@@ -6,7 +6,7 @@ import React, { Dispatch, SetStateAction } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type NavBarProps = {
-  setOpenMenu: Dispatch<SetStateAction<boolean>>
+  setOpenMenu: Dispatch<SetStateAction<boolean | null>>
   openMenu: boolean | null
 }
 

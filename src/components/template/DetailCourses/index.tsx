@@ -1,50 +1,46 @@
-'use client'
-
-import { Text } from '@/components/atoms'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import { useHandlerMockServer } from '@/hooks/use-handler-mock-server'
-import { Course, Form, ItemListType } from '@/types/general'
-import React, { useState } from 'react'
+import { Course, Errors } from '@/types/general'
+import React from 'react'
 import * as templates from './templates'
-import DetailDefault from '@/components/organisms/DetailDefault'
-import { loginUser } from '@/actions/auth'
-import { formSchemaSignIn } from '../SingIn/schema'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { api } from '@/data/api'
+import FormDashboard from '@/components/organisms/FormDashboard'
+import { updateCourse } from '@/actions/course'
 
-const DetailCourses = ({ id }: { id: string }) => {
-  const { getCourseForId } = useHandlerMockServer()
-  const [loading, setLoading] = useState(false)
-
-  function getUser(): Promise<Course> {
-    setLoading(true)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const data = getCourseForId(id)
-        setLoading(false)
-        resolve(data[0])
-      }, 2000)
+async function getCourseForId(id: string): Promise<{
+  response?: Course
+  error?: Errors
+}> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/user/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: {
+        revalidate: 15,
+      },
     })
-  }
 
-  const renderAvatar = (item: ItemListType, index: number) => {
-    return <Text className="text-black">{index + 1}</Text>
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const { course } = await response.json()
+    return { response: course }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
   }
+}
 
-  function handleRegister(data: Course) {
-    console.log('data FormDashboard: ', data)
-  }
-
-  const forms: Form[] = [
-    {
-      template: templates.templateForm,
-      handlerForm: handleRegister,
-      getDefaultValues: getUser,
-      loading,
-      action: loginUser,
-      schema: formSchemaSignIn,
-      pathSuccess: '/',
-    },
-  ]
+export default async function DetailCourses({ id }: { id: string }) {
+  const response = await getCourseForId(id)
+  const course = response.response
+  const errorRequest = response.error?.request ?? undefined
 
   return (
     <ContainerDashboard>
@@ -52,10 +48,16 @@ const DetailCourses = ({ id }: { id: string }) => {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <DetailDefault renderAvatar={renderAvatar} forms={forms} />
+        <FormDashboard
+          title={templates.templateForm.title}
+          templateForm={templates.templateForm}
+          defaultValues={course ?? undefined}
+          action={updateCourse}
+          pathSuccess="/"
+          schemaName={'UpdateUnit'}
+          errorRequest={errorRequest}
+        />
       </div>
     </ContainerDashboard>
   )
 }
-
-export default DetailCourses

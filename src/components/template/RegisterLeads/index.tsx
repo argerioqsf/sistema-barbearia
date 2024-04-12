@@ -6,7 +6,6 @@ import FormDashboard from '@/components/organisms/FormDashboard'
 import React, { useEffect, useState } from 'react'
 import { templateForm } from './templateForm'
 import { loginUser } from '@/actions/auth'
-import { formSchemaEditProfile } from '../Profile/schema'
 
 const RegisterLeads: React.FC = () => {
   const [templateFormState, setTemplateFormState] = useState(templateForm)
@@ -61,7 +60,7 @@ const RegisterLeads: React.FC = () => {
           <FormDashboard
             templateForm={templateFormState}
             action={loginUser}
-            schema={formSchemaEditProfile}
+            schemaName="EditProfile"
             pathSuccess="/"
           />
         </div>

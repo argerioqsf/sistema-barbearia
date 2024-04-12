@@ -11,12 +11,13 @@ const middlewareIntl = createMiddleware({
 
 export default function middleware(request: NextRequest) {
   const isLogged = !!getTokenFromCookieRequest(request)
-  const isLoginPage = request.nextUrl.pathname.includes('/auth/signIn')
+  const isLoginPage = request.nextUrl.pathname.includes('/auth/signin')
+
   if (!isLogged) {
     if (isLoginPage) {
       return middlewareIntl(request)
     }
-    return NextResponse.redirect(new URL('/pt-BR/auth/signIn', request.url))
+    return NextResponse.redirect(new URL('/pt-BR/auth/signin', request.url))
   }
   if (isLoginPage) {
     return NextResponse.redirect(new URL('/pt-BR/dashboard/home', request.url))
@@ -31,5 +32,5 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/auth/signIn', '/(de|pt-BR)/:path*'],
+  matcher: ['/auth/signin', '/(de|pt-BR)/:path*'],
 }

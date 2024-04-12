@@ -31,9 +31,16 @@ const getCookie = (
   return ''
 }
 
-const removeCookie = (context: ContextCookie, name: string) => {
+const removeCookie = (
+  context: ContextCookie,
+  name: string,
+  request?: NextRequest,
+) => {
   if (context === 'client') {
     Cookies.remove(name)
+  }
+  if (context === 'request') {
+    request?.cookies.set(name, '')
   }
 }
 
@@ -52,12 +59,13 @@ export const getRoleFromCookie = () => {
 }
 
 export const getRolesFromCookie = (): EnumLike => {
-  return getCookie(
+  const roles = getCookie(
     'client',
     cookiesName.ROLES_SIM_COOKIE,
     undefined,
     true,
   ) as EnumLike
+  return roles
 }
 
 export const getTokenFromCookieClient = () => {
@@ -92,4 +100,14 @@ export const getUerFromCookieRequest = (request: NextRequest): User => {
 export const getRoleUserFromCookieRequest = (request: NextRequest) => {
   const user = getUerFromCookieRequest(request)
   return user?.profile?.role
+}
+
+export const removeTokenCookieRequest = (request: NextRequest) => {
+  return removeCookie('request', cookiesName.TOKEN_SIM_COOKIE, request)
+}
+export const removeUserCookieServerRequest = (request: NextRequest) => {
+  return removeCookie('request', cookiesName.USER_SIM_COOKIE, request)
+}
+export const removeRolesCookieServerRequest = (request: NextRequest) => {
+  return removeCookie('request', cookiesName.ROLES_SIM_COOKIE, request)
 }

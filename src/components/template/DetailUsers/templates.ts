@@ -17,17 +17,11 @@ export const templateForm: TemplateForm = {
               type: 'text',
               label: 'Nome',
             },
-          ],
-        },
-        {
-          id: 2,
-          fields: [
             {
-              id: 'image',
+              id: 'id',
               required: true,
-              type: 'file',
-              label: 'Foto: (600 x 600)',
-              classInput: 'pl-2',
+              type: 'hidden',
+              label: '',
             },
           ],
         },
@@ -35,13 +29,13 @@ export const templateForm: TemplateForm = {
           id: 3,
           fields: [
             {
-              id: 'phone',
+              id: 'profile.phone',
               required: true,
               type: 'text',
               label: 'Whatsapp',
             },
             {
-              id: 'cpf',
+              id: 'profile.cpf',
               required: true,
               type: 'text',
               label: 'Documento',
@@ -52,20 +46,28 @@ export const templateForm: TemplateForm = {
           id: 4,
           fields: [
             {
-              id: 'birthday',
+              id: 'profile.birthday',
               required: true,
               type: 'text',
               label: 'Nascimento',
             },
             {
-              id: 'genre',
+              id: 'profile.genre',
               required: true,
               type: 'select',
               label: 'Genero',
               options: [
                 {
-                  label: 'genero 1',
-                  value: 1,
+                  label: 'Maculino',
+                  value: 'man',
+                },
+                {
+                  label: 'Feminino',
+                  value: 'woman',
+                },
+                {
+                  label: 'Outro',
+                  value: 'other',
                 },
               ],
             },
@@ -80,20 +82,34 @@ export const templateForm: TemplateForm = {
               type: 'text',
               label: 'E-mail',
             },
+            {
+              id: 'profile.pix',
+              required: true,
+              type: 'text',
+              label: 'Chave pix',
+            },
           ],
         },
         {
           id: 6,
           fields: [
             {
-              id: 'status',
+              id: 'active',
               required: true,
               type: 'select',
-              label: 'Status',
+              label: 'Ativo',
               options: [
                 {
-                  label: 'status 1',
-                  value: 1,
+                  label: 'Selecionar',
+                  value: '',
+                },
+                {
+                  label: 'Sim',
+                  value: 'true',
+                },
+                {
+                  label: 'Não',
+                  value: 'false',
                 },
               ],
             },
@@ -102,6 +118,24 @@ export const templateForm: TemplateForm = {
               required: true,
               type: 'date',
               label: 'Data',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Permissões',
+      boxes: [
+        {
+          id: 1,
+          fields: [
+            {
+              id: 'profile.role',
+              required: true,
+              type: 'select',
+              label: 'Permissão',
+              options: [],
             },
           ],
         },

@@ -26,8 +26,8 @@ export type Unit = {
   id: string
   name: string
   created_at: string
-  segments: Segment[]
-  courses: Course[]
+  segments: Array<{ segment: Segment }>
+  courses: Array<{ course: Course }>
 }
 
 export type UnitProps = keyof Unit
@@ -88,6 +88,8 @@ export type Lead = {
 
 export type LeadProps = keyof Lead
 
+export type Models = Segment | User | Unit | Course | TimeLine | Profile | Lead
+
 const fieldsForm = [
   'id',
   'name',
@@ -122,6 +124,19 @@ const fieldsForm = [
   'consultantId',
   'image',
   'request',
+  'indicator.cpf',
+  'user.name',
+  'user.email',
+  'user.active',
+  'default',
+  'lead.id',
+  'profile.role',
+  'profile.phone',
+  'profile.cpf',
+  'profile.birthday',
+  'profile.genre',
+  'profile.pix',
+  'q',
 ] as const
 
 export type ParamsProp = {
@@ -168,9 +183,9 @@ export type InfoList = {
   itemsList: FieldsList
   listActions?: ListActionsProps[]
   title?: string
-  list?: ItemListType[]
   hrefButton?: string
   textButton?: string
+  errorRequest?: string | null
 }
 
 export type Errors = {
@@ -189,12 +204,13 @@ export type OptionsTemplateForm = {
 export type FieldsTemplateForm = {
   id: TypesForIdFieldsForm
   required: boolean
-  type: 'text' | 'date' | 'image' | 'select' | 'password' | 'file'
+  type: 'text' | 'date' | 'image' | 'select' | 'password' | 'file' | 'hidden'
   label: string
   classInput?: string
   options?: Array<OptionsTemplateForm>
   value?: string | number
   disabled?: boolean
+  placeholder?: string
 }
 
 export type BoxTemplateForm = {
@@ -215,8 +231,6 @@ export type TemplateForm = {
 }
 
 export type LimitColsGrid = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
-
-export type Models = Segment | User | Unit | Course | TimeLine | Profile | Lead
 
 export type ModelsAll = Segment &
   User &
@@ -246,23 +260,31 @@ export type GetDefaultValues = () => Promise<InitialState | Models>
 export type Form = {
   template: TemplateForm
   loading?: boolean
-  getDefaultValues?: GetDefaultValues
+  getDefaultValues?: {
+    response?: Models
+    error?: Errors
+  }
+  defaultValues?: Models
   title?: string
   action: ServerAction
-  schema: SchemaForm
+  schema?: SchemaForm
   pathSuccess: string
-  handlerForm: (data: ModelsAll) => void
+  handlerForm?: (data: ModelsAll) => void
   errorMessage?: string
 }
 
 export type ListAction = {
   id: number
-  onclick?: (id: string) => void
   icon: string
   href?: string
   name: string
 }
 
 export type SearchType = {
-  search: string
+  q: string
+}
+
+export interface ReturnLoadList {
+  response?: Models[]
+  error?: Errors
 }

@@ -14,6 +14,7 @@ type FormFieldTextProps = {
   classInput?: string
   props: UseFormRegisterReturn<string>
   error: string
+  hidden?: boolean
 }
 
 const FormFieldText = ({
