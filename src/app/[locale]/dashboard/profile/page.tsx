@@ -1,4 +1,4 @@
-import Profile from '@/components/template/Profile'
+import ProfileDetail from '@/components/template/ProfileDetail'
 import { ParamsProp } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
@@ -18,7 +18,7 @@ export async function generateMetadata({
 }
 
 const page = () => {
-  return <Profile />
+  return <ProfileDetail />
 }
 
 export default page

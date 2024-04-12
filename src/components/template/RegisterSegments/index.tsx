@@ -5,7 +5,6 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import React from 'react'
 import { templateForm } from './templateForm'
-import { formSchemaRegisterSegment } from './schema'
 import { registerSegment } from '@/actions/segments'
 
 const RegisterSegments: React.FC = () => {
@@ -17,7 +16,7 @@ const RegisterSegments: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            schema={formSchemaRegisterSegment}
+            schemaName="EditProfile"
             action={registerSegment}
             templateForm={templateForm}
             pathSuccess="dashboard/segments"

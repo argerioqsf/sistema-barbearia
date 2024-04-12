@@ -33,7 +33,6 @@ async function getUnitForId(id: string): Promise<{
       }
     }
     const list = await response.json()
-    console.log('list: ', list)
     return { response: list }
   } catch (error) {
     return { error: { request: 'Error unknown' } }

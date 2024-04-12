@@ -16,7 +16,6 @@ export async function registerUserProfile(
   prevState: InitialState,
   formData: FormData,
 ): Promise<InitialState> {
-  console.log('formData.get("active"): ', !!formData.get('active'))
   const validatedFields = formSchemaRegisterUserProfile.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
@@ -38,7 +37,7 @@ export async function registerUserProfile(
           errors: { request: 'Erro de credenciais' },
         }
       }
-      const response = await fetch(`${process.env.URL_API}/create/user`, {
+      const response = await api(`/create/user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +85,6 @@ export async function updateUserProfile(
   prevState: InitialState,
   formData: FormData,
 ): Promise<InitialState> {
-  console.log('formData: ', formData)
   const validatedFields = formSchemaUpdateUserProfile.safeParse({
     id: formData.get('id'),
     name: formData.get('name'),
@@ -99,7 +97,6 @@ export async function updateUserProfile(
     pix: formData.get('profile.pix'),
     role: formData.get('profile.role'),
   })
-  console.log('validatedFields: ', validatedFields)
 
   if (validatedFields.success) {
     try {
@@ -147,7 +144,6 @@ export async function updateUserProfile(
     }
   } else if (validatedFields.error) {
     const error = validatedFields.error.flatten().fieldErrors as Errors
-    console.log('error: ', error)
     return {
       errors: { ...error },
     }
@@ -168,7 +164,7 @@ export async function searchUsers(
   if (validatedFields.success) {
     try {
       const value = getTokenFromCookieClient()
-      const response = await fetch(`${process.env.URL_API}/api/users`, {
+      const response = await api(`/api/users`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

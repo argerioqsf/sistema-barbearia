@@ -25,7 +25,6 @@ async function loadUnits(): Promise<ReturnLoadList> {
       }
     }
     const list = await response.json()
-    console.log('list: ', list)
     return { response: list.units }
   } catch (error) {
     return { error: { request: 'Error unknown' } }

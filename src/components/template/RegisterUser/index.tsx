@@ -6,7 +6,6 @@ import FormDashboard from '@/components/organisms/FormDashboard'
 import React, { useEffect } from 'react'
 import { templateForm } from './templateForm'
 import { registerUserProfile } from '@/actions/user'
-import { formSchemaRegisterUserProfile } from './schema'
 import { getRolesFromCookie } from '@/utils/cookieClient'
 import { OptionsTemplateForm } from '@/types/general'
 
@@ -40,7 +39,7 @@ const RegisterUser: React.FC = () => {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            schema={formSchemaRegisterUserProfile}
+            schemaName="EditProfile"
             action={registerUserProfile}
             templateForm={templateForm}
             pathSuccess="dashboard/users"

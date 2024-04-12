@@ -11,7 +11,6 @@ import React from 'react'
 async function loadLeads(): Promise<ReturnLoadList> {
   try {
     const listMock = mockServer.leads
-    console.log('leads:', listMock)
 
     return { response: listMock }
     const token = getTokenFromCookieServer()

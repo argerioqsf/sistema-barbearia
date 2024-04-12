@@ -12,7 +12,7 @@ export const templateForm: TemplateForm = {
           id: 1,
           fields: [
             {
-              id: 'name',
+              id: 'user.name',
               required: true,
               type: 'text',
               label: 'Nome',
@@ -46,7 +46,7 @@ export const templateForm: TemplateForm = {
           id: 4,
           fields: [
             {
-              id: 'email',
+              id: 'user.email',
               required: true,
               type: 'text',
               label: 'E-mail 2',
@@ -57,7 +57,7 @@ export const templateForm: TemplateForm = {
           id: 5,
           fields: [
             {
-              id: 'active',
+              id: 'user.active',
               required: true,
               type: 'select',
               label: 'Status',
@@ -67,12 +67,12 @@ export const templateForm: TemplateForm = {
                   label: 'Selecione',
                 },
                 {
-                  value: 0,
+                  value: 'true',
                   label: 'ativo',
                 },
                 {
-                  value: 1,
-                  label: 'desativo',
+                  value: 'false',
+                  label: 'desativado',
                 },
               ],
             },

@@ -9,7 +9,6 @@ export async function registerTimeLine(
   prevState: InitialState,
   formData: FormData,
 ): Promise<InitialState> {
-  console.log('formData.get("active"): ', !!formData.get('active'))
   const validatedFields = formSchemaCreateTimeLine.safeParse({
     title: formData.get('title'),
     description: formData.get('description'),

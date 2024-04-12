@@ -23,7 +23,7 @@ export async function registerCourse(
           errors: { request: 'Erro de credenciais' },
         }
       }
-      const response = await fetch(`${process.env.URL_API}/create/course`, {
+      const response = await api(`/create/course`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

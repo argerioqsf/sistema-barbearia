@@ -519,35 +519,45 @@ export const mockServer: MockServer = {
       created_at: '19/09/2023',
       segments: [
         {
-          id: '1',
-          name: 'EAD-SANTANA',
-          created_at: '19/09/2023',
+          segment: {
+            id: '1',
+            name: 'EAD-SANTANA',
+            created_at: '19/09/2023',
+          },
         },
       ],
       courses: [
         {
-          id: '1',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '1',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
         {
-          id: '2',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '2',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
         {
-          id: '3',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '3',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
         {
-          id: '4',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '4',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
       ],
     },
@@ -557,40 +567,52 @@ export const mockServer: MockServer = {
       created_at: '19/09/2023',
       segments: [
         {
-          id: '1',
-          name: 'EAD-SANTANA',
-          created_at: '19/09/2023',
+          segment: {
+            id: '1',
+            name: 'EAD-SANTANA',
+            created_at: '19/09/2023',
+          },
         },
         {
-          id: '2',
-          name: 'EAD-SANTANA 2',
-          created_at: '19/09/2023',
+          segment: {
+            id: '2',
+            name: 'EAD-SANTANA 2',
+            created_at: '19/09/2023',
+          },
         },
       ],
       courses: [
         {
-          id: '1',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '1',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
         {
-          id: '2',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '2',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
         {
-          id: '3',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '3',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
         {
-          id: '4',
-          name: 'Pedagogia',
-          quant_leads: 2,
-          status: 1,
+          course: {
+            id: '4',
+            name: 'Pedagogia',
+            quant_leads: 2,
+            status: 1,
+          },
         },
       ],
     },

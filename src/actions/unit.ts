@@ -8,7 +8,6 @@ export async function updateUnit(
   prevState: InitialState,
   formData: FormData,
 ): Promise<InitialState> {
-  console.log('formData.get("active"): ', !!formData.get('active'))
   const validatedFields = formSchemaUpdateUnit.safeParse({
     name: formData.get('name'),
     // courses: formData.get('email'),

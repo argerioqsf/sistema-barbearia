@@ -1,7 +1,7 @@
 import { formSchemaUpdateIndicator } from '@/components/template/DetailIndicators/schema'
 import { formSchemaUpdateUnit } from '@/components/template/DetailUnits/schema'
 import { formSchemaUpdateUserProfile } from '@/components/template/DetailUsers/schema'
-import { formSchemaEditProfile } from '@/components/template/Profile/schema'
+import { formSchemaEditProfile } from '@/components/template/ProfileDetail/schema'
 import { SchemaForm } from '@/types/general'
 import { z } from 'zod'
 

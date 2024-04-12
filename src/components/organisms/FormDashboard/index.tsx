@@ -76,7 +76,8 @@ const FormDashboard = ({
       classInput: `bg-gray-300 ${field.classInput ?? ''} ${
         state?.errors?.[id] && 'ring-red-500 focus:ring-red-500'
       }`,
-      error: state?.errors?.[id] ? state?.errors?.[id][0] : '',
+      error: (state?.errors?.[id] && state.errors[id]?.[0]) ?? '',
+
       disabled: field.disabled,
     }
     if (field.type === 'select') {

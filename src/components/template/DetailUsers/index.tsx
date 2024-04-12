@@ -40,7 +40,6 @@ async function getUserForId(id: string): Promise<{
 export default async function DetailUsers({ id }: { id: string }) {
   const response = await getUserForId(id)
   const user = response.response
-  console.log('user 2: ', user)
   const errorRequest = response.error?.request ?? undefined
 
   let options: OptionsTemplateForm[] = [

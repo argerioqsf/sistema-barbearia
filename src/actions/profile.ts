@@ -1,6 +1,7 @@
 'use server'
 
-import { formSchemaEditProfile } from '@/components/template/Profile/schema'
+import { formSchemaEditProfile } from '@/components/template/ProfileDetail/schema'
+import { api } from '@/data/api'
 import { Errors, InitialState } from '@/types/general'
 import {
   setRolesInCookieServer,
@@ -24,7 +25,7 @@ export async function editProfile(
 
   if (validatedFields.success) {
     try {
-      const response = await fetch(`${process.env.URL_API}/sessions`, {
+      const response = await api(`/sessions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
