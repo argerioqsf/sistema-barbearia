@@ -32,8 +32,8 @@ async function loadUnits(): Promise<ReturnLoadList> {
 }
 export default async function ListUnits() {
   const infoList: InfoList = {
-    itemsHeader: ['N', 'NOME', 'QUANT. SEGMENTOS', ' QUANT. CURSOS', ''],
-    itemsList: ['name', '', 'segments.length', 'courses.length', ''],
+    itemsHeader: ['N', 'NOME', 'QUANT. SEGUIMENTOS', ' QUANT. CURSOS', ''],
+    itemsList: ['name', '', '_count.segments', '_count.courses', ''],
   }
 
   const response = await loadUnits()

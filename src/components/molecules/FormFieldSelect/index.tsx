@@ -3,12 +3,12 @@
 import { Text } from '@/components/atoms'
 import LabelForm from '@/components/atoms/LabelForm'
 import SelectForm from '@/components/atoms/SelectForm'
-import { OptionsTemplateForm } from '@/types/general'
+import { Option, OptionsTemplateForm } from '@/types/general'
 import React from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
-type FormFieldTextProps = {
+type FormFieldTextProps<T> = {
   label: string
   type: string
   placeholder?: string
@@ -16,22 +16,38 @@ type FormFieldTextProps = {
   bgColor?: string
   props: UseFormRegisterReturn<string>
   error: string
-  options?: Array<OptionsTemplateForm>
+  options: T[]
+  optionKeyLabel?: keyof T
+  optionKeyValue?: keyof T
 }
 
-const FormFieldSelect = ({
+export default function FormFieldSelect<T>({
   label,
   classInput,
   props,
   error,
   options,
-}: FormFieldTextProps) => {
+  optionKeyLabel,
+  optionKeyValue
+}: FormFieldTextProps<T>){
+
+  const getOptionLabel = (option: T, key: keyof T) => String(option[key])
+  const getOptionValue = (option: T, key: keyof T) => String(option[key])
+
+  const OrderOptions: Option[] = options.map((option) => {
+    console.log('getOptionValue: ',getOptionValue)
+    return {
+      label: optionKeyLabel?getOptionLabel(option, optionKeyLabel):'',
+      value: optionKeyValue?getOptionValue(option, optionKeyValue):'',
+    };
+  });
+
   return (
     <div>
       {label && <LabelForm htmlFor={props.name} label={label} />}
       <div className="mt-2">
         <SelectForm
-          options={options}
+          options={OrderOptions}
           className={twMerge(
             'rounded-md border-0',
             'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
@@ -53,5 +69,3 @@ const FormFieldSelect = ({
     </div>
   )
 }
-
-export default FormFieldSelect
