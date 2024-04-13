@@ -10,7 +10,7 @@ export const SchemaDefault = z.object({
 })
 
 export const useHandleSchema = () => {
-  function getSchema(icon: string): SchemaForm {
+  function getSchema(icon: string) {
     switch (icon) {
       case 'UpdateUnit':
         return formSchemaUpdateUnit
