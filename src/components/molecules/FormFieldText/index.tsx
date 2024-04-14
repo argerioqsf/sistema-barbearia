@@ -16,9 +16,9 @@ type FormFieldTextProps = {
   error: string
   hidden?: boolean
   value?: string
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onFocus?:()=> void
-  onBlur?:()=> void
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onFocus?: () => void
+  onBlur?: () => void
 }
 
 const FormFieldText = ({

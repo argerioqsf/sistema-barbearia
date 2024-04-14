@@ -2,23 +2,17 @@
 
 import { Button, Form, Text } from '@/components/atoms'
 import Box from '@/components/atoms/Box'
-import { useHandleSchema } from '@/hooks/use-handle-schema'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
-import { useHandlerForm } from '@/hooks/use-hanlder-form'
 import {
   BoxTemplateForm,
-  FieldsTemplateForm,
   GetDefaultValues,
   InitialState,
   LimitColsGrid,
-  Models,
-  SchemaForm,
   ServerAction,
   TemplateForm,
-  Unit,
 } from '@/types/general'
 import { handleFieldsRender } from '@/utils/handleFieldsRender'
-import React, { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
 import { DefaultValues } from 'react-hook-form'
 
@@ -35,7 +29,7 @@ type FormDashboardProps<T> = {
   errorRequest?: string
 }
 
-export default function FormDashboard<T>({
+export default function FormDashboard<T extends { request?: string }>({
   templateForm,
   loading = false,
   title,
@@ -43,13 +37,12 @@ export default function FormDashboard<T>({
   pathSuccess,
   errorMessage,
   defaultValues,
-  schemaName,
   errorRequest,
-}: FormDashboardProps<T>){
-  const { getSchema } = useHandleSchema()
-  // const schema: SchemaForm<T> = getSchema<T>(schemaName)
-
+}: FormDashboardProps<T>) {
   const { pushRouter } = useHandlerRouter()
+  const [formDataExtra, setFormDataExtra] = useState<FormData>(new FormData())
+
+  console.log('formDataExtra: ', formDataExtra)
 
   const initialStateForm: InitialState<T> = {
     errors: undefined,
@@ -67,7 +60,7 @@ export default function FormDashboard<T>({
     }
   }, [action, pathSuccess, pushRouter, state.ok])
 
-  const handlerBoxRender = (boxItem: BoxTemplateForm<T>) => {
+  const handlerBoxRender = (boxItem: BoxTemplateForm) => {
     const quantInputHidden = boxItem?.fields?.filter(
       (field) => field.type === 'hidden',
     )
@@ -76,17 +69,44 @@ export default function FormDashboard<T>({
     return (
       <Box cols={gridCols}>
         {boxItem.fields.map((field, idx) => {
-          let test = field.optionKeyLabel
           return (
-          <Fragment key={idx}>{handleFieldsRender<T>(field, state, defaultValues)}</Fragment>
-        )})}
+            <Fragment key={idx}>
+              {handleFieldsRender<T>(
+                field,
+                state,
+                setFormDataExtra,
+                defaultValues,
+              )}
+            </Fragment>
+          )
+        })}
       </Box>
     )
   }
 
+  function mergeFormData(
+    formData1: FormData,
+    formData2: FormData | undefined,
+  ): FormData {
+    const newFormData = formData1
+    if (formData2) {
+      const extraDataKeys2 = Array.from(formData2.keys()).filter((key) => key)
+      extraDataKeys2.forEach((key) => {
+        const valueString = String(formData2.get(key)) ?? '[]'
+        newFormData.append(key, valueString)
+      })
+    }
+    return newFormData
+  }
+
+  function handleAction(payload: FormData) {
+    if (formDataExtra) mergeFormData(payload, formDataExtra)
+    formAction(payload)
+  }
+
   return (
     <div className="w-full">
-      <Form action={formAction} className="mb-8">
+      <Form action={handleAction} className="mb-8">
         <div className="w-[90vw] md:w-full flex flex-row justify-between items-center">
           <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
             {title ?? templateForm?.title}

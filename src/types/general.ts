@@ -1,7 +1,7 @@
 import { DefaultValues, FieldValues, Path } from 'react-hook-form'
 import { z } from 'zod'
 
-type LimitFieldsForm<G> = [G, ...G[]] & {
+export type LimitFieldsForm<G> = [G, ...G[]] & {
   length: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 }
 
@@ -141,7 +141,7 @@ const fieldsForm = [
   'profile.pix',
   'q',
   'segment.name',
-  'segmentId'
+  'segmentId',
 ] as const
 
 export type ParamsProp = {
@@ -197,46 +197,53 @@ export type Errors = {
   request?: string
 } & { [key in (typeof fieldsForm)[number]]?: string }
 
-
 export type OptionsTemplateForm = {
   label: string
   value: number | string
 }
 
 export interface Option {
-  label: string;
-  value: string;
+  label: string
+  value: string
 }
 
-export type FieldsTemplateForm<T> = {
+export type FieldsTemplateForm<T = any, G = T> = {
   id: Path<T>
   required: boolean
-  type: 'text' | 'date' | 'image' | 'select' | 'password' | 'file' | 'hidden' | 'selectSearch'
+  type:
+    | 'text'
+    | 'date'
+    | 'image'
+    | 'select'
+    | 'password'
+    | 'file'
+    | 'hidden'
+    | 'selectSearch'
   label: string
   classInput?: string
-  options?: T[]
+  options?: G[]
   value?: string | number
   disabled?: boolean
   placeholder?: string
-  optionKeyLabel?: keyof T
-  optionKeyValue?: keyof T
+  optionKeyLabel?: keyof G
+  optionKeyValue?: keyof G
 }
 
-export type BoxTemplateForm<T> = {
-  id: number;
-  fields: LimitFieldsForm<FieldsTemplateForm<T>>;
-};
+export type BoxTemplateForm = {
+  id: number
+  fields: LimitFieldsForm<FieldsTemplateForm>
+}
 
-export type SectionTemplateForm<T> = {
+export type SectionTemplateForm = {
   id: number
   title: string
-  boxes: Array<BoxTemplateForm<T>>
+  boxes: Array<BoxTemplateForm>
 }
 
 export type TemplateForm<T> = {
   title: string
   textButton: string
-  sections: Array<SectionTemplateForm<T>>
+  sections: Array<SectionTemplateForm>
 }
 
 export type LimitColsGrid = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
@@ -251,18 +258,18 @@ export type ModelsAll = Segment &
     search: string
   }
 
-  export type FieldsFormSchema<T> = {
-    [key in keyof T]?: z.ZodTypeAny
-  }
+export type FieldsFormSchema<T> = {
+  [key in keyof T]?: z.ZodTypeAny
+}
 
-  type ZodObjectFromSchema<T> = {
-    [key in keyof T]: z.ZodTypeAny;
-  };
-  
+type ZodObjectFromSchema<T> = {
+  [key in keyof T]: z.ZodTypeAny
+}
+
 export type SchemaForm<T> = z.ZodObject<ZodObjectFromSchema<T>>
 
 export type InitialState<T> = {
-  errors?: T & {request?: string}
+  errors?: Partial<T>
   ok?: boolean
   resp?: Models | Models[]
 }

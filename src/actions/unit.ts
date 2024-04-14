@@ -1,16 +1,20 @@
 'use server'
 
 import { formSchemaUpdateUnit } from '@/components/template/DetailUnits/schema'
+import { formSchemaRegisterUnit } from '@/components/template/RegisterUnits/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState } from '@/types/general'
+import { InitialState, Unit } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 
 export async function registerUnit(
-  prevState: InitialState,
+  prevState: InitialState<Unit>,
   formData: FormData,
-): Promise<InitialState> {
-  const validatedFields = formSchemaUpdateUnit.safeParse({
+): Promise<InitialState<Unit & { request?: string }>> {
+  console.log('formData: ', formData)
+  console.log('select: ', formData.get('select'))
+  const validatedFields = formSchemaRegisterUnit.safeParse({
     name: formData.get('name'),
+    id: formData.get('id'),
     // courses: formData.get('email'),
     // segments: formData.get('password'),
   })
@@ -53,7 +57,9 @@ export async function registerUnit(
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors
+    const error = validatedFields.error.flatten().fieldErrors as Partial<Unit>
+
+    console.log('validatedFields error: ', error)
     return {
       errors: { ...error },
     }
@@ -63,9 +69,9 @@ export async function registerUnit(
 }
 
 export async function updateUnit(
-  prevState: InitialState,
+  prevState: InitialState<Unit>,
   formData: FormData,
-): Promise<InitialState> {
+): Promise<InitialState<Unit & { request?: string }>> {
   const validatedFields = formSchemaUpdateUnit.safeParse({
     name: formData.get('name'),
     // courses: formData.get('email'),
@@ -106,7 +112,7 @@ export async function updateUnit(
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors
+    const error = validatedFields.error.flatten().fieldErrors as Partial<Unit>
     return {
       errors: { ...error },
     }

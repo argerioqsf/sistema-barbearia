@@ -3,7 +3,7 @@
 import { Text } from '@/components/atoms'
 import LabelForm from '@/components/atoms/LabelForm'
 import SelectForm from '@/components/atoms/SelectForm'
-import { Option, OptionsTemplateForm } from '@/types/general'
+import { Option } from '@/types/general'
 import React from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
@@ -28,19 +28,18 @@ export default function FormFieldSelect<T>({
   error,
   options,
   optionKeyLabel,
-  optionKeyValue
-}: FormFieldTextProps<T>){
-
+  optionKeyValue,
+}: FormFieldTextProps<T>) {
   const getOptionLabel = (option: T, key: keyof T) => String(option[key])
   const getOptionValue = (option: T, key: keyof T) => String(option[key])
 
   const OrderOptions: Option[] = options.map((option) => {
-    console.log('getOptionValue: ',getOptionValue)
+    console.log('getOptionValue: ', getOptionValue)
     return {
-      label: optionKeyLabel?getOptionLabel(option, optionKeyLabel):'',
-      value: optionKeyValue?getOptionValue(option, optionKeyValue):'',
-    };
-  });
+      label: optionKeyLabel ? getOptionLabel(option, optionKeyLabel) : '',
+      value: optionKeyValue ? getOptionValue(option, optionKeyValue) : '',
+    }
+  })
 
   return (
     <div>

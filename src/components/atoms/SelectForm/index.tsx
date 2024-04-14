@@ -7,12 +7,13 @@ type SelectFormPros<T> = {
   type?: string
   placeholder?: string
   className?: string
+  classNameOptions?: string
   propsSelect?: UseFormRegisterReturn<string>
   options?: Option[]
   value?: string
   onChange?: ChangeEventHandler<HTMLSelectElement>
   size?: number
-  onBlur?:()=> void
+  onBlur?: () => void
 }
 
 export default function SelectForm<T>({
@@ -22,8 +23,9 @@ export default function SelectForm<T>({
   value,
   onChange,
   size,
-  onBlur
-}: SelectFormPros<T>){
+  onBlur,
+  classNameOptions,
+}: SelectFormPros<T>) {
   return (
     <>
       <select
@@ -34,12 +36,16 @@ export default function SelectForm<T>({
           className,
         )}
         {...propsSelect}
-        onChange={onChange??propsSelect?.onChange}
-        onBlur={onBlur??propsSelect?.onBlur}
+        onChange={onChange ?? propsSelect?.onChange}
+        onBlur={onBlur ?? propsSelect?.onBlur}
       >
         {options &&
           options.map((option, index) => (
-            <option key={index} value={option.value}>
+            <option
+              key={index}
+              value={option.value}
+              className={twMerge(classNameOptions)}
+            >
               {option.label}
             </option>
           ))}
