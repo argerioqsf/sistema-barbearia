@@ -1,9 +1,9 @@
-import { Option, OptionsTemplateForm } from '@/types/general'
+import { Option } from '@/types/general'
 import React, { ChangeEventHandler } from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
-type SelectFormPros<T> = {
+type SelectFormPros = {
   type?: string
   placeholder?: string
   className?: string
@@ -16,7 +16,7 @@ type SelectFormPros<T> = {
   onBlur?: () => void
 }
 
-export default function SelectForm<T>({
+export default function SelectForm({
   className,
   propsSelect,
   options,
@@ -25,7 +25,7 @@ export default function SelectForm<T>({
   size,
   onBlur,
   classNameOptions,
-}: SelectFormPros<T>) {
+}: SelectFormPros) {
   return (
     <>
       <select

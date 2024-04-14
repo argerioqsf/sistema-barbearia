@@ -2,7 +2,7 @@
 
 import { formSchemaSignIn } from '@/components/template/SingIn/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState } from '@/types/general'
+import { Errors, InitialState, User } from '@/types/general'
 import {
   setRolesInCookieServer,
   setTokenInCookieServer,
@@ -10,9 +10,9 @@ import {
 } from '@/utils/cookieServer'
 
 export async function loginUser(
-  prevState: InitialState,
+  prevState: InitialState<User>,
   formData: FormData,
-): Promise<InitialState> {
+): Promise<InitialState<User & { request?: string }>> {
   const validatedFields = formSchemaSignIn.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
@@ -53,7 +53,7 @@ export async function loginUser(
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors
+    const error = validatedFields.error.flatten().fieldErrors as Errors<User>
     return {
       errors: { ...error },
     }

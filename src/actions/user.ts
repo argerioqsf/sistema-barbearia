@@ -1,11 +1,9 @@
 'use server'
 
-import { searchSchema } from '@/components/molecules/Search/schema'
 import { formSchemaUpdateUserProfile } from '@/components/template/DetailUsers/schema'
 import { formSchemaRegisterUserProfile } from '@/components/template/RegisterUser/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState, User } from '@/types/general'
-import { getTokenFromCookieClient } from '@/utils/cookieClient'
+import { Errors, InitialState, Profile, User } from '@/types/general'
 import {
   getRoleUserFromCookieServer,
   getTokenFromCookieServer,
@@ -13,9 +11,9 @@ import {
 import { verifyPermissionUser } from '@/utils/verifyPermissionUser'
 
 export async function registerUserProfile(
-  prevState: InitialState,
+  prevState: InitialState<User>,
   formData: FormData,
-): Promise<InitialState> {
+): Promise<InitialState<User & { request?: string }>> {
   const validatedFields = formSchemaRegisterUserProfile.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
@@ -72,7 +70,7 @@ export async function registerUserProfile(
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors
+    const error = validatedFields.error.flatten().fieldErrors as Errors<User>
     return {
       errors: { ...error },
     }
@@ -82,9 +80,9 @@ export async function registerUserProfile(
 }
 
 export async function updateUserProfile(
-  prevState: InitialState,
+  prevState: InitialState<Profile & User>,
   formData: FormData,
-): Promise<InitialState> {
+): Promise<InitialState<Profile & User & { request?: string }>> {
   const validatedFields = formSchemaUpdateUserProfile.safeParse({
     id: formData.get('id'),
     name: formData.get('name'),
@@ -143,57 +141,14 @@ export async function updateUserProfile(
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors
+    const error = validatedFields.error.flatten().fieldErrors as Errors<
+      Profile & User
+    >
     return {
       errors: { ...error },
     }
   } else {
     console.log('Error unknown: ')
-    return { errors: { request: 'Error unknown' } }
-  }
-}
-
-export async function searchUsers(
-  prevState: InitialState,
-  formData: FormData,
-): Promise<InitialState> {
-  const validatedFields = searchSchema.safeParse({
-    search: formData.get('search'),
-  })
-
-  if (validatedFields.success) {
-    try {
-      const value = getTokenFromCookieClient()
-      const response = await api(`/api/users`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${value}`,
-        },
-      })
-      if (!response.ok) {
-        const errorMessage = await response.text()
-        return {
-          errors: { request: JSON.parse(errorMessage).message },
-        }
-      }
-      const users = (await response.json()) as { users: User[] }
-      return {
-        errors: {},
-        ok: true,
-        resp: users.users,
-      }
-    } catch (error) {
-      return {
-        errors: { request: 'Failed to Login' },
-      }
-    }
-  } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors
-    return {
-      errors: { ...error },
-    }
-  } else {
     return { errors: { request: 'Error unknown' } }
   }
 }

@@ -49,7 +49,7 @@ export function handleFieldsRender<T>(
         options={field.options ?? []}
         optionKeyLabel={field.optionKeyLabel}
         optionKeyValue={field.optionKeyValue}
-        setValue={setValue}
+        label={field.label}
         setFormDataExtra={setFormDataExtra}
       />
     )

@@ -12,12 +12,12 @@ const fieldsSegment: LimitFieldsForm<FieldsTemplateForm<Unit, Segment>> = [
     id: 'segments',
     required: true,
     type: 'selectSearch',
-    label: '',
+    label: 'Seguimentos',
     optionKeyLabel: 'name',
     optionKeyValue: 'id',
     options: [
       {
-        id: 'seguimento 1',
+        id: '0ec2efaf-50d4-404b-aa67-2b737ecb249f',
         name: 'seguimento 1',
         created_at: '2342423',
       },
@@ -40,7 +40,7 @@ const fieldsCourse: LimitFieldsForm<FieldsTemplateForm<Unit, Course>> = [
     id: 'courses',
     required: true,
     type: 'selectSearch',
-    label: '',
+    label: 'Cursos',
     optionKeyLabel: 'name',
     optionKeyValue: 'id',
     options: [
@@ -87,10 +87,22 @@ export const templateForm: TemplateForm<Unit> = {
           id: 1,
           fields: fieldsUnit,
         },
+      ],
+    },
+    {
+      id: 1,
+      title: 'Seguimentos',
+      boxes: [
         {
           id: 2,
           fields: fieldsSegment,
         },
+      ],
+    },
+    {
+      id: 1,
+      title: 'Cursos',
+      boxes: [
         {
           id: 3,
           fields: fieldsCourse,

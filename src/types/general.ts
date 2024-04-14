@@ -39,6 +39,7 @@ export type User = {
   name: string
   email: string
   active: string
+  password?: string
   // eslint-disable-next-line no-use-before-define
   profile: Profile
   created_at: string
@@ -193,9 +194,9 @@ export type InfoList = {
   errorRequest?: string | null
 }
 
-export type Errors = {
+export type Errors<T> = Partial<T> & {
   request?: string
-} & { [key in (typeof fieldsForm)[number]]?: string }
+}
 
 export type OptionsTemplateForm = {
   label: string
@@ -285,8 +286,8 @@ export type Form<T> = {
   template: TemplateForm<T>
   loading?: boolean
   getDefaultValues?: {
-    response?: Models
-    error?: Errors
+    response?: T
+    error?: Errors<T>
   }
   defaultValues?: DefaultValues<T>
   title?: string
@@ -308,7 +309,7 @@ export type SearchType = {
   q: string
 }
 
-export interface ReturnLoadList {
-  response?: Models[]
-  error?: Errors
+export interface ReturnLoadList<T> {
+  response?: T[]
+  error?: Errors<T>
 }

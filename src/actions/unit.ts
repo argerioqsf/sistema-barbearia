@@ -11,12 +11,14 @@ export async function registerUnit(
   formData: FormData,
 ): Promise<InitialState<Unit & { request?: string }>> {
   console.log('formData: ', formData)
-  console.log('select: ', formData.get('select'))
+  const segments = JSON.parse(String(formData.get('segments')) ?? '[]')
+  const courses = JSON.parse(String(formData.get('courses')) ?? '[]')
+  console.log('segments: ', segments)
+  console.log('courses: ', courses)
   const validatedFields = formSchemaRegisterUnit.safeParse({
     name: formData.get('name'),
-    id: formData.get('id'),
-    // courses: formData.get('email'),
-    // segments: formData.get('password'),
+    segments,
+    courses,
   })
 
   console.log('validatedFields: ', validatedFields)
@@ -36,8 +38,8 @@ export async function registerUnit(
         },
         body: JSON.stringify({
           name: formData.get('name'),
-          // courses: formData.get('courses'),
-          // segments: formData.get('segments'),
+          segments: segments ?? [],
+          courses: courses ?? [],
         }),
       })
       console.log('response: ', response)

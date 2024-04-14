@@ -1,13 +1,9 @@
-import { Button, InputForm, Text } from '@/components/atoms'
+import { Button, InputForm, LabelForm, Text } from '@/components/atoms'
 import SelectForm from '@/components/atoms/SelectForm'
 import { Option } from '@/types/general'
 import { Trash } from 'lucide-react'
 import React, { Dispatch, SetStateAction, useState } from 'react'
-import {
-  FieldValues,
-  UseFormRegisterReturn,
-  UseFormSetValue,
-} from 'react-hook-form'
+import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
 interface Props<T> {
@@ -51,12 +47,10 @@ export function SelectFormWithSearch<T>({
 
   const returnExistingValues = (state: FormData) => {
     const newState = new FormData()
-    const extraDataKeys = Array.from(state.keys()).filter((key) =>
-      key.startsWith('extraData.'),
-    )
+    const extraDataKeys = Array.from(state.keys()).filter((key) => key)
     extraDataKeys.forEach((key) => {
       const valueString = String(state.get(key)) ?? '[]'
-      if (key !== `extraData.${props.name}`) {
+      if (key !== props.name) {
         newState.append(key, valueString)
       }
     })
@@ -64,7 +58,7 @@ export function SelectFormWithSearch<T>({
   }
 
   const parseFormDataToJson = (state: FormData): string[] => {
-    const extraData = state.get(`extraData.${props.name}`)
+    const extraData = state.get(props.name)
     return JSON.parse(String(extraData ?? '[]'))
   }
 
@@ -88,7 +82,7 @@ export function SelectFormWithSearch<T>({
         const extraDataJson = parseFormDataToJson(state)
         const newValue = [...extraDataJson, event.target.value]
         const newValueString = JSON.stringify(newValue)
-        newState.append(`extraData.${props.name}`, newValueString)
+        newState.append(props.name, newValueString)
         return newState
       })
       const itemSelected = filteredOptions.filter(
@@ -107,7 +101,7 @@ export function SelectFormWithSearch<T>({
         const itemsFormDataFilter = extraDataJson.filter((item) => item !== id)
         const newValue = [...itemsFormDataFilter]
         const newValueString = JSON.stringify(newValue)
-        newState.append(`extraData.${props.name}`, newValueString)
+        newState.append(props.name, newValueString)
         return newState
       })
       const itemsFilter = selectedItems.filter((item) => item.value !== id)
@@ -121,133 +115,66 @@ export function SelectFormWithSearch<T>({
 
   return (
     <div>
-      {/* <FormFieldText
-        props={props}
-        error={error}
-        label={label}
-        type="text"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-        onFocus={handleFocus}
-        classInput={`bg-gray-300 ${error && 'ring-red-500 focus:ring-red-500'}`}
-      /> */}
+      {label && <LabelForm htmlFor={props.name} label={label} />}
+      <div className="mt-2">
+        <InputForm
+          onChange={handleSearchChange}
+          onFocus={() => setIsFocused(true)}
+          value={searchTerm}
+          id="searchSelectMult"
+          type={'text'}
+          placeholder="Search..."
+          className={twMerge(
+            'rounded-md border-0',
+            'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+            'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+            `bg-gray-300 ${error && 'ring-red-500 focus:ring-red-500'}`,
+          )}
+        />
 
-      <InputForm
-        onChange={handleSearchChange}
-        onFocus={() => setIsFocused(true)}
-        value={searchTerm}
-        id="searchSelectMult"
-        type={'text'}
-        placeholder="Search..."
-        className={twMerge(
-          'rounded-md border-0',
-          'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-          'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
-          `bg-gray-300 ${error && 'ring-red-500 focus:ring-red-500'}`,
-        )}
-      />
+        <div className="mt-2 relative">
+          {isFocused && (
+            <SelectForm
+              classNameOptions="py-2 px-4 mb-2 block w-full text-left bg-white hover:bg-gray-100 border rounded-full border-gray-300"
+              options={filteredOptions}
+              onChange={handleChange}
+              size={4}
+              onBlur={() => setIsFocused(false)}
+              className={twMerge(
+                'rounded-md border-0 absolute top-full shadow-gray-500 shadow-md shadow',
+                'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+              )}
+            />
+          )}
+        </div>
 
-      {/* <div className="mt-2 relative">
-        {isFocused && (
-          <select
-            className={twMerge(
-              'rounded-md border-0 absolute top-full shadow-gray-500 shadow-md shadow',
-              'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-              'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
-            )}
-            multiple
-            {...props}
-            // onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-            //   props.onChange(event)
-            //   handleChange(event)
-            // }}
-          >
-            {filteredOptions &&
-              filteredOptions.map((option, index) => (
-                <option key={index} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-          </select>
-        )}
-        <div>
-          <h3>Selected Items:</h3>
+        <div className="bg-gray-300 rounded-lg p-4">
           <ul>
-            {selectedItems.map((item, index) => (
-              <li key={index}>{item.label}</li>
+            {selectedItems?.map((item, idx) => (
+              <div
+                key={idx}
+                className="bg-slate-50 px-8 mb-4 w-full flex flex-row items-center justify-between rounded-full"
+              >
+                <li className="min-w-20 flex justify-center">{item.label}</li>
+                <Button type="button" onClick={() => removeItem(item.value)}>
+                  <Trash color="red" />
+                </Button>
+              </div>
             ))}
           </ul>
         </div>
-      </div> */}
 
-      <div className="mt-2 relative">
-        {isFocused && (
-          <SelectForm
-            classNameOptions="py-2 px-4 mb-2 block w-full text-left bg-white hover:bg-gray-100 border rounded-full border-gray-300"
-            options={filteredOptions}
-            onChange={handleChange}
-            size={4}
-            onBlur={() => setIsFocused(false)}
-            className={twMerge(
-              'rounded-md border-0 absolute top-full shadow-gray-500 shadow-md shadow',
-              'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-              'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
-            )}
-          />
+        {error && (
+          <Text
+            role="alert"
+            className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
+          >
+            {error}
+          </Text>
         )}
       </div>
-
-      <div className="bg-gray-300 rounded-lg p-4">
-        <ul>
-          {selectedItems?.map((item, idx) => (
-            <div
-              key={idx}
-              className="bg-slate-50 px-8 mb-4 w-full flex flex-row items-center justify-between rounded-full"
-            >
-              <li className="min-w-20 flex justify-center">{item.label}</li>
-              <Button type="button" onClick={() => removeItem(item.value)}>
-                <Trash color="red" />
-              </Button>
-            </div>
-          ))}
-        </ul>
-      </div>
-
-      {error && (
-        <Text
-          role="alert"
-          className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
-        >
-          {error}
-        </Text>
-      )}
     </div>
-
-    // <div className="relative">
-    //   <input
-    //     type="text"
-    //     placeholder="Search..."
-    //     value={searchTerm}
-    //     onChange={handleSearchChange}
-    //     onFocus={handleFocus}
-    //     onBlur={handleBlur}
-    //     className="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-    //   />
-    //   {isFocused && (
-    //     <SelectForm
-    //       options={filteredOptions}
-    //       value={value}
-    //       onChange={handleChange}
-    //       size={5}
-    //       className={twMerge(
-    //         'rounded-md border-0',
-    //         'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-    //         'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6'
-    //       )}
-    //     />
-    //   )}
-    // </div>
   )
 }
 
