@@ -1,6 +1,6 @@
-import { TemplateForm } from '@/types/general'
+import { Course, TemplateForm } from '@/types/general'
 
-export const templateForm: TemplateForm = {
+export const templateForm: TemplateForm<Course> = {
   title: 'Cadastrar Curso',
   textButton: 'Cadastrar',
   sections: [
@@ -27,17 +27,19 @@ export const templateForm: TemplateForm = {
               required: true,
               type: 'select',
               label: 'Ativo',
+              optionKeyLabel: 'label',
+              optionKeyValue: 'value',
               options: [
                 {
                   value: '',
-                  label: 'Selecioine',
+                  label: 'Selecione',
                 },
                 {
-                  value: 1,
+                  value: 'true',
                   label: 'Sim',
                 },
                 {
-                  value: 0,
+                  value: 'false',
                   label: 'Não',
                 },
               ],

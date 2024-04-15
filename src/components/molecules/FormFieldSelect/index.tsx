@@ -3,7 +3,7 @@
 import { Text } from '@/components/atoms'
 import LabelForm from '@/components/atoms/LabelForm'
 import SelectForm from '@/components/atoms/SelectForm'
-import { Option } from '@/types/general'
+import { Option, OptionGeneric, OptionKey } from '@/types/general'
 import React from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
@@ -16,9 +16,9 @@ type FormFieldTextProps<T> = {
   bgColor?: string
   props: UseFormRegisterReturn<string>
   error: string
-  options: T[]
-  optionKeyLabel?: keyof T
-  optionKeyValue?: keyof T
+  options: OptionGeneric<T>[]
+  optionKeyLabel?: OptionKey<T>
+  optionKeyValue?: OptionKey<T>
 }
 
 export default function FormFieldSelect<T>({
@@ -30,11 +30,12 @@ export default function FormFieldSelect<T>({
   optionKeyLabel,
   optionKeyValue,
 }: FormFieldTextProps<T>) {
-  const getOptionLabel = (option: T, key: keyof T) => String(option[key])
-  const getOptionValue = (option: T, key: keyof T) => String(option[key])
+  const getOptionLabel = (option: OptionGeneric<T>, key: OptionKey<T>) =>
+    String(option[key as keyof OptionGeneric<T>])
+  const getOptionValue = (option: OptionGeneric<T>, key: OptionKey<T>) =>
+    String(option[key as keyof OptionGeneric<T>])
 
   const OrderOptions: Option[] = options.map((option) => {
-    console.log('getOptionValue: ', getOptionValue)
     return {
       label: optionKeyLabel ? getOptionLabel(option, optionKeyLabel) : '',
       value: optionKeyValue ? getOptionValue(option, optionKeyValue) : '',

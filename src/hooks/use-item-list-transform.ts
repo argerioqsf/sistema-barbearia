@@ -1,9 +1,9 @@
-import { FieldsList, ItemListType, Models } from '@/types/general'
+import { FieldsList, ItemListType, LimitFields } from '@/types/general'
 
 export const useItemListTransform = () => {
-  const listTransform = (
-    list: Models[],
-    fields: FieldsList,
+  const listTransform = <T>(
+    list: T[],
+    fields: LimitFields<FieldsList<T>>,
   ): ItemListType[] => {
     if (!list) return []
     return list?.map((item) => {
@@ -21,13 +21,18 @@ export const useItemListTransform = () => {
       if (fields) {
         fields.forEach((field) => {
           if (field !== '') {
-            const value = getItemValue(item, field)
+            const value = getItemValue<T>(item, field)
             if (value !== undefined) {
               count++
+              const itemId = item as T & { id: string }
               const key = `info${count}` as keyof ItemListType
-              newItem.id = item.id
+              newItem.id = itemId.id
               newItem[key] =
-                typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value
+                typeof value === 'boolean'
+                  ? value
+                    ? 'Sim'
+                    : 'Não'
+                  : String(value)
             }
           } else {
             count++
@@ -39,15 +44,32 @@ export const useItemListTransform = () => {
     })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const getItemValue = (item: Models, field: string): any => {
+  const getItemValue = <T>(
+    item: T,
+    field: FieldsList<T>,
+  ): string | number | boolean => {
     const keys = field.split('.')
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let value: any = item
+    type Value =
+      | {
+          [key in keyof T]: Value
+        }
+      | string
+      | number
+      | boolean
+
+    let value = item as Value
+
     for (const key of keys) {
-      value = value?.[key]
+      if (typeof value === 'object') {
+        value = value[key as keyof Value]
+      }
     }
-    return value
+    console.log('value: ', value)
+    return typeof value === 'string' ||
+      typeof value === 'number' ||
+      typeof value === 'boolean'
+      ? value
+      : 'Empty'
   }
 
   return { listTransform }

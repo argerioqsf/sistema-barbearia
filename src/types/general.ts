@@ -1,11 +1,11 @@
-import { DefaultValues, FieldValues, Path } from 'react-hook-form'
+import { DefaultValues, Path } from 'react-hook-form'
 import { z } from 'zod'
 
 export type LimitFieldsForm<G> = [G, ...G[]] & {
   length: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 }
 
-type LimitFields<T> = [T, T, T, T, T]
+export type LimitFields<T> = [T, T, T, T, T]
 
 export type Segment = {
   id: string
@@ -19,7 +19,7 @@ export type Course = {
   id: string
   name: string
   quant_leads: number
-  status: string
+  active: boolean
 }
 
 export type CourseProps = keyof Course
@@ -30,6 +30,10 @@ export type Unit = {
   created_at?: string
   segments?: { segment: Segment }[] | []
   courses?: { course: Course }[] | []
+  _count: {
+    segments: number
+    courses: number
+  }
 }
 
 export type UnitProps = keyof Unit
@@ -158,7 +162,7 @@ export type UserHookType = keyof BaseUserHookType
 
 export type TypesForIdFieldsForm = (typeof fieldsForm)[number]
 
-export type FieldsList = LimitFields<UserHookType>
+export type FieldsList<T> = Path<T> | ''
 
 export type IconSvgProps = {
   size?: number
@@ -184,9 +188,9 @@ export type ItemListType = {
   info5: string
 }
 
-export type InfoList = {
-  itemsHeader: Array<string>
-  itemsList: FieldsList
+export type InfoList<T> = {
+  itemsHeader: string[]
+  itemsList: LimitFields<FieldsList<T>>
   listActions?: ListActionsProps[]
   title?: string
   hrefButton?: string
@@ -208,7 +212,11 @@ export interface Option {
   value: string
 }
 
-export type FieldsTemplateForm<T = any, G = T> = {
+export type OptionGeneric<T> = T | { value?: string; label?: string }
+
+export type OptionKey<T> = Path<OptionGeneric<T>>
+
+export type FieldsTemplateForm<T> = {
   id: Path<T>
   required: boolean
   type:
@@ -222,29 +230,29 @@ export type FieldsTemplateForm<T = any, G = T> = {
     | 'selectSearch'
   label: string
   classInput?: string
-  options?: G[]
+  options?: OptionGeneric<T>[]
   value?: string | number
   disabled?: boolean
   placeholder?: string
-  optionKeyLabel?: keyof G
-  optionKeyValue?: keyof G
+  optionKeyLabel?: OptionKey<T>
+  optionKeyValue?: OptionKey<T>
 }
 
-export type BoxTemplateForm = {
+export type BoxTemplateForm<T> = {
   id: number
-  fields: LimitFieldsForm<FieldsTemplateForm>
+  fields: LimitFieldsForm<FieldsTemplateForm<T>>
 }
 
-export type SectionTemplateForm = {
+export type SectionTemplateForm<T> = {
   id: number
   title: string
-  boxes: Array<BoxTemplateForm>
+  boxes: Array<BoxTemplateForm<T>>
 }
 
 export type TemplateForm<T> = {
   title: string
   textButton: string
-  sections: Array<SectionTemplateForm>
+  sections: SectionTemplateForm<T>[]
 }
 
 export type LimitColsGrid = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
@@ -294,7 +302,7 @@ export type Form<T> = {
   action: ServerAction<T>
   schema?: SchemaForm<T>
   pathSuccess: string
-  handlerForm?: (data: ModelsAll) => void
+  handlerForm?: (data: T) => void
   errorMessage?: string
 }
 

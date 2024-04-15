@@ -4,16 +4,16 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { api } from '@/data/api'
-import { InfoList, Models, Errors } from '@/types/general'
+import { InfoList, Models, Errors, Segment } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import React from 'react'
 
-interface ReturnLoadList {
+interface ReturnLoadList<T> {
   response?: Models[]
-  error?: Errors
+  error?: Errors<T>
 }
 
-async function loadSegments(): Promise<ReturnLoadList> {
+async function loadSegments(): Promise<ReturnLoadList<Segment>> {
   try {
     const token = getTokenFromCookieServer()
     const response = await api('/segments', {
@@ -38,7 +38,7 @@ async function loadSegments(): Promise<ReturnLoadList> {
 }
 
 export default async function ListSegments() {
-  const infoList: InfoList = {
+  const infoList: InfoList<Segment> = {
     itemsHeader: ['N', 'Nome', ''],
     itemsList: ['name', '', '', '', ''],
   }

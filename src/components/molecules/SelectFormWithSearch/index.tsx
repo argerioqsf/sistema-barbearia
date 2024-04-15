@@ -1,16 +1,16 @@
 import { Button, InputForm, LabelForm, Text } from '@/components/atoms'
 import SelectForm from '@/components/atoms/SelectForm'
-import { Option } from '@/types/general'
+import { Option, OptionGeneric, OptionKey } from '@/types/general'
 import { Trash } from 'lucide-react'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
 interface Props<T> {
-  options: T[]
+  options: OptionGeneric<T>[]
   onChange?: (value: string) => void
-  optionKeyLabel?: keyof T
-  optionKeyValue?: keyof T
+  optionKeyLabel?: OptionKey<T>
+  optionKeyValue?: OptionKey<T>
   error: string
   props: UseFormRegisterReturn<string>
   label: string
@@ -31,8 +31,10 @@ export function SelectFormWithSearch<T>({
   const [isFocused, setIsFocused] = useState(false)
   const [selectedItems, setSelectedItems] = useState<Option[]>([])
 
-  const getOptionLabel = (option: T, key: keyof T) => String(option[key])
-  const getOptionValue = (option: T, key: keyof T) => String(option[key])
+  const getOptionLabel = (option: OptionGeneric<T>, key: OptionKey<T>) =>
+    String(option[key as keyof OptionGeneric<T>])
+  const getOptionValue = (option: OptionGeneric<T>, key: OptionKey<T>) =>
+    String(option[key as keyof OptionGeneric<T>])
 
   const OrderOptions: Option[] = options.map((option) => {
     return {
@@ -141,7 +143,7 @@ export function SelectFormWithSearch<T>({
               size={4}
               onBlur={() => setIsFocused(false)}
               className={twMerge(
-                'rounded-md border-0 absolute top-full shadow-gray-500 shadow-md shadow',
+                'rounded-md border-0 absolute top-full shadow-gray-500',
                 'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
                 'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
               )}

@@ -2,25 +2,18 @@ import { InputForm } from '@/components/atoms'
 import { FormFieldText } from '@/components/molecules'
 import FormFieldSelect from '@/components/molecules/FormFieldSelect'
 import SelectFormWithSearch from '@/components/molecules/SelectFormWithSearch'
-import { useHandlerForm } from '@/hooks/use-hanlder-form'
 import { FieldsTemplateForm, InitialState } from '@/types/general'
 import { Dispatch, ReactElement, SetStateAction } from 'react'
-import {
-  DefaultValues,
-  FieldValues,
-  Path,
-  UseFormRegister,
-} from 'react-hook-form'
+import { FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
-export function handleFieldsRender<T>(
+export default function handleFieldsRender<T>(
   field: FieldsTemplateForm<T>,
   state: InitialState<T & { request?: string }>,
   setFormDataExtra: Dispatch<SetStateAction<FormData>>,
-  defaultValues?: DefaultValues<T>,
+  register: UseFormRegister<T & FieldValues>,
 ): ReactElement {
-  const { register, setValue } = useHandlerForm(undefined, defaultValues)
+  const id = field.id as Path<T & { request?: string }>
 
-  const id = field.id as Path<T> & 'request'
   const propsField = {
     props: { ...register(id, { required: field.required }) },
     label: field.label,
@@ -45,7 +38,6 @@ export function handleFieldsRender<T>(
     return (
       <SelectFormWithSearch<T>
         {...propsField}
-        // onChange={(value: string) => console.log('value: ', value)}
         options={field.options ?? []}
         optionKeyLabel={field.optionKeyLabel}
         optionKeyValue={field.optionKeyValue}

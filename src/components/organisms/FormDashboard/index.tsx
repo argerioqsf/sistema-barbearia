@@ -11,25 +11,25 @@ import {
   ServerAction,
   TemplateForm,
 } from '@/types/general'
-import { handleFieldsRender } from '@/utils/handleFieldsRender'
+import handleFieldsRender from '@/utils/handleFieldsRender'
 import { Fragment, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
-import { DefaultValues } from 'react-hook-form'
+import { DefaultValues, FieldValues, useForm } from 'react-hook-form'
 
 type FormDashboardProps<T> = {
   templateForm?: TemplateForm<T>
   loading?: boolean
   getDefaultValues?: GetDefaultValues<T>
   title?: string
-  action: ServerAction<T>
+  action: ServerAction<T & { request?: string }>
   schemaName: string
   pathSuccess: string
   errorMessage?: string
-  defaultValues?: DefaultValues<T>
+  defaultValues?: DefaultValues<T & FieldValues>
   errorRequest?: string
 }
 
-export default function FormDashboard<T extends { request?: string }>({
+export default function FormDashboard<T>({
   templateForm,
   loading = false,
   title,
@@ -42,17 +42,21 @@ export default function FormDashboard<T extends { request?: string }>({
   const { pushRouter } = useHandlerRouter()
   const [formDataExtra, setFormDataExtra] = useState<FormData>(new FormData())
 
+  const { register } = useForm<T & FieldValues>({
+    defaultValues: defaultValues ?? undefined,
+  })
+
   console.log('formDataExtra: ', formDataExtra)
 
-  const initialStateForm: InitialState<T> = {
+  const initialStateForm: InitialState<T & { request?: string }> = {
     errors: undefined,
     ok: false,
   }
 
-  const [state, formAction] = useFormState<InitialState<T>, FormData>(
-    action,
-    initialStateForm,
-  )
+  const [state, formAction] = useFormState<
+    InitialState<T & { request?: string }>,
+    FormData
+  >(action, initialStateForm)
 
   useEffect(() => {
     if (state.ok) {
@@ -60,7 +64,7 @@ export default function FormDashboard<T extends { request?: string }>({
     }
   }, [action, pathSuccess, pushRouter, state.ok])
 
-  const handlerBoxRender = (boxItem: BoxTemplateForm) => {
+  const handlerBoxRender = (boxItem: BoxTemplateForm<T>) => {
     const quantInputHidden = boxItem?.fields?.filter(
       (field) => field.type === 'hidden',
     )
@@ -71,12 +75,7 @@ export default function FormDashboard<T extends { request?: string }>({
         {boxItem.fields.map((field, idx) => {
           return (
             <Fragment key={idx}>
-              {handleFieldsRender<T>(
-                field,
-                state,
-                setFormDataExtra,
-                defaultValues,
-              )}
+              {handleFieldsRender<T>(field, state, setFormDataExtra, register)}
             </Fragment>
           )
         })}
