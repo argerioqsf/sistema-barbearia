@@ -30,7 +30,7 @@ export type Unit = {
   created_at?: string
   segments?: { segment: Segment }[] | []
   courses?: { course: Course }[] | []
-  _count: {
+  _count?: {
     segments: number
     courses: number
   }
@@ -278,7 +278,7 @@ type ZodObjectFromSchema<T> = {
 export type SchemaForm<T> = z.ZodObject<ZodObjectFromSchema<T>>
 
 export type InitialState<T> = {
-  errors?: Partial<T>
+  errors?: Partial<T & { request?: string }>
   ok?: boolean
   resp?: Models | Models[]
 }

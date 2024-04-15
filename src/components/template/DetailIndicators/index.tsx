@@ -10,7 +10,7 @@ import { updateUserProfile } from '@/actions/user'
 
 async function getIndicatorForId(id: string): Promise<{
   response?: User
-  error?: Errors
+  error?: Errors<User>
 }> {
   try {
     const token = getTokenFromCookieServer()
@@ -48,7 +48,7 @@ export default async function DetailIndicator({ id }: { id: string }) {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <FormDashboard
+        <FormDashboard<User>
           title={templates.templateForm.title}
           templateForm={templates.templateForm}
           defaultValues={indicator ?? undefined}

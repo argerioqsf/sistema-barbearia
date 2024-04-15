@@ -12,7 +12,7 @@ import {
 export async function loginUser(
   prevState: InitialState<User>,
   formData: FormData,
-): Promise<InitialState<User & { request?: string }>> {
+): Promise<InitialState<User>> {
   const validatedFields = formSchemaSignIn.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),

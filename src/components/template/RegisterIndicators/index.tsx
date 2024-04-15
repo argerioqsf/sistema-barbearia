@@ -6,6 +6,7 @@ import FormDashboard from '@/components/organisms/FormDashboard'
 import React from 'react'
 import { templateForm } from './templateForm'
 import { loginUser } from '@/actions/auth'
+import { Profile, User } from '@/types/general'
 
 const RegisterIndicators: React.FC = () => {
   return (
@@ -15,7 +16,7 @@ const RegisterIndicators: React.FC = () => {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6 lg:mt-8">
-          <FormDashboard
+          <FormDashboard<User | Profile>
             templateForm={templateForm}
             action={loginUser}
             schemaName="EditProfile"

@@ -11,9 +11,9 @@ import {
 import { verifyPermissionUser } from '@/utils/verifyPermissionUser'
 
 export async function registerUserProfile(
-  prevState: InitialState<User>,
+  prevState: InitialState<Profile | User>,
   formData: FormData,
-): Promise<InitialState<User & { request?: string }>> {
+): Promise<InitialState<User>> {
   const validatedFields = formSchemaRegisterUserProfile.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
@@ -80,9 +80,9 @@ export async function registerUserProfile(
 }
 
 export async function updateUserProfile(
-  prevState: InitialState<Profile & User>,
+  prevState: InitialState<Profile | User>,
   formData: FormData,
-): Promise<InitialState<Profile & User & { request?: string }>> {
+): Promise<InitialState<Profile | User>> {
   const validatedFields = formSchemaUpdateUserProfile.safeParse({
     id: formData.get('id'),
     name: formData.get('name'),

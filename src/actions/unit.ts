@@ -9,7 +9,7 @@ import { getTokenFromCookieServer } from '@/utils/cookieServer'
 export async function registerUnit(
   prevState: InitialState<Unit>,
   formData: FormData,
-): Promise<InitialState<Unit & { request?: string }>> {
+): Promise<InitialState<Unit>> {
   console.log('formData: ', formData)
   const segments = JSON.parse(String(formData.get('segments')) ?? '[]')
   const courses = JSON.parse(String(formData.get('courses')) ?? '[]')
@@ -73,7 +73,7 @@ export async function registerUnit(
 export async function updateUnit(
   prevState: InitialState<Unit>,
   formData: FormData,
-): Promise<InitialState<Unit & { request?: string }>> {
+): Promise<InitialState<Unit>> {
   const validatedFields = formSchemaUpdateUnit.safeParse({
     name: formData.get('name'),
     // courses: formData.get('email'),

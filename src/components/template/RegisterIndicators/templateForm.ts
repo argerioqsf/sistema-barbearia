@@ -1,6 +1,6 @@
-import { TemplateForm } from '@/types/general'
+import { Profile, TemplateForm, User } from '@/types/general'
 
-export const templateForm: TemplateForm = {
+export const templateForm: TemplateForm<User | Profile> = {
   title: 'Cadastrar Indicador',
   textButton: 'Cadastrar',
   sections: [
@@ -63,16 +63,26 @@ export const templateForm: TemplateForm = {
           id: 5,
           fields: [
             {
-              id: 'status',
+              id: 'active',
               required: true,
-              type: 'text',
-              label: 'Status',
-            },
-            {
-              id: 'created_at',
-              required: true,
-              type: 'date',
-              label: 'Data',
+              type: 'select',
+              label: 'Ativo',
+              optionKeyLabel: 'label',
+              optionKeyValue: 'value',
+              options: [
+                {
+                  label: 'Selecionar',
+                  value: '',
+                },
+                {
+                  label: 'Sim',
+                  value: 'true',
+                },
+                {
+                  label: 'Não',
+                  value: 'false',
+                },
+              ],
             },
           ],
         },

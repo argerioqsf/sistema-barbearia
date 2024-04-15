@@ -1,6 +1,6 @@
-import { InfoList, TemplateForm } from '@/types/general'
+import { InfoList, TemplateForm, User } from '@/types/general'
 
-const templateForm: TemplateForm = {
+const templateForm: TemplateForm<User> = {
   title: 'Indicador',
   textButton: 'Editar',
   sections: [
@@ -56,6 +56,8 @@ const templateForm: TemplateForm = {
               required: true,
               type: 'select',
               label: 'Genero',
+              optionKeyLabel: 'label',
+              optionKeyValue: 'value',
               options: [
                 {
                   label: 'Maculino',
@@ -98,6 +100,8 @@ const templateForm: TemplateForm = {
               required: true,
               type: 'select',
               label: 'Ativo',
+              optionKeyLabel: 'label',
+              optionKeyValue: 'value',
               options: [
                 {
                   label: 'Selecionar',
@@ -127,9 +131,9 @@ const templateForm: TemplateForm = {
   ],
 }
 
-const infoList: InfoList = {
-  itemsHeader: ['N', 'NOME / WHATSAPP', 'CURSO', 'INDICADOR', 'STATUS'],
-  itemsList: ['name', 'phone', '', 'indicator.name', 'status'],
+const infoList: InfoList<User> = {
+  itemsHeader: ['N', 'NOME / WHATSAPP', 'CURSO', 'INDICADOR', 'ATIVO'],
+  itemsList: ['name', 'profile.phone', '', 'name', 'active'],
   listActions: [
     {
       id: 1,

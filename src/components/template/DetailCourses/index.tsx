@@ -10,7 +10,7 @@ import { updateCourse } from '@/actions/course'
 
 async function getCourseForId(id: string): Promise<{
   response?: Course
-  error?: Errors
+  error?: Errors<Course>
 }> {
   try {
     const token = getTokenFromCookieServer()

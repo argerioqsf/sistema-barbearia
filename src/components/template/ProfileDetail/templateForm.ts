@@ -1,6 +1,6 @@
-import { TemplateForm } from '@/types/general'
+import { Profile, TemplateForm } from '@/types/general'
 
-export const templateForm: TemplateForm = {
+export const templateForm: TemplateForm<Profile> = {
   title: 'Perfil',
   textButton: 'Editar',
   sections: [
@@ -61,6 +61,8 @@ export const templateForm: TemplateForm = {
               required: true,
               type: 'select',
               label: 'Status',
+              optionKeyLabel: 'label',
+              optionKeyValue: 'value',
               options: [
                 {
                   value: '',

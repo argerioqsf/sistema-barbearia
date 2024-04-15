@@ -1,6 +1,6 @@
-import { Course, Segment, TemplateForm, TimeLine, Unit } from '@/types/general'
+import { Course, Segment, TemplateForm, Unit } from '@/types/general'
 
-export const templateForm: TemplateForm<Unit | Course | Segment | TimeLine> = {
+export const templateForm: TemplateForm<Unit | Course | Segment> = {
   title: 'Cadastrar Unidade',
   textButton: 'Cadastrar',
   sections: [

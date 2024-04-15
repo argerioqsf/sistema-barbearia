@@ -1,6 +1,6 @@
-import { TemplateForm } from '@/types/general'
+import { Segment, TemplateForm } from '@/types/general'
 
-export const templateForm: TemplateForm = {
+export const templateForm: TemplateForm<Segment> = {
   title: 'Cadastrar Segmento',
   textButton: 'Cadastrar',
   sections: [

@@ -5,7 +5,7 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import React, { useEffect, useState } from 'react'
 import { templateForm } from './templateForm'
-import { loginUser } from '@/actions/auth'
+import { registerLead } from '@/actions/lead'
 
 const RegisterLeads: React.FC = () => {
   const [templateFormState, setTemplateFormState] = useState(templateForm)
@@ -18,15 +18,15 @@ const RegisterLeads: React.FC = () => {
       },
       {
         label: 'option1',
-        value: 1,
+        value: '1',
       },
       {
         label: 'option2',
-        value: 2,
+        value: '2',
       },
       {
         label: 'option3',
-        value: 3,
+        value: '3',
       },
     ]
     templateFormState.sections[0].boxes[3].fields[1].options = [
@@ -36,15 +36,15 @@ const RegisterLeads: React.FC = () => {
       },
       {
         label: 'option4',
-        value: 4,
+        value: '4',
       },
       {
         label: 'option5',
-        value: 5,
+        value: '5',
       },
       {
         label: 'option6',
-        value: 6,
+        value: '6',
       },
     ]
     setTemplateFormState({ ...templateFormState })
@@ -59,7 +59,7 @@ const RegisterLeads: React.FC = () => {
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
             templateForm={templateFormState}
-            action={loginUser}
+            action={registerLead}
             schemaName="EditProfile"
             pathSuccess="/"
           />

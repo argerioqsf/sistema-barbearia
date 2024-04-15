@@ -10,7 +10,7 @@ import { Errors, Profile } from '@/types/general'
 
 interface ReturnLoadList {
   response?: Profile
-  error?: Errors
+  error?: Errors<Profile>
 }
 
 async function loadProfile(): Promise<ReturnLoadList> {

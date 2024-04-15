@@ -8,7 +8,7 @@ import { FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
 export default function handleFieldsRender<T>(
   field: FieldsTemplateForm<T>,
-  state: InitialState<T & { request?: string }>,
+  state: InitialState<T>,
   setFormDataExtra: Dispatch<SetStateAction<FormData>>,
   register: UseFormRegister<T & FieldValues>,
 ): ReactElement {

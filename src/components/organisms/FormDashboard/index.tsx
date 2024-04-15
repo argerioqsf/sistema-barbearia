@@ -21,7 +21,7 @@ type FormDashboardProps<T> = {
   loading?: boolean
   getDefaultValues?: GetDefaultValues<T>
   title?: string
-  action: ServerAction<T & { request?: string }>
+  action: ServerAction<T>
   schemaName: string
   pathSuccess: string
   errorMessage?: string
@@ -48,15 +48,15 @@ export default function FormDashboard<T>({
 
   console.log('formDataExtra: ', formDataExtra)
 
-  const initialStateForm: InitialState<T & { request?: string }> = {
+  const initialStateForm: InitialState<T> = {
     errors: undefined,
     ok: false,
   }
 
-  const [state, formAction] = useFormState<
-    InitialState<T & { request?: string }>,
-    FormData
-  >(action, initialStateForm)
+  const [state, formAction] = useFormState<InitialState<T>, FormData>(
+    action,
+    initialStateForm,
+  )
 
   useEffect(() => {
     if (state.ok) {

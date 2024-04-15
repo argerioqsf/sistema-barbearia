@@ -3,13 +3,13 @@
 import { formSchemaUpdateCourse } from '@/components/template/DetailCourses/schema'
 import { formSchemaRegisterCourse } from '@/components/template/RegisterCourses/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState } from '@/types/general'
+import { Course, Errors, InitialState } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 
 export async function registerCourse(
-  prevState: InitialState,
+  prevState: InitialState<Course>,
   formData: FormData,
-): Promise<InitialState> {
+): Promise<InitialState<Course>> {
   const validatedFields = formSchemaRegisterCourse.safeParse({
     name: formData.get('name'),
     active: formData.get('active'),
@@ -50,7 +50,7 @@ export async function registerCourse(
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors
+    const error = validatedFields.error.flatten().fieldErrors as Errors<Course>
     return {
       errors: { ...error },
     }
@@ -60,9 +60,9 @@ export async function registerCourse(
 }
 
 export async function updateCourse(
-  prevState: InitialState,
+  prevState: InitialState<Course>,
   formData: FormData,
-): Promise<InitialState> {
+): Promise<InitialState<Course>> {
   const validatedFields = formSchemaUpdateCourse.safeParse({
     name: formData.get('name'),
     active: formData.get('active'),
@@ -104,7 +104,7 @@ export async function updateCourse(
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors
+    const error = validatedFields.error.flatten().fieldErrors as Errors<Course>
     return {
       errors: { ...error },
     }
