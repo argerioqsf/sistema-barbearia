@@ -12,7 +12,7 @@ import TimeLineComponent from '@/components/organisms/TimeLineComponent'
 
 async function getLeadForId(id: string): Promise<{
   response?: Lead
-  error?: Errors
+  error?: Errors<Lead>
 }> {
   try {
     const token = getTokenFromCookieServer()

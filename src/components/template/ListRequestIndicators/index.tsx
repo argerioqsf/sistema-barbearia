@@ -4,15 +4,12 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { api } from '@/data/api'
-import { InfoList, ReturnLoadList } from '@/types/general'
+import { InfoList, ReturnLoadList, User } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import React from 'react'
 
-async function loadIndicators(): Promise<ReturnLoadList> {
+async function loadIndicators(): Promise<ReturnLoadList<User>> {
   try {
-    const listMock = mockServer.indicators
-
-    return { response: listMock }
     const token = getTokenFromCookieServer()
     const response = await api('/indicators', {
       method: 'GET',
@@ -35,7 +32,7 @@ async function loadIndicators(): Promise<ReturnLoadList> {
 }
 
 export default async function ListRequestIndicators() {
-  const infoList: InfoList = {
+  const infoList: InfoList<User> = {
     itemsHeader: ['N', 'NOME', 'E-MAIL', ''],
     itemsList: ['name', '', '', 'email', ''],
   }

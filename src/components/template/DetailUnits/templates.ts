@@ -1,7 +1,7 @@
 import { mockServer } from '@/components/config/mockServer'
-import { InfoList, TemplateForm } from '@/types/general'
+import { InfoList, TemplateForm, Unit } from '@/types/general'
 
-export const templateForm: TemplateForm = {
+export const templateForm: TemplateForm<Unit> = {
   title: 'Unidade',
   textButton: 'Editar',
   sections: [
@@ -25,14 +25,14 @@ export const templateForm: TemplateForm = {
   ],
 }
 
-const infoListSegments: InfoList = {
+const infoListSegments: InfoList<Unit> = {
   itemsHeader: ['N', 'Nome', ''],
   itemsList: ['name', '', '', '', ''],
   listActions: mockServer.listActionsSegments,
   title: 'Segmentos',
 }
 
-const infoListCourses: InfoList = {
+const infoListCourses: InfoList<Unit> = {
   itemsHeader: ['N', 'Nome', ''],
   itemsList: ['name', '', '', '', ''],
   listActions: mockServer.listActionsCourses,

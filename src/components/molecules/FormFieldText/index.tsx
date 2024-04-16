@@ -15,6 +15,10 @@ type FormFieldTextProps = {
   props: UseFormRegisterReturn<string>
   error: string
   hidden?: boolean
+  value?: string
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onFocus?: () => void
+  onBlur?: () => void
 }
 
 const FormFieldText = ({
@@ -24,6 +28,10 @@ const FormFieldText = ({
   classInput,
   props,
   error,
+  value,
+  onChange,
+  onFocus,
+  onBlur,
   ...rest
 }: FormFieldTextProps) => {
   return (
@@ -31,6 +39,10 @@ const FormFieldText = ({
       {label && <LabelForm htmlFor={props.name} label={label} />}
       <div className="mt-2">
         <InputForm
+          onBlur={onBlur}
+          onFocus={onFocus}
+          onChange={onChange}
+          value={value}
           {...rest}
           propsInput={{ ...props }}
           type={type}

@@ -1,6 +1,6 @@
-import { TemplateForm } from '@/types/general'
+import { Course, Segment, TemplateForm, Unit } from '@/types/general'
 
-export const templateForm: TemplateForm = {
+export const templateForm: TemplateForm<Unit | Course | Segment> = {
   title: 'Cadastrar Unidade',
   textButton: 'Cadastrar',
   sections: [
@@ -22,21 +22,34 @@ export const templateForm: TemplateForm = {
       ],
     },
     {
-      id: 2,
-      title: 'Segmentos',
+      id: 1,
+      title: 'Seguimentos',
       boxes: [
         {
-          id: 1,
+          id: 2,
           fields: [
             {
               id: 'segments',
               required: true,
-              type: 'select',
-              label: 'Segmentos',
+              type: 'selectSearch',
+              label: 'Seguimentos',
+              optionKeyLabel: 'name',
+              optionKeyValue: 'id',
               options: [
                 {
-                  label: 'segmento 1',
-                  value: 1,
+                  id: '0ec2efaf-50d4-404b-aa67-2b737ecb249f',
+                  name: 'seguimento 1',
+                  created_at: '2342423',
+                },
+                {
+                  id: 'seguimento 2',
+                  name: 'seguimento 2',
+                  created_at: '2342423',
+                },
+                {
+                  id: 'seguimento 3',
+                  name: 'seguimento 3',
+                  created_at: '2342423',
                 },
               ],
             },
@@ -45,21 +58,37 @@ export const templateForm: TemplateForm = {
       ],
     },
     {
-      id: 3,
+      id: 1,
       title: 'Cursos',
       boxes: [
         {
-          id: 1,
+          id: 3,
           fields: [
             {
               id: 'courses',
               required: true,
-              type: 'select',
+              type: 'selectSearch',
               label: 'Cursos',
+              optionKeyLabel: 'name',
+              optionKeyValue: 'id',
               options: [
                 {
-                  label: 'curso 1',
-                  value: 1,
+                  id: 'curso 1',
+                  quant_leads: 2,
+                  active: true,
+                  name: 'curso 1',
+                },
+                {
+                  id: 'curso 2',
+                  quant_leads: 2,
+                  active: true,
+                  name: 'curso 2',
+                },
+                {
+                  id: 'curso 3',
+                  quant_leads: 2,
+                  active: true,
+                  name: 'curso 3',
                 },
               ],
             },

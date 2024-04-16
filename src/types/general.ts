@@ -1,9 +1,11 @@
+import { DefaultValues, Path } from 'react-hook-form'
 import { z } from 'zod'
 
-type LimitFieldsForm<T> = [T, ...T[]] & {
+export type LimitFieldsForm<G> = [G, ...G[]] & {
   length: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 }
-type LimitFields<T> = [T, T, T, T, T]
+
+export type LimitFields<T> = [T, T, T, T, T]
 
 export type Segment = {
   id: string
@@ -17,7 +19,7 @@ export type Course = {
   id: string
   name: string
   quant_leads: number
-  status: number
+  active: boolean
 }
 
 export type CourseProps = keyof Course
@@ -25,9 +27,13 @@ export type CourseProps = keyof Course
 export type Unit = {
   id: string
   name: string
-  created_at: string
-  segments: Array<{ segment: Segment }>
-  courses: Array<{ course: Course }>
+  created_at?: string
+  segments?: { segment: Segment }[] | []
+  courses?: { course: Course }[] | []
+  _count?: {
+    segments: number
+    courses: number
+  }
 }
 
 export type UnitProps = keyof Unit
@@ -37,6 +43,7 @@ export type User = {
   name: string
   email: string
   active: string
+  password?: string
   // eslint-disable-next-line no-use-before-define
   profile: Profile
   created_at: string
@@ -97,6 +104,7 @@ const fieldsForm = [
   'quant_leads',
   'status',
   'segments',
+  'indicators',
   'courses',
   'email',
   'active',
@@ -116,8 +124,8 @@ const fieldsForm = [
   '',
   'profile.cpf',
   'indicator.name',
-  'segments.length',
-  'courses.length',
+  '_count.segments',
+  '_count.courses',
   'password',
   'search',
   'indicatorId',
@@ -137,6 +145,8 @@ const fieldsForm = [
   'profile.genre',
   'profile.pix',
   'q',
+  'segment.name',
+  'segmentId',
 ] as const
 
 export type ParamsProp = {
@@ -152,7 +162,7 @@ export type UserHookType = keyof BaseUserHookType
 
 export type TypesForIdFieldsForm = (typeof fieldsForm)[number]
 
-export type FieldsList = LimitFields<UserHookType>
+export type FieldsList<T> = Path<T> | ''
 
 export type IconSvgProps = {
   size?: number
@@ -178,9 +188,9 @@ export type ItemListType = {
   info5: string
 }
 
-export type InfoList = {
-  itemsHeader: Array<string>
-  itemsList: FieldsList
+export type InfoList<T> = {
+  itemsHeader: string[]
+  itemsList: LimitFields<FieldsList<T>>
   listActions?: ListActionsProps[]
   title?: string
   hrefButton?: string
@@ -188,12 +198,8 @@ export type InfoList = {
   errorRequest?: string | null
 }
 
-export type Errors = {
+export type Errors<T> = Partial<T> & {
   request?: string
-} & { [key in (typeof fieldsForm)[number]]?: string }
-
-export type FieldsFormSchema = {
-  [key in (typeof fieldsForm)[number]]?: z.ZodTypeAny
 }
 
 export type OptionsTemplateForm = {
@@ -201,33 +207,52 @@ export type OptionsTemplateForm = {
   value: number | string
 }
 
-export type FieldsTemplateForm = {
-  id: TypesForIdFieldsForm
+export interface Option {
+  label: string
+  value: string
+}
+
+export type OptionGeneric<T> = T | { value?: string; label?: string }
+
+export type OptionKey<T> = Path<OptionGeneric<T>>
+
+export type FieldsTemplateForm<T> = {
+  id: Path<T>
   required: boolean
-  type: 'text' | 'date' | 'image' | 'select' | 'password' | 'file' | 'hidden'
+  type:
+    | 'text'
+    | 'date'
+    | 'image'
+    | 'select'
+    | 'password'
+    | 'file'
+    | 'hidden'
+    | 'selectSearch'
   label: string
   classInput?: string
-  options?: Array<OptionsTemplateForm>
+  options?: OptionGeneric<T>[]
   value?: string | number
   disabled?: boolean
   placeholder?: string
+  optionKeyLabel?: OptionKey<T>
+  optionKeyValue?: OptionKey<T>
 }
 
-export type BoxTemplateForm = {
+export type BoxTemplateForm<T> = {
   id: number
-  fields: LimitFieldsForm<FieldsTemplateForm>
+  fields: LimitFieldsForm<FieldsTemplateForm<T>>
 }
 
-export type SectionTemplateForm = {
+export type SectionTemplateForm<T> = {
   id: number
   title: string
-  boxes: Array<BoxTemplateForm>
+  boxes: Array<BoxTemplateForm<T>>
 }
 
-export type TemplateForm = {
+export type TemplateForm<T> = {
   title: string
   textButton: string
-  sections: Array<SectionTemplateForm>
+  sections: SectionTemplateForm<T>[]
 }
 
 export type LimitColsGrid = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
@@ -242,34 +267,42 @@ export type ModelsAll = Segment &
     search: string
   }
 
-export type SchemaForm = z.ZodObject<FieldsFormSchema>
+export type FieldsFormSchema<T> = {
+  [key in keyof T]?: z.ZodTypeAny
+}
 
-export type InitialState = {
-  errors: Errors | null
+type ZodObjectFromSchema<T> = {
+  [key in keyof T]: z.ZodTypeAny
+}
+
+export type SchemaForm<T> = z.ZodObject<ZodObjectFromSchema<T>>
+
+export type InitialState<T> = {
+  errors?: Partial<T & { request?: string }>
   ok?: boolean
   resp?: Models | Models[]
 }
 
-export type ServerAction = (
-  prevState: InitialState,
+export type ServerAction<T> = (
+  prevState: InitialState<T>,
   formData: FormData,
-) => InitialState | Promise<InitialState>
+) => InitialState<T> | Promise<InitialState<T>>
 
-export type GetDefaultValues = () => Promise<InitialState | Models>
+export type GetDefaultValues<T> = () => Promise<InitialState<T> | Models>
 
-export type Form = {
-  template: TemplateForm
+export type Form<T> = {
+  template: TemplateForm<T>
   loading?: boolean
   getDefaultValues?: {
-    response?: Models
-    error?: Errors
+    response?: T
+    error?: Errors<T>
   }
-  defaultValues?: Models
+  defaultValues?: DefaultValues<T>
   title?: string
-  action: ServerAction
-  schema?: SchemaForm
+  action: ServerAction<T>
+  schema?: SchemaForm<T>
   pathSuccess: string
-  handlerForm?: (data: ModelsAll) => void
+  handlerForm?: (data: T) => void
   errorMessage?: string
 }
 
@@ -284,7 +317,7 @@ export type SearchType = {
   q: string
 }
 
-export interface ReturnLoadList {
-  response?: Models[]
-  error?: Errors
+export interface ReturnLoadList<T> {
+  response?: T[]
+  error?: Errors<T>
 }

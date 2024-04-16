@@ -2,13 +2,13 @@
 
 import { formSchemaCreateTimeLine } from '@/components/template/DetailLeads/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState } from '@/types/general'
+import { Errors, InitialState, TimeLine } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 
 export async function registerTimeLine(
-  prevState: InitialState,
+  prevState: InitialState<TimeLine>,
   formData: FormData,
-): Promise<InitialState> {
+): Promise<InitialState<TimeLine>> {
   const validatedFields = formSchemaCreateTimeLine.safeParse({
     title: formData.get('title'),
     description: formData.get('description'),
@@ -55,7 +55,8 @@ export async function registerTimeLine(
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors
+    const error = validatedFields.error.flatten()
+      .fieldErrors as Errors<TimeLine>
     return {
       errors: { ...error },
     }

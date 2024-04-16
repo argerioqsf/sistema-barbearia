@@ -1,41 +1,35 @@
 'use client'
 
-import { Button, Form, InputForm, Text } from '@/components/atoms'
+import { Button, Form, Text } from '@/components/atoms'
 import Box from '@/components/atoms/Box'
-import { FormFieldText } from '@/components/molecules'
-import FormFieldSelect from '@/components/molecules/FormFieldSelect'
-import { useHandleSchema } from '@/hooks/use-handle-schema'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
-import { useHandlerForm } from '@/hooks/use-hanlder-form'
 import {
   BoxTemplateForm,
-  FieldsTemplateForm,
   GetDefaultValues,
   InitialState,
   LimitColsGrid,
-  Models,
-  SchemaForm,
   ServerAction,
   TemplateForm,
 } from '@/types/general'
-import React, { Fragment, useEffect } from 'react'
+import handleFieldsRender from '@/utils/handleFieldsRender'
+import { Fragment, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
-import { twMerge } from 'tailwind-merge'
+import { DefaultValues, FieldValues, useForm } from 'react-hook-form'
 
-type FormDashboardProps = {
-  templateForm?: TemplateForm
+type FormDashboardProps<T> = {
+  templateForm?: TemplateForm<T>
   loading?: boolean
-  getDefaultValues?: GetDefaultValues
+  getDefaultValues?: GetDefaultValues<T>
   title?: string
-  action: ServerAction
+  action: ServerAction<T>
   schemaName: string
   pathSuccess: string
   errorMessage?: string
-  defaultValues?: Models
+  defaultValues?: DefaultValues<T & FieldValues>
   errorRequest?: string
 }
 
-const FormDashboard = ({
+export default function FormDashboard<T>({
   templateForm,
   loading = false,
   title,
@@ -43,21 +37,23 @@ const FormDashboard = ({
   pathSuccess,
   errorMessage,
   defaultValues,
-  schemaName,
   errorRequest,
-}: FormDashboardProps) => {
-  const { getSchema } = useHandleSchema()
-  const schema: SchemaForm = getSchema(schemaName)
-  const { register } = useHandlerForm(schema, undefined, defaultValues)
-
+}: FormDashboardProps<T>) {
   const { pushRouter } = useHandlerRouter()
+  const [formDataExtra, setFormDataExtra] = useState<FormData>(new FormData())
 
-  const initialStateForm: InitialState = {
-    errors: null,
+  const { register } = useForm<T & FieldValues>({
+    defaultValues: defaultValues ?? undefined,
+  })
+
+  console.log('formDataExtra: ', formDataExtra)
+
+  const initialStateForm: InitialState<T> = {
+    errors: undefined,
     ok: false,
   }
 
-  const [state, formAction] = useFormState<InitialState, FormData>(
+  const [state, formAction] = useFormState<InitialState<T>, FormData>(
     action,
     initialStateForm,
   )
@@ -68,46 +64,7 @@ const FormDashboard = ({
     }
   }, [action, pathSuccess, pushRouter, state.ok])
 
-  const handlerFieldRender = (field: FieldsTemplateForm) => {
-    const id = field.id
-    const propsField = {
-      props: { ...register(id, { required: field.required }) },
-      label: field.label,
-      classInput: `bg-gray-300 ${field.classInput ?? ''} ${
-        state?.errors?.[id] && 'ring-red-500 focus:ring-red-500'
-      }`,
-      error: (state?.errors?.[id] && state.errors[id]?.[0]) ?? '',
-
-      disabled: field.disabled,
-    }
-    if (field.type === 'select') {
-      return (
-        <FormFieldSelect
-          {...propsField}
-          type="select"
-          options={field.options}
-        />
-      )
-    }
-    if (field.type === 'hidden') {
-      return (
-        <InputForm
-          propsInput={{ ...propsField.props }}
-          type={field.type}
-          placeholder={field.placeholder}
-          className={twMerge(
-            'rounded-md border-0',
-            'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-            'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
-          )}
-        />
-      )
-    } else {
-      return <FormFieldText {...propsField} type={field.type} />
-    }
-  }
-
-  const handlerBoxRender = (boxItem: BoxTemplateForm) => {
+  const handlerBoxRender = (boxItem: BoxTemplateForm<T>) => {
     const quantInputHidden = boxItem?.fields?.filter(
       (field) => field.type === 'hidden',
     )
@@ -115,16 +72,40 @@ const FormDashboard = ({
       quantInputHidden.length) as LimitColsGrid
     return (
       <Box cols={gridCols}>
-        {boxItem.fields.map((field, idx) => (
-          <Fragment key={idx}>{handlerFieldRender(field)}</Fragment>
-        ))}
+        {boxItem.fields.map((field, idx) => {
+          return (
+            <Fragment key={idx}>
+              {handleFieldsRender<T>(field, state, setFormDataExtra, register)}
+            </Fragment>
+          )
+        })}
       </Box>
     )
   }
 
+  function mergeFormData(
+    formData1: FormData,
+    formData2: FormData | undefined,
+  ): FormData {
+    const newFormData = formData1
+    if (formData2) {
+      const extraDataKeys2 = Array.from(formData2.keys()).filter((key) => key)
+      extraDataKeys2.forEach((key) => {
+        const valueString = String(formData2.get(key)) ?? '[]'
+        newFormData.append(key, valueString)
+      })
+    }
+    return newFormData
+  }
+
+  function handleAction(payload: FormData) {
+    if (formDataExtra) mergeFormData(payload, formDataExtra)
+    formAction(payload)
+  }
+
   return (
     <div className="w-full">
-      <Form action={formAction} className="mb-8">
+      <Form action={handleAction} className="mb-8">
         <div className="w-[90vw] md:w-full flex flex-row justify-between items-center">
           <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
             {title ?? templateForm?.title}
@@ -176,5 +157,3 @@ const FormDashboard = ({
     </div>
   )
 }
-
-export default FormDashboard

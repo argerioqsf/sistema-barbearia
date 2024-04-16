@@ -1,17 +1,17 @@
 'use client'
 
+import { registerUserProfile } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
+import { OptionGeneric, Profile, User } from '@/types/general'
+import { getRolesFromCookie } from '@/utils/cookieClient'
 import React, { useEffect } from 'react'
 import { templateForm } from './templateForm'
-import { registerUserProfile } from '@/actions/user'
-import { getRolesFromCookie } from '@/utils/cookieClient'
-import { OptionsTemplateForm } from '@/types/general'
 
 const RegisterUser: React.FC = () => {
   useEffect(() => {
-    let options: OptionsTemplateForm[] = [
+    let options: OptionGeneric<User | Profile>[] = [
       {
         label: 'Selecione',
         value: '',

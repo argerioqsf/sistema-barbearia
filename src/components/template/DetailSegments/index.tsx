@@ -10,7 +10,7 @@ import { updateSegment } from '@/actions/segments'
 
 async function getSegmentForId(id: string): Promise<{
   response?: User
-  error?: Errors
+  error?: Errors<User>
 }> {
   try {
     const token = getTokenFromCookieServer()

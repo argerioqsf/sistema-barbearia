@@ -1,6 +1,6 @@
-import { InfoList, TemplateForm } from '@/types/general'
+import { InfoList, Lead, TemplateForm, TimeLine } from '@/types/general'
 
-export const templateForm: TemplateForm = {
+export const templateForm: TemplateForm<Lead> = {
   title: 'Lead',
   textButton: 'Editar',
   sections: [
@@ -26,10 +26,10 @@ export const templateForm: TemplateForm = {
           ],
         },
         {
-          id: 3,
+          id: 1,
           fields: [
             {
-              id: 'cpf',
+              id: 'document',
               required: true,
               type: 'text',
               label: 'Documento',
@@ -39,12 +39,6 @@ export const templateForm: TemplateForm = {
               required: true,
               type: 'text',
               label: 'Whatsapp',
-            },
-            {
-              id: 'status',
-              required: true,
-              type: 'text',
-              label: 'Situação',
             },
           ],
         },
@@ -56,13 +50,15 @@ export const templateForm: TemplateForm = {
               required: true,
               type: 'select',
               label: 'Indicador',
+              optionKeyLabel: 'label',
+              optionKeyValue: 'value',
               options: [
                 {
-                  value: 2,
+                  value: '2',
                   label: 'Argério Queiroz',
                 },
                 {
-                  value: 3,
+                  value: '3',
                   label: 'Damiles Arruda',
                 },
               ],
@@ -72,13 +68,9 @@ export const templateForm: TemplateForm = {
               required: true,
               type: 'select',
               label: 'Consultor',
+              optionKeyLabel: 'name',
+              optionKeyValue: 'id',
               options: [],
-            },
-            {
-              id: 'created_at',
-              required: true,
-              type: 'date',
-              label: 'Cadastrado em',
             },
           ],
         },
@@ -87,7 +79,7 @@ export const templateForm: TemplateForm = {
   ],
 }
 
-export const templateFormTimeLine: TemplateForm = {
+export const templateFormTimeLine: TemplateForm<TimeLine> = {
   title: 'Linha do Tempo',
   textButton: 'Cadastrar',
   sections: [
@@ -105,7 +97,7 @@ export const templateFormTimeLine: TemplateForm = {
               label: 'Nome',
             },
             {
-              id: 'lead.id',
+              id: 'id',
               required: true,
               type: 'hidden',
               label: '',
@@ -131,13 +123,15 @@ export const templateFormTimeLine: TemplateForm = {
               required: true,
               type: 'select',
               label: 'Status',
+              optionKeyLabel: 'label',
+              optionKeyValue: 'value',
               options: [
                 {
-                  value: 2,
+                  value: '2',
                   label: 'Interessado',
                 },
                 {
-                  value: 3,
+                  value: '3',
                   label: 'Sem interesse',
                 },
               ],
@@ -152,13 +146,15 @@ export const templateFormTimeLine: TemplateForm = {
               required: true,
               type: 'select',
               label: 'Curso',
+              optionKeyLabel: 'label',
+              optionKeyValue: 'value',
               options: [
                 {
-                  value: 2,
+                  value: '2',
                   label: 'curso 1',
                 },
                 {
-                  value: 3,
+                  value: '3',
                   label: 'curso 2',
                 },
               ],
@@ -170,31 +166,7 @@ export const templateFormTimeLine: TemplateForm = {
   ],
 }
 
-export const templateFormSearch: TemplateForm = {
-  title: 'Search',
-  textButton: '',
-  sections: [
-    {
-      id: 1,
-      title: 'Search',
-      boxes: [
-        {
-          id: 1,
-          fields: [
-            {
-              id: 'search',
-              label: 'Search',
-              required: true,
-              type: 'text',
-            },
-          ],
-        },
-      ],
-    },
-  ],
-}
-
-export const infoList: InfoList = {
-  itemsHeader: ['N', 'NOME / WHATSAPP', 'CURSO', 'INDICADOR', 'STATUS'],
-  itemsList: ['name', 'phone', '', 'indicator.name', 'status'],
+export const infoList: InfoList<Lead> = {
+  itemsHeader: ['N', 'NOME / WHATSAPP', 'CURSO', 'INDICADOR'],
+  itemsList: ['name', 'phone', '', 'indicator.user.name', ''],
 }

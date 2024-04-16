@@ -3,12 +3,12 @@ import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { InfoList, ReturnLoadList } from '@/types/general'
+import { Course, InfoList, ReturnLoadList } from '@/types/general'
 import React from 'react'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { api } from '@/data/api'
 
-async function loadCourses(): Promise<ReturnLoadList> {
+async function loadCourses(): Promise<ReturnLoadList<Course>> {
   try {
     const token = getTokenFromCookieServer()
     const response = await api('/courses', {
@@ -32,7 +32,7 @@ async function loadCourses(): Promise<ReturnLoadList> {
 }
 
 export default async function ListCourses() {
-  const infoList: InfoList = {
+  const infoList: InfoList<Course> = {
     itemsHeader: ['N', 'NOME', 'ATIVO', '', ''],
     itemsList: ['name', '', 'active', '', ''],
   }

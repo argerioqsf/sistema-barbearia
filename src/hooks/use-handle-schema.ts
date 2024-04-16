@@ -2,7 +2,6 @@ import { formSchemaUpdateIndicator } from '@/components/template/DetailIndicator
 import { formSchemaUpdateUnit } from '@/components/template/DetailUnits/schema'
 import { formSchemaUpdateUserProfile } from '@/components/template/DetailUsers/schema'
 import { formSchemaEditProfile } from '@/components/template/ProfileDetail/schema'
-import { SchemaForm } from '@/types/general'
 import { z } from 'zod'
 
 export const SchemaDefault = z.object({
@@ -10,7 +9,7 @@ export const SchemaDefault = z.object({
 })
 
 export const useHandleSchema = () => {
-  function getSchema(icon: string): SchemaForm {
+  function getSchema(icon: string) {
     switch (icon) {
       case 'UpdateUnit':
         return formSchemaUpdateUnit

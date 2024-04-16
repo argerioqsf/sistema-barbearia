@@ -17,8 +17,12 @@ export async function generateMetadata({
   }
 }
 
-const page = () => {
-  return <ListUnits />
+type Props = {
+  params: { locale: string }
+  searchParams: { q: string; page: string }
+}
+const page = ({ searchParams }: Props) => {
+  return <ListUnits searchParams={searchParams} />
 }
 
 export default page

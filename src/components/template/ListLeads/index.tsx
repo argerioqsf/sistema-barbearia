@@ -4,15 +4,12 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { api } from '@/data/api'
-import { InfoList, ReturnLoadList } from '@/types/general'
+import { InfoList, Lead, ReturnLoadList } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import React from 'react'
 
-async function loadLeads(): Promise<ReturnLoadList> {
+async function loadLeads(): Promise<ReturnLoadList<Lead>> {
   try {
-    const listMock = mockServer.leads
-
-    return { response: listMock }
     const token = getTokenFromCookieServer()
     const response = await api('/leads', {
       method: 'GET',
@@ -27,15 +24,15 @@ async function loadLeads(): Promise<ReturnLoadList> {
         error: { request: JSON.parse(errorMessage).message },
       }
     }
-    const list = await response.json()
-    return { response: list }
+    const { leads } = await response.json()
+    return { response: leads }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
 }
 
 export default async function ListLeads() {
-  const infoList: InfoList = {
+  const infoList: InfoList<Lead> = {
     itemsHeader: ['N', 'NOME / WHATSAPP', 'INDICADOR DOCUMENT'],
     itemsList: ['name', 'phone', 'indicator.cpf', '', ''],
   }

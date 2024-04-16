@@ -5,23 +5,23 @@ import { HeaderList } from '@/components/molecules'
 import ItemList from '@/components/molecules/ItemList'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { useItemListTransform } from '@/hooks/use-item-list-transform'
-import { InfoList, ListActionsProps, Models } from '@/types/general'
+import { InfoList, ListActionsProps } from '@/types/general'
 import React from 'react'
 import { twJoin, twMerge } from 'tailwind-merge'
 
-type ListingProps = {
+type ListingProps<T> = {
   title?: string
   textButton?: string
   hrefButton?: string
-  list: Models[] | null
+  list: T[] | null
   listActions?: Array<ListActionsProps>
   variant?: 'default' | 'segmented'
   loading?: boolean
   errorMessage?: string
-  infoList: InfoList
+  infoList: InfoList<T>
 }
 
-const Listing = ({
+export default function Listing<T>({
   listActions,
   title,
   textButton,
@@ -31,7 +31,7 @@ const Listing = ({
   loading,
   errorMessage,
   infoList,
-}: ListingProps) => {
+}: ListingProps<T>) {
   const { pushRouter } = useHandlerRouter()
   const { listTransform } = useItemListTransform()
   const listTransformResp = listTransform(list ?? [], infoList.itemsList)
@@ -106,5 +106,3 @@ const Listing = ({
     </div>
   )
 }
-
-export default Listing

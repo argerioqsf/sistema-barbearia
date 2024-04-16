@@ -2,7 +2,7 @@
 
 import { formSchemaEditProfile } from '@/components/template/ProfileDetail/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState } from '@/types/general'
+import { Errors, InitialState, Profile } from '@/types/general'
 import {
   setRolesInCookieServer,
   setTokenInCookieServer,
@@ -10,9 +10,9 @@ import {
 } from '@/utils/cookieServer'
 
 export async function editProfile(
-  prevState: InitialState,
+  prevState: InitialState<Profile>,
   formData: FormData,
-): Promise<InitialState> {
+): Promise<InitialState<Profile>> {
   const validatedFields = formSchemaEditProfile.safeParse({
     name: formData.get('name'),
     phone: formData.get('phone'),
@@ -58,7 +58,7 @@ export async function editProfile(
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors
+    const error = validatedFields.error.flatten().fieldErrors as Errors<Profile>
     return {
       errors: { ...error },
     }

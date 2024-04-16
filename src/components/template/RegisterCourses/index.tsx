@@ -4,6 +4,7 @@ import FormDashboard from '@/components/organisms/FormDashboard'
 import React from 'react'
 import { templateForm } from './templateForm'
 import { registerCourse } from '@/actions/course'
+import { Course } from '@/types/general'
 
 export default function RegisterCourses() {
   return (
@@ -13,7 +14,7 @@ export default function RegisterCourses() {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6 lg:mt-8">
-          <FormDashboard
+          <FormDashboard<Course>
             schemaName="EditProfile"
             action={registerCourse}
             templateForm={templateForm}

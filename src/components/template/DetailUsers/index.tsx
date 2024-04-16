@@ -1,6 +1,6 @@
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import { Errors, OptionsTemplateForm, User } from '@/types/general'
+import { Errors, Option, Profile, User } from '@/types/general'
 import React from 'react'
 import * as templates from './templates'
 import {
@@ -13,7 +13,7 @@ import { updateUserProfile } from '@/actions/user'
 
 async function getUserForId(id: string): Promise<{
   response?: User
-  error?: Errors
+  error?: Errors<User>
 }> {
   try {
     const token = getTokenFromCookieServer()
@@ -42,7 +42,7 @@ export default async function DetailUsers({ id }: { id: string }) {
   const user = response.response
   const errorRequest = response.error?.request ?? undefined
 
-  let options: OptionsTemplateForm[] = [
+  let options: Option[] = [
     {
       label: 'Selecione',
       value: '',
@@ -68,7 +68,7 @@ export default async function DetailUsers({ id }: { id: string }) {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6 lg:mt-8 grid gap-8">
-          <FormDashboard
+          <FormDashboard<User | Profile>
             title={templates.templateForm.title}
             templateForm={templates.templateForm}
             defaultValues={user}

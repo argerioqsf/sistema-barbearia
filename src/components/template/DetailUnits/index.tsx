@@ -12,7 +12,7 @@ import Listing from '@/components/organisms/Listing'
 
 async function getUnitForId(id: string): Promise<{
   response?: Unit
-  error?: Errors
+  error?: Errors<Unit>
 }> {
   try {
     const token = getTokenFromCookieServer()

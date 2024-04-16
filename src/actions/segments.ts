@@ -3,13 +3,13 @@
 import { formSchemaUpdateSegment } from '@/components/template/DetailSegments/schema'
 import { formSchemaRegisterSegment } from '@/components/template/RegisterSegments/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState } from '@/types/general'
+import { Errors, InitialState, Segment } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 
 export async function registerSegment(
-  prevState: InitialState,
+  prevState: InitialState<Segment>,
   formData: FormData,
-): Promise<InitialState> {
+): Promise<InitialState<Segment>> {
   const validatedFields = formSchemaRegisterSegment.safeParse({
     name: formData.get('name'),
   })
@@ -48,7 +48,7 @@ export async function registerSegment(
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors
+    const error = validatedFields.error.flatten().fieldErrors as Errors<Segment>
     return {
       errors: { ...error },
     }
@@ -58,9 +58,9 @@ export async function registerSegment(
 }
 
 export async function updateSegment(
-  prevState: InitialState,
+  prevState: InitialState<Segment>,
   formData: FormData,
-): Promise<InitialState> {
+): Promise<InitialState<Segment>> {
   const validatedFields = formSchemaUpdateSegment.safeParse({
     id: formData.get('id'),
     name: formData.get('name'),
@@ -101,7 +101,7 @@ export async function updateSegment(
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors
+    const error = validatedFields.error.flatten().fieldErrors as Errors<Segment>
     return {
       errors: { ...error },
     }

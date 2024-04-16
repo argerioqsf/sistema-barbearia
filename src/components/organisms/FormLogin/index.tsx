@@ -7,7 +7,7 @@ import FormFieldText from '@/components/molecules/FormFieldText'
 import { formSchemaSignIn } from '@/components/template/SingIn/schema'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { usePathTranslations } from '@/hooks/use-path-translations'
-import { ServerAction } from '@/types/general'
+import { InitialState, ServerAction, User } from '@/types/general'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useEffect } from 'react'
 import { useFormState } from 'react-dom'
@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 type FormLoginProps = {
-  action: ServerAction
+  action: ServerAction<User>
 }
 
 type LoginSchemaType = z.infer<typeof formSchemaSignIn>
@@ -30,8 +30,8 @@ const FormLogin = ({ action }: FormLoginProps) => {
   const { at, sc } = usePathTranslations('')
   const { pushRouter } = useHandlerRouter()
 
-  const initialState = {
-    errors: null,
+  const initialState: InitialState<User> = {
+    errors: undefined,
     ok: false,
   }
 

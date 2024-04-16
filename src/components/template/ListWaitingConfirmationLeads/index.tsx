@@ -4,15 +4,12 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { api } from '@/data/api'
-import { InfoList, ReturnLoadList } from '@/types/general'
+import { InfoList, Lead, ReturnLoadList } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import React from 'react'
 
-async function loadLeads(): Promise<ReturnLoadList> {
+async function loadLeads(): Promise<ReturnLoadList<Lead>> {
   try {
-    const listMock = mockServer.leads
-
-    return { response: listMock }
     const token = getTokenFromCookieServer()
     const response = await api('/leads', {
       method: 'GET',
@@ -35,9 +32,9 @@ async function loadLeads(): Promise<ReturnLoadList> {
 }
 
 export default async function ListWaitingConfirmationLeads() {
-  const infoList: InfoList = {
-    itemsHeader: ['N', 'NOME / WHATSAPP', 'INDICADOR', 'STATUS'],
-    itemsList: ['name', 'phone', '', 'indicator.name', 'status'],
+  const infoList: InfoList<Lead> = {
+    itemsHeader: ['N', 'NOME / WHATSAPP', 'INDICADOR'],
+    itemsList: ['name', 'phone', '', 'name', ''],
   }
 
   const response = await loadLeads()

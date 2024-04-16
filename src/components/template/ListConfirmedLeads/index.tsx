@@ -3,13 +3,13 @@ import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { ReturnLoadList } from '@/types/general'
+import { Lead, ReturnLoadList } from '@/types/general'
 import React from 'react'
 import { infoList } from './templates'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { api } from '@/data/api'
 
-async function loadLeads(): Promise<ReturnLoadList> {
+async function loadLeads(): Promise<ReturnLoadList<Lead>> {
   try {
     const listMock = mockServer.leads
 
