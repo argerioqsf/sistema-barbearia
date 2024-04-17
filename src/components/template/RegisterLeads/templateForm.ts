@@ -1,6 +1,6 @@
-import { Lead, TemplateForm } from '@/types/general'
+import { Lead, TemplateForm, User } from '@/types/general'
 
-export const templateForm: TemplateForm<Lead> = {
+export const templateForm: TemplateForm<Lead | User> = {
   title: 'Cadastrar Leads',
   textButton: 'Cadastrar',
   sections: [
@@ -40,28 +40,57 @@ export const templateForm: TemplateForm<Lead> = {
               type: 'text',
               label: 'Whatsapp',
             },
+            {
+              id: 'city',
+              required: true,
+              type: 'text',
+              label: 'Cidade',
+            },
           ],
         },
+      ],
+    },
+    {
+      id: 2,
+      title: 'indicador',
+      boxes: [
         {
           id: 4,
           fields: [
             {
               id: 'indicatorId',
               required: true,
-              type: 'select',
-              label: 'Indicador',
-              optionKeyLabel: 'label',
-              optionKeyValue: 'value',
-              options: [],
+              type: 'selectSearch',
+              label: '',
+              option: {
+                keyLabel: 'name',
+                keyValue: 'profile.id',
+                variant: 'single',
+                list: [],
+              },
             },
+          ],
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Consultor',
+      boxes: [
+        {
+          id: 4,
+          fields: [
             {
               id: 'consultantId',
               required: true,
-              type: 'select',
-              label: 'Consultor',
-              optionKeyLabel: 'label',
-              optionKeyValue: 'value',
-              options: [],
+              type: 'selectSearch',
+              label: '',
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                variant: 'single',
+                list: [],
+              },
             },
           ],
         },

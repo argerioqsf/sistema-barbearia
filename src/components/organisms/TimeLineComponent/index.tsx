@@ -28,7 +28,7 @@ const TimeLineComponent = ({ timeLine }: TimeLineComponentProps) => {
                 <h4>{item?.created_at}</h4>
               </div>
               <div className="pt-2 text-wrap">
-                <Text>{item.describe}</Text>
+                <Text>{item.description}</Text>
               </div>
             </div>
           </div>

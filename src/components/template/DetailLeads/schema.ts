@@ -1,18 +1,16 @@
 import { z } from 'zod'
 
 export const formSchemaUpdateLead = z.object({
-  name: z.string().min(1, { message: 'O campo Id é obrigatório' }),
+  id: z.string().min(1, { message: 'O campo Id é obrigatório' }),
+  name: z.string().min(1, { message: 'O campo Nome é obrigatório' }),
   phone: z.string().optional(),
-  document: z.string().min(1, { message: 'O campo Id é obrigatório' }),
+  document: z.string().min(1, { message: 'O campo Documento é obrigatório' }),
   email: z.string().min(1, { message: 'O campo Id é obrigatório' }),
   city: z.string().min(1, { message: 'O campo Cidade é obrigatório' }),
   indicatorId: z
     .string()
     .min(1, { message: 'O campo indicador é obrigatório' }),
-  consultantId: z
-    .string()
-    .min(1, { message: 'O campo indicador é obrigatório' })
-    .optional(),
+  consultantId: z.string().optional().nullable(),
 })
 
 export const formSchemaCreateTimeLine = z.object({

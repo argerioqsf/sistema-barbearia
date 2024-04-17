@@ -3,15 +3,20 @@ import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { Course, InfoList, ReturnLoadList } from '@/types/general'
+import { Course, InfoList, ReturnLoadList, SearchParams } from '@/types/general'
 import React from 'react'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { api } from '@/data/api'
 
-async function loadCourses(): Promise<ReturnLoadList<Course>> {
+async function loadCourses(
+  q?: string,
+  page?: string,
+): Promise<ReturnLoadList<Course>> {
   try {
+    const queryQ = q && `q=${q}&`
+    const queryPage = page && `page=${page}`
     const token = getTokenFromCookieServer()
-    const response = await api('/courses', {
+    const response = await api(`/courses?${queryQ}${queryPage ?? ''}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -31,13 +36,17 @@ async function loadCourses(): Promise<ReturnLoadList<Course>> {
   }
 }
 
-export default async function ListCourses() {
+export default async function ListCourses({ searchParams }: SearchParams) {
   const infoList: InfoList<Course> = {
     itemsHeader: ['N', 'NOME', 'ATIVO', '', ''],
     itemsList: ['name', '', 'active', '', ''],
   }
 
-  const response = await loadCourses()
+  const response = await loadCourses(
+    searchParams?.q ?? '',
+    searchParams?.page ?? '',
+  )
+
   const list = response?.response ?? null
   const errorRequest = response.error?.request ?? null
 

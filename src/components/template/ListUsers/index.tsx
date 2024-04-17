@@ -33,8 +33,8 @@ async function loadUsers(): Promise<ReturnLoadList<User>> {
 
 export default async function ListUsers() {
   const infoList: InfoList<User> = {
-    itemsHeader: ['', 'NOME', 'E-MAIL', 'CPF'],
-    itemsList: ['name', '', 'email', '', 'profile.cpf'],
+    itemsHeader: ['', 'NOME', 'E-MAIL', 'PERMISSÃO'],
+    itemsList: ['name', '', 'email', '', 'profile.role'],
   }
 
   const response = await loadUsers()

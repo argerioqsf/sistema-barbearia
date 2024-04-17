@@ -3,16 +3,27 @@ import { FormFieldText } from '@/components/molecules'
 import FormFieldSelect from '@/components/molecules/FormFieldSelect'
 import SelectFormWithSearch from '@/components/molecules/SelectFormWithSearch'
 import { FieldsTemplateForm, InitialState } from '@/types/general'
-import { Dispatch, ReactElement, SetStateAction } from 'react'
-import { FieldValues, Path, UseFormRegister } from 'react-hook-form'
+import { Dispatch, SetStateAction } from 'react'
+import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form'
 
-export default function handleFieldsRender<T>(
-  field: FieldsTemplateForm<T>,
-  state: InitialState<T>,
-  setFormDataExtra: Dispatch<SetStateAction<FormData>>,
-  register: UseFormRegister<T & FieldValues>,
-): ReactElement {
+type PropsFieldsForm<T> = {
+  field: FieldsTemplateForm<T>
+  state: InitialState<T>
+  setFormDataExtra: Dispatch<SetStateAction<FormData>>
+  defaultValues?: DefaultValues<T & FieldValues>
+}
+
+export default function FieldsForm<T>({
+  field,
+  state,
+  setFormDataExtra,
+  defaultValues,
+}: PropsFieldsForm<T>) {
   const id = field.id as Path<T & { request?: string }>
+
+  const { register } = useForm<T & FieldValues>({
+    defaultValues: defaultValues ?? undefined,
+  })
 
   const propsField = {
     props: { ...register(id, { required: field.required }) },
@@ -29,20 +40,22 @@ export default function handleFieldsRender<T>(
       <FormFieldSelect
         {...propsField}
         type="select"
-        options={field.options ?? []}
-        optionKeyLabel={field.optionKeyLabel}
-        optionKeyValue={field.optionKeyValue}
+        options={field?.option?.list ?? []}
+        optionKeyLabel={field?.option?.keyLabel}
+        optionKeyValue={field?.option?.keyValue}
       />
     )
   } else if (field.type === 'selectSearch') {
     return (
-      <SelectFormWithSearch<T>
+      <SelectFormWithSearch
         {...propsField}
-        options={field.options ?? []}
-        optionKeyLabel={field.optionKeyLabel}
-        optionKeyValue={field.optionKeyValue}
         label={field.label}
         setFormDataExtra={setFormDataExtra}
+        options={field?.option?.list ?? []}
+        optionKeyLabel={field?.option?.keyLabel}
+        optionKeyValue={field?.option?.keyValue}
+        variant={field?.option?.variant ?? 'multiple'}
+        values={field.option?.values}
       />
     )
   } else if (field.type === 'hidden') {

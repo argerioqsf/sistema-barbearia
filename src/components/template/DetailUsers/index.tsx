@@ -59,7 +59,9 @@ export default async function DetailUsers({ id }: { id: string }) {
       },
     ]
   }
-  templates.templateForm.sections[1].boxes[0].fields[0].options = options
+  templates.templateForm.sections[1].boxes[0].fields[0].option = {
+    list: options,
+  }
 
   return (
     <ContainerDashboard>

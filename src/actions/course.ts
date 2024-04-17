@@ -31,7 +31,7 @@ export async function registerCourse(
         },
         body: JSON.stringify({
           name: formData.get('name'),
-          active: formData.get('active') === '1',
+          active: formData.get('active') === 'true',
         }),
       })
       if (!response.ok) {

@@ -1,5 +1,5 @@
 import ListUnits from '@/components/template/ListUnits'
-import { ParamsProp } from '@/types/general'
+import { ParamsProp, SearchParams } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata({
@@ -17,11 +17,7 @@ export async function generateMetadata({
   }
 }
 
-type Props = {
-  params: { locale: string }
-  searchParams: { q: string; page: string }
-}
-const page = ({ searchParams }: Props) => {
+const page = ({ searchParams }: SearchParams) => {
   return <ListUnits searchParams={searchParams} />
 }
 

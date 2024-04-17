@@ -10,18 +10,14 @@ export async function registerUnit(
   prevState: InitialState<Unit>,
   formData: FormData,
 ): Promise<InitialState<Unit>> {
-  console.log('formData: ', formData)
   const segments = JSON.parse(String(formData.get('segments')) ?? '[]')
   const courses = JSON.parse(String(formData.get('courses')) ?? '[]')
-  console.log('segments: ', segments)
-  console.log('courses: ', courses)
   const validatedFields = formSchemaRegisterUnit.safeParse({
     name: formData.get('name'),
     segments,
     courses,
   })
 
-  console.log('validatedFields: ', validatedFields)
   if (validatedFields.success) {
     try {
       const TOKEN_SIM = getTokenFromCookieServer()
@@ -42,7 +38,6 @@ export async function registerUnit(
           courses: courses ?? [],
         }),
       })
-      console.log('response: ', response)
       if (!response.ok) {
         const errorMessage = await response.text()
         return {
@@ -61,7 +56,6 @@ export async function registerUnit(
   } else if (validatedFields.error) {
     const error = validatedFields.error.flatten().fieldErrors as Partial<Unit>
 
-    console.log('validatedFields error: ', error)
     return {
       errors: { ...error },
     }
@@ -74,10 +68,12 @@ export async function updateUnit(
   prevState: InitialState<Unit>,
   formData: FormData,
 ): Promise<InitialState<Unit>> {
+  const segments = JSON.parse(String(formData.get('segments')) ?? '[]')
+  const courses = JSON.parse(String(formData.get('courses')) ?? '[]')
   const validatedFields = formSchemaUpdateUnit.safeParse({
     name: formData.get('name'),
-    // courses: formData.get('email'),
-    // segments: formData.get('password'),
+    segments,
+    courses,
   })
 
   if (validatedFields.success) {
@@ -96,6 +92,8 @@ export async function updateUnit(
         },
         body: JSON.stringify({
           name: formData.get('name'),
+          segments: segments ?? [],
+          courses: courses ?? [],
         }),
       })
       if (!response.ok) {

@@ -1,5 +1,5 @@
 import ListCourses from '@/components/template/ListCourses'
-import { ParamsProp } from '@/types/general'
+import { ParamsProp, SearchParams } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata({
@@ -17,8 +17,8 @@ export async function generateMetadata({
   }
 }
 
-const page = () => {
-  return <ListCourses />
+const page = ({ searchParams }: SearchParams) => {
+  return <ListCourses searchParams={searchParams} />
 }
 
 export default page

@@ -22,6 +22,46 @@ export const templateForm: TemplateForm<Unit> = {
         },
       ],
     },
+    {
+      id: 2,
+      title: 'Seguimentos',
+      boxes: [
+        {
+          id: 2,
+          fields: [
+            {
+              id: 'segments',
+              required: true,
+              type: 'selectSearch',
+              label: '',
+              option: {
+                keyLabel: 'name',
+                keyValue: 'id',
+                list: [],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Cursos',
+      boxes: [
+        {
+          id: 3,
+          fields: [
+            {
+              id: 'courses',
+              required: true,
+              type: 'selectSearch',
+              label: '',
+              option: { keyLabel: 'name', keyValue: 'id', list: [] },
+            },
+          ],
+        },
+      ],
+    },
   ],
 }
 

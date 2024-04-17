@@ -14,7 +14,7 @@ async function getCourseForId(id: string): Promise<{
 }> {
   try {
     const token = getTokenFromCookieServer()
-    const response = await api(`/user/${id}`, {
+    const response = await api(`/course/${id}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,

@@ -3,6 +3,7 @@
 import { Text } from '@/components/atoms'
 import LabelForm from '@/components/atoms/LabelForm'
 import SelectForm from '@/components/atoms/SelectForm'
+import { useItemListTransform } from '@/hooks/use-item-list-transform'
 import { Option, OptionGeneric, OptionKey } from '@/types/general'
 import React from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
@@ -30,10 +31,11 @@ export default function FormFieldSelect<T>({
   optionKeyLabel,
   optionKeyValue,
 }: FormFieldTextProps<T>) {
+  const { getItemValue } = useItemListTransform()
   const getOptionLabel = (option: OptionGeneric<T>, key: OptionKey<T>) =>
-    String(option[key as keyof OptionGeneric<T>])
+    String(getItemValue(option, key))
   const getOptionValue = (option: OptionGeneric<T>, key: OptionKey<T>) =>
-    String(option[key as keyof OptionGeneric<T>])
+    String(getItemValue(option, key))
 
   const OrderOptions: Option[] = options.map((option) => {
     return {
