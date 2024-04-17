@@ -33,7 +33,6 @@ export function SelectFormWithSearch<T>({
   values,
 }: Props<T>) {
   const { getItemValue } = useItemListTransform()
-
   const getOptionLabel = (option: OptionGeneric<T>, key: OptionKey<T>) =>
     String(getItemValue(option, key))
   const getOptionValue = (option: OptionGeneric<T>, key: OptionKey<T>) =>
@@ -91,6 +90,7 @@ export function SelectFormWithSearch<T>({
   }
 
   useEffect(() => {
+    // TODO: pegar o initialValue direto do lead
     if (variant === 'multiple') {
       setFormDataExtra((state) => {
         const newState = returnExistingValues(state)

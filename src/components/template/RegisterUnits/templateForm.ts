@@ -36,7 +36,6 @@ export const templateForm: TemplateForm<Unit | Course | Segment> = {
               option: {
                 keyLabel: 'name',
                 keyValue: 'id',
-                variant: 'single',
                 list: [],
               },
             },
@@ -56,7 +55,11 @@ export const templateForm: TemplateForm<Unit | Course | Segment> = {
               required: true,
               type: 'selectSearch',
               label: '',
-              option: { keyLabel: 'name', keyValue: 'id', list: [] },
+              option: {
+                keyLabel: 'name',
+                keyValue: 'id',
+                list: [],
+              },
             },
           ],
         },

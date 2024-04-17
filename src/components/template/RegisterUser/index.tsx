@@ -19,12 +19,15 @@ export default async function RegisterUser() {
     options = [
       ...options,
       {
-        label: rolesSystem[key] as string,
-        value: rolesSystem[key] as string,
+        label: rolesSystem[key as keyof Roles] as string,
+        value: rolesSystem[key as keyof Roles] as string,
       },
     ]
   }
-  templateForm.sections[1].boxes[0].fields[0].option = { list: options }
+  templateForm.sections[1].boxes[0].fields[0].option = {
+    ...templateForm.sections[1].boxes[0].fields[0].option,
+    list: options,
+  }
 
   return (
     <ContainerDashboard>
