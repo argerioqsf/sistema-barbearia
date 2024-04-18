@@ -11,14 +11,12 @@ import { api } from '@/data/api'
 async function loadCourses(): Promise<ReturnLoadList<Course>> {
   try {
     const token = getTokenFromCookieServer()
-    const response = await api('/courses', {
+    const response = await api(`/course/select`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 60,
-      },
+      next: { tags: ['courses'], revalidate: 60 },
     })
 
     if (!response.ok) {
@@ -28,7 +26,7 @@ async function loadCourses(): Promise<ReturnLoadList<Course>> {
       }
     }
     const list = await response.json()
-    return { response: list.courses.courses }
+    return { response: list.courses }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -37,14 +35,12 @@ async function loadCourses(): Promise<ReturnLoadList<Course>> {
 async function loadSegments(): Promise<ReturnLoadList<Segment>> {
   try {
     const token = getTokenFromCookieServer()
-    const response = await api('/segments', {
+    const response = await api('/segment/select', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 60,
-      },
+      next: { tags: ['segments'], revalidate: 60 },
     })
 
     if (!response.ok) {
@@ -63,11 +59,15 @@ async function loadSegments(): Promise<ReturnLoadList<Segment>> {
 
 export default async function RegisterUnits() {
   const responseSegments = await loadSegments()
-  templateForm.sections[1].boxes[0].fields[0].options =
-    responseSegments?.response ?? []
+  templateForm.sections[1].boxes[0].fields[0].option = {
+    ...templateForm.sections[1].boxes[0].fields[0].option,
+    list: responseSegments?.response ?? [],
+  }
   const responseCourses = await loadCourses()
-  templateForm.sections[2].boxes[0].fields[0].options =
-    responseCourses?.response ?? []
+  templateForm.sections[2].boxes[0].fields[0].option = {
+    ...templateForm.sections[2].boxes[0].fields[0].option,
+    list: responseCourses?.response ?? [],
+  }
 
   return (
     <ContainerDashboard>

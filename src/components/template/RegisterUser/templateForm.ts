@@ -48,7 +48,7 @@ export const templateForm: TemplateForm<User | Profile> = {
             {
               id: 'birthday',
               required: true,
-              type: 'text',
+              type: 'date',
               label: 'Nascimento',
             },
             {
@@ -56,26 +56,28 @@ export const templateForm: TemplateForm<User | Profile> = {
               required: true,
               type: 'select',
               label: 'Genero',
-              optionKeyLabel: 'label',
-              optionKeyValue: 'value',
-              options: [
-                {
-                  label: 'Selecioinar',
-                  value: '',
-                },
-                {
-                  label: 'Masculino',
-                  value: 'man',
-                },
-                {
-                  label: 'Feminino',
-                  value: 'woman',
-                },
-                {
-                  label: 'Outro',
-                  value: 'other',
-                },
-              ],
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                list: [
+                  {
+                    label: 'Selecioinar',
+                    value: '',
+                  },
+                  {
+                    label: 'Masculino',
+                    value: 'man',
+                  },
+                  {
+                    label: 'Feminino',
+                    value: 'woman',
+                  },
+                  {
+                    label: 'Outro',
+                    value: 'other',
+                  },
+                ],
+              },
             },
           ],
         },
@@ -104,22 +106,24 @@ export const templateForm: TemplateForm<User | Profile> = {
               required: true,
               type: 'select',
               label: 'Ativo',
-              optionKeyLabel: 'label',
-              optionKeyValue: 'value',
-              options: [
-                {
-                  label: 'Selecionar',
-                  value: '',
-                },
-                {
-                  label: 'Sim',
-                  value: 'sim',
-                },
-                {
-                  label: 'Não',
-                  value: 'nao',
-                },
-              ],
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                list: [
+                  {
+                    label: 'Selecionar',
+                    value: '',
+                  },
+                  {
+                    label: 'Sim',
+                    value: 'sim',
+                  },
+                  {
+                    label: 'Não',
+                    value: 'nao',
+                  },
+                ],
+              },
             },
           ],
         },
@@ -137,9 +141,11 @@ export const templateForm: TemplateForm<User | Profile> = {
               required: true,
               type: 'select',
               label: 'Permissão',
-              optionKeyLabel: 'label',
-              optionKeyValue: 'value',
-              options: [],
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                list: [],
+              },
             },
           ],
         },

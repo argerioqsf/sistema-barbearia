@@ -19,7 +19,7 @@ export function useHandlerMockServer() {
   function getTimelineForLeadId(leadId: string): TimeLine[] {
     const indicators = mockServer.time_line
     return indicators.filter((timeLine) => {
-      return timeLine.lead_id === leadId
+      return timeLine.leadsId === leadId
     })
   }
 

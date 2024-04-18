@@ -27,22 +27,24 @@ export const templateForm: TemplateForm<Course> = {
               required: true,
               type: 'select',
               label: 'Ativo',
-              optionKeyLabel: 'label',
-              optionKeyValue: 'value',
-              options: [
-                {
-                  value: '',
-                  label: 'Selecione',
-                },
-                {
-                  value: 'true',
-                  label: 'Sim',
-                },
-                {
-                  value: 'false',
-                  label: 'Não',
-                },
-              ],
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                list: [
+                  {
+                    value: '',
+                    label: 'Selecione',
+                  },
+                  {
+                    value: 'true',
+                    label: 'Sim',
+                  },
+                  {
+                    value: 'false',
+                    label: 'Não',
+                  },
+                ],
+              },
             },
           ],
         },

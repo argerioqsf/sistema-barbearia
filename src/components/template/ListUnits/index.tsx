@@ -4,7 +4,7 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { api } from '@/data/api'
-import { InfoList, ReturnLoadList, Unit } from '@/types/general'
+import { InfoList, ReturnLoadList, SearchParams, Unit } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import React from 'react'
 
@@ -36,22 +36,15 @@ async function loadUnits(
   }
 }
 
-export default async function ListUnits({
-  searchParams,
-}: {
-  searchParams: {
-    q: string
-    page: string
-  }
-}) {
+export default async function ListUnits({ searchParams }: SearchParams) {
   const infoList: InfoList<Unit> = {
     itemsHeader: ['N', 'NOME', 'QUANT. SEGUIMENTOS', ' QUANT. CURSOS', ''],
     itemsList: ['name', '', '_count.segments', '_count.courses', ''],
   }
 
   const response = await loadUnits(
-    searchParams.q ?? '',
-    searchParams.page ?? '',
+    searchParams?.q ?? '',
+    searchParams?.page ?? '',
   )
   const list = response?.response ?? null
   const errorRequest = response.error?.request ?? null

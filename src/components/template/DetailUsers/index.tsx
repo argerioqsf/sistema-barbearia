@@ -1,12 +1,10 @@
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import { Errors, Option, Profile, User } from '@/types/general'
+import { Errors, Option, Profile, Roles, User } from '@/types/general'
 import React from 'react'
 import * as templates from './templates'
-import {
-  getRolesFromCookieServer,
-  getTokenFromCookieServer,
-} from '@/utils/cookieServer'
+import roles from '@/constants/roles.json'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { api } from '@/data/api'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import { updateUserProfile } from '@/actions/user'
@@ -48,18 +46,20 @@ export default async function DetailUsers({ id }: { id: string }) {
       value: '',
     },
   ]
-
-  const roles = getRolesFromCookieServer()
-  for (const key in roles) {
+  const rolesSystem: Roles = roles
+  for (const key in rolesSystem) {
     options = [
       ...options,
       {
-        label: roles[key] as string,
-        value: roles[key] as string,
+        label: rolesSystem[key as keyof Roles] as string,
+        value: rolesSystem[key as keyof Roles] as string,
       },
     ]
   }
-  templates.templateForm.sections[1].boxes[0].fields[0].options = options
+  templates.templateForm.sections[1].boxes[0].fields[0].option = {
+    ...templates.templateForm.sections[1].boxes[0].fields[0].option,
+    list: options,
+  }
 
   return (
     <ContainerDashboard>

@@ -5,6 +5,7 @@ import { formSchemaRegisterSegment } from '@/components/template/RegisterSegment
 import { api } from '@/data/api'
 import { Errors, InitialState, Segment } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { revalidateTag } from 'next/cache'
 
 export async function registerSegment(
   prevState: InitialState<Segment>,
@@ -91,6 +92,7 @@ export async function updateSegment(
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
+      revalidateTag('segments')
       return {
         errors: {},
         ok: true,

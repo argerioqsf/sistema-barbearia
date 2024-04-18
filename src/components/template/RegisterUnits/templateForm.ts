@@ -32,33 +32,19 @@ export const templateForm: TemplateForm<Unit | Course | Segment> = {
               id: 'segments',
               required: true,
               type: 'selectSearch',
-              label: 'Seguimentos',
-              optionKeyLabel: 'name',
-              optionKeyValue: 'id',
-              options: [
-                {
-                  id: '0ec2efaf-50d4-404b-aa67-2b737ecb249f',
-                  name: 'seguimento 1',
-                  created_at: '2342423',
-                },
-                {
-                  id: 'seguimento 2',
-                  name: 'seguimento 2',
-                  created_at: '2342423',
-                },
-                {
-                  id: 'seguimento 3',
-                  name: 'seguimento 3',
-                  created_at: '2342423',
-                },
-              ],
+              label: '',
+              option: {
+                keyLabel: 'name',
+                keyValue: 'id',
+                list: [],
+              },
             },
           ],
         },
       ],
     },
     {
-      id: 1,
+      id: 3,
       title: 'Cursos',
       boxes: [
         {
@@ -68,29 +54,12 @@ export const templateForm: TemplateForm<Unit | Course | Segment> = {
               id: 'courses',
               required: true,
               type: 'selectSearch',
-              label: 'Cursos',
-              optionKeyLabel: 'name',
-              optionKeyValue: 'id',
-              options: [
-                {
-                  id: 'curso 1',
-                  quant_leads: 2,
-                  active: true,
-                  name: 'curso 1',
-                },
-                {
-                  id: 'curso 2',
-                  quant_leads: 2,
-                  active: true,
-                  name: 'curso 2',
-                },
-                {
-                  id: 'curso 3',
-                  quant_leads: 2,
-                  active: true,
-                  name: 'curso 3',
-                },
-              ],
+              label: '',
+              option: {
+                keyLabel: 'name',
+                keyValue: 'id',
+                list: [],
+              },
             },
           ],
         },

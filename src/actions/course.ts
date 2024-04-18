@@ -5,6 +5,7 @@ import { formSchemaRegisterCourse } from '@/components/template/RegisterCourses/
 import { api } from '@/data/api'
 import { Course, Errors, InitialState } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { revalidateTag } from 'next/cache'
 
 export async function registerCourse(
   prevState: InitialState<Course>,
@@ -31,7 +32,7 @@ export async function registerCourse(
         },
         body: JSON.stringify({
           name: formData.get('name'),
-          active: formData.get('active') === '1',
+          active: formData.get('active') === 'true',
         }),
       })
       if (!response.ok) {
@@ -40,6 +41,7 @@ export async function registerCourse(
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
+      revalidateTag('courses')
       return {
         errors: {},
         ok: true,

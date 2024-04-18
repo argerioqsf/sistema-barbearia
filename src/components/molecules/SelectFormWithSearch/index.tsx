@@ -1,8 +1,14 @@
 import { Button, InputForm, LabelForm, Text } from '@/components/atoms'
 import SelectForm from '@/components/atoms/SelectForm'
-import { Option, OptionGeneric, OptionKey } from '@/types/general'
+import { useItemListTransform } from '@/hooks/use-item-list-transform'
+import {
+  Option,
+  OptionGeneric,
+  OptionKey,
+  VariantOption,
+} from '@/types/general'
 import { Trash } from 'lucide-react'
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
@@ -15,6 +21,8 @@ interface Props<T> {
   props: UseFormRegisterReturn<string>
   label: string
   setFormDataExtra: Dispatch<SetStateAction<FormData>>
+  variant: VariantOption
+  values?: string[]
 }
 
 export function SelectFormWithSearch<T>({
@@ -25,16 +33,15 @@ export function SelectFormWithSearch<T>({
   error,
   props,
   label,
+  variant,
   setFormDataExtra,
+  values,
 }: Props<T>) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [isFocused, setIsFocused] = useState(false)
-  const [selectedItems, setSelectedItems] = useState<Option[]>([])
-
+  const { getItemValue } = useItemListTransform()
   const getOptionLabel = (option: OptionGeneric<T>, key: OptionKey<T>) =>
-    String(option[key as keyof OptionGeneric<T>])
+    String(getItemValue(option, key))
   const getOptionValue = (option: OptionGeneric<T>, key: OptionKey<T>) =>
-    String(option[key as keyof OptionGeneric<T>])
+    String(getItemValue(option, key))
 
   const OrderOptions: Option[] = options.map((option) => {
     return {
@@ -43,13 +50,11 @@ export function SelectFormWithSearch<T>({
     }
   })
 
-  const filteredOptions: Option[] = OrderOptions.filter((option) =>
-    option.label.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
-
   const returnExistingValues = (state: FormData) => {
     const newState = new FormData()
-    const extraDataKeys = Array.from(state.keys()).filter((key) => key)
+    const extraDataKeys = Array.from(state.keys()).filter(
+      (key) => key !== props.name,
+    )
     extraDataKeys.forEach((key) => {
       const valueString = String(state.get(key)) ?? '[]'
       if (key !== props.name) {
@@ -59,7 +64,66 @@ export function SelectFormWithSearch<T>({
     return newState
   }
 
-  const parseFormDataToJson = (state: FormData): string[] => {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [isFocused, setIsFocused] = useState(false)
+  const [selectedItems, setSelectedItems] = useState<Option[]>(
+    values ? setInitialValue() : [],
+  )
+
+  function setInitialValue() {
+    let initialSelectedItems = []
+    const optionsOrder = OrderOptions
+    initialSelectedItems = values
+      ? values.map((value) => {
+          const itemInOption = optionsOrder.find(
+            (option) => option.value === value,
+          )
+          if (itemInOption) {
+            return {
+              value: itemInOption.value,
+              label: itemInOption.label,
+            }
+          }
+          return {
+            value: '',
+            label: 'Not Found',
+          }
+        })
+      : []
+
+    return initialSelectedItems
+  }
+
+  useEffect(() => {
+    // TODO: pegar o initialValue direto do lead
+    if (variant === 'multiple') {
+      setFormDataExtra((state) => {
+        const newState = returnExistingValues(state)
+        const extraDataJson = selectedItems.map((item) => item.value)
+        const newValue = [...extraDataJson]
+        const newValueString = JSON.stringify(newValue)
+        newState.append(props.name, newValueString)
+        return newState
+      })
+    }
+    if (variant === 'single') {
+      setFormDataExtra((state) => {
+        const newState = returnExistingValues(state)
+        const extraDataJson = selectedItems.map((item) => item.value)
+        const newValue = extraDataJson[0] ?? ''
+        const newValueString = JSON.stringify(newValue)
+        newState.append(props.name, newValueString)
+        return newState
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const filteredOptions: Option[] = OrderOptions.filter((option) =>
+    option.label.toLowerCase().includes(searchTerm.toLowerCase()),
+  )
+
+  const parseCurrentValueFormDataToJson = (state: FormData): string[] => {
     const extraData = state.get(props.name)
     return JSON.parse(String(extraData ?? '[]'))
   }
@@ -72,42 +136,65 @@ export function SelectFormWithSearch<T>({
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setIsFocused(false)
-    onChange
-      ? onChange(event.target.value)
-      : console.log('change value:', event.target.value)
+    onChange ? onChange(event.target.value) : console.log('onChange')
 
     const itemExists = verifyExistsItem(event.target.value)
 
     if (itemExists.length === 0) {
-      setFormDataExtra((state) => {
-        const newState = returnExistingValues(state)
-        const extraDataJson = parseFormDataToJson(state)
-        const newValue = [...extraDataJson, event.target.value]
-        const newValueString = JSON.stringify(newValue)
-        newState.append(props.name, newValueString)
-        return newState
-      })
-      const itemSelected = filteredOptions.filter(
-        (option) => option.value === event.target.value,
-      )
-      setSelectedItems((state) => [...state, itemSelected[0]])
+      if (variant === 'multiple') {
+        setFormDataExtra((state) => {
+          const newState = returnExistingValues(state)
+          const extraDataJson = parseCurrentValueFormDataToJson(state)
+          const newValue = [...extraDataJson, event.target.value]
+          const newValueString = JSON.stringify(newValue)
+          newState.append(props.name, newValueString)
+          return newState
+        })
+        const itemSelected = filteredOptions.filter(
+          (option) => option.value === event.target.value,
+        )
+        setSelectedItems((state) => [...state, itemSelected[0]])
+      } else {
+        setFormDataExtra((state) => {
+          const newState = returnExistingValues(state)
+          newState.append(props.name, event.target.value)
+          return newState
+        })
+        const itemSelected = filteredOptions.filter(
+          (option) => option.value === event.target.value,
+        )
+        setSelectedItems([itemSelected[0]])
+      }
+      setSearchTerm('')
     }
   }
 
   const removeItem = (id: string) => {
     const itemExists = verifyExistsItem(id)
     if (itemExists) {
-      setFormDataExtra((state) => {
-        const newState = returnExistingValues(state)
-        const extraDataJson = parseFormDataToJson(state)
-        const itemsFormDataFilter = extraDataJson.filter((item) => item !== id)
-        const newValue = [...itemsFormDataFilter]
-        const newValueString = JSON.stringify(newValue)
-        newState.append(props.name, newValueString)
-        return newState
-      })
-      const itemsFilter = selectedItems.filter((item) => item.value !== id)
-      setSelectedItems([...itemsFilter])
+      if (variant === 'multiple') {
+        setFormDataExtra((state) => {
+          const newState = returnExistingValues(state)
+          const extraDataJson = parseCurrentValueFormDataToJson(state)
+          const itemsFormDataFilter = extraDataJson.filter(
+            (item) => item !== id,
+          )
+          const newValue = [...itemsFormDataFilter]
+          const newValueString = JSON.stringify(newValue)
+          newState.append(props.name, newValueString)
+          return newState
+        })
+        const itemsFilter = selectedItems.filter((item) => item.value !== id)
+        setSelectedItems([...itemsFilter])
+      } else {
+        setFormDataExtra((state) => {
+          const newState = returnExistingValues(state)
+          newState.append(props.name, '')
+          return newState
+        })
+        const itemsFilter = selectedItems.filter((item) => item.value !== id)
+        setSelectedItems([...itemsFilter])
+      }
     }
   }
 
@@ -127,17 +214,17 @@ export function SelectFormWithSearch<T>({
           type={'text'}
           placeholder="Search..."
           className={twMerge(
-            'rounded-md border-0',
+            'rounded-full border-0',
             'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
             'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
-            `bg-gray-300 ${error && 'ring-red-500 focus:ring-red-500'}`,
+            `bg-white ${error && 'ring-red-500 focus:ring-red-500'}`,
           )}
         />
 
-        <div className="mt-2 relative">
+        <div className="mt-6 relative">
           {isFocused && (
             <SelectForm
-              classNameOptions="py-2 px-4 mb-2 block w-full text-left bg-white hover:bg-gray-100 border rounded-full border-gray-300"
+              classNameOptions="py-2 px-4 mb-2 block w-full text-left bg-white hover:bg-gray-100 border rounded-xl border-gray-300"
               options={filteredOptions}
               onChange={handleChange}
               size={4}
@@ -151,7 +238,13 @@ export function SelectFormWithSearch<T>({
           )}
         </div>
 
-        <div className="bg-gray-300 rounded-lg p-4">
+        <div
+          className={
+            variant === 'multiple'
+              ? 'bg-gray-300 p-4 rounded-lg min-h-24'
+              : 'rounded-md'
+          }
+        >
           <ul>
             {selectedItems?.map((item, idx) => (
               <div

@@ -2,6 +2,7 @@
 
 import { Button, Form, Text } from '@/components/atoms'
 import Box from '@/components/atoms/Box'
+import FieldsForm from '@/components/molecules/FieldsForm'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
 import {
   BoxTemplateForm,
@@ -11,10 +12,9 @@ import {
   ServerAction,
   TemplateForm,
 } from '@/types/general'
-import handleFieldsRender from '@/utils/handleFieldsRender'
 import { Fragment, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
-import { DefaultValues, FieldValues, useForm } from 'react-hook-form'
+import { DefaultValues, FieldValues } from 'react-hook-form'
 
 type FormDashboardProps<T> = {
   templateForm?: TemplateForm<T>
@@ -27,6 +27,7 @@ type FormDashboardProps<T> = {
   errorMessage?: string
   defaultValues?: DefaultValues<T & FieldValues>
   errorRequest?: string
+  id?: string
 }
 
 export default function FormDashboard<T>({
@@ -38,16 +39,10 @@ export default function FormDashboard<T>({
   errorMessage,
   defaultValues,
   errorRequest,
+  id,
 }: FormDashboardProps<T>) {
   const { pushRouter } = useHandlerRouter()
   const [formDataExtra, setFormDataExtra] = useState<FormData>(new FormData())
-
-  const { register } = useForm<T & FieldValues>({
-    defaultValues: defaultValues ?? undefined,
-  })
-
-  console.log('formDataExtra: ', formDataExtra)
-
   const initialStateForm: InitialState<T> = {
     errors: undefined,
     ok: false,
@@ -68,15 +63,20 @@ export default function FormDashboard<T>({
     const quantInputHidden = boxItem?.fields?.filter(
       (field) => field.type === 'hidden',
     )
-    const gridCols: LimitColsGrid = (boxItem?.fields?.length -
+    const gridCols = (boxItem?.fields?.length -
       quantInputHidden.length) as LimitColsGrid
+
     return (
       <Box cols={gridCols}>
         {boxItem.fields.map((field, idx) => {
           return (
-            <Fragment key={idx}>
-              {handleFieldsRender<T>(field, state, setFormDataExtra, register)}
-            </Fragment>
+            <FieldsForm
+              key={idx}
+              field={field}
+              state={state}
+              setFormDataExtra={setFormDataExtra}
+              defaultValues={defaultValues}
+            />
           )
         })}
       </Box>
@@ -95,6 +95,8 @@ export default function FormDashboard<T>({
         newFormData.append(key, valueString)
       })
     }
+    // TODO: aplicar bind
+    if (id) newFormData.append('id', id)
     return newFormData
   }
 
@@ -131,12 +133,12 @@ export default function FormDashboard<T>({
 
         {templateForm?.sections.map((section, idx) => (
           <div key={idx} className="w-[90vw] md:w-full mt-10 lg:mt-8">
-            <div className="p-4 pb-2 bg-gray-200 rounded-xl rounded-b-none w-56 shadow-md shadow-slate-400">
+            <div className="p-4 pb-2 bg-gray-200 rounded-xl rounded-b-none w-full lg:w-56 shadow-md lg:shadow-slate-400">
               <Text className="text-black font-normal text-sm text-center uppercase whitespace-nowrap overflow-hidden text-ellipsis">
                 {section.title}
               </Text>
             </div>
-            <div className="w-[90vw] grid-cols-12 md:w-full border-2 flex flex-col gap-4 bg-gray-200 p-6 rounded-xl rounded-tl-none shadow-md shadow-slate-400">
+            <div className="w-[90vw] grid-cols-12 md:w-full border-2 flex flex-col gap-4 bg-gray-200 p-6 rounded-b-xl lg:rounded-xl lg:rounded-tl-none lg:shadow-md shadow-slate-400">
               {!loading && !errorMessage ? (
                 section?.boxes.map((boxItem, idx) => (
                   <Fragment key={idx}>{handlerBoxRender(boxItem)}</Fragment>

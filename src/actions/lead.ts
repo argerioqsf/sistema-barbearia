@@ -1,6 +1,7 @@
 'use server'
 
 import { formSchemaUpdateLead } from '@/components/template/DetailLeads/schema'
+import { formSchemaRegisterLead } from '@/components/template/RegisterLeads/schema'
 import { api } from '@/data/api'
 import { Errors, InitialState, Lead } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
@@ -9,7 +10,7 @@ export async function registerLead(
   prevState: InitialState<Lead>,
   formData: FormData,
 ): Promise<InitialState<Lead>> {
-  const validatedFields = formSchemaUpdateLead.safeParse({
+  const validatedFields = formSchemaRegisterLead.safeParse({
     name: formData.get('name'),
     phone: formData.get('phone'),
     document: formData.get('document'),
@@ -27,8 +28,7 @@ export async function registerLead(
           errors: { request: 'Erro de credenciais' },
         }
       }
-      const idLead = formData.get('id')
-      const response = await api(`/lead/${idLead}`, {
+      const response = await api(`/create/leads`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,15 +36,12 @@ export async function registerLead(
         },
         body: JSON.stringify({
           name: formData.get('name'),
-          email: formData.get('email'),
-          password: formData.get('password'),
-          active: formData.get('active') === 'sim',
           phone: formData.get('phone'),
-          cpf: formData.get('cpf'),
-          genre: formData.get('genre'),
-          birthday: formData.get('birthday'),
-          pix: formData.get('pix'),
-          role: formData.get('role'),
+          document: formData.get('document'),
+          email: formData.get('email'),
+          city: formData.get('city'),
+          indicatorId: formData.get('indicatorId'),
+          consultantId: formData.get('consultantId'),
         }),
       })
       if (!response.ok) {
@@ -78,15 +75,12 @@ export async function updateLead(
   const validatedFields = formSchemaUpdateLead.safeParse({
     id: formData.get('id'),
     name: formData.get('name'),
-    email: formData.get('email'),
-    password: formData.get('password'),
-    active: formData.get('active'),
     phone: formData.get('phone'),
-    cpf: formData.get('cpf'),
-    genre: formData.get('genre'),
-    birthday: formData.get('birthday'),
-    pix: formData.get('pix'),
-    role: formData.get('role'),
+    document: formData.get('document'),
+    email: formData.get('email'),
+    city: formData.get('city'),
+    indicatorId: formData.get('indicatorId'),
+    consultantId: formData.get('consultantId'),
   })
 
   if (validatedFields.success) {
@@ -106,15 +100,12 @@ export async function updateLead(
         },
         body: JSON.stringify({
           name: formData.get('name'),
-          email: formData.get('email'),
-          password: formData.get('password'),
-          active: formData.get('active') === 'sim',
           phone: formData.get('phone'),
-          cpf: formData.get('cpf'),
-          genre: formData.get('genre'),
-          birthday: formData.get('birthday'),
-          pix: formData.get('pix'),
-          role: formData.get('role'),
+          document: formData.get('document'),
+          email: formData.get('email'),
+          city: formData.get('city'),
+          indicatorId: formData.get('indicatorId'),
+          consultantId: formData.get('consultantId'),
         }),
       })
       if (!response.ok) {

@@ -24,8 +24,8 @@ async function loadIndicators(): Promise<ReturnLoadList<User>> {
         error: { request: JSON.parse(errorMessage).message },
       }
     }
-    const list = await response.json()
-    return { response: list }
+    const { users } = await response.json()
+    return { response: users }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

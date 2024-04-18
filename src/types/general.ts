@@ -1,4 +1,5 @@
 import { DefaultValues, Path } from 'react-hook-form'
+import roles from '@/constants/roles.json'
 import { z } from 'zod'
 
 export type LimitFieldsForm<G> = [G, ...G[]] & {
@@ -14,6 +15,8 @@ export type Segment = {
 }
 
 export type SegmentProps = keyof Segment
+
+export type Roles = typeof roles
 
 export type Course = {
   id: string
@@ -42,10 +45,10 @@ export type User = {
   id: string
   name: string
   email: string
-  active: string
+  active: boolean
   password?: string
   // eslint-disable-next-line no-use-before-define
-  profile: Profile
+  profile: Profile | Record<string, never>
   created_at: string
 }
 
@@ -69,11 +72,14 @@ export type ProfileProps = keyof Profile
 
 export type TimeLine = {
   id: string
-  lead_id: string
-  course_id: string
   title: string
-  describe: string
+  description: string
   status: string
+  // eslint-disable-next-line no-use-before-define
+  lead?: Lead
+  leadsId: string
+  course?: Course
+  course_id?: string
   created_at: string
 }
 
@@ -209,12 +215,14 @@ export type OptionsTemplateForm = {
 
 export interface Option {
   label: string
-  value: string
+  value: string | ''
 }
 
 export type OptionGeneric<T> = T | { value?: string; label?: string }
 
 export type OptionKey<T> = Path<OptionGeneric<T>>
+
+export type VariantOption = 'single' | 'multiple'
 
 export type FieldsTemplateForm<T> = {
   id: Path<T>
@@ -230,12 +238,16 @@ export type FieldsTemplateForm<T> = {
     | 'selectSearch'
   label: string
   classInput?: string
-  options?: OptionGeneric<T>[]
   value?: string | number
   disabled?: boolean
   placeholder?: string
-  optionKeyLabel?: OptionKey<T>
-  optionKeyValue?: OptionKey<T>
+  option?: {
+    list?: OptionGeneric<T>[]
+    keyLabel?: OptionKey<T>
+    keyValue?: OptionKey<T>
+    variant?: VariantOption
+    values?: string[]
+  }
 }
 
 export type BoxTemplateForm<T> = {
@@ -314,10 +326,18 @@ export type ListAction = {
 }
 
 export type SearchType = {
-  q: string
+  q?: string
 }
 
 export interface ReturnLoadList<T> {
   response?: T[]
   error?: Errors<T>
+}
+
+export type SearchParams = {
+  params?: { locale: string }
+  searchParams?: {
+    q: string
+    page: string
+  }
 }

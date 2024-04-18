@@ -1,6 +1,6 @@
-import { InfoList, Lead, TemplateForm, TimeLine } from '@/types/general'
+import { InfoList, Lead, TemplateForm, TimeLine, User } from '@/types/general'
 
-export const templateForm: TemplateForm<Lead> = {
+export const templateForm: TemplateForm<Lead | User> = {
   title: 'Lead',
   textButton: 'Editar',
   sections: [
@@ -23,6 +23,12 @@ export const templateForm: TemplateForm<Lead> = {
               type: 'text',
               label: 'E-mail',
             },
+            {
+              id: 'city',
+              required: true,
+              type: 'text',
+              label: 'Cidade',
+            },
           ],
         },
         {
@@ -42,35 +48,49 @@ export const templateForm: TemplateForm<Lead> = {
             },
           ],
         },
+      ],
+    },
+    {
+      id: 2,
+      title: 'indicador',
+      boxes: [
         {
           id: 4,
           fields: [
             {
               id: 'indicatorId',
               required: true,
-              type: 'select',
-              label: 'Indicador',
-              optionKeyLabel: 'label',
-              optionKeyValue: 'value',
-              options: [
-                {
-                  value: '2',
-                  label: 'Argério Queiroz',
-                },
-                {
-                  value: '3',
-                  label: 'Damiles Arruda',
-                },
-              ],
+              type: 'selectSearch',
+              label: '',
+              option: {
+                keyLabel: 'name',
+                keyValue: 'profile.id',
+                variant: 'single',
+                list: [],
+              },
             },
+          ],
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Consultor',
+      boxes: [
+        {
+          id: 4,
+          fields: [
             {
               id: 'consultantId',
               required: true,
-              type: 'select',
-              label: 'Consultor',
-              optionKeyLabel: 'name',
-              optionKeyValue: 'id',
-              options: [],
+              type: 'selectSearch',
+              label: '',
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                variant: 'single',
+                list: [],
+              },
             },
           ],
         },
@@ -96,19 +116,13 @@ export const templateFormTimeLine: TemplateForm<TimeLine> = {
               type: 'text',
               label: 'Nome',
             },
-            {
-              id: 'id',
-              required: true,
-              type: 'hidden',
-              label: '',
-            },
           ],
         },
         {
           id: 3,
           fields: [
             {
-              id: 'describe',
+              id: 'description',
               required: true,
               type: 'text',
               label: 'Descrição',
@@ -123,18 +137,20 @@ export const templateFormTimeLine: TemplateForm<TimeLine> = {
               required: true,
               type: 'select',
               label: 'Status',
-              optionKeyLabel: 'label',
-              optionKeyValue: 'value',
-              options: [
-                {
-                  value: '2',
-                  label: 'Interessado',
-                },
-                {
-                  value: '3',
-                  label: 'Sem interesse',
-                },
-              ],
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                list: [
+                  {
+                    value: '2',
+                    label: 'Interessado',
+                  },
+                  {
+                    value: '3',
+                    label: 'Sem interesse',
+                  },
+                ],
+              },
             },
           ],
         },
@@ -146,18 +162,20 @@ export const templateFormTimeLine: TemplateForm<TimeLine> = {
               required: true,
               type: 'select',
               label: 'Curso',
-              optionKeyLabel: 'label',
-              optionKeyValue: 'value',
-              options: [
-                {
-                  value: '2',
-                  label: 'curso 1',
-                },
-                {
-                  value: '3',
-                  label: 'curso 2',
-                },
-              ],
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                list: [
+                  {
+                    value: '2',
+                    label: 'curso 1',
+                  },
+                  {
+                    value: '3',
+                    label: 'curso 2',
+                  },
+                ],
+              },
             },
           ],
         },

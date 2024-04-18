@@ -1,35 +1,33 @@
-'use client'
-
 import { registerUserProfile } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import { OptionGeneric, Profile, User } from '@/types/general'
-import { getRolesFromCookie } from '@/utils/cookieClient'
-import React, { useEffect } from 'react'
+import { OptionGeneric, Profile, Roles, User } from '@/types/general'
+import React from 'react'
 import { templateForm } from './templateForm'
+import roles from '@/constants/roles.json'
 
-const RegisterUser: React.FC = () => {
-  useEffect(() => {
-    let options: OptionGeneric<User | Profile>[] = [
+export default async function RegisterUser() {
+  let options: OptionGeneric<User | Profile>[] = [
+    {
+      label: 'Selecione',
+      value: '',
+    },
+  ]
+  const rolesSystem: Roles = roles
+  for (const key in rolesSystem) {
+    options = [
+      ...options,
       {
-        label: 'Selecione',
-        value: '',
+        label: rolesSystem[key as keyof Roles] as string,
+        value: rolesSystem[key as keyof Roles] as string,
       },
     ]
-    const roles = getRolesFromCookie()
-    for (const key in roles) {
-      options = [
-        ...options,
-        {
-          label: roles[key] as string,
-          value: roles[key] as string,
-        },
-      ]
-    }
-    templateForm.sections[1].boxes[0].fields[0].options = options
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [templateForm.sections])
+  }
+  templateForm.sections[1].boxes[0].fields[0].option = {
+    ...templateForm.sections[1].boxes[0].fields[0].option,
+    list: options,
+  }
 
   return (
     <ContainerDashboard>
@@ -49,5 +47,3 @@ const RegisterUser: React.FC = () => {
     </ContainerDashboard>
   )
 }
-
-export default RegisterUser

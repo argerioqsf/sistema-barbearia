@@ -61,22 +61,24 @@ export const templateForm: TemplateForm<Profile> = {
               required: true,
               type: 'select',
               label: 'Status',
-              optionKeyLabel: 'label',
-              optionKeyValue: 'value',
-              options: [
-                {
-                  value: '',
-                  label: 'Selecione',
-                },
-                {
-                  value: 'true',
-                  label: 'ativo',
-                },
-                {
-                  value: 'false',
-                  label: 'desativado',
-                },
-              ],
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                list: [
+                  {
+                    value: '',
+                    label: 'Selecione',
+                  },
+                  {
+                    value: 'true',
+                    label: 'ativo',
+                  },
+                  {
+                    value: 'false',
+                    label: 'desativado',
+                  },
+                ],
+              },
             },
           ],
         },

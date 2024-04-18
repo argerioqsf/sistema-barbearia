@@ -33,7 +33,7 @@ export const mockServer: MockServer = {
       id: '1',
       name: 'Argério',
       email: 'teste@gmail.com',
-      active: 'status',
+      active: true,
       profile: {
         id: 'wqe1e231',
         phone: '234234234',
@@ -66,30 +66,30 @@ export const mockServer: MockServer = {
             timeline: [
               {
                 id: '1',
-                lead_id: '2',
+                leadsId: '2',
                 course_id: '2',
                 title: 'titulo',
-                describe:
+                description:
                   'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
                 status: 'Matrícula Confirmada',
                 created_at: '2023-05-12',
               },
               {
                 id: '2',
-                lead_id: '2',
+                leadsId: '2',
                 course_id: '2',
                 title: 'titulo',
-                describe:
+                description:
                   'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
                 status: 'Matrícula Confirmada',
                 created_at: '2023-05-12',
               },
               {
                 id: '3',
-                lead_id: '2',
+                leadsId: '2',
                 course_id: '2',
                 title: 'titulo',
-                describe:
+                description:
                   'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
                 status: 'Matrícula Confirmada',
                 created_at: '2023-05-12',
@@ -118,30 +118,30 @@ export const mockServer: MockServer = {
             timeline: [
               {
                 id: '1',
-                lead_id: '2',
+                leadsId: '2',
                 course_id: '2',
                 title: 'titulo',
-                describe:
+                description:
                   'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
                 status: 'Matrícula Confirmada',
                 created_at: '2023-05-12',
               },
               {
                 id: '2',
-                lead_id: '2',
+                leadsId: '2',
                 course_id: '2',
                 title: 'titulo',
-                describe:
+                description:
                   'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
                 status: 'Matrícula Confirmada',
                 created_at: '2023-05-12',
               },
               {
                 id: '3',
-                lead_id: '2',
+                leadsId: '2',
                 course_id: '2',
                 title: 'titulo',
-                describe:
+                description:
                   'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
                 status: 'Matrícula Confirmada',
                 created_at: '2023-05-12',
@@ -156,7 +156,7 @@ export const mockServer: MockServer = {
       id: '2',
       name: 'Argério',
       email: 'teste@gmail.com',
-      active: 'status',
+      active: true,
       profile: {
         id: 'wqe1e231',
         phone: '234234234',
@@ -189,30 +189,30 @@ export const mockServer: MockServer = {
             timeline: [
               {
                 id: '1',
-                lead_id: '2',
+                leadsId: '2',
                 course_id: '2',
                 title: 'titulo',
-                describe:
+                description:
                   'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
                 status: 'Matrícula Confirmada',
                 created_at: '2023-05-12',
               },
               {
                 id: '2',
-                lead_id: '2',
+                leadsId: '2',
                 course_id: '2',
                 title: 'titulo',
-                describe:
+                description:
                   'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
                 status: 'Matrícula Confirmada',
                 created_at: '2023-05-12',
               },
               {
                 id: '3',
-                lead_id: '2',
+                leadsId: '2',
                 course_id: '2',
                 title: 'titulo',
-                describe:
+                description:
                   'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
                 status: 'Matrícula Confirmada',
                 created_at: '2023-05-12',
@@ -241,30 +241,30 @@ export const mockServer: MockServer = {
             timeline: [
               {
                 id: '1',
-                lead_id: '2',
+                leadsId: '2',
                 course_id: '2',
                 title: 'titulo',
-                describe:
+                description:
                   'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
                 status: 'Matrícula Confirmada',
                 created_at: '2023-05-12',
               },
               {
                 id: '2',
-                lead_id: '2',
+                leadsId: '2',
                 course_id: '2',
                 title: 'titulo',
-                describe:
+                description:
                   'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
                 status: 'Matrícula Confirmada',
                 created_at: '2023-05-12',
               },
               {
                 id: '3',
-                lead_id: '2',
+                leadsId: '2',
                 course_id: '2',
                 title: 'titulo',
-                describe:
+                description:
                   'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
                 status: 'Matrícula Confirmada',
                 created_at: '2023-05-12',
@@ -299,30 +299,30 @@ export const mockServer: MockServer = {
       timeline: [
         {
           id: '1',
-          lead_id: '2',
+          leadsId: '2',
           course_id: '2',
           title: 'titulo',
-          describe:
+          description:
             'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
           status: 'Matrícula Confirmada',
           created_at: '2023-05-12',
         },
         {
           id: '2',
-          lead_id: '2',
+          leadsId: '2',
           course_id: '2',
           title: 'titulo',
-          describe:
+          description:
             'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
           status: 'Matrícula Confirmada',
           created_at: '2023-05-12',
         },
         {
           id: '3',
-          lead_id: '2',
+          leadsId: '2',
           course_id: '2',
           title: 'titulo',
-          describe:
+          description:
             'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
           status: 'Matrícula Confirmada',
           created_at: '2023-05-12',
@@ -350,30 +350,30 @@ export const mockServer: MockServer = {
       timeline: [
         {
           id: '1',
-          lead_id: '2',
+          leadsId: '2',
           course_id: '2',
           title: 'titulo',
-          describe:
+          description:
             'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
           status: 'Matrícula Confirmada',
           created_at: '2023-05-12',
         },
         {
           id: '2',
-          lead_id: '2',
+          leadsId: '2',
           course_id: '2',
           title: 'titulo',
-          describe:
+          description:
             'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
           status: 'Matrícula Confirmada',
           created_at: '2023-05-12',
         },
         {
           id: '3',
-          lead_id: '2',
+          leadsId: '2',
           course_id: '2',
           title: 'titulo',
-          describe:
+          description:
             'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
           status: 'Matrícula Confirmada',
           created_at: '2023-05-12',
@@ -401,30 +401,30 @@ export const mockServer: MockServer = {
       timeline: [
         {
           id: '1',
-          lead_id: '2',
+          leadsId: '2',
           course_id: '2',
           title: 'titulo',
-          describe:
+          description:
             'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
           status: 'Matrícula Confirmada',
           created_at: '2023-05-12',
         },
         {
           id: '2',
-          lead_id: '2',
+          leadsId: '2',
           course_id: '2',
           title: 'titulo',
-          describe:
+          description:
             'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
           status: 'Matrícula Confirmada',
           created_at: '2023-05-12',
         },
         {
           id: '3',
-          lead_id: '2',
+          leadsId: '2',
           course_id: '2',
           title: 'titulo',
-          describe:
+          description:
             'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
           status: 'Matrícula Confirmada',
           created_at: '2023-05-12',
@@ -437,7 +437,7 @@ export const mockServer: MockServer = {
       id: '1',
       name: 'Argério',
       email: 'teste@gmail.com',
-      active: 'status',
+      active: true,
       created_at: '34242342',
       profile: {
         id: 'wqe1e231',
@@ -454,7 +454,7 @@ export const mockServer: MockServer = {
       id: '2',
       name: 'Argério',
       email: 'teste@gmail.com',
-      active: 'status',
+      active: true,
       created_at: '34242342',
       profile: {
         id: 'wqe1e231',
@@ -471,7 +471,7 @@ export const mockServer: MockServer = {
       id: '3',
       name: 'Argério',
       email: 'teste@gmail.com',
-      active: 'status',
+      active: true,
       created_at: '34242342',
       profile: {
         id: 'wqe1e231',
@@ -652,30 +652,30 @@ export const mockServer: MockServer = {
   time_line: [
     {
       id: '1',
-      lead_id: '2',
+      leadsId: '2',
       course_id: '2',
       title: 'titulo',
-      describe:
+      description:
         'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
       status: 'Matrícula Confirmada',
       created_at: '2023-05-12',
     },
     {
       id: '2',
-      lead_id: '2',
+      leadsId: '2',
       course_id: '2',
       title: 'titulo',
-      describe:
+      description:
         'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
       status: 'Matrícula Confirmada',
       created_at: '2023-05-12',
     },
     {
       id: '3',
-      lead_id: '2',
+      leadsId: '2',
       course_id: '2',
       title: 'titulo',
-      describe:
+      description:
         'se cadastrou por curiosidade, não pode pagar um curso com o valor das nossas mensalidades e foi irredutível nas quebras de objeções',
       status: 'Matrícula Confirmada',
       created_at: '2023-05-12',

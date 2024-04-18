@@ -84,11 +84,11 @@ const FormLogin = ({ action }: FormLoginProps) => {
 
         {state?.errors?.request && (
           <Text
-            title={state?.errors?.request[0]}
+            title={state?.errors?.request}
             role="alert"
             className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis pb-4"
           >
-            {state?.errors?.request[0]}
+            {state?.errors?.request}
           </Text>
         )}
 
