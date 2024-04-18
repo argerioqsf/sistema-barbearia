@@ -21,6 +21,7 @@ async function loadCourses(
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      next: { tags: ['course'], revalidate: 60 },
     })
 
     if (!response.ok) {

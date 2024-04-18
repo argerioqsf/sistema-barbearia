@@ -1,4 +1,5 @@
 import { DefaultValues, Path } from 'react-hook-form'
+import roles from '@/constants/roles.json'
 import { z } from 'zod'
 
 export type LimitFieldsForm<G> = [G, ...G[]] & {
@@ -15,7 +16,7 @@ export type Segment = {
 
 export type SegmentProps = keyof Segment
 
-export type Roles = { [key: string]: string }
+export type Roles = typeof roles
 
 export type Course = {
   id: string
@@ -221,6 +222,8 @@ export type OptionGeneric<T> = T | { value?: string; label?: string }
 
 export type OptionKey<T> = Path<OptionGeneric<T>>
 
+export type VariantOption = 'single' | 'multiple'
+
 export type FieldsTemplateForm<T> = {
   id: Path<T>
   required: boolean
@@ -242,7 +245,7 @@ export type FieldsTemplateForm<T> = {
     list?: OptionGeneric<T>[]
     keyLabel?: OptionKey<T>
     keyValue?: OptionKey<T>
-    variant?: 'single' | 'multiple'
+    variant?: VariantOption
     values?: string[]
   }
 }

@@ -16,9 +16,7 @@ async function loadCourses(): Promise<ReturnLoadList<Course>> {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 20,
-      },
+      next: { tags: ['courses'], revalidate: 60 },
     })
 
     if (!response.ok) {
@@ -42,9 +40,7 @@ async function loadSegments(): Promise<ReturnLoadList<Segment>> {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 20,
-      },
+      next: { tags: ['segments'], revalidate: 60 },
     })
 
     if (!response.ok) {

@@ -1,7 +1,12 @@
 import { Button, InputForm, LabelForm, Text } from '@/components/atoms'
 import SelectForm from '@/components/atoms/SelectForm'
 import { useItemListTransform } from '@/hooks/use-item-list-transform'
-import { Option, OptionGeneric, OptionKey } from '@/types/general'
+import {
+  Option,
+  OptionGeneric,
+  OptionKey,
+  VariantOption,
+} from '@/types/general'
 import { Trash } from 'lucide-react'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
@@ -16,7 +21,7 @@ interface Props<T> {
   props: UseFormRegisterReturn<string>
   label: string
   setFormDataExtra: Dispatch<SetStateAction<FormData>>
-  variant: 'single' | 'multiple'
+  variant: VariantOption
   values?: string[]
 }
 
