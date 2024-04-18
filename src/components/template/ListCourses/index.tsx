@@ -13,16 +13,19 @@ async function loadCourses(
   page?: string,
 ): Promise<ReturnLoadList<Course>> {
   try {
-    const queryQ = q && `q=${q}&`
-    const queryPage = page && `page=${page}`
     const token = getTokenFromCookieServer()
-    const response = await api(`/courses?${queryQ}${queryPage ?? ''}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await api(
+      '/courses',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { tags: ['course'], revalidate: 60 * 4 },
       },
-      next: { tags: ['course'], revalidate: 60 },
-    })
+      page,
+      q,
+    )
 
     if (!response.ok) {
       const errorMessage = await response.text()

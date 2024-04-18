@@ -14,14 +14,18 @@ async function loadUnits(
 ): Promise<ReturnLoadList<Unit>> {
   try {
     const token = getTokenFromCookieServer()
-    const queryQ = q && `q=${q}`
-    const queryPage = page && `page=${page}`
-    const response = await api(`/units?${queryQ ?? ''}&${queryPage ?? ''}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await api(
+      '/units',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { tags: ['units'], revalidate: 60 * 4 },
       },
-    })
+      page,
+      q,
+    )
 
     if (!response.ok) {
       const errorMessage = await response.text()

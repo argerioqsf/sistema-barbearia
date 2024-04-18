@@ -4,19 +4,28 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { api } from '@/data/api'
-import { InfoList, Lead, ReturnLoadList } from '@/types/general'
+import { InfoList, Lead, ReturnLoadList, SearchParams } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import React from 'react'
 
-async function loadLeads(): Promise<ReturnLoadList<Lead>> {
+async function loadLeads(
+  q?: string,
+  page?: string,
+): Promise<ReturnLoadList<Lead>> {
   try {
     const token = getTokenFromCookieServer()
-    const response = await api('/leads', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await api(
+      '/leads',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { tags: ['leads'], revalidate: 60 * 4 },
       },
-    })
+      page,
+      q,
+    )
 
     if (!response.ok) {
       const errorMessage = await response.text()
@@ -31,13 +40,16 @@ async function loadLeads(): Promise<ReturnLoadList<Lead>> {
   }
 }
 
-export default async function ListNewLeads() {
+export default async function ListNewLeads({ searchParams }: SearchParams) {
   const infoList: InfoList<Lead> = {
     itemsHeader: ['N', 'NOME / WHATSAPP', 'INDICADOR'],
     itemsList: ['name', 'phone', '', 'name', ''],
   }
 
-  const response = await loadLeads()
+  const response = await loadLeads(
+    searchParams?.q ?? '',
+    searchParams?.page ?? '',
+  )
   const list = response?.response ?? null
   const errorRequest = response.error?.request ?? null
 

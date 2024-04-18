@@ -4,19 +4,31 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { api } from '@/data/api'
-import { InfoList, ReturnLoadList, User } from '@/types/general'
+import { InfoList, ReturnLoadList, SearchParams, User } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import React from 'react'
 
-async function loadUsers(): Promise<ReturnLoadList<User>> {
+async function loadUsers(
+  q: string,
+  page: string,
+): Promise<ReturnLoadList<User>> {
   try {
     const token = getTokenFromCookieServer()
-    const response = await api('/users', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await api(
+      '/users',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: {
+          tags: ['users', 'indicators', 'consultants'],
+          revalidate: 60 * 4,
+        },
       },
-    })
+      page,
+      q,
+    )
 
     if (!response.ok) {
       const errorMessage = await response.text()
@@ -31,13 +43,16 @@ async function loadUsers(): Promise<ReturnLoadList<User>> {
   }
 }
 
-export default async function ListUsers() {
+export default async function ListUsers({ searchParams }: SearchParams) {
   const infoList: InfoList<User> = {
     itemsHeader: ['', 'NOME', 'E-MAIL', 'PERMISSÃO'],
     itemsList: ['name', '', 'email', '', 'profile.role'],
   }
 
-  const response = await loadUsers()
+  const response = await loadUsers(
+    searchParams?.q ?? '',
+    searchParams?.page ?? '',
+  )
   const list = response?.response ?? null
   const errorRequest = response.error?.request ?? null
 

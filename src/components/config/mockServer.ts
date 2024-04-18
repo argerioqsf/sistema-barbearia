@@ -762,21 +762,15 @@ export const mockServer: MockServer = {
   listActionsWaitingConfirmationLeads: [
     {
       id: 1,
-      icon: 'Eye',
-      href: 'dashboard/leads/',
-      name: 'Visualizar',
-    },
-    {
-      id: 1,
       icon: 'Edit',
       href: 'leads/edit',
       name: 'Editar',
     },
     {
       id: 2,
-      icon: 'Link',
-      href: 'leads/confirmed',
-      name: 'Confirmar matrícula',
+      icon: 'Eye',
+      href: 'dashboard/leads/detail/',
+      name: 'Vizualizar',
     },
   ],
   listActionsUnits: [

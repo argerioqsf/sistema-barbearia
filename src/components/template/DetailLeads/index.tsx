@@ -18,9 +18,7 @@ async function loadIdicators(): Promise<ReturnLoadList<User>> {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 60,
-      },
+      next: { tags: ['indicators'], revalidate: 60 * 4 },
     })
 
     if (!response.ok) {
@@ -47,9 +45,7 @@ async function getLeadForId(id: string): Promise<{
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 15,
-      },
+      next: { tags: ['leads'], revalidate: 60 * 4 },
     })
 
     if (!response.ok) {

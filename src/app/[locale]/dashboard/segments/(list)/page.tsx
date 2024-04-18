@@ -1,5 +1,5 @@
 import ListSegments from '@/components/template/ListSegments'
-import { ParamsProp } from '@/types/general'
+import { ParamsProp, SearchParams } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata({
@@ -17,8 +17,8 @@ export async function generateMetadata({
   }
 }
 
-const page = async () => {
-  return <ListSegments />
+const page = ({ searchParams }: SearchParams) => {
+  return <ListSegments searchParams={searchParams} />
 }
 
 export default page
