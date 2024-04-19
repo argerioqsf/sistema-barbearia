@@ -1,5 +1,5 @@
 import ListLeads from '@/components/template/ListLeads'
-import { ParamsProp } from '@/types/general'
+import { ParamsProp, SearchParams } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata({
@@ -17,8 +17,8 @@ export async function generateMetadata({
   }
 }
 
-const page = async () => {
-  return <ListLeads />
+const page = ({ searchParams }: SearchParams) => {
+  return <ListLeads searchParams={searchParams} />
 }
 
 export default page

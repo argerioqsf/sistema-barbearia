@@ -1,5 +1,5 @@
 import ListWaitingConfirmationLeads from '@/components/template/ListWaitingConfirmationLeads'
-import { ParamsProp } from '@/types/general'
+import { ParamsProp, SearchParams } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata({
@@ -17,8 +17,8 @@ export async function generateMetadata({
   }
 }
 
-const page = () => {
-  return <ListWaitingConfirmationLeads />
+const page = ({ searchParams }: SearchParams) => {
+  return <ListWaitingConfirmationLeads searchParams={searchParams} />
 }
 
 export default page

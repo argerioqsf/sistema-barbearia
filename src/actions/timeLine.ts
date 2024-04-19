@@ -4,6 +4,7 @@ import { formSchemaCreateTimeLine } from '@/components/template/DetailLeads/sche
 import { api } from '@/data/api'
 import { Errors, InitialState, TimeLine } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { revalidateTag } from 'next/cache'
 
 export async function registerTimeLine(
   prevState: InitialState<TimeLine>,
@@ -45,6 +46,7 @@ export async function registerTimeLine(
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
+      revalidateTag('timelines')
       return {
         errors: {},
         ok: true,

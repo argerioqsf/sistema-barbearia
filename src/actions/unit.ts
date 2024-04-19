@@ -5,6 +5,7 @@ import { formSchemaRegisterUnit } from '@/components/template/RegisterUnits/sche
 import { api } from '@/data/api'
 import { InitialState, Unit } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { revalidateTag } from 'next/cache'
 
 export async function registerUnit(
   prevState: InitialState<Unit>,
@@ -102,6 +103,7 @@ export async function updateUnit(
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
+      revalidateTag('units')
       return {
         errors: {},
         ok: true,

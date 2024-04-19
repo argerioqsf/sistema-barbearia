@@ -3,12 +3,13 @@
 import { formSchemaUpdateUserProfile } from '@/components/template/DetailUsers/schema'
 import { formSchemaRegisterUserProfile } from '@/components/template/RegisterUser/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState, Profile, User } from '@/types/general'
+import { Errors, InitialState, Profile, Roles, User } from '@/types/general'
 import {
   getRoleUserFromCookieServer,
   getTokenFromCookieServer,
 } from '@/utils/cookieServer'
 import { verifyPermissionUser } from '@/utils/verifyPermissionUser'
+import { revalidateTag } from 'next/cache'
 
 export async function registerUserProfile(
   prevState: InitialState<Profile | User>,
@@ -54,12 +55,23 @@ export async function registerUserProfile(
           role: formData.get('role'),
         }),
       })
+
       if (!response.ok) {
         const errorMessage = await response.text()
         return {
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
+
+      const role = formData.get('role') as keyof Roles
+      if (role === 'indicator') {
+        revalidateTag('indicators')
+      } else if (role === 'consultant') {
+        revalidateTag('consultants')
+      } else {
+        revalidateTag('users')
+      }
+
       return {
         errors: {},
         ok: true,

@@ -3,24 +3,30 @@ import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { Lead, ReturnLoadList } from '@/types/general'
+import { Lead, ReturnLoadList, SearchParams } from '@/types/general'
 import React from 'react'
 import { infoList } from './templates'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { api } from '@/data/api'
 
-async function loadLeads(): Promise<ReturnLoadList<Lead>> {
+async function loadLeads(
+  q?: string,
+  page?: string,
+): Promise<ReturnLoadList<Lead>> {
   try {
-    const listMock = mockServer.leads
-
-    return { response: listMock }
     const token = getTokenFromCookieServer()
-    const response = await api('/leads', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await api(
+      '/leads',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { tags: ['leads'], revalidate: 60 * 4 },
       },
-    })
+      page,
+      q,
+    )
 
     if (!response.ok) {
       const errorMessage = await response.text()
@@ -28,15 +34,20 @@ async function loadLeads(): Promise<ReturnLoadList<Lead>> {
         error: { request: JSON.parse(errorMessage).message },
       }
     }
-    const list = await response.json()
-    return { response: list }
+    const { leads } = await response.json()
+    return { response: leads }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
 }
 
-export default async function ListConfirmedLeads() {
-  const response = await loadLeads()
+export default async function ListConfirmedLeads({
+  searchParams,
+}: SearchParams) {
+  const response = await loadLeads(
+    searchParams?.q ?? '',
+    searchParams?.page ?? '',
+  )
   const list = response?.response ?? null
   const errorRequest = response.error?.request ?? null
 

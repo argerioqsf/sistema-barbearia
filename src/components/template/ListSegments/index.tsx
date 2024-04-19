@@ -4,24 +4,33 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { api } from '@/data/api'
-import { InfoList, Models, Errors, Segment } from '@/types/general'
+import {
+  InfoList,
+  Segment,
+  ReturnLoadList,
+  SearchParams,
+} from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import React from 'react'
 
-interface ReturnLoadList<T> {
-  response?: Models[]
-  error?: Errors<T>
-}
-
-async function loadSegments(): Promise<ReturnLoadList<Segment>> {
+async function loadSegments(
+  q?: string,
+  page?: string,
+): Promise<ReturnLoadList<Segment>> {
   try {
     const token = getTokenFromCookieServer()
-    const response = await api('/segments', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await api(
+      '/segments',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { tags: ['segments'], revalidate: 60 * 4 },
       },
-    })
+      page,
+      q,
+    )
 
     if (!response.ok) {
       const errorMessage = await response.text()
@@ -37,13 +46,16 @@ async function loadSegments(): Promise<ReturnLoadList<Segment>> {
   }
 }
 
-export default async function ListSegments() {
+export default async function ListSegments({ searchParams }: SearchParams) {
   const infoList: InfoList<Segment> = {
     itemsHeader: ['N', 'Nome', ''],
     itemsList: ['name', '', '', '', ''],
   }
 
-  const response = await loadSegments()
+  const response = await loadSegments(
+    searchParams?.q ?? '',
+    searchParams?.page ?? '',
+  )
   const list = response?.response ?? null
   const errorRequest = response.error?.request ?? null
 

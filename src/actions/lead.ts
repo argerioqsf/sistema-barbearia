@@ -5,6 +5,7 @@ import { formSchemaRegisterLead } from '@/components/template/RegisterLeads/sche
 import { api } from '@/data/api'
 import { Errors, InitialState, Lead } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { revalidateTag } from 'next/cache'
 
 export async function registerLead(
   prevState: InitialState<Lead>,
@@ -114,6 +115,7 @@ export async function updateLead(
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
+      revalidateTag('leads')
       return {
         errors: {},
         ok: true,
