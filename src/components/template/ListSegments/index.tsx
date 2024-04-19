@@ -1,58 +1,13 @@
-import { mockServer } from '@/components/config/mockServer'
+import { listSegments } from '@/actions/segments'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { api } from '@/data/api'
-import {
-  InfoList,
-  Segment,
-  ReturnLoadList,
-  SearchParams,
-} from '@/types/general'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
-import React from 'react'
-
-async function loadSegments(
-  q?: string,
-  page?: string,
-): Promise<ReturnLoadList<Segment>> {
-  try {
-    const token = getTokenFromCookieServer()
-    const response = await api(
-      '/segments',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        next: { tags: ['segments'], revalidate: 60 * 4 },
-      },
-      page,
-      q,
-    )
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-
-    const list = await response.json()
-    return { response: list.segments }
-  } catch (error) {
-    return { error: { request: 'Error unknown' } }
-  }
-}
+import { SearchParams } from '@/types/general'
+import { infoList } from './templates'
 
 export default async function ListSegments({ searchParams }: SearchParams) {
-  const infoList: InfoList<Segment> = {
-    itemsHeader: ['N', 'Nome', ''],
-    itemsList: ['name', '', '', '', ''],
-  }
-
-  const response = await loadSegments(
+  const response = await listSegments(
     searchParams?.q ?? '',
     searchParams?.page ?? '',
   )
@@ -72,7 +27,7 @@ export default async function ListSegments({ searchParams }: SearchParams) {
           <Listing
             list={list}
             infoList={infoList}
-            listActions={mockServer.listActionsSegments}
+            listActions={infoList.listActions}
             hrefButton="dashboard/segments/register"
             textButton="Novo Seguimento"
             title="Seguimentos"

@@ -1,13 +1,13 @@
 import { Button } from '@/components/atoms'
 import LinkDefault from '@/components/atoms/LinkDefault'
-import { useHandlerIcons } from '@/hooks/use-handler-icon'
+import { CatalogIcons, handleIcons } from '@/utils/handleIcons'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type AvatarProps = {
   classIcon?: string
   size?: number
-  icon?: string
+  icon?: keyof CatalogIcons
   colorIcon?: string
   children?: React.ReactNode
   onClick?: () => void
@@ -19,11 +19,11 @@ const IconAction: React.FC<AvatarProps> = ({
   classIcon = '',
   colorIcon = 'white',
   size = 36,
-  icon = '',
+  icon,
   children,
   onClick,
 }) => {
-  const renderIcon = useHandlerIcons(icon)
+  const Icon = handleIcons(icon)
   return href.length > 0 ? (
     <LinkDefault className="flex justify-center items-center" href={href}>
       <span
@@ -32,7 +32,7 @@ const IconAction: React.FC<AvatarProps> = ({
           classIcon,
         )}
       >
-        {children ?? renderIcon({ size, color: colorIcon })}
+        {children ?? <Icon size={size} color={colorIcon} />}
       </span>
     </LinkDefault>
   ) : (
@@ -47,7 +47,7 @@ const IconAction: React.FC<AvatarProps> = ({
           classIcon,
         )}
       >
-        {children ?? renderIcon({ size, color: colorIcon })}
+        {children ?? <Icon size={size} color={colorIcon} />}
       </span>
     </Button>
   )

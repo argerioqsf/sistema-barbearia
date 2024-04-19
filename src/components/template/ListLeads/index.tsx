@@ -1,52 +1,13 @@
-import { mockServer } from '@/components/config/mockServer'
+import { listLeads } from '@/actions/lead'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { api } from '@/data/api'
-import { InfoList, Lead, ReturnLoadList, SearchParams } from '@/types/general'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
-import React from 'react'
-
-async function loadLeads(
-  q?: string,
-  page?: string,
-): Promise<ReturnLoadList<Lead>> {
-  try {
-    const token = getTokenFromCookieServer()
-    const response = await api(
-      '/leads',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        next: { tags: ['leads'], revalidate: 60 * 4 },
-      },
-      page,
-      q,
-    )
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const { leads } = await response.json()
-    return { response: leads }
-  } catch (error) {
-    return { error: { request: 'Error unknown' } }
-  }
-}
+import { SearchParams } from '@/types/general'
+import { infoList } from './templates'
 
 export default async function ListLeads({ searchParams }: SearchParams) {
-  const infoList: InfoList<Lead> = {
-    itemsHeader: ['N', 'NOME / WHATSAPP', 'INDICADOR DOCUMENT'],
-    itemsList: ['name', 'phone', 'indicator.cpf', '', ''],
-  }
-
-  const response = await loadLeads(
+  const response = await listLeads(
     searchParams?.q ?? '',
     searchParams?.page ?? '',
   )
@@ -56,7 +17,7 @@ export default async function ListLeads({ searchParams }: SearchParams) {
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
-        <div className="w-full ">
+        <div className="w-full">
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
@@ -66,7 +27,7 @@ export default async function ListLeads({ searchParams }: SearchParams) {
           <Listing
             infoList={infoList}
             list={list}
-            listActions={mockServer.listActionsLeads}
+            listActions={infoList.listActions}
             hrefButton="dashboard/leads/register"
             textButton="Novo lead"
             title="Leads"

@@ -1,44 +1,12 @@
+import { getIndicator, updateUserProfile } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import { Errors, User } from '@/types/general'
-import React from 'react'
-import { templates } from './templates'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import { api } from '@/data/api'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
-import { updateUserProfile } from '@/actions/user'
-
-async function getIndicatorForId(id: string): Promise<{
-  response?: User
-  error?: Errors<User>
-}> {
-  try {
-    const token = getTokenFromCookieServer()
-    const response = await api(`/indicator/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      next: {
-        revalidate: 15,
-      },
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const user = await response.json()
-    return { response: user }
-  } catch (error) {
-    return { error: { request: 'Error unknown' } }
-  }
-}
+import { User } from '@/types/general'
+import { templates } from './templates'
 
 export default async function DetailIndicator({ id }: { id: string }) {
-  const response = await getIndicatorForId(id)
+  const response = await getIndicator(id)
   const indicator = response.response
   const errorRequest = response.error?.request ?? undefined
 

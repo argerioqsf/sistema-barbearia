@@ -3,13 +3,44 @@
 import { formSchemaUpdateUserProfile } from '@/components/template/DetailUsers/schema'
 import { formSchemaRegisterUserProfile } from '@/components/template/RegisterUser/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState, Profile, Roles, User } from '@/types/general'
+import {
+  Errors,
+  InitialState,
+  Profile,
+  ReturnGet,
+  ReturnList,
+  Roles,
+  User,
+} from '@/types/general'
 import {
   getRoleUserFromCookieServer,
   getTokenFromCookieServer,
 } from '@/utils/cookieServer'
 import { verifyPermissionUser } from '@/utils/verifyPermissionUser'
 import { revalidateTag } from 'next/cache'
+
+export async function getUser(id: string): Promise<ReturnGet<User>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/user/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const user = await response.json()
+    return { response: user }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
+  }
+}
 
 export async function registerUserProfile(
   prevState: InitialState<Profile | User>,
@@ -162,5 +193,98 @@ export async function updateUserProfile(
   } else {
     console.log('Error unknown: ')
     return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function getIndicator(id: string): Promise<ReturnList<User>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/indicator/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: {
+        revalidate: 15,
+      },
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const user = await response.json()
+    return { response: user }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function listIndicators(
+  q?: string,
+  page?: string,
+): Promise<ReturnList<User>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(
+      '/indicators',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { tags: ['indicators'], revalidate: 60 * 4 },
+      },
+      page,
+      q,
+    )
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const { users } = await response.json()
+    return { response: users }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function listUsers(
+  q: string,
+  page: string,
+): Promise<ReturnList<User>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(
+      '/users',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: {
+          tags: ['users', 'indicators', 'consultants'],
+          revalidate: 60 * 4,
+        },
+      },
+      page,
+      q,
+    )
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const list = await response.json()
+    return { response: list.users }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
   }
 }

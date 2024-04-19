@@ -3,7 +3,7 @@
 import { formSchemaUpdateUnit } from '@/components/template/DetailUnits/schema'
 import { formSchemaRegisterUnit } from '@/components/template/RegisterUnits/schema'
 import { api } from '@/data/api'
-import { InitialState, Unit } from '@/types/general'
+import { InitialState, ReturnGet, ReturnList, Unit } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 
@@ -120,5 +120,63 @@ export async function updateUnit(
     }
   } else {
     return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function getUnit(id: string): Promise<ReturnGet<Unit>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/unit/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: {
+        revalidate: 15,
+      },
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const list = await response.json()
+    return { response: list }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function listUnits(
+  q: string,
+  page: string,
+): Promise<ReturnList<Unit>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(
+      '/units',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { tags: ['units'], revalidate: 60 * 4 },
+      },
+      page,
+      q,
+    )
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const list = await response.json()
+    return { response: list.units }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
   }
 }

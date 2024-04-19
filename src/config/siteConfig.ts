@@ -1,9 +1,5 @@
-export type Role =
-  | 'coordinator'
-  | 'administrator'
-  | 'indicator'
-  | 'consultant'
-  | 'financial'
+import { Role } from '@/types/general'
+import { CatalogIcons } from '@/utils/handleIcons'
 
 export type ItemMenu = {
   id: string
@@ -11,8 +7,8 @@ export type ItemMenu = {
   label: string
   size?: number
   image?: string
-  icon?: string
-  roles: Role[]
+  icon?: keyof CatalogIcons
+  roles?: Role[]
   subMenuList?: ItemMenu[]
   hidden?: boolean
   absolutePath?: boolean
@@ -55,13 +51,13 @@ export const siteConfig: SiteConfig = {
       id: '3',
       label: 'Dashboard',
       href: '/dashboard/home',
-      icon: 'DashBoard',
+      icon: 'LayoutDashboard',
       roles: ['administrator'],
     },
     {
       id: '4',
       label: 'Indicadores',
-      icon: 'HandPointLeft',
+      icon: 'Handshake',
       subMenuList: [
         {
           id: '1',

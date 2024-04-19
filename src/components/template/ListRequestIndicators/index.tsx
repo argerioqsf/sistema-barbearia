@@ -1,54 +1,15 @@
-import { mockServer } from '@/components/config/mockServer'
+import { listIndicators } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { api } from '@/data/api'
-import { InfoList, ReturnLoadList, SearchParams, User } from '@/types/general'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
-import React from 'react'
-
-async function loadIndicators(
-  q?: string,
-  page?: string,
-): Promise<ReturnLoadList<User>> {
-  try {
-    const token = getTokenFromCookieServer()
-    const response = await api(
-      '/indicators',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        next: { tags: ['indicators'], revalidate: 60 * 4 },
-      },
-      page,
-      q,
-    )
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const { users } = await response.json()
-    return { response: users }
-  } catch (error) {
-    return { error: { request: 'Error unknown' } }
-  }
-}
+import { SearchParams } from '@/types/general'
+import { infoList } from './templates'
 
 export default async function ListRequestIndicators({
   searchParams,
 }: SearchParams) {
-  const infoList: InfoList<User> = {
-    itemsHeader: ['N', 'NOME', 'E-MAIL', ''],
-    itemsList: ['name', '', '', 'email', ''],
-  }
-
-  const response = await loadIndicators(
+  const response = await listIndicators(
     searchParams?.q ?? '',
     searchParams?.page ?? '',
   )
@@ -68,7 +29,7 @@ export default async function ListRequestIndicators({
           <Listing
             infoList={infoList}
             list={list}
-            listActions={mockServer.listActionsIndicators}
+            listActions={infoList.listActions}
             hrefButton="dashboard/indicators/register"
             textButton=""
             title="Solicitação para indicadores"

@@ -5,8 +5,7 @@ import { HeaderList } from '@/components/molecules'
 import ItemList from '@/components/molecules/ItemList'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { useItemListTransform } from '@/hooks/use-item-list-transform'
-import { InfoList, ListActionsProps } from '@/types/general'
-import React from 'react'
+import { InfoList, ListAction } from '@/types/general'
 import { twJoin, twMerge } from 'tailwind-merge'
 
 type ListingProps<T> = {
@@ -14,7 +13,7 @@ type ListingProps<T> = {
   textButton?: string
   hrefButton?: string
   list: T[] | null
-  listActions?: Array<ListActionsProps>
+  listActions?: Array<ListAction>
   variant?: 'default' | 'segmented'
   loading?: boolean
   errorMessage?: string

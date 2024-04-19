@@ -1,69 +1,16 @@
+import { getLead, updateLead } from '@/actions/lead'
+import { registerTimeLine } from '@/actions/timeLine'
+import { listIndicators } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import React from 'react'
-import * as templates from './templates'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import { updateLead } from '@/actions/lead'
-import { registerTimeLine } from '@/actions/timeLine'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
-import { api } from '@/data/api'
-import { Errors, Lead, ReturnLoadList, User } from '@/types/general'
 import TimeLineComponent from '@/components/organisms/TimeLineComponent'
-
-async function loadIdicators(): Promise<ReturnLoadList<User>> {
-  try {
-    const token = getTokenFromCookieServer()
-    const response = await api('/indicators', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      next: { tags: ['indicators'], revalidate: 60 * 4 },
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const { users } = await response.json()
-    return { response: users }
-  } catch (error) {
-    return { error: { request: 'Error unknown' } }
-  }
-}
-
-async function getLeadForId(id: string): Promise<{
-  response?: Lead
-  error?: Errors<Lead>
-}> {
-  try {
-    const token = getTokenFromCookieServer()
-    const response = await api(`/lead/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      next: { tags: ['leads'], revalidate: 60 * 4 },
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const lead = await response.json()
-    return { response: lead }
-  } catch (error) {
-    return { error: { request: 'Error unknown' } }
-  }
-}
+import { Lead, User } from '@/types/general'
+import * as templates from './templates'
 
 export default async function DetailLeads({ id }: { id: string }) {
-  const response = await getLeadForId(id)
-  const responseIndicators = await loadIdicators()
+  const response = await getLead(id)
+  const responseIndicators = await listIndicators()
   const lead = response.response
   const errorRequest = response.error?.request ?? undefined
 

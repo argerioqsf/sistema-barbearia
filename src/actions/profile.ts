@@ -2,8 +2,9 @@
 
 import { formSchemaEditProfile } from '@/components/template/ProfileDetail/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState, Profile } from '@/types/general'
+import { Errors, InitialState, Profile, ReturnGet } from '@/types/general'
 import {
+  getTokenFromCookieServer,
   setRolesInCookieServer,
   setTokenInCookieServer,
   setUserInCookieServer,
@@ -64,5 +65,28 @@ export async function editProfile(
     }
   } else {
     return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function getProfile(): Promise<ReturnGet<Profile>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api('/profile', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const { profile } = await response.json()
+    return { response: profile }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
   }
 }
