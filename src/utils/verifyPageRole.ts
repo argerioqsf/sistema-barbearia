@@ -1,6 +1,7 @@
-import { ItemMenu, Role, siteConfig } from '@/components/config/siteConfig'
+import { ItemMenu, siteConfig } from '@/config/siteConfig'
 import { NextRequest } from 'next/server'
 import { getRoleUserFromCookieRequest } from './cookieClient'
+import { Role } from '@/types/general'
 
 export const verifyPageRole = (
   items: ItemMenu[],

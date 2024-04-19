@@ -1,43 +1,11 @@
+import { editProfile, getProfile } from '@/actions/profile'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import React from 'react'
 import { templateForm } from './templateForm'
-import { editProfile } from '@/actions/profile'
-import { api } from '@/data/api'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
-import { Errors, Profile } from '@/types/general'
-
-interface ReturnLoadList {
-  response?: Profile
-  error?: Errors<Profile>
-}
-
-async function loadProfile(): Promise<ReturnLoadList> {
-  try {
-    const token = getTokenFromCookieServer()
-    const response = await api('/profile', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const { profile } = await response.json()
-    return { response: profile }
-  } catch (error) {
-    return { error: { request: 'Error unknown' } }
-  }
-}
 
 export default async function ProfileDetail() {
-  const response = await loadProfile()
+  const response = await getProfile()
   const profile = response?.response
   const errorRequest = response.error?.request
 

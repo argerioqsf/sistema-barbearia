@@ -1,7 +1,7 @@
 import createMiddleware from 'next-intl/middleware'
 import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookieRequest } from './utils/cookieClient'
-import { siteConfig } from './components/config/siteConfig'
+import { siteConfig } from './config/siteConfig'
 import { verifyPageRole } from './utils/verifyPageRole'
 
 const middlewareIntl = createMiddleware({

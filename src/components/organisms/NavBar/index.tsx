@@ -1,7 +1,7 @@
-import { MenuIcon } from '@/components/Icons/MenuIcon'
 import { Button } from '@/components/atoms'
 import Avatar from '@/components/molecules/Avatar'
 import InfoUserNav from '@/components/molecules/InfoUserNav'
+import { handleIcons } from '@/utils/handleIcons'
 import React, { Dispatch, SetStateAction } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -14,6 +14,7 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
   function openCloseMenu() {
     setOpenMenu(!openMenu)
   }
+  const MenuIcon = handleIcons('Menu')
 
   return (
     <nav

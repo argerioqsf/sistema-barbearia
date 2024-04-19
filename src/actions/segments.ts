@@ -3,7 +3,13 @@
 import { formSchemaUpdateSegment } from '@/components/template/DetailSegments/schema'
 import { formSchemaRegisterSegment } from '@/components/template/RegisterSegments/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState, Segment } from '@/types/general'
+import {
+  Errors,
+  InitialState,
+  ReturnGet,
+  ReturnList,
+  Segment,
+} from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 
@@ -39,6 +45,7 @@ export async function registerSegment(
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
+      revalidateTag('segments')
       return {
         errors: {},
         ok: true,
@@ -109,5 +116,89 @@ export async function updateSegment(
     }
   } else {
     return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function getSegment(id: string): Promise<ReturnGet<Segment>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/segment/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: {
+        revalidate: 15,
+      },
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const user = await response.json()
+    return { response: user }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function listSelectSegments(): Promise<ReturnList<Segment>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api('/segment/select', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: { tags: ['segments'], revalidate: 60 * 4 },
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+
+    const list = await response.json()
+    return { response: list.segments }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function listSegments(
+  q?: string,
+  page?: string,
+): Promise<ReturnList<Segment>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(
+      '/segments',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { tags: ['segments'], revalidate: 60 * 4 },
+      },
+      page,
+      q,
+    )
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+
+    const list = await response.json()
+    return { response: list.segments }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
   }
 }

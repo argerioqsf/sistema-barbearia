@@ -1,42 +1,13 @@
+import { getUser, updateUserProfile } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import { Errors, Option, Profile, Roles, User } from '@/types/general'
-import React from 'react'
-import * as templates from './templates'
-import roles from '@/constants/roles.json'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
-import { api } from '@/data/api'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import { updateUserProfile } from '@/actions/user'
-
-async function getUserForId(id: string): Promise<{
-  response?: User
-  error?: Errors<User>
-}> {
-  try {
-    const token = getTokenFromCookieServer()
-    const response = await api(`/user/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const user = await response.json()
-    return { response: user }
-  } catch (error) {
-    return { error: { request: 'Error unknown' } }
-  }
-}
+import roles from '@/constants/roles.json'
+import { Option, Profile, Roles, User } from '@/types/general'
+import * as templates from './templates'
 
 export default async function DetailUsers({ id }: { id: string }) {
-  const response = await getUserForId(id)
+  const response = await getUser(id)
   const user = response.response
   const errorRequest = response.error?.request ?? undefined
 

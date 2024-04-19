@@ -1,6 +1,7 @@
 import { DefaultValues, Path } from 'react-hook-form'
 import roles from '@/constants/roles.json'
 import { z } from 'zod'
+import { CatalogIcons } from '@/utils/handleIcons'
 
 export type LimitFieldsForm<G> = [G, ...G[]] & {
   length: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
@@ -17,6 +18,8 @@ export type Segment = {
 export type SegmentProps = keyof Segment
 
 export type Roles = typeof roles
+
+export type Role = keyof Roles
 
 export type Course = {
   id: string
@@ -177,14 +180,6 @@ export type IconSvgProps = {
   color?: string
 }
 
-export type ListActionsProps = {
-  id: number
-  onclick?: (id: string) => void
-  icon: string
-  href?: string
-  name?: string
-}
-
 export type ItemListType = {
   id: string
   info1: string
@@ -194,10 +189,17 @@ export type ItemListType = {
   info5: string
 }
 
+export type ListAction = {
+  id: number
+  icon: keyof CatalogIcons
+  href?: string
+  name: string
+}
+
 export type InfoList<T> = {
   itemsHeader: string[]
   itemsList: LimitFields<FieldsList<T>>
-  listActions?: ListActionsProps[]
+  listActions?: ListAction[]
   title?: string
   hrefButton?: string
   textButton?: string
@@ -318,19 +320,17 @@ export type Form<T> = {
   errorMessage?: string
 }
 
-export type ListAction = {
-  id: number
-  icon: string
-  href?: string
-  name: string
-}
-
 export type SearchType = {
   q?: string
 }
 
-export interface ReturnLoadList<T> {
+export interface ReturnList<T> {
   response?: T[]
+  error?: Errors<T>
+}
+
+export interface ReturnGet<T> {
+  response?: T
   error?: Errors<T>
 }
 

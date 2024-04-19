@@ -1,14 +1,11 @@
-'use client'
-
-import React from 'react'
-import { Avatar } from '..'
 import { Text } from '@/components/atoms'
-import { ItemListType, ListActionsProps } from '@/types/general'
+import { ItemListType, ListAction } from '@/types/general'
+import { Avatar } from '..'
 import DropDownDots from '../DropDownDots'
 import IconAction from '../IconAction'
 
 type ItemListProps = {
-  listActions: Array<ListActionsProps>
+  listActions: Array<ListAction>
   idx?: number
   item: ItemListType
   id: string

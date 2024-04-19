@@ -1,25 +1,25 @@
 'use client'
 
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { Avatar } from '..'
 import { Button, Text } from '@/components/atoms'
-import { ArrowRightIcon } from '@/components/Icons/ArrowRightIcon'
-import { twMerge } from 'tailwind-merge'
-import { ArrowDownIcon } from '@/components/Icons/ArrowDownIcon'
+import { ItemMenu } from '@/config/siteConfig'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
+import { Role } from '@/types/general'
 import { getRoleFromCookie } from '@/utils/cookieClient'
-import { ItemMenu } from '@/components/config/siteConfig'
+import { CatalogIcons, handleIcons } from '@/utils/handleIcons'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
+import { Avatar } from '..'
 
 type ItemSideMenuProps = {
   onClick?: () => void
   label: string
-  icon?: string
+  icon?: keyof CatalogIcons
   image?: string
   subMenuList?: ItemMenu[] | undefined
   href?: string
   sizeAvatar?: number
   setOpenMenu: Dispatch<SetStateAction<boolean | null>>
-  roles: string[]
+  roles?: Role[]
 }
 
 const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
@@ -34,10 +34,10 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
 }) => {
   const [open, setOpen] = useState(false)
   const { pushRouter } = useHandlerRouter()
-  const [role, setRole] = useState<string>('')
+  const [role, setRole] = useState<Role>()
 
   useEffect(() => {
-    const roleUser = getRoleFromCookie()
+    const roleUser = getRoleFromCookie() as Role
     setRole(roleUser)
   }, [])
 
@@ -49,8 +49,10 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
     setOpen(!open)
   }
 
-  if (!roles.includes(role)) return null
+  if (role && !roles?.includes(role)) return null
 
+  const ArrowRightIcon = handleIcons('ChevronRight')
+  const ArrowDownIcon = handleIcons('ChevronDown')
   return (
     <div className="flex w-full flex-col min-h-[var(--navbar-height)] justify-start items-center border-b border-primary-50">
       <Button
@@ -74,9 +76,9 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
           {href.length > 0 ||
             (subMenuList &&
               (open ? (
-                <ArrowRightIcon size={15} color="white" />
+                <ArrowDownIcon size={15} color="white" />
               ) : (
-                <ArrowDownIcon size={20} color="white" />
+                <ArrowRightIcon size={20} color="white" />
               )))}
         </div>
       </Button>

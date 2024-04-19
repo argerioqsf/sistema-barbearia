@@ -1,12 +1,12 @@
 'use client'
 
 import LinkDefault from '@/components/atoms/LinkDefault'
-import { ListActionsProps } from '@/types/general'
-import React, { useState } from 'react'
+import { ListAction } from '@/types/general'
+import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type DropDownDotsProps = {
-  listActions: Array<ListActionsProps>
+  listActions: Array<ListAction>
   className?: string
   id: number | string
 }

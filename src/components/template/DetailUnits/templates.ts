@@ -1,4 +1,3 @@
-import { mockServer } from '@/components/config/mockServer'
 import { InfoList, TemplateForm, Unit } from '@/types/general'
 
 export const templateForm: TemplateForm<Unit> = {
@@ -68,15 +67,41 @@ export const templateForm: TemplateForm<Unit> = {
 const infoListSegments: InfoList<Unit> = {
   itemsHeader: ['N', 'Nome', ''],
   itemsList: ['name', '', '', '', ''],
-  listActions: mockServer.listActionsSegments,
   title: 'Segmentos',
+  listActions: [
+    {
+      id: 1,
+      icon: 'Edit',
+      href: 'dashboard/segments/edit',
+      name: 'Editar',
+    },
+    {
+      id: 2,
+      icon: 'Eye',
+      href: 'dashboard/segments/detail/',
+      name: 'Vizualizar',
+    },
+  ],
 }
 
 const infoListCourses: InfoList<Unit> = {
   itemsHeader: ['N', 'Nome', ''],
   itemsList: ['name', '', '', '', ''],
-  listActions: mockServer.listActionsCourses,
   title: 'Cursos',
+  listActions: [
+    {
+      id: 1,
+      icon: 'Edit',
+      href: 'dashboard/courses/edit',
+      name: 'Editar',
+    },
+    {
+      id: 2,
+      icon: 'Eye',
+      href: 'dashboard/courses/detail/',
+      name: 'Vizualizar',
+    },
+  ],
 }
 
 export const templates = {

@@ -1,52 +1,13 @@
-import { mockServer } from '@/components/config/mockServer'
+import { listCourses } from '@/actions/course'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { Course, InfoList, ReturnLoadList, SearchParams } from '@/types/general'
-import React from 'react'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
-import { api } from '@/data/api'
-
-async function loadCourses(
-  q?: string,
-  page?: string,
-): Promise<ReturnLoadList<Course>> {
-  try {
-    const token = getTokenFromCookieServer()
-    const response = await api(
-      '/courses',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        next: { tags: ['course'], revalidate: 60 * 4 },
-      },
-      page,
-      q,
-    )
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const list = await response.json()
-    return { response: list.courses.courses }
-  } catch (error) {
-    return { error: { request: 'Error unknown' } }
-  }
-}
+import { SearchParams } from '@/types/general'
+import { infoList } from './templates'
 
 export default async function ListCourses({ searchParams }: SearchParams) {
-  const infoList: InfoList<Course> = {
-    itemsHeader: ['N', 'NOME', 'ATIVO', '', ''],
-    itemsList: ['name', '', 'active', '', ''],
-  }
-
-  const response = await loadCourses(
+  const response = await listCourses(
     searchParams?.q ?? '',
     searchParams?.page ?? '',
   )
@@ -69,7 +30,7 @@ export default async function ListCourses({ searchParams }: SearchParams) {
           <Listing
             infoList={infoList}
             list={list}
-            listActions={mockServer.listActionsCourses}
+            listActions={infoList.listActions}
             hrefButton="dashboard/courses/register"
             textButton="Novo Curso"
             title="Cursos"

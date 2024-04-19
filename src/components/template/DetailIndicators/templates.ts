@@ -141,28 +141,24 @@ const infoList: InfoList<User> = {
   listActions: [
     {
       id: 1,
-      onclick: () => {},
       icon: 'Edit',
       href: 'indicators/edit',
       name: 'Editar',
     },
     {
       id: 2,
-      onclick: () => {},
       icon: 'Eye',
       href: 'dashboard/leads/',
       name: 'Vizualizar',
     },
     {
       id: 3,
-      onclick: () => {},
       icon: 'Lock',
       href: 'home',
       name: 'Desativar',
     },
     {
       id: 4,
-      onclick: () => {},
       icon: 'Link',
       href: 'home',
       name: 'Link',

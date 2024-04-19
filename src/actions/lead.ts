@@ -3,7 +3,13 @@
 import { formSchemaUpdateLead } from '@/components/template/DetailLeads/schema'
 import { formSchemaRegisterLead } from '@/components/template/RegisterLeads/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState, Lead } from '@/types/general'
+import {
+  Errors,
+  InitialState,
+  Lead,
+  ReturnGet,
+  ReturnList,
+} from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 
@@ -69,6 +75,7 @@ export async function registerLead(
     return { errors: { request: 'Error unknown' } }
   }
 }
+
 export async function updateLead(
   prevState: InitialState<Lead>,
   formData: FormData,
@@ -132,5 +139,61 @@ export async function updateLead(
     }
   } else {
     return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function getLead(id: string): Promise<ReturnGet<Lead>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/lead/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: { tags: ['leads'], revalidate: 60 * 4 },
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const lead = await response.json()
+    return { response: lead }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function listLeads(
+  q?: string,
+  page?: string,
+): Promise<ReturnList<Lead>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(
+      '/leads',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { tags: ['leads'], revalidate: 60 * 4 },
+      },
+      page,
+      q,
+    )
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const { leads } = await response.json()
+    return { response: leads }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
   }
 }

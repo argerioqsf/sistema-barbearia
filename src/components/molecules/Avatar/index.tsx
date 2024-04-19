@@ -1,5 +1,5 @@
 import LinkDefault from '@/components/atoms/LinkDefault'
-import { useHandlerIcons } from '@/hooks/use-handler-icon'
+import { CatalogIcons, handleIcons } from '@/utils/handleIcons'
 import Image from 'next/image'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -10,7 +10,7 @@ type AvatarProps = {
   size?: number
   image?: string
   alt?: string
-  icon?: string
+  icon?: keyof CatalogIcons
   colorIcon?: string
   children?: React.ReactNode
   classAvatar?: string
@@ -22,12 +22,12 @@ const Avatar: React.FC<AvatarProps> = ({
   colorIcon = 'white',
   size = 36,
   image = '',
-  icon = '',
+  icon,
   alt = '',
   children,
   classAvatar,
 }) => {
-  const renderIcon = useHandlerIcons(icon)
+  const Icon = handleIcons(icon)
   const Component = href.length > 0 ? LinkDefault : 'div'
   return (
     <div className={twMerge(`size-[${size}px]`)}>
@@ -50,7 +50,7 @@ const Avatar: React.FC<AvatarProps> = ({
               classIcon,
             )}
           >
-            {children ?? renderIcon({ size, color: colorIcon })}
+            {children ?? <Icon size={size} color={colorIcon} />}
           </div>
         )}
       </Component>

@@ -1,52 +1,13 @@
-import { mockServer } from '@/components/config/mockServer'
+import { listUnits } from '@/actions/unit'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { api } from '@/data/api'
-import { InfoList, ReturnLoadList, SearchParams, Unit } from '@/types/general'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
-import React from 'react'
-
-async function loadUnits(
-  q: string,
-  page: string,
-): Promise<ReturnLoadList<Unit>> {
-  try {
-    const token = getTokenFromCookieServer()
-    const response = await api(
-      '/units',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        next: { tags: ['units'], revalidate: 60 * 4 },
-      },
-      page,
-      q,
-    )
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const list = await response.json()
-    return { response: list.units }
-  } catch (error) {
-    return { error: { request: 'Error unknown' } }
-  }
-}
+import { SearchParams } from '@/types/general'
+import { infoList } from './templates'
 
 export default async function ListUnits({ searchParams }: SearchParams) {
-  const infoList: InfoList<Unit> = {
-    itemsHeader: ['N', 'NOME', 'QUANT. SEGUIMENTOS', ' QUANT. CURSOS', ''],
-    itemsList: ['name', '', '_count.segments', '_count.courses', ''],
-  }
-
-  const response = await loadUnits(
+  const response = await listUnits(
     searchParams?.q ?? '',
     searchParams?.page ?? '',
   )
@@ -68,7 +29,7 @@ export default async function ListUnits({ searchParams }: SearchParams) {
           <Listing
             infoList={infoList}
             list={list}
-            listActions={mockServer.listActionsUnits}
+            listActions={infoList.listActions}
             hrefButton="dashboard/units/register"
             textButton="Nova Unidade"
             title="Unidades"

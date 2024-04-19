@@ -1,6 +1,6 @@
 'use client'
 
-import { siteConfig } from '@/components/config/siteConfig'
+import { siteConfig } from '@/config/siteConfig'
 import ItemSideMenu from '@/components/molecules/ItemSideMenu'
 import { useGeneral } from '@/contexts/general-context'
 import React from 'react'
