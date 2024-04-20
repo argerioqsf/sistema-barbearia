@@ -10,8 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_API_BASE_URL: ${{ vars.NEXT_PUBLIC_API_BASE_URL }}
-      NEXT_PUBLIC_API_BASE_URL_PRIVATE: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+      NEXT_PUBLIC_API_BASE_URL_teste: ${{ vars.NEXT_PUBLIC_API_BASE_URL }}
+      NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
@@ -19,7 +19,7 @@ jobs:
       - name: Lint and build application
         run: |
           echo $NEXT_PUBLIC_API_BASE_URL
-          echo $NEXT_PUBLIC_API_BASE_URL_PRIVATE
+          echo $NEXT_PUBLIC_API_BASE_URL_teste
           npm -v
           npm i  
           npm run lint
