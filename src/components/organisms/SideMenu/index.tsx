@@ -21,7 +21,7 @@ function SideMenu() {
         )}
       >
         <div className="w-full flex flex-col justify-between items-center">
-          {siteConfig.items_side_menu.map((config) => (
+          {siteConfig.map((config) => (
             <ItemSideMenu
               setOpenMenu={setOpenMenu}
               image={config.image}
@@ -31,7 +31,7 @@ function SideMenu() {
               key={config.id}
               label={config.label}
               href={config.href}
-              roles={config.roles}
+              userAction={config.userAction}
             />
           ))}
         </div>

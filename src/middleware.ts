@@ -22,9 +22,11 @@ export default function middleware(request: NextRequest) {
   if (isLoginPage) {
     return NextResponse.redirect(new URL('/pt-BR/dashboard/home', request.url))
   } else {
-    const pathRedirect = verifyPageRole(siteConfig.items_side_menu, request)
-    if (pathRedirect) {
-      return NextResponse.redirect(new URL(pathRedirect, request.url))
+    const havePermission = verifyPageRole(siteConfig, request)
+    if (!havePermission) {
+      return NextResponse.redirect(
+        new URL('/pt-BR/dashboard/home', request.url),
+      )
     } else {
       return middlewareIntl(request)
     }

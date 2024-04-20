@@ -2,16 +2,18 @@ import { ItemMenu, siteConfig } from '@/config/siteConfig'
 import { NextRequest } from 'next/server'
 import { getRoleUserFromCookieRequest } from './cookieClient'
 import { Role } from '@/types/general'
+import { UserAction, verifyPermissionUser } from './verifyPermissionUser'
 
 export const verifyPageRole = (
   items: ItemMenu[],
   request: NextRequest,
-): string | null => {
+): boolean => {
   const roleUser = getRoleUserFromCookieRequest(request) as Role
+  let havePermission = false
   if (roleUser) {
     for (let i = 0; i < items.length; i++) {
       const href = items[i].href ?? null
-      const roles = items[i].roles ?? []
+      const userAction: UserAction = items[i].userAction
       const absolutePath = items[i].absolutePath ?? false
       let pathname = request.nextUrl.pathname
       pathname = pathname.includes('/')
@@ -23,18 +25,21 @@ export const verifyPageRole = (
           ? pathname.includes(href)
           : href.includes(pathname)
         if (isPage) {
-          if (roles.includes(roleUser)) {
-            return null
+          if (verifyPermissionUser(userAction, roleUser)) {
+            havePermission = true
+            break
           } else {
-            return '/pt-BR/dashboard/home'
+            havePermission = false
+            break
           }
         }
       } else {
-        const subMenuList = siteConfig.items_side_menu[i].subMenuList
+        const subMenuList = siteConfig[i].subMenuList
         if (subMenuList) {
           const pathRedirect = verifyPageRole(subMenuList, request)
           if (pathRedirect) {
-            return pathRedirect
+            havePermission = pathRedirect
+            break
           } else {
             continue
           }
@@ -42,7 +47,7 @@ export const verifyPageRole = (
       }
     }
   } else {
-    return null
+    havePermission = true
   }
-  return null
+  return havePermission
 }

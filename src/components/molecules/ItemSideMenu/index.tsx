@@ -6,7 +6,8 @@ import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { Role } from '@/types/general'
 import { getRoleFromCookie } from '@/utils/cookieClient'
 import { CatalogIcons, handleIcons } from '@/utils/handleIcons'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { UserAction, verifyPermissionUser } from '@/utils/verifyPermissionUser'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Avatar } from '..'
 
@@ -19,7 +20,7 @@ type ItemSideMenuProps = {
   href?: string
   sizeAvatar?: number
   setOpenMenu: Dispatch<SetStateAction<boolean | null>>
-  roles?: Role[]
+  userAction: UserAction
 }
 
 const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
@@ -30,7 +31,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   href = '',
   sizeAvatar = 32,
   setOpenMenu,
-  roles,
+  userAction,
 }) => {
   const [open, setOpen] = useState(false)
   const { pushRouter } = useHandlerRouter()
@@ -49,7 +50,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
     setOpen(!open)
   }
 
-  if (role && !roles?.includes(role)) return null
+  if (role && !verifyPermissionUser(userAction, role)) return null
 
   const ArrowRightIcon = handleIcons('ChevronRight')
   const ArrowDownIcon = handleIcons('ChevronDown')
@@ -101,7 +102,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
                   href={menu.href}
                   label={menu.label}
                   key={menu.id}
-                  roles={menu.roles}
+                  userAction={menu.userAction}
                 />
               )
             )

@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 import { NextRequest } from 'next/server'
 import cookiesName from '@/constants/cookies_name.json'
 import { EnumLike } from 'zod'
-import { User } from '@/types/general'
+import { Role, User } from '@/types/general'
 
 type ContextCookie = 'client' | 'request'
 
@@ -53,9 +53,9 @@ export const getUserFromCookie = (): User => {
   ) as User
 }
 
-export const getRoleFromCookie = () => {
+export const getRoleFromCookie = (): Role => {
   const user = getUserFromCookie()
-  return user?.profile?.role
+  return user?.profile?.role as Role
 }
 
 export const getRolesFromCookie = (): EnumLike => {

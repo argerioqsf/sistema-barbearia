@@ -9,6 +9,7 @@ import {
   Profile,
   ReturnGet,
   ReturnList,
+  Role,
   Roles,
   User,
 } from '@/types/general'
@@ -126,6 +127,7 @@ export async function updateUserProfile(
   prevState: InitialState<Profile | User>,
   formData: FormData,
 ): Promise<InitialState<Profile | User>> {
+  const role = formData.get('profile.role')
   const validatedFields = formSchemaUpdateUserProfile.safeParse({
     id: formData.get('id'),
     name: formData.get('name'),
@@ -142,7 +144,14 @@ export async function updateUserProfile(
   if (validatedFields.success) {
     try {
       const TOKEN_SIM = getTokenFromCookieServer()
-      const roleUser = getRoleUserFromCookieServer()
+      const roleUser = getRoleUserFromCookieServer() as Role
+
+      if (role && !verifyPermissionUser('user.edit.role', roleUser)) {
+        return {
+          errors: { request: 'Sem permissão para alterar a role do usuário!' },
+        }
+      }
+
       if (!TOKEN_SIM) {
         return {
           errors: { request: 'Erro de credenciais' },
@@ -165,7 +174,8 @@ export async function updateUserProfile(
           birthday: formData.get('birthday'),
           pix: formData.get('pix'),
           role:
-            verifyPermissionUser('setRole', roleUser) ?? formData.get('role'),
+            verifyPermissionUser('user.edit.role', roleUser) ??
+            formData.get('role'),
         }),
       })
       if (!response.ok) {
