@@ -12,6 +12,8 @@ if (!parseEnv.success) {
   console.log(
     'invalid enviroments variables',
     parseEnv.error.flatten().fieldErrors,
+    ' -- ',
+    process.env.NEXT_PUBLIC_API_BASE_URL,
   )
 
   throw new Error('invalid enviroments variables')
