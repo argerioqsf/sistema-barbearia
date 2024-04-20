@@ -1,11 +1,11 @@
 import { z } from 'zod'
 
 const envSchema = z.object({
-  NEXT_PUBLIC_API_BASE_URL: z.string().url(),
+  API_BASE_URL: z.string().url(),
 })
 
 const parseEnv = envSchema.safeParse({
-  NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  API_BASE_URL: process.env.API_BASE_URL,
 })
 
 if (!parseEnv.success) {
@@ -13,7 +13,7 @@ if (!parseEnv.success) {
     'invalid enviroments variables',
     parseEnv.error.flatten().fieldErrors,
     ' -- ',
-    process.env.NEXT_PUBLIC_API_BASE_URL,
+    process.env.API_BASE_URL,
   )
 
   throw new Error('invalid enviroments variables')
