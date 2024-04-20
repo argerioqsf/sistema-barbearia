@@ -9,13 +9,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_API_BASE_URL: ${{ madre.NEXT_PUBLIC_API_BASE_URL }}
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
         uses: actions/setup-node@v4
       - name: Lint and build application
         run: |
+          echo $NEXT_PUBLIC_API_BASE_URL
           npm -v
           npm i  
           npm run lint
           npm run build
+        
