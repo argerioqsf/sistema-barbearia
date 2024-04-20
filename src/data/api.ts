@@ -6,7 +6,7 @@ export function api(
   page?: string,
   query?: string,
 ) {
-  const baseUrl = env.NEXT_PUBLIC_API_BASE_URL
+  const baseUrl = env.API_BASE_URL
   const queryQ = query && `q=${query}&`
   const queryPage = page && `page=${page}`
   path = `${path}?${queryQ ?? ''}${queryPage ?? ''}`
