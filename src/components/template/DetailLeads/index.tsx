@@ -7,11 +7,15 @@ import FormDashboard from '@/components/organisms/FormDashboard'
 import TimeLineComponent from '@/components/organisms/TimeLineComponent'
 import { Lead, User } from '@/types/general'
 import * as templates from './templates'
+import { notFound } from 'next/navigation'
 
 export default async function DetailLeads({ id }: { id: string }) {
   const response = await getLead(id)
   const responseIndicators = await listIndicators()
   const lead = response.response
+  if (!lead) {
+    notFound()
+  }
   const errorRequest = response.error?.request ?? undefined
 
   templates.templateForm.sections[1].boxes[0].fields[0].option = {

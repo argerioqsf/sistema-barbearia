@@ -1,7 +1,7 @@
 import { Role } from '@/types/general'
 
-const features = {
-  'dashboard.view': (roleUser: string) =>
+const verifyPermissionGeneral = {
+  all: (roleUser: string) =>
     [
       'coordinator',
       'administrator',
@@ -9,18 +9,24 @@ const features = {
       'consultant',
       'financial',
     ].includes(roleUser),
-  // USER
+}
+
+const verifyPermissionUser = {
   'user.edit.role': (roleUser: string) => ['administrator'].includes(roleUser),
   'user.view': (roleUser: string) => ['administrator'].includes(roleUser),
   'user.detail': (roleUser: string) => ['administrator'].includes(roleUser),
   'user.register': (roleUser: string) => ['administrator'].includes(roleUser),
   'user.list': (roleUser: string) => ['administrator'].includes(roleUser),
-  // UNIT
+}
+
+const verifyPermissionUnit = {
   'unit.view': (roleUser: string) => ['administrator'].includes(roleUser),
   'unit.detail': (roleUser: string) => ['administrator'].includes(roleUser),
   'unit.register': (roleUser: string) => ['administrator'].includes(roleUser),
   'unit.list': (roleUser: string) => ['administrator'].includes(roleUser),
-  // COURSE
+}
+
+const verifyPermissionCourse = {
   'course.view': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
   'course.detail': (roleUser: string) =>
@@ -29,7 +35,9 @@ const features = {
     ['administrator', 'coordinator'].includes(roleUser),
   'course.list': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
-  // SEGMENT
+}
+
+const verifyPermissionSegment = {
   'segment.view': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
   'segment.detail': (roleUser: string) =>
@@ -38,7 +46,9 @@ const features = {
     ['administrator', 'coordinator'].includes(roleUser),
   'segment.list': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
-  // PROFILE
+}
+
+const verifyPermissionProfile = {
   'profile.view': (roleUser: string) =>
     [
       'coordinator',
@@ -47,36 +57,75 @@ const features = {
       'consultant',
       'financial',
     ].includes(roleUser),
-  // INDICATOR
+}
+
+const verifyPermissionIndicator = {
   'indicator.view': (roleUser: string) => [''].includes(roleUser),
   'indicator.list': (roleUser: string) => [''].includes(roleUser),
   'indicator.register': (roleUser: string) =>
     ['administrator'].includes(roleUser),
   'indicator.detail': (roleUser: string) =>
     ['administrator'].includes(roleUser),
-  // INDICATOR REQUEST
+}
+
+const verifyPermissionIndicatorRequest = {
   'indicator_request.list': (roleUser: string) =>
     ['administrator'].includes(roleUser),
-  // LEADS
+}
+
+const verifyPermissionLead = {
   'lead.view': (roleUser: string) => ['administrator'].includes(roleUser),
   'lead.list': (roleUser: string) => ['administrator'].includes(roleUser),
   'lead.register': (roleUser: string) => ['administrator'].includes(roleUser),
   'lead.detail': (roleUser: string) => ['administrator'].includes(roleUser),
-  // NEW LEADS
+}
+
+const verifyPermissionNewLead = {
   'new_lead.list': (roleUser: string) => ['administrator'].includes(roleUser),
-  // CONFIRMED LEADS
+}
+
+const verifyPermissionConfirmedLead = {
   'confirmed_lead.list': (roleUser: string) =>
     ['administrator'].includes(roleUser),
-  // WAITING CONFIRMATION LEADS
+}
+
+const verifyPermissionWaitingConfirmedLead = {
   'waiting_confirmation_lead.list': (roleUser: string) =>
     ['administrator'].includes(roleUser),
 }
 
-export type UserAction = keyof typeof features
+const verifyPermissionDashboard = {
+  'dashboard.view': (roleUser: string) =>
+    [
+      'coordinator',
+      'administrator',
+      'indicator',
+      'consultant',
+      'financial',
+    ].includes(roleUser),
+}
 
-export function verifyPermissionUser(
+const verifyPermission = {
+  ...verifyPermissionGeneral,
+  ...verifyPermissionUser,
+  ...verifyPermissionUnit,
+  ...verifyPermissionCourse,
+  ...verifyPermissionSegment,
+  ...verifyPermissionProfile,
+  ...verifyPermissionIndicator,
+  ...verifyPermissionIndicatorRequest,
+  ...verifyPermissionLead,
+  ...verifyPermissionNewLead,
+  ...verifyPermissionConfirmedLead,
+  ...verifyPermissionWaitingConfirmedLead,
+  ...verifyPermissionDashboard,
+}
+
+export type UserAction = keyof typeof verifyPermission
+
+export function checkUserPermissions(
   userAction: UserAction,
   roleUser: Role,
 ): boolean {
-  return features[userAction](roleUser)
+  return verifyPermission[userAction](roleUser)
 }

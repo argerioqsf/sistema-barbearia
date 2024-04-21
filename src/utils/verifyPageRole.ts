@@ -1,53 +1,55 @@
-import { ItemMenu, siteConfig } from '@/config/siteConfig'
-import { NextRequest } from 'next/server'
-import { getRoleUserFromCookieRequest } from './cookieClient'
+import { ItemMenu } from '@/config/siteConfig'
 import { Role } from '@/types/general'
-import { UserAction, verifyPermissionUser } from './verifyPermissionUser'
+import { NextRequest } from 'next/server'
+import { checkUserPermissions } from './checkUserPermissions'
+
+function getCurrentPage(
+  items: ItemMenu[],
+  request: NextRequest,
+): ItemMenu | undefined {
+  let pathname = request.nextUrl.pathname
+  pathname = pathname.includes('/')
+    ? pathname.substring(pathname.indexOf('/', pathname.indexOf('/') + 1))
+    : ''
+
+  let currentPage: ItemMenu | undefined
+
+  items.forEach((item) => {
+    if (item.href) {
+      if (item.absolutePath && pathname.includes(item?.href)) {
+        currentPage = currentPage ?? item
+      } else if (item.href.includes(pathname)) {
+        currentPage = currentPage ?? item
+      }
+    } else if (item.subMenuList) {
+      item.subMenuList.forEach((subItem) => {
+        if (subItem.href) {
+          if (subItem.absolutePath && pathname.includes(subItem?.href)) {
+            currentPage = currentPage ?? subItem
+          } else if (subItem.href.includes(pathname)) {
+            currentPage = currentPage ?? subItem
+          }
+        }
+      })
+    }
+  })
+
+  return currentPage
+}
 
 export const verifyPageRole = (
   items: ItemMenu[],
+  roleUser: Role,
   request: NextRequest,
-): boolean => {
-  const roleUser = getRoleUserFromCookieRequest(request) as Role
-  let havePermission = false
-  if (roleUser) {
-    for (let i = 0; i < items.length; i++) {
-      const href = items[i].href ?? null
-      const userAction: UserAction = items[i].userAction
-      const absolutePath = items[i].absolutePath ?? false
-      let pathname = request.nextUrl.pathname
-      pathname = pathname.includes('/')
-        ? pathname.substring(pathname.indexOf('/', pathname.indexOf('/') + 1))
-        : ''
-
-      if (href) {
-        const isPage = absolutePath
-          ? pathname.includes(href)
-          : href.includes(pathname)
-        if (isPage) {
-          if (verifyPermissionUser(userAction, roleUser)) {
-            havePermission = true
-            break
-          } else {
-            havePermission = false
-            break
-          }
-        }
-      } else {
-        const subMenuList = siteConfig[i].subMenuList
-        if (subMenuList) {
-          const pathRedirect = verifyPageRole(subMenuList, request)
-          if (pathRedirect) {
-            havePermission = pathRedirect
-            break
-          } else {
-            continue
-          }
-        }
-      }
+): boolean | null => {
+  const currentPage = getCurrentPage(items, request)
+  if (currentPage) {
+    if (checkUserPermissions(currentPage.userAction, roleUser)) {
+      return true
+    } else {
+      return false
     }
   } else {
-    havePermission = true
+    return null
   }
-  return havePermission
 }

@@ -1,5 +1,5 @@
 import { CatalogIcons } from '@/utils/handleIcons'
-import { UserAction } from '@/utils/verifyPermissionUser'
+import { UserAction } from '@/utils/checkUserPermissions'
 
 export type ItemMenu = {
   id: string

@@ -5,7 +5,10 @@
     "register": "Cadastrar",
     "login": "Entrar",
     "exit": "Sair",
-    "remember_me": "Lembrar-me"
+    "remember_me": "Lembrar-me",
+    "not-found": {
+      "title": "Página não encontrada"
+    }
   },
   "specific": {
     "form_login": {

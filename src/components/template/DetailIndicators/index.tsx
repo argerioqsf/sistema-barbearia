@@ -4,10 +4,14 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import { User } from '@/types/general'
 import { templates } from './templates'
+import { notFound } from 'next/navigation'
 
 export default async function DetailIndicator({ id }: { id: string }) {
   const response = await getIndicator(id)
   const indicator = response.response
+  if (!indicator) {
+    notFound()
+  }
   const errorRequest = response.error?.request ?? undefined
 
   return (

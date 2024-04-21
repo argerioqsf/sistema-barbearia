@@ -5,10 +5,14 @@ import FormDashboard from '@/components/organisms/FormDashboard'
 import roles from '@/constants/roles.json'
 import { Option, Profile, Roles, User } from '@/types/general'
 import * as templates from './templates'
+import { notFound } from 'next/navigation'
 
 export default async function DetailUsers({ id }: { id: string }) {
   const response = await getUser(id)
   const user = response.response
+  if (!user) {
+    notFound()
+  }
   const errorRequest = response.error?.request ?? undefined
 
   let options: Option[] = [

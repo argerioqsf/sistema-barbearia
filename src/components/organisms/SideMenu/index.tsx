@@ -32,6 +32,7 @@ function SideMenu() {
               label={config.label}
               href={config.href}
               userAction={config.userAction}
+              hidden={config.hidden}
             />
           ))}
         </div>

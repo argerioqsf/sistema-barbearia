@@ -5,10 +5,14 @@ import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import { templates } from './templates'
+import { notFound } from 'next/navigation'
 
 export default async function DetailUnits({ id }: { id: string }) {
   const response = await getUnit(id)
   const unit = response?.response ?? null
+  if (!unit) {
+    notFound()
+  }
 
   const responseSegments = await listSelectSegments()
   templates.templateForm.sections[1].boxes[0].fields[0].option = {

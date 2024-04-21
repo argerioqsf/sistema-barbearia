@@ -3,10 +3,14 @@ import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import * as templates from './templates'
+import { notFound } from 'next/navigation'
 
 export default async function DetailCourses({ id }: { id: string }) {
   const response = await getCourse(id)
   const course = response.response
+  if (!course) {
+    notFound()
+  }
   const errorRequest = response.error?.request ?? undefined
 
   return (

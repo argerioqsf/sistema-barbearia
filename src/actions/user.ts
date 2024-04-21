@@ -17,7 +17,7 @@ import {
   getRoleUserFromCookieServer,
   getTokenFromCookieServer,
 } from '@/utils/cookieServer'
-import { verifyPermissionUser } from '@/utils/verifyPermissionUser'
+import { checkUserPermissions } from '@/utils/checkUserPermissions'
 import { revalidateTag } from 'next/cache'
 
 export async function getUser(id: string): Promise<ReturnGet<User>> {
@@ -146,7 +146,7 @@ export async function updateUserProfile(
       const TOKEN_SIM = getTokenFromCookieServer()
       const roleUser = getRoleUserFromCookieServer() as Role
 
-      if (role && !verifyPermissionUser('user.edit.role', roleUser)) {
+      if (role && !checkUserPermissions('user.edit.role', roleUser)) {
         return {
           errors: { request: 'Sem permissão para alterar a role do usuário!' },
         }
@@ -173,9 +173,7 @@ export async function updateUserProfile(
           genre: formData.get('genre'),
           birthday: formData.get('birthday'),
           pix: formData.get('pix'),
-          role:
-            verifyPermissionUser('user.edit.role', roleUser) ??
-            formData.get('role'),
+          role,
         }),
       })
       if (!response.ok) {

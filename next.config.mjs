@@ -9,7 +9,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/auth/signin',
+        destination: '/pt-BR/auth/signin',
         permanent: true,
       },
     ]

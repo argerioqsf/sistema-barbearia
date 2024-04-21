@@ -6,7 +6,7 @@ import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { Role } from '@/types/general'
 import { getRoleFromCookie } from '@/utils/cookieClient'
 import { CatalogIcons, handleIcons } from '@/utils/handleIcons'
-import { UserAction, verifyPermissionUser } from '@/utils/verifyPermissionUser'
+import { UserAction, checkUserPermissions } from '@/utils/checkUserPermissions'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Avatar } from '..'
@@ -21,6 +21,7 @@ type ItemSideMenuProps = {
   sizeAvatar?: number
   setOpenMenu: Dispatch<SetStateAction<boolean | null>>
   userAction: UserAction
+  hidden?: boolean
 }
 
 const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
@@ -32,6 +33,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   sizeAvatar = 32,
   setOpenMenu,
   userAction,
+  hidden,
 }) => {
   const [open, setOpen] = useState(false)
   const { pushRouter } = useHandlerRouter()
@@ -50,51 +52,51 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
     setOpen(!open)
   }
 
-  if (role && !verifyPermissionUser(userAction, role)) return null
+  if (role && !checkUserPermissions(userAction, role)) return null
 
   const ArrowRightIcon = handleIcons('ChevronRight')
   const ArrowDownIcon = handleIcons('ChevronDown')
   return (
-    <div className="flex w-full flex-col min-h-[var(--navbar-height)] justify-start items-center border-b border-primary-50">
-      <Button
-        className="w-full rounded-none h-full flex flex-row justify-start items-center px-4 py-4"
-        type="button"
-        onClick={openSubMenu}
-      >
-        <div className="w-[80%] flex flex-row justify-start items-center gap-4">
-          <Avatar
-            classIcon={`border-transparent size-[${sizeAvatar}px]`}
-            size={sizeAvatar}
-            icon={icon && icon}
-            image={image && image}
-          />
-          <Text className="text-lg font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
-            {label}
-          </Text>
-        </div>
-
-        <div className="w-[20%] flex flex-row justify-end pr-1">
-          {href.length > 0 ||
-            (subMenuList &&
-              (open ? (
-                <ArrowDownIcon size={15} color="white" />
-              ) : (
-                <ArrowRightIcon size={20} color="white" />
-              )))}
-        </div>
-      </Button>
-
-      {subMenuList && (
-        <div
-          className={twMerge(
-            'w-full bg-primary-50 flex flex-col justify-between items-start overflow-y-auto overflow-x-hidden whitespace-nowrap',
-            open === false && 'hidden',
-            open === true && 'flex',
-          )}
+    !hidden && (
+      <div className="flex w-full flex-col min-h-[var(--navbar-height)] justify-start items-center border-b border-primary-50">
+        <Button
+          className="w-full rounded-none h-full flex flex-row justify-start items-center px-4 py-4"
+          type="button"
+          onClick={openSubMenu}
         >
-          {subMenuList.map((menu: ItemMenu) => {
-            return (
-              !menu.hidden && (
+          <div className="w-[80%] flex flex-row justify-start items-center gap-4">
+            <Avatar
+              classIcon={`border-transparent size-[${sizeAvatar}px]`}
+              size={sizeAvatar}
+              icon={icon && icon}
+              image={image && image}
+            />
+            <Text className="text-lg font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
+              {label}
+            </Text>
+          </div>
+
+          <div className="w-[20%] flex flex-row justify-end pr-1">
+            {href.length > 0 ||
+              (subMenuList &&
+                (open ? (
+                  <ArrowDownIcon size={15} color="white" />
+                ) : (
+                  <ArrowRightIcon size={20} color="white" />
+                )))}
+          </div>
+        </Button>
+
+        {subMenuList && (
+          <div
+            className={twMerge(
+              'w-full bg-primary-50 flex flex-col justify-between items-start overflow-y-auto overflow-x-hidden whitespace-nowrap',
+              open === false && 'hidden',
+              open === true && 'flex',
+            )}
+          >
+            {subMenuList.map((menu: ItemMenu) => {
+              return (
                 <ItemSideMenu
                   setOpenMenu={setOpenMenu}
                   sizeAvatar={15}
@@ -103,13 +105,14 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
                   label={menu.label}
                   key={menu.id}
                   userAction={menu.userAction}
+                  hidden={menu.hidden}
                 />
               )
-            )
-          })}
-        </div>
-      )}
-    </div>
+            })}
+          </div>
+        )}
+      </div>
+    )
   )
 }
 
