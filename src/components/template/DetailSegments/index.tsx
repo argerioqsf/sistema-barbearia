@@ -3,10 +3,14 @@ import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import * as templates from './templates'
+import { notFound } from 'next/navigation'
 
 export default async function DetailSegments({ id }: { id: string }) {
   const response = await getSegment(id)
   const segment = response.response
+  if (!segment) {
+    notFound()
+  }
   const errorRequest = response.error?.request ?? undefined
 
   return (

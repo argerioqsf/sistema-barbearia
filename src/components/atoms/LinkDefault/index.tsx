@@ -7,13 +7,14 @@ type LinkProps = {
   children: ReactNode
   href?: string
   className?: string
+  absolute?: boolean
 }
 
-const LinkDefault = ({ children, href, className }: LinkProps) => {
+const LinkDefault = ({ children, href, className, absolute }: LinkProps) => {
   const { generatePath } = useHandlerRouter()
   return (
     <Link
-      href={generatePath(href)}
+      href={absolute ? href ?? '' : generatePath(href)}
       className={twMerge('text-sm font-medium text-primary-600', className)}
     >
       {children}

@@ -1,48 +1,55 @@
-import { ItemMenu, siteConfig } from '@/config/siteConfig'
-import { NextRequest } from 'next/server'
-import { getRoleUserFromCookieRequest } from './cookieClient'
+import { ItemMenu } from '@/config/siteConfig'
 import { Role } from '@/types/general'
+import { NextRequest } from 'next/server'
+import { checkUserPermissions } from './checkUserPermissions'
+
+function getCurrentPage(
+  items: ItemMenu[],
+  request: NextRequest,
+): ItemMenu | undefined {
+  let pathname = request.nextUrl.pathname
+  pathname = pathname.includes('/')
+    ? pathname.substring(pathname.indexOf('/', pathname.indexOf('/') + 1))
+    : ''
+
+  let currentPage: ItemMenu | undefined
+
+  items.forEach((item) => {
+    if (item.href) {
+      if (item.absolutePath && pathname.includes(item?.href)) {
+        currentPage = currentPage ?? item
+      } else if (item.href.includes(pathname)) {
+        currentPage = currentPage ?? item
+      }
+    } else if (item.subMenuList) {
+      item.subMenuList.forEach((subItem) => {
+        if (subItem.href) {
+          if (subItem.absolutePath && pathname.includes(subItem?.href)) {
+            currentPage = currentPage ?? subItem
+          } else if (subItem.href.includes(pathname)) {
+            currentPage = currentPage ?? subItem
+          }
+        }
+      })
+    }
+  })
+
+  return currentPage
+}
 
 export const verifyPageRole = (
   items: ItemMenu[],
+  roleUser: Role,
   request: NextRequest,
-): string | null => {
-  const roleUser = getRoleUserFromCookieRequest(request) as Role
-  if (roleUser) {
-    for (let i = 0; i < items.length; i++) {
-      const href = items[i].href ?? null
-      const roles = items[i].roles ?? []
-      const absolutePath = items[i].absolutePath ?? false
-      let pathname = request.nextUrl.pathname
-      pathname = pathname.includes('/')
-        ? pathname.substring(pathname.indexOf('/', pathname.indexOf('/') + 1))
-        : ''
-
-      if (href) {
-        const isPage = absolutePath
-          ? pathname.includes(href)
-          : href.includes(pathname)
-        if (isPage) {
-          if (roles.includes(roleUser)) {
-            return null
-          } else {
-            return '/pt-BR/dashboard/home'
-          }
-        }
-      } else {
-        const subMenuList = siteConfig.items_side_menu[i].subMenuList
-        if (subMenuList) {
-          const pathRedirect = verifyPageRole(subMenuList, request)
-          if (pathRedirect) {
-            return pathRedirect
-          } else {
-            continue
-          }
-        }
-      }
+): boolean | null => {
+  const currentPage = getCurrentPage(items, request)
+  if (currentPage) {
+    if (checkUserPermissions(currentPage.userAction, roleUser)) {
+      return true
+    } else {
+      return false
     }
   } else {
     return null
   }
-  return null
 }
