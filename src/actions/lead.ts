@@ -57,6 +57,7 @@ export async function registerLead(
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
+      revalidateTag('leads')
       return {
         errors: {},
         ok: true,
