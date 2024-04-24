@@ -64,7 +64,7 @@ export type Profile = {
   genre: string
   birthday: string
   pix: string
-  role: string
+  role: Role
   user?: User
   userId: string
   // eslint-disable-next-line no-use-before-define
