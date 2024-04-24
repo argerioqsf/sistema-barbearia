@@ -18,7 +18,7 @@ export default async function RegisterLeads() {
     list: [
       {
         label: 'consultor 1',
-        value: '91003aab-bbc6-4d09-999c-fcae31d3c6e6',
+        value: '920f7b8d-08c1-4735-9c58-c1ffd181d856',
       },
       {
         label: 'consultor 2',

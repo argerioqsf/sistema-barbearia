@@ -60,38 +60,45 @@ const verifyPermissionProfile = {
 }
 
 const verifyPermissionIndicator = {
-  'indicator.view': (roleUser: string) => [''].includes(roleUser),
-  'indicator.list': (roleUser: string) => [''].includes(roleUser),
+  'indicator.view': (roleUser: string) =>
+    ['administrator', 'coordinator'].includes(roleUser),
+  'indicator.list': (roleUser: string) =>
+    ['administrator', 'coordinator'].includes(roleUser),
   'indicator.register': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
+    ['administrator', 'coordinator'].includes(roleUser),
   'indicator.detail': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
+    ['administrator', 'coordinator'].includes(roleUser),
 }
 
 const verifyPermissionIndicatorRequest = {
   'indicator_request.list': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
+    ['administrator', 'coordinator'].includes(roleUser),
 }
 
 const verifyPermissionLead = {
-  'lead.view': (roleUser: string) => ['administrator'].includes(roleUser),
-  'lead.list': (roleUser: string) => ['administrator'].includes(roleUser),
-  'lead.register': (roleUser: string) => ['administrator'].includes(roleUser),
-  'lead.detail': (roleUser: string) => ['administrator'].includes(roleUser),
+  'lead.view': (roleUser: string) =>
+    ['administrator', 'coordinator'].includes(roleUser),
+  'lead.list': (roleUser: string) =>
+    ['administrator', 'coordinator'].includes(roleUser),
+  'lead.register': (roleUser: string) =>
+    ['administrator', 'coordinator'].includes(roleUser),
+  'lead.detail': (roleUser: string) =>
+    ['administrator', 'coordinator'].includes(roleUser),
 }
 
 const verifyPermissionNewLead = {
-  'new_lead.list': (roleUser: string) => ['administrator'].includes(roleUser),
+  'new_lead.list': (roleUser: string) =>
+    ['administrator', 'coordinator'].includes(roleUser),
 }
 
 const verifyPermissionConfirmedLead = {
   'confirmed_lead.list': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
+    ['administrator', 'coordinator'].includes(roleUser),
 }
 
 const verifyPermissionWaitingConfirmedLead = {
   'waiting_confirmation_lead.list': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
+    ['administrator', 'coordinator'].includes(roleUser),
 }
 
 const verifyPermissionDashboard = {
