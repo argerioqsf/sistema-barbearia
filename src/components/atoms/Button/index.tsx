@@ -5,17 +5,19 @@ import { useFormStatus } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
 
 type ButtonProps = {
-  type: 'submit' | 'reset' | 'button' | undefined
+  type?: 'submit' | 'reset' | 'button' | undefined
   className?: string
   children: ReactNode
   onClick?: (state: unknown) => void
+  disabled?: boolean
 }
 
 const Button = ({
-  type,
+  type = 'button',
   className,
   children,
   onClick = () => {},
+  disabled,
 }: ButtonProps) => {
   const { pending } = useFormStatus()
   return (
@@ -24,7 +26,7 @@ const Button = ({
       type={type}
       className={twMerge('rounded-md p-4', className, pending && 'opacity-50')}
       aria-disabled={pending}
-      disabled={pending}
+      disabled={disabled ?? pending}
     >
       {!pending ? children : 'Loading...'}
     </button>

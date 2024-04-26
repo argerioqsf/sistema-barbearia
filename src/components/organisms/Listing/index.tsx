@@ -3,10 +3,13 @@
 import { Button, Text } from '@/components/atoms'
 import { HeaderList } from '@/components/molecules'
 import ItemList from '@/components/molecules/ItemList'
+import { Pagintaion } from '@/components/molecules/Pagination'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { useItemListTransform } from '@/hooks/use-item-list-transform'
 import { InfoList, ListAction } from '@/types/general'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { twJoin, twMerge } from 'tailwind-merge'
+import { z } from 'zod'
 
 type ListingProps<T> = {
   title?: string
@@ -34,6 +37,22 @@ export default function Listing<T>({
   const { pushRouter } = useHandlerRouter()
   const { listTransform } = useItemListTransform()
   const listTransformResp = listTransform(list ?? [], infoList.itemsList)
+  const paths = usePathname()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  // const pageIndex = searchParams.get('page') ?? 1
+  const pageIndex = z.coerce
+    .number()
+    .transform((page) => page)
+    .parse(searchParams.get('page') ?? '1')
+
+  function handlePaginate(pageIndex: number) {
+    const queryQ = searchParams.get('q') && `q=${searchParams.get('q')}&`
+    const queryPage = `page=${pageIndex}`
+    const path = `${paths}?${queryQ ?? ''}${queryPage ?? ''}`
+    router.push(path)
+  }
+
   return (
     <div
       className={twJoin(
@@ -102,6 +121,14 @@ export default function Listing<T>({
           </div>
         )
       )}
+      <div className="w-full mt-6">
+        <Pagintaion
+          onPageChange={handlePaginate}
+          pageIndex={pageIndex}
+          totalCount={126}
+          perPage={10}
+        />
+      </div>
     </div>
   )
 }
