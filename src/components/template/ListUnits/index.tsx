@@ -12,6 +12,7 @@ export default async function ListUnits({ searchParams }: SearchParams) {
     searchParams?.page ?? '',
   )
   const list = response?.response ?? null
+  const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
 
   return (
@@ -33,6 +34,7 @@ export default async function ListUnits({ searchParams }: SearchParams) {
             hrefButton="dashboard/units/register"
             textButton="Nova Unidade"
             title="Unidades"
+            count={count}
           />
         </div>
       </div>

@@ -326,6 +326,7 @@ export type SearchType = {
 
 export interface ReturnList<T> {
   response?: T[]
+  count?: number
   error?: Errors<T>
 }
 

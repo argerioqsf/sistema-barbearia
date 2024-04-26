@@ -12,6 +12,7 @@ export default async function ListNewLeads({ searchParams }: SearchParams) {
     searchParams?.page ?? '',
   )
   const list = response?.response ?? null
+  const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
 
   return (
@@ -31,6 +32,7 @@ export default async function ListNewLeads({ searchParams }: SearchParams) {
             hrefButton="dashboard/leads/register"
             textButton="Novo lead"
             title="Novos Leads"
+            count={count}
           />
         </div>
       </div>

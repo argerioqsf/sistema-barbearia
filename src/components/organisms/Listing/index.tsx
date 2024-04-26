@@ -21,6 +21,7 @@ type ListingProps<T> = {
   loading?: boolean
   errorMessage?: string
   infoList: InfoList<T>
+  count: number | null
 }
 
 export default function Listing<T>({
@@ -33,6 +34,7 @@ export default function Listing<T>({
   loading,
   errorMessage,
   infoList,
+  count,
 }: ListingProps<T>) {
   const { pushRouter } = useHandlerRouter()
   const { listTransform } = useItemListTransform()
@@ -125,7 +127,7 @@ export default function Listing<T>({
         <Pagintaion
           onPageChange={handlePaginate}
           pageIndex={pageIndex}
-          totalCount={126}
+          totalCount={count ?? 0}
           perPage={10}
         />
       </div>

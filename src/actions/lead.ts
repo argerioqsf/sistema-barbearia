@@ -192,8 +192,8 @@ export async function listLeads(
         error: { request: JSON.parse(errorMessage).message },
       }
     }
-    const { leads } = await response.json()
-    return { response: leads }
+    const { leads, count } = await response.json()
+    return { response: leads, count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

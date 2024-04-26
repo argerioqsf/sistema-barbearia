@@ -13,6 +13,7 @@ export default async function ListCourses({ searchParams }: SearchParams) {
   )
 
   const list = response?.response ?? null
+  const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
 
   return (
@@ -34,6 +35,7 @@ export default async function ListCourses({ searchParams }: SearchParams) {
             hrefButton="dashboard/courses/register"
             textButton="Novo Curso"
             title="Cursos"
+            count={count}
           />
         </div>
       </div>

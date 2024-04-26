@@ -14,6 +14,7 @@ export default async function ListRequestIndicators({
     searchParams?.page ?? '',
   )
   const list = response?.response ?? null
+  const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
 
   return (
@@ -33,6 +34,7 @@ export default async function ListRequestIndicators({
             hrefButton="dashboard/indicators/register"
             textButton=""
             title="Solicitação para indicadores"
+            count={count}
           />
         </div>
       </div>

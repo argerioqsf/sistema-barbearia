@@ -32,8 +32,8 @@ export async function listCourses(
         error: { request: JSON.parse(errorMessage).message },
       }
     }
-    const list = await response.json()
-    return { response: list.courses.courses }
+    const { courses, count } = await response.json()
+    return { response: courses, count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

@@ -174,8 +174,8 @@ export async function listUnits(
         error: { request: JSON.parse(errorMessage).message },
       }
     }
-    const list = await response.json()
-    return { response: list.units }
+    const { units, count } = await response.json()
+    return { response: units, count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

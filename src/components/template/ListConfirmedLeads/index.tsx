@@ -14,6 +14,7 @@ export default async function ListConfirmedLeads({
     searchParams?.page ?? '',
   )
   const list = response?.response ?? null
+  const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
 
   return (
@@ -33,6 +34,7 @@ export default async function ListConfirmedLeads({
             hrefButton="dashboard/leads/register"
             textButton=""
             title="Leads Confirmados"
+            count={count}
           />
         </div>
       </div>

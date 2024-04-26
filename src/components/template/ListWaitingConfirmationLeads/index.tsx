@@ -14,6 +14,7 @@ export default async function ListWaitingConfirmationLeads({
     searchParams?.page ?? '',
   )
   const list = response?.response ?? null
+  const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
 
   return (
@@ -33,6 +34,7 @@ export default async function ListWaitingConfirmationLeads({
             hrefButton="dashboard/leads/register"
             textButton="Novo lead"
             title="Leads Aguardando Confirmação"
+            count={count}
           />
         </div>
       </div>
