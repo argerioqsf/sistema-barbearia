@@ -72,8 +72,8 @@ export async function listUsers(
         error: { request: JSON.parse(errorMessage).message },
       }
     }
-    const list = await response.json()
-    return { response: list.users }
+    const { users, count } = await response.json()
+    return { response: users, count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -363,8 +363,8 @@ export async function listIndicators(
         error: { request: JSON.parse(errorMessage).message },
       }
     }
-    const { users } = await response.json()
-    return { response: users }
+    const { users, count } = await response.json()
+    return { response: users, count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

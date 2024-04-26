@@ -196,8 +196,8 @@ export async function listSegments(
       }
     }
 
-    const list = await response.json()
-    return { response: list.segments }
+    const { segments, count } = await response.json()
+    return { response: segments, count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
