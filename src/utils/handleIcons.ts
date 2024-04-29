@@ -1,4 +1,5 @@
 import {
+  BookCheck,
   ChevronDown,
   ChevronRight,
   Circle,
@@ -6,18 +7,31 @@ import {
   Clock,
   Edit,
   Eye,
+  Facebook,
+  GraduationCap,
   Handshake,
+  Instagram,
   LayoutDashboard,
   Link,
   Lock,
+  LockIcon,
   LucideIcon,
   Menu,
   Search,
+  Shield,
+  TestTubeDiagonal,
+  Trash,
   User,
+  UserCog,
   Users,
+  X,
+  Youtube,
 } from 'lucide-react'
 
 const catalogIcons = {
+  BookCheck,
+  GraduationCap,
+  UserCog,
   ChevronDown,
   ChevronRight,
   Circle,
@@ -33,6 +47,14 @@ const catalogIcons = {
   Users,
   Link,
   Clock,
+  Instagram,
+  Facebook,
+  Youtube,
+  LockIcon,
+  Shield,
+  TestTubeDiagonal,
+  Trash,
+  X,
 } as const
 
 export type CatalogIcons = typeof catalogIcons

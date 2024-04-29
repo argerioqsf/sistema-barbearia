@@ -2,6 +2,7 @@ import { Button } from '@/components/atoms'
 import Avatar from '@/components/molecules/Avatar'
 import InfoUserNav from '@/components/molecules/InfoUserNav'
 import { handleIcons } from '@/utils/handleIcons'
+import { useLocale } from 'next-intl'
 import React, { Dispatch, SetStateAction } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -14,6 +15,7 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
   function openCloseMenu() {
     setOpenMenu(!openMenu)
   }
+  const locale = useLocale()
   const MenuIcon = handleIcons('Menu')
 
   return (
@@ -50,7 +52,7 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
         >
           <Avatar
             classIcon={`size-${[50]}px`}
-            href="dashboard/profile"
+            href={`/${locale}/dashboard/profile`}
             image="https://cdn-icons-png.flaticon.com/512/149/149071.png"
             size={50}
           />

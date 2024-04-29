@@ -100,6 +100,9 @@ export type Lead = {
   consultant?: Profile
   consultantId?: string
   timeline: TimeLine[]
+  segmentId?: string
+  courseId?: string
+  unitId?: string
 }
 
 export type LeadProps = keyof Lead

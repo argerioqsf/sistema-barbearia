@@ -6,7 +6,7 @@ export const formSchemaRegisterUserProfile = z.object({
   name: z.string().min(1, { message: 'O campo Nome é obrigatório' }),
   email: z.string().min(1, { message: 'O campo E-mail é obrigatório' }),
   password: z.string().min(1, { message: 'O campo Senha é obrigatório' }),
-  active: z.enum(['sim', 'nao']),
+  active: z.enum(['true', 'false']),
   phone: z.string().min(1, { message: 'O campo Whatsapp é obrigatório' }),
   cpf: z.string().min(1, { message: 'O campo Documento é obrigatório' }),
   genre: z.string().min(1, { message: 'O campo Genero é obrigatório' }),

@@ -14,7 +14,7 @@ import {
 } from '@/types/general'
 import { Fragment, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
-import { DefaultValues, FieldValues } from 'react-hook-form'
+import { DefaultValues, FieldValues, useForm } from 'react-hook-form'
 
 type FormDashboardProps<T> = {
   templateForm?: TemplateForm<T>
@@ -41,6 +41,9 @@ export default function FormDashboard<T>({
   errorRequest,
   id,
 }: FormDashboardProps<T>) {
+  const { register } = useForm<T & FieldValues>({
+    defaultValues: defaultValues ?? undefined,
+  })
   const { pushRouter } = useHandlerRouter()
   const [formDataExtra, setFormDataExtra] = useState<FormData>(new FormData())
   const initialStateForm: InitialState<T> = {
@@ -75,7 +78,7 @@ export default function FormDashboard<T>({
               field={field}
               state={state}
               setFormDataExtra={setFormDataExtra}
-              defaultValues={defaultValues}
+              register={register}
             />
           )
         })}

@@ -5,8 +5,8 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import React from 'react'
 import { templateForm } from './templateForm'
-import { loginUser } from '@/actions/auth'
 import { Profile, User } from '@/types/general'
+import { registerIndicatorProfile } from '@/actions/user'
 
 const RegisterIndicators: React.FC = () => {
   return (
@@ -18,7 +18,7 @@ const RegisterIndicators: React.FC = () => {
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard<User | Profile>
             templateForm={templateForm}
-            action={loginUser}
+            action={registerIndicatorProfile}
             schemaName="EditProfile"
             pathSuccess="dashboard/indicators"
           />

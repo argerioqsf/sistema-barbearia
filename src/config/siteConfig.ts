@@ -14,6 +14,14 @@ export type ItemMenu = {
   absolutePath?: boolean
 }
 
+export type Formations = {
+  id: number
+  icon?: keyof CatalogIcons
+  title: string
+  link: string
+  subtitle: string
+}
+
 export type SiteConfig = ItemMenu[]
 
 export const siteConfig: SiteConfig = [
@@ -250,5 +258,30 @@ export const siteConfig: SiteConfig = [
         userAction: 'course.detail',
       },
     ],
+  },
+]
+
+export const formations: Formations[] = [
+  {
+    id: 1,
+    icon: 'LockIcon',
+    title: 'Seguro Madre',
+    link: '/',
+    subtitle: 'Com o seguro Madre, você aluno estuda sem preocupações.',
+  },
+  {
+    id: 2,
+    title: 'Clube Madre',
+    icon: 'Shield',
+    link: '/',
+    subtitle: 'Alunos Madre tem acesso a um clube de vantagens exclusivas.',
+  },
+  {
+    id: 3,
+    title: 'Laboratórios',
+    icon: 'TestTubeDiagonal',
+    link: '/',
+    subtitle:
+      'Todos os laboratório possuem equipamentos modernos e profissionais.',
   },
 ]

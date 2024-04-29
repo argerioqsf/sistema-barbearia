@@ -116,11 +116,11 @@ export const templateForm: TemplateForm<User | Profile> = {
                   },
                   {
                     label: 'Sim',
-                    value: 'sim',
+                    value: 'true',
                   },
                   {
                     label: 'Não',
-                    value: 'nao',
+                    value: 'false',
                   },
                 ],
               },

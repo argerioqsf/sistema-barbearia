@@ -114,7 +114,7 @@ export async function registerUserProfile(
           name: formData.get('name'),
           email: formData.get('email'),
           password: formData.get('password'),
-          active: formData.get('active') === 'sim',
+          active: formData.get('active') === 'true',
           phone: formData.get('phone'),
           cpf: formData.get('cpf'),
           genre: formData.get('genre'),
@@ -274,7 +274,7 @@ export async function registerIndicatorProfile(
           name: formData.get('name'),
           email: formData.get('email'),
           password: formData.get('password'),
-          active: formData.get('active') === 'sim',
+          active: formData.get('active') === 'true',
           phone: formData.get('phone'),
           cpf: formData.get('cpf'),
           genre: formData.get('genre'),
@@ -312,7 +312,7 @@ export async function registerIndicatorProfile(
   }
 }
 
-export async function getIndicator(id: string): Promise<ReturnList<User>> {
+export async function getIndicator(id: string): Promise<ReturnGet<User>> {
   try {
     const token = getTokenFromCookieServer()
     const response = await api(`/indicator/${id}`, {
