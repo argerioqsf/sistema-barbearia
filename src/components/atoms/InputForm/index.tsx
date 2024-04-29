@@ -13,6 +13,7 @@ type InputFormPros = {
   onFocus?: () => void
   onBlur?: () => void
   id?: string
+  inputRef?: React.RefObject<HTMLInputElement>
 }
 
 const InputForm = ({
@@ -26,6 +27,7 @@ const InputForm = ({
   onFocus,
   onBlur,
   id,
+  inputRef,
   ...rest
 }: InputFormPros) => {
   return (
@@ -47,6 +49,7 @@ const InputForm = ({
         className,
       )}
       placeholder={placeholder}
+      ref={inputRef ?? propsInput?.ref}
     />
   )
 }

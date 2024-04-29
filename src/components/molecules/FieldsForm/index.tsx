@@ -4,26 +4,22 @@ import FormFieldSelect from '@/components/molecules/FormFieldSelect'
 import SelectFormWithSearch from '@/components/molecules/SelectFormWithSearch'
 import { FieldsTemplateForm, InitialState } from '@/types/general'
 import { Dispatch, SetStateAction } from 'react'
-import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form'
+import { FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
 type PropsFieldsForm<T> = {
   field: FieldsTemplateForm<T>
   state: InitialState<T>
   setFormDataExtra: Dispatch<SetStateAction<FormData>>
-  defaultValues?: DefaultValues<T & FieldValues>
+  register: UseFormRegister<T & FieldValues>
 }
 
 export default function FieldsForm<T>({
   field,
   state,
   setFormDataExtra,
-  defaultValues,
+  register,
 }: PropsFieldsForm<T>) {
   const id = field.id as Path<T & { request?: string }>
-
-  const { register } = useForm<T & FieldValues>({
-    defaultValues: defaultValues ?? undefined,
-  })
 
   const propsField = {
     props: { ...register(id, { required: field.required }) },

@@ -45,6 +45,7 @@ export async function registerUnit(
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
+      revalidateTag('units')
       return {
         errors: {},
         ok: true,

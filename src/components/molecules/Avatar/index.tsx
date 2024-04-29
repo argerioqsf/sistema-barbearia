@@ -1,6 +1,6 @@
-import LinkDefault from '@/components/atoms/LinkDefault'
 import { CatalogIcons, handleIcons } from '@/utils/handleIcons'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -28,7 +28,7 @@ const Avatar: React.FC<AvatarProps> = ({
   classAvatar,
 }) => {
   const Icon = handleIcons(icon)
-  const Component = href.length > 0 ? LinkDefault : 'div'
+  const Component = href.length > 0 ? Link : 'div'
   return (
     <div className={twMerge(`size-[${size}px]`)}>
       <Component

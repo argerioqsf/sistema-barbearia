@@ -7,27 +7,40 @@ import {
   OptionKey,
   VariantOption,
 } from '@/types/general'
-import { Trash } from 'lucide-react'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { CatalogIcons, handleIcons } from '@/utils/handleIcons'
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
 interface Props<T> {
   options: OptionGeneric<T>[]
   onChange?: (value: string) => void
+  onDelete?: (value: string) => void
   optionKeyLabel?: OptionKey<T>
   optionKeyValue?: OptionKey<T>
   error: string
   props: UseFormRegisterReturn<string>
-  label: string
+  label?: string
   setFormDataExtra: Dispatch<SetStateAction<FormData>>
   variant: VariantOption
   values?: string[]
+  placeholder?: string
+  light?: boolean
+  iconDeleteName?: keyof CatalogIcons
+  classNameInput?: string
+  classNameItem?: string
 }
 
 export function SelectFormWithSearch<T>({
   options,
   onChange,
+  onDelete,
   optionKeyLabel,
   optionKeyValue,
   error,
@@ -36,13 +49,20 @@ export function SelectFormWithSearch<T>({
   variant,
   setFormDataExtra,
   values,
+  placeholder,
+  light,
+  iconDeleteName = 'Trash',
+  classNameInput,
+  classNameItem,
 }: Props<T>) {
   const { getItemValue } = useItemListTransform()
   const getOptionLabel = (option: OptionGeneric<T>, key: OptionKey<T>) =>
     String(getItemValue(option, key))
   const getOptionValue = (option: OptionGeneric<T>, key: OptionKey<T>) =>
     String(getItemValue(option, key))
-
+  const selectRef = useRef<HTMLSelectElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const IconDelete = handleIcons(iconDeleteName)
   const OrderOptions: Option[] = options.map((option) => {
     return {
       label: optionKeyLabel ? getOptionLabel(option, optionKeyLabel) : '',
@@ -110,11 +130,20 @@ export function SelectFormWithSearch<T>({
       setFormDataExtra((state) => {
         const newState = returnExistingValues(state)
         const extraDataJson = selectedItems.map((item) => item.value)
-        const newValue = extraDataJson[0] ?? ''
-        const newValueString = JSON.stringify(newValue)
-        newState.append(props.name, newValueString)
+
+        const newValue2 = extraDataJson[0]
+          ? JSON.stringify(extraDataJson[0])
+          : ''
+
+        newState.append(props.name, newValue2)
         return newState
       })
+    }
+
+    document.addEventListener('click', handleDocumentClick)
+
+    return () => {
+      document.removeEventListener('click', handleDocumentClick)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -136,11 +165,13 @@ export function SelectFormWithSearch<T>({
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setIsFocused(false)
-    onChange ? onChange(event.target.value) : console.log('onChange')
 
     const itemExists = verifyExistsItem(event.target.value)
 
     if (itemExists.length === 0) {
+      if (onChange) {
+        onChange(event.target.value)
+      }
       if (variant === 'multiple') {
         setFormDataExtra((state) => {
           const newState = returnExistingValues(state)
@@ -172,6 +203,9 @@ export function SelectFormWithSearch<T>({
   const removeItem = (id: string) => {
     const itemExists = verifyExistsItem(id)
     if (itemExists) {
+      if (onDelete) {
+        onDelete(id)
+      }
       if (variant === 'multiple') {
         setFormDataExtra((state) => {
           const newState = returnExistingValues(state)
@@ -202,58 +236,90 @@ export function SelectFormWithSearch<T>({
     setSearchTerm(event.target.value)
   }
 
+  const handleDocumentClick = (event: MouseEvent) => {
+    if (
+      !selectRef.current?.contains(event.target as Node) &&
+      !inputRef.current?.contains(event.target as Node)
+    ) {
+      setIsFocused(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('click', handleDocumentClick)
+
+    return () => {
+      document.removeEventListener('click', handleDocumentClick)
+    }
+  }, [])
+
   return (
-    <div>
+    <div className="w-full">
       {label && <LabelForm htmlFor={props.name} label={label} />}
-      <div className="mt-2">
+      <div className={twMerge(!light && 'mt-2')}>
         <InputForm
+          inputRef={inputRef}
           onChange={handleSearchChange}
-          onFocus={() => setIsFocused(true)}
+          onFocus={() => {
+            setIsFocused(true)
+          }}
           value={searchTerm}
           id="searchSelectMult"
           type={'text'}
-          placeholder="Search..."
+          placeholder={placeholder ?? 'Search...'}
           className={twMerge(
             'rounded-full border-0',
             'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
             'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
             `bg-white ${error && 'ring-red-500 focus:ring-red-500'}`,
+            classNameInput,
           )}
         />
-
-        <div className="mt-6 relative">
-          {isFocused && (
+        {isFocused && (
+          <div className=" relative">
             <SelectForm
-              classNameOptions="py-2 px-4 mb-2 block w-full text-left bg-white hover:bg-gray-100 border rounded-xl border-gray-300"
+              selectRef={selectRef}
+              classNameOptions="py-2 px-4 mb-2 block w-full text-left bg-white hover:bg-gray-100 border rounded-full border-gray-300 truncate"
               options={filteredOptions}
               onChange={handleChange}
               size={4}
               onBlur={() => setIsFocused(false)}
               className={twMerge(
-                'rounded-md border-0 absolute top-full shadow-gray-500',
+                'rounded-2xl border-0 absolute top-full shadow-gray-500',
                 'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
                 'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
               )}
             />
-          )}
-        </div>
+          </div>
+        )}
 
         <div
-          className={
+          className={twMerge(
             variant === 'multiple'
               ? 'bg-gray-300 p-4 rounded-lg min-h-24'
-              : 'rounded-md'
-          }
+              : 'rounded-md',
+            !light && 'mt-4',
+          )}
         >
           <ul>
             {selectedItems?.map((item, idx) => (
               <div
                 key={idx}
-                className="bg-slate-50 px-8 mb-4 w-full flex flex-row items-center justify-between rounded-full"
+                className={twMerge(
+                  'bg-slate-50 mt-4 px-8 w-full flex flex-row items-center justify-between rounded-full',
+                  !light && 'mb-4',
+                  classNameItem,
+                )}
               >
-                <li className="min-w-20 flex justify-center">{item.label}</li>
-                <Button type="button" onClick={() => removeItem(item.value)}>
-                  <Trash color="red" />
+                <li className="min-w-20 flex justify-start truncate">
+                  {item.label}
+                </li>
+                <Button
+                  className={twMerge(light && 'p-2')}
+                  type="button"
+                  onClick={() => removeItem(item.value)}
+                >
+                  <IconDelete color="red" />
                 </Button>
               </div>
             ))}

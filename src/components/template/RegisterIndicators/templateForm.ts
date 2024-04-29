@@ -17,6 +17,12 @@ export const templateForm: TemplateForm<User | Profile> = {
               type: 'text',
               label: 'Nome',
             },
+            {
+              id: 'pix',
+              required: true,
+              type: 'text',
+              label: 'Chave pix',
+            },
           ],
         },
         {
@@ -34,11 +40,44 @@ export const templateForm: TemplateForm<User | Profile> = {
               type: 'text',
               label: 'Documento',
             },
+          ],
+        },
+        {
+          id: 6,
+          fields: [
             {
-              id: 'pix',
+              id: 'birthday',
               required: true,
-              type: 'text',
-              label: 'Chave pix',
+              type: 'date',
+              label: 'Nascimento',
+            },
+            {
+              id: 'genre',
+              required: true,
+              type: 'select',
+              label: 'Genero',
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                list: [
+                  {
+                    label: 'Selecioinar',
+                    value: '',
+                  },
+                  {
+                    label: 'Masculino',
+                    value: 'man',
+                  },
+                  {
+                    label: 'Feminino',
+                    value: 'woman',
+                  },
+                  {
+                    label: 'Outro',
+                    value: 'other',
+                  },
+                ],
+              },
             },
           ],
         },

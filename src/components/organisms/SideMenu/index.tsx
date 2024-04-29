@@ -15,7 +15,7 @@ function SideMenu() {
           'bg-primary-100',
           'w-0 h-svh',
           'flex flex-row items-start justify-start',
-          'whitespace-nowrap overflow-scroll',
+          'whitespace-nowrap overflow-auto',
           openMenu === true && 'animate-openMenu',
           openMenu === false && 'animate-closeMenu',
         )}

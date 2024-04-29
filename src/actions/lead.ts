@@ -2,6 +2,7 @@
 
 import { formSchemaUpdateLead } from '@/components/template/DetailLeads/schema'
 import { formSchemaRegisterLead } from '@/components/template/RegisterLeads/schema'
+import { formSchemaRegisterLeadPublic } from '@/components/template/RegisterLeadsPublic/schema'
 import { api } from '@/data/api'
 import {
   Errors,
@@ -49,6 +50,74 @@ export async function registerLead(
           city: formData.get('city'),
           indicatorId: formData.get('indicatorId'),
           consultantId: formData.get('consultantId'),
+        }),
+      })
+      if (!response.ok) {
+        const errorMessage = await response.text()
+        return {
+          errors: { request: JSON.parse(errorMessage).message },
+        }
+      }
+      revalidateTag('leads')
+      return {
+        errors: {},
+        ok: true,
+      }
+    } catch (error) {
+      return {
+        errors: { request: 'Failed to Login' },
+      }
+    }
+  } else if (validatedFields.error) {
+    const error = validatedFields.error.flatten().fieldErrors as Errors<Lead>
+    return {
+      errors: { ...error },
+    }
+  } else {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function registerLeadPublic(
+  id: string,
+  prevState: InitialState<Lead>,
+  formData: FormData,
+): Promise<InitialState<Lead>> {
+  console.log('formData: ', formData)
+  const validatedFields = formSchemaRegisterLeadPublic.safeParse({
+    name: formData.get('name'),
+    phone: formData.get('phone'),
+    document: formData.get('document'),
+    email: formData.get('email'),
+    segmentId: formData.get('segmentId'),
+    unitId: formData.get('unitId'),
+    courseId: formData.get('courseId'),
+  })
+
+  if (validatedFields.success) {
+    try {
+      const TOKEN_SIM = getTokenFromCookieServer()
+      if (!TOKEN_SIM) {
+        return {
+          errors: { request: 'Erro de credenciais' },
+        }
+      }
+      const response = await api(`/create/leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN_SIM}`,
+        },
+        body: JSON.stringify({
+          name: formData.get('name'),
+          phone: formData.get('phone'),
+          document: formData.get('document'),
+          email: formData.get('email'),
+          city: formData.get('city'),
+          segmentId: formData.get('segmentId'),
+          unitId: formData.get('unitId'),
+          courseId: formData.get('courseId'),
+          indicatorId: id ?? '',
         }),
       })
       if (!response.ok) {
