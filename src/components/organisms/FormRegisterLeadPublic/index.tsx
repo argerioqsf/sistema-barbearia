@@ -90,10 +90,11 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
 
   return (
     <form
-      className="flex flex-col justify-center items-center gap-4 px-10 w-full w-full lg:w-[80%]"
+      className="flex flex-col justify-center items-center gap-3 px-10 w-full lg:w-[80%]"
       action={handleAction}
     >
       <SelectFormWithSearch<Lead | Segment>
+        classNameInput='rounded-xl py-3'
         props={{ ...register('segmentId', { required: true }) }}
         onChange={(value) => setSelecteds({ ...selecteds, segmentId: value })}
         onDelete={() =>
@@ -153,7 +154,7 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
         <input
           className={twMerge(
             'block w-full',
-            'rounded-full border-0',
+            'rounded-xl border-0',
             'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
             'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
           )}
@@ -175,7 +176,7 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
         <input
           className={twMerge(
             'block w-full',
-            'rounded-full border-0',
+            'rounded-xl border-0',
             'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
             'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
           )}
@@ -197,7 +198,7 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
         <input
           className={twMerge(
             'block w-full',
-            'rounded-full border-0',
+            'rounded-xl border-0',
             'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
             'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
           )}
@@ -216,7 +217,7 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
         )}
       </div>
       <div className="flex flex-col justify-center items-center ">
-        <Button type="submit" className="bg-primary-100 rounded-full w-fit">
+        <Button type="submit" className="bg-primary-100 rounded-xl w-fit">
           <span className="text-white font-semibold">QUERO ME INSCREVER</span>
         </Button>
         {state?.errors?.request && (

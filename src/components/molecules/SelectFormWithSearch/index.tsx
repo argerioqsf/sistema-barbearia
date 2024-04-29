@@ -279,7 +279,7 @@ export function SelectFormWithSearch<T>({
           <div className=" relative">
             <SelectForm
               selectRef={selectRef}
-              classNameOptions="py-2 px-4 mb-2 block w-full text-left bg-white hover:bg-gray-100 border rounded-full border-gray-300"
+              classNameOptions="py-2 px-4 mb-2 block w-full text-left bg-white hover:bg-gray-100 border rounded-full border-gray-300 truncate"
               options={filteredOptions}
               onChange={handleChange}
               size={4}
@@ -311,7 +311,7 @@ export function SelectFormWithSearch<T>({
                   classNameItem,
                 )}
               >
-                <li className="min-w-20 flex justify-center">{item.label}</li>
+                <li className="min-w-20 flex justify-start truncate">{item.label}</li>
                 <Button
                   className={twMerge(light && 'p-2')}
                   type="button"
