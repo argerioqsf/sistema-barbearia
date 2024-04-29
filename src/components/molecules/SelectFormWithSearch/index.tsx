@@ -311,7 +311,9 @@ export function SelectFormWithSearch<T>({
                   classNameItem,
                 )}
               >
-                <li className="min-w-20 flex justify-start truncate">{item.label}</li>
+                <li className="min-w-20 flex justify-start truncate">
+                  {item.label}
+                </li>
                 <Button
                   className={twMerge(light && 'p-2')}
                   type="button"

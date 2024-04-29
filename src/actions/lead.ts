@@ -138,7 +138,6 @@ export async function registerLeadPublic(
     }
   } else if (validatedFields.error) {
     const error = validatedFields.error.flatten().fieldErrors as Errors<Lead>
-    console.log('formData error: ', error)
     return {
       errors: { ...error },
     }

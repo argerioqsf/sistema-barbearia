@@ -11,7 +11,7 @@ const ContainerDashboard = ({ children, ...rest }: ContainerProps) => {
   return (
     <div
       className={twMerge(
-        'w-full flex-nowrap pt-[var(--navbar-height)] overflow-auto whitespace-nowrap',
+        'w-full min-h-screen flex-nowrap pt-[var(--navbar-height)] overflow-auto whitespace-nowrap',
         rest.className,
       )}
     >
