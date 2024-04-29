@@ -94,7 +94,7 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
       action={handleAction}
     >
       <SelectFormWithSearch<Lead | Segment>
-        classNameInput='rounded-xl py-3'
+        classNameInput="rounded-xl py-3"
         props={{ ...register('segmentId', { required: true }) }}
         onChange={(value) => setSelecteds({ ...selecteds, segmentId: value })}
         onDelete={() =>
