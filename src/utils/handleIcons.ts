@@ -3,6 +3,7 @@ import {
   ChevronDown,
   ChevronRight,
   Circle,
+  CircleDollarSign,
   Clipboard,
   Clock,
   Edit,
@@ -20,6 +21,7 @@ import {
   Search,
   Shield,
   TestTubeDiagonal,
+  ThumbsUp,
   Trash,
   User,
   UserCog,
@@ -55,6 +57,8 @@ const catalogIcons = {
   TestTubeDiagonal,
   Trash,
   X,
+  ThumbsUp,
+  CircleDollarSign,
 } as const
 
 export type CatalogIcons = typeof catalogIcons
