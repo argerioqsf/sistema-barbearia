@@ -26,6 +26,7 @@ export type Course = {
   name: string
   quant_leads: number
   active: boolean
+  segmentId: string
 }
 
 export type CourseProps = keyof Course

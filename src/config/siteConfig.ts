@@ -14,7 +14,7 @@ export type ItemMenu = {
   absolutePath?: boolean
 }
 
-export type Formations = {
+export type Items = {
   id: number
   icon?: keyof CatalogIcons
   title: string
@@ -261,7 +261,7 @@ export const siteConfig: SiteConfig = [
   },
 ]
 
-export const formations: Formations[] = [
+export const formations: Items[] = [
   {
     id: 1,
     icon: 'LockIcon',
@@ -283,5 +283,32 @@ export const formations: Formations[] = [
     link: '/',
     subtitle:
       'Todos os laboratório possuem equipamentos modernos e profissionais.',
+  },
+]
+
+export const benefits: Items[] = [
+  {
+    id: 1,
+    icon: 'ThumbsUp',
+    title: 'Você indica',
+    link: '/',
+    subtitle:
+      'Ao realizar seu cadastro você se torna um indicador Madre e terá um link de indicação. É através desse link que seus indicados serão cadastrados no sistema.',
+  },
+  {
+    id: 2,
+    title: 'Nossos consultores',
+    icon: 'Handshake',
+    link: '/',
+    subtitle:
+      'Nosso time de consultores entra em contato com o indicado, apresenta as vantagens de se tornar um aluno Madre e assim que o indicado efetuar sua matrícula você ganha.',
+  },
+  {
+    id: 3,
+    title: 'Você recebe',
+    icon: 'CircleDollarSign',
+    link: '/',
+    subtitle:
+      'Você será remunerado por cada indicado que efetivar sua matrícula. E melhor, você pode acompanhar tudo através do seu painel.',
   },
 ]
