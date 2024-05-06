@@ -26,21 +26,6 @@ export type SiteConfig = ItemMenu[]
 
 export const siteConfig: SiteConfig = [
   {
-    id: '1',
-    href: '/dashboard/home',
-    label: 'SIM',
-    size: 45,
-    image:
-      'https://www.grupomadretereza.com.br/sim/themes/simadm/assets/images/logo.png',
-    userAction: 'dashboard.view',
-  },
-  {
-    id: '2',
-    label: 'ARGÉRIO FILHO',
-    href: '/dashboard/profile',
-    userAction: 'profile.view',
-  },
-  {
     id: '3',
     label: 'Dashboard',
     href: '/dashboard/home',

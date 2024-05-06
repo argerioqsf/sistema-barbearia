@@ -23,7 +23,7 @@ export default async function DetailLeads({ id }: { id: string }) {
     list: [...(responseIndicators?.response ?? [])],
     values: [lead?.indicatorId ?? ''],
   }
-
+  const values = lead?.consultantId ? [lead?.consultantId] : []
   templates.templateForm.sections[2].boxes[0].fields[0].option = {
     ...templates.templateForm.sections[2].boxes[0].fields[0].option,
     list: [
@@ -40,7 +40,7 @@ export default async function DetailLeads({ id }: { id: string }) {
         value: '91003aab-bbc6-4d09-999c-fcae31d3c6e6',
       },
     ],
-    values: [lead?.consultantId ?? ''],
+    values: [...values],
   }
 
   return (

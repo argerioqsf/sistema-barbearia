@@ -17,8 +17,10 @@ export async function registerSegment(
   prevState: InitialState<Segment>,
   formData: FormData,
 ): Promise<InitialState<Segment>> {
+  const courses = JSON.parse(String(formData.get('courses')) ?? '[]')
   const validatedFields = formSchemaRegisterSegment.safeParse({
     name: formData.get('name'),
+    courses,
   })
 
   if (validatedFields.success) {
@@ -37,6 +39,7 @@ export async function registerSegment(
         },
         body: JSON.stringify({
           name: formData.get('name'),
+          courses: courses ?? [],
         }),
       })
       if (!response.ok) {
@@ -138,8 +141,8 @@ export async function getSegment(id: string): Promise<ReturnGet<Segment>> {
         error: { request: JSON.parse(errorMessage).message },
       }
     }
-    const user = await response.json()
-    return { response: user }
+    const { segment } = await response.json()
+    return { response: segment }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

@@ -6,6 +6,7 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import { templates } from './templates'
 import { notFound } from 'next/navigation'
+import { Segment, Unit } from '@/types/general'
 
 export default async function DetailUnits({ id }: { id: string }) {
   const response = await getUnit(id)
@@ -34,7 +35,7 @@ export default async function DetailUnits({ id }: { id: string }) {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6 lg:mt-8 grid gap-8">
-          <FormDashboard
+          <FormDashboard<Unit | Omit<Segment, 'courses'>>
             title={templates.templateForm.title}
             templateForm={templates.templateForm}
             defaultValues={unit ?? undefined}

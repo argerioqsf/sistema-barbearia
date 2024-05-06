@@ -50,28 +50,5 @@ export const templateForm: TemplateForm<Course | Segment> = {
         },
       ],
     },
-    {
-      id: 1,
-      title: 'Seguimento',
-      boxes: [
-        {
-          id: 2,
-          fields: [
-            {
-              id: 'segmentId',
-              required: true,
-              type: 'selectSearch',
-              label: '',
-              option: {
-                keyLabel: 'name',
-                keyValue: 'id',
-                list: [],
-                variant: 'single',
-              },
-            },
-          ],
-        },
-      ],
-    },
   ],
 }

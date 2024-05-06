@@ -1,6 +1,6 @@
-import { Segment, TemplateForm } from '@/types/general'
+import { Course, Segment, TemplateForm } from '@/types/general'
 
-export const templateForm: TemplateForm<Segment> = {
+export const templateForm: TemplateForm<Segment | Course> = {
   title: 'Seguimento',
   textButton: 'Editar',
   sections: [
@@ -22,6 +22,24 @@ export const templateForm: TemplateForm<Segment> = {
               required: true,
               type: 'hidden',
               label: '',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Cursos',
+      boxes: [
+        {
+          id: 3,
+          fields: [
+            {
+              id: 'courses',
+              required: true,
+              type: 'selectSearch',
+              label: '',
+              option: { keyLabel: 'name', keyValue: 'id', list: [] },
             },
           ],
         },

@@ -9,14 +9,6 @@ export type LimitFieldsForm<G> = [G, ...G[]] & {
 
 export type LimitFields<T> = [T, T, T, T, T]
 
-export type Segment = {
-  id: string
-  name: string
-  created_at: string
-}
-
-export type SegmentProps = keyof Segment
-
 export type Roles = typeof roles
 
 export type Role = keyof Roles
@@ -26,10 +18,18 @@ export type Course = {
   name: string
   quant_leads: number
   active: boolean
-  segmentId: string
 }
 
 export type CourseProps = keyof Course
+
+export type Segment = {
+  id: string
+  name: string
+  created_at: string
+  courses?: { course: Course }[] | []
+}
+
+export type SegmentProps = keyof Segment
 
 export type Unit = {
   id: string
