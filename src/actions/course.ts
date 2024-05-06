@@ -120,6 +120,7 @@ export async function registerCourse(
 }
 
 export async function updateCourse(
+  id: string,
   prevState: InitialState<Course>,
   formData: FormData,
 ): Promise<InitialState<Course>> {
@@ -137,7 +138,7 @@ export async function updateCourse(
         }
       }
       const idCourse = formData.get('id')
-      const response = await api(`update/course/${idCourse}`, {
+      const response = await api(`course/${idCourse}/update`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -145,7 +146,7 @@ export async function updateCourse(
         },
         body: JSON.stringify({
           name: formData.get('name'),
-          active: formData.get('active') === '1',
+          active: formData.get('active') === 'true',
         }),
       })
       if (!response.ok) {
@@ -154,6 +155,7 @@ export async function updateCourse(
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
+      revalidateTag('courses')
       return {
         errors: {},
         ok: true,

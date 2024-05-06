@@ -1,5 +1,6 @@
 'use client'
 
+import { actionDefault } from '@/actions/auth'
 import { Button, Form, Text } from '@/components/atoms'
 import Box from '@/components/atoms/Box'
 import FieldsForm from '@/components/molecules/FieldsForm'
@@ -10,6 +11,7 @@ import {
   InitialState,
   LimitColsGrid,
   ServerAction,
+  ServerActionId,
   TemplateForm,
 } from '@/types/general'
 import { Fragment, useEffect, useState } from 'react'
@@ -21,8 +23,8 @@ type FormDashboardProps<T> = {
   loading?: boolean
   getDefaultValues?: GetDefaultValues<T>
   title?: string
-  action: ServerAction<T>
-  schemaName: string
+  action?: ServerAction<T>
+  actionWithId?: ServerActionId<T>
   pathSuccess: string
   errorMessage?: string
   defaultValues?: DefaultValues<T & FieldValues>
@@ -35,6 +37,7 @@ export default function FormDashboard<T>({
   loading = false,
   title,
   action,
+  actionWithId,
   pathSuccess,
   errorMessage,
   defaultValues,
@@ -52,7 +55,7 @@ export default function FormDashboard<T>({
   }
 
   const [state, formAction] = useFormState<InitialState<T>, FormData>(
-    action,
+    actionWithId ? actionWithId.bind(null, id ?? '') : action ?? actionDefault,
     initialStateForm,
   )
 
@@ -98,8 +101,6 @@ export default function FormDashboard<T>({
         newFormData.append(key, valueString)
       })
     }
-    // TODO: aplicar bind
-    if (id) newFormData.append('id', id)
     return newFormData
   }
 

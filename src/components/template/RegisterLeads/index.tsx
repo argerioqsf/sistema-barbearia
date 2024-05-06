@@ -41,7 +41,6 @@ export default async function RegisterLeads() {
           <FormDashboard<User | Lead>
             templateForm={templateForm}
             action={registerLead}
-            schemaName="EditProfile"
             pathSuccess="/dashboard/leads"
           />
         </div>

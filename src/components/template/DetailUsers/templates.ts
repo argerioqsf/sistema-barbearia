@@ -17,12 +17,6 @@ export const templateForm: TemplateForm<User | Profile> = {
               type: 'text',
               label: 'Nome',
             },
-            {
-              id: 'id',
-              required: true,
-              type: 'hidden',
-              label: '',
-            },
           ],
         },
         {

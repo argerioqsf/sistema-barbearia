@@ -306,6 +306,12 @@ export type ServerAction<T> = (
   formData: FormData,
 ) => InitialState<T> | Promise<InitialState<T>>
 
+export type ServerActionId<T> = (
+  id: string,
+  prevState: InitialState<T>,
+  formData: FormData,
+) => InitialState<T> | Promise<InitialState<T>>
+
 export type GetDefaultValues<T> = () => Promise<InitialState<T> | Models>
 
 export type Form<T> = {

@@ -61,3 +61,15 @@ export async function loginUser(
     return { errors: { request: 'Error unknown' } }
   }
 }
+
+export async function actionDefault<T>(
+  prevState: InitialState<T>,
+  formData: FormData,
+): Promise<InitialState<T>> {
+  console.log('prevState: ', prevState)
+  console.log('formData: ', formData)
+  return {
+    errors: {},
+    ok: true,
+  }
+}

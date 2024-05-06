@@ -26,7 +26,6 @@ export default async function DetailIndicator({ id }: { id: string }) {
           defaultValues={indicator ?? undefined}
           action={updateUserProfile}
           pathSuccess="/"
-          schemaName={'UpdateIndicator'}
           errorRequest={errorRequest}
         />
       </div>
