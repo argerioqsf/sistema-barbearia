@@ -1,18 +1,11 @@
+import { registerCourse } from '@/actions/course'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import React from 'react'
-import { templateForm } from './templateForm'
-import { registerCourse } from '@/actions/course'
 import { Course, Segment } from '@/types/general'
-import { listSelectSegments } from '@/actions/segments'
+import { templateForm } from './templateForm'
 
 export default async function RegisterCourses() {
-  const responseSegments = await listSelectSegments()
-  templateForm.sections[1].boxes[0].fields[0].option = {
-    ...templateForm.sections[1].boxes[0].fields[0].option,
-    list: responseSegments?.response ?? [],
-  }
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4">

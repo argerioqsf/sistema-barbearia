@@ -26,7 +26,7 @@ export default async function RegisterUnits() {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6 lg:mt-8">
-          <FormDashboard<Unit | Course | Segment>
+          <FormDashboard<Unit | Course | Omit<Segment, 'courses'>>
             templateForm={templateForm}
             action={registerUnit}
             schemaName="EditProfile"

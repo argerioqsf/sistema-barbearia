@@ -1,6 +1,6 @@
-import { InfoList, TemplateForm, Unit } from '@/types/general'
+import { InfoList, Segment, TemplateForm, Unit } from '@/types/general'
 
-export const templateForm: TemplateForm<Unit> = {
+export const templateForm: TemplateForm<Unit | Segment> = {
   title: 'Unidade',
   textButton: 'Editar',
   sections: [

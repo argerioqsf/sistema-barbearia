@@ -4,6 +4,8 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import * as templates from './templates'
 import { notFound } from 'next/navigation'
+import { listSelectCourses } from '@/actions/course'
+import { Course, Segment } from '@/types/general'
 
 export default async function DetailSegments({ id }: { id: string }) {
   const response = await getSegment(id)
@@ -12,6 +14,12 @@ export default async function DetailSegments({ id }: { id: string }) {
     notFound()
   }
   const errorRequest = response.error?.request ?? undefined
+  const responseCourses = await listSelectCourses()
+  templates.templateForm.sections[1].boxes[0].fields[0].option = {
+    ...templates.templateForm.sections[1].boxes[0].fields[0].option,
+    list: responseCourses?.response ?? [],
+    values: segment?.courses?.map((course) => course.course.id),
+  }
 
   return (
     <ContainerDashboard>
@@ -19,7 +27,7 @@ export default async function DetailSegments({ id }: { id: string }) {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <FormDashboard
+        <FormDashboard<Segment | Course>
           title={templates.templateForm.title}
           templateForm={templates.templateForm}
           defaultValues={segment ?? undefined}
