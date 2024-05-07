@@ -39,9 +39,9 @@ export default async function DetailUnits({ id }: { id: string }) {
             title={templates.templateForm.title}
             templateForm={templates.templateForm}
             defaultValues={unit ?? undefined}
-            action={updateUnit}
-            pathSuccess="/"
-            schemaName={'UpdateUnit'}
+            actionWithId={updateUnit}
+            pathSuccess="/dashboard/units"
+            id={id}
           />
         </div>
       </div>

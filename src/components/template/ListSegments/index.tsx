@@ -6,6 +6,19 @@ import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
 import { infoList } from './templates'
 
+infoList.listActions = [
+  {
+    id: 1,
+    icon: 'Trash',
+    onclick: async (id) => {
+      'use server'
+      console.log('deletar: ', id)
+    },
+    name: 'Deletar',
+  },
+  ...(infoList.listActions ?? []),
+]
+
 export default async function ListSegments({ searchParams }: SearchParams) {
   const response = await listSegments(
     searchParams?.q ?? '',

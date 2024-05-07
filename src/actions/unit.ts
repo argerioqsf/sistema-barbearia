@@ -67,12 +67,14 @@ export async function registerUnit(
 }
 
 export async function updateUnit(
+  id: string,
   prevState: InitialState<Unit>,
   formData: FormData,
 ): Promise<InitialState<Unit>> {
   const segments = JSON.parse(String(formData.get('segments')) ?? '[]')
   const courses = JSON.parse(String(formData.get('courses')) ?? '[]')
   const validatedFields = formSchemaUpdateUnit.safeParse({
+    id,
     name: formData.get('name'),
     segments,
     courses,
@@ -86,7 +88,7 @@ export async function updateUnit(
           errors: { request: 'Erro de credenciais' },
         }
       }
-      const response = await api(`/update/unit`, {
+      const response = await api(`/unit/${id}/update`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -105,6 +107,7 @@ export async function updateUnit(
         }
       }
       revalidateTag('units')
+      revalidateTag(id)
       return {
         errors: {},
         ok: true,
@@ -132,9 +135,7 @@ export async function getUnit(id: string): Promise<ReturnGet<Unit>> {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 15,
-      },
+      next: { tags: [id], revalidate: 60 * 4 },
     })
 
     if (!response.ok) {

@@ -57,7 +57,8 @@ const ItemList = ({ listActions, idx, item, id }: ItemListProps) => {
       <div className="ml-4 w-full hidden sm:flex flex-row justify-center gap-2 items-center whitespace-nowrap overflow-hidden text-ellipsis">
         {listActions.map((action) => (
           <IconAction
-            href={`${action.href}${id}`}
+            href={action.href ? `${action.href}${id}` : undefined}
+            onClick={action.onclick?.bind(null, id)}
             icon={action.icon}
             key={action.id}
             size={35}

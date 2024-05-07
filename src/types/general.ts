@@ -198,6 +198,7 @@ export type ListAction = {
   icon: keyof CatalogIcons
   href?: string
   name: string
+  onclick?: (id?: string) => void
 }
 
 export type InfoList<T> = {

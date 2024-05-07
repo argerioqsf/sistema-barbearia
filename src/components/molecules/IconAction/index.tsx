@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/atoms'
 import LinkDefault from '@/components/atoms/LinkDefault'
 import { CatalogIcons, handleIcons } from '@/utils/handleIcons'
@@ -10,7 +12,7 @@ type AvatarProps = {
   icon?: keyof CatalogIcons
   colorIcon?: string
   children?: React.ReactNode
-  onClick?: () => void
+  onClick?: (id?: string) => void
   href?: string
 }
 
@@ -37,7 +39,9 @@ const IconAction: React.FC<AvatarProps> = ({
     </LinkDefault>
   ) : (
     <Button
-      onClick={onClick}
+      onClick={async () => {
+        onClick && onClick()
+      }}
       type="button"
       className="flex justify-center items-center p-0"
     >

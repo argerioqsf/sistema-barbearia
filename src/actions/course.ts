@@ -48,7 +48,8 @@ export async function getCourse(id: string): Promise<ReturnList<Course>> {
         Authorization: `Bearer ${token}`,
       },
       next: {
-        revalidate: 15,
+        tags: [id],
+        revalidate: 60 * 4,
       },
     })
 
@@ -125,6 +126,7 @@ export async function updateCourse(
   formData: FormData,
 ): Promise<InitialState<Course>> {
   const validatedFields = formSchemaUpdateCourse.safeParse({
+    id,
     name: formData.get('name'),
     active: formData.get('active'),
   })
@@ -137,8 +139,7 @@ export async function updateCourse(
           errors: { request: 'Erro de credenciais' },
         }
       }
-      const idCourse = formData.get('id')
-      const response = await api(`course/${idCourse}/update`, {
+      const response = await api(`course/${id}/update`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -156,6 +157,7 @@ export async function updateCourse(
         }
       }
       revalidateTag('courses')
+      revalidateTag(id)
       return {
         errors: {},
         ok: true,
