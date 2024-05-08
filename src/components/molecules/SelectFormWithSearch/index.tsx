@@ -287,7 +287,7 @@ export function SelectFormWithSearch<T>({
               className={twMerge(
                 'rounded-2xl border-0 absolute top-full shadow-gray-500',
                 'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-                'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+                'py-1.5 px-2 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
               )}
             />
           </div>

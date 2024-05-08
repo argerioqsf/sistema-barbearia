@@ -5,12 +5,6 @@ export const infoList: InfoList<Course> = {
   itemsList: ['name', '', 'active', '', ''],
   listActions: [
     {
-      id: 1,
-      icon: 'Edit',
-      href: 'dashboard/courses/edit',
-      name: 'Editar',
-    },
-    {
       id: 2,
       icon: 'Eye',
       href: 'dashboard/courses/detail/',

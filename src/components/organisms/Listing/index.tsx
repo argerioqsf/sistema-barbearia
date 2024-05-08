@@ -8,6 +8,7 @@ import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { useItemListTransform } from '@/hooks/use-item-list-transform'
 import { InfoList, ListAction } from '@/types/general'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 import { twJoin, twMerge } from 'tailwind-merge'
 import { z } from 'zod'
 
@@ -16,7 +17,7 @@ type ListingProps<T> = {
   textButton?: string
   hrefButton?: string
   list: T[] | null
-  listActions?: Array<ListAction>
+  listActions?: Array<ListAction<T>>
   variant?: 'default' | 'segmented'
   loading?: boolean
   errorMessage?: string
@@ -36,13 +37,13 @@ export default function Listing<T>({
   infoList,
   count,
 }: ListingProps<T>) {
+  const [showDot, setShowDot] = useState('')
   const { pushRouter } = useHandlerRouter()
   const { listTransform } = useItemListTransform()
   const listTransformResp = listTransform(list ?? [], infoList.itemsList)
   const paths = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
-  // const pageIndex = searchParams.get('page') ?? 1
   const pageIndex = z.coerce
     .number()
     .transform((page) => page)
@@ -104,6 +105,8 @@ export default function Listing<T>({
           {listActions &&
             listTransformResp?.map((item, idx) => (
               <ItemList
+                showDot={showDot}
+                setShowDot={setShowDot}
                 key={item.id}
                 listActions={listActions}
                 idx={idx + 1}

@@ -66,6 +66,32 @@ export async function getCourse(id: string): Promise<ReturnList<Course>> {
   }
 }
 
+export async function deleteCourse(id?: string): Promise<InitialState<Course>> {
+  try {
+    if (!id) return { errors: { request: 'Id undefined' } }
+    const token = getTokenFromCookieServer()
+    const response = await api(`/course/delete/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    console.log('response: ', response)
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('courses')
+    return {
+      ok: true,
+    }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
 export async function registerCourse(
   prevState: InitialState<Course>,
   formData: FormData,

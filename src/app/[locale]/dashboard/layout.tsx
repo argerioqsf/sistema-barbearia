@@ -3,6 +3,7 @@ import SideMenu from '@/components/organisms/SideMenu'
 import { twMerge } from 'tailwind-merge'
 import { GeneralProvider } from '@/contexts/general-context'
 import ContainerLayoutDashboard from '@/components/molecules/ContainerLayoutDashborad'
+import { Toaster } from '@/components/ui/toaster'
 
 export default function RootLayout({
   children,
@@ -18,6 +19,7 @@ export default function RootLayout({
             <ContainerLayoutDashboard>{children}</ContainerLayoutDashboard>
           </div>
         </div>
+        <Toaster />
       </body>
     </GeneralProvider>
   )
