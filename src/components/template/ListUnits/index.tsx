@@ -1,10 +1,27 @@
-import { listUnits } from '@/actions/unit'
+import { deleteUnit, listUnits } from '@/actions/unit'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
 import { infoList } from './templates'
+
+infoList.listActions = [
+  {
+    id: 1,
+    icon: 'Trash',
+    onclick: deleteUnit,
+    name: 'Deletar',
+    alert: {
+      title: 'Você deseja realmente apagar esta unidade?',
+      description: 'Essa ação será irreversível',
+    },
+    toast: {
+      title: 'Unidade deletada com sucesso!',
+    },
+  },
+  ...(infoList.listActions ?? []),
+]
 
 export default async function ListUnits({ searchParams }: SearchParams) {
   const response = await listUnits(

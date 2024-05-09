@@ -14,7 +14,8 @@ infoList.listActions = [
     name: 'Deletar',
     alert: {
       title: 'Você deseja realmente apagar este curso?',
-      description: 'Essa ação sera ireversivel',
+      description:
+        'Essa ação será irreversível, ele será apagado em todos os lugares do sistema',
     },
     toast: {
       title: 'Curso deletado com sucesso!',

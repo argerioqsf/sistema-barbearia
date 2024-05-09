@@ -135,7 +135,7 @@ export async function getUnit(id: string): Promise<ReturnGet<Unit>> {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: { tags: [id], revalidate: 60 * 4 },
+      next: { tags: [id, 'segments', 'courses'], revalidate: 60 * 4 },
     })
 
     if (!response.ok) {
@@ -148,6 +148,31 @@ export async function getUnit(id: string): Promise<ReturnGet<Unit>> {
     return { response: list }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function deleteUnit(id?: string): Promise<InitialState<Unit>> {
+  try {
+    if (!id) return { errors: { request: 'Id undefined' } }
+    const token = getTokenFromCookieServer()
+    const response = await api(`/unit/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('units')
+    return {
+      ok: true,
+    }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
   }
 }
 

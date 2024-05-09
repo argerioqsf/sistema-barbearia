@@ -1,7 +1,8 @@
-import { editProfile, getProfile } from '@/actions/profile'
+import { getProfile, updateProfileUser } from '@/actions/profile'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
+import { Profile, User } from '@/types/general'
 import { templateForm } from './templateForm'
 
 export default async function ProfileDetail() {
@@ -16,13 +17,15 @@ export default async function ProfileDetail() {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6 lg:mt-8">
-          <FormDashboard
-            schemaName="EditProfile"
-            action={editProfile}
+          <FormDashboard<Profile | User>
+            action={updateProfileUser}
             templateForm={templateForm}
             defaultValues={profile}
-            pathSuccess="/"
+            pathSuccess="/dashboard/profile"
             errorRequest={errorRequest}
+            toastInfo={{
+              title: 'Perfil atualizado com sucesso!',
+            }}
           />
         </div>
       </div>

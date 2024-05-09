@@ -89,6 +89,15 @@ export default function IconAction<T>({
                     title: toastInfo?.title,
                     description: toastInfo?.description,
                   })
+                } else if (resp?.errors) {
+                  toast({
+                    title: resp?.errors.request,
+                  })
+                } else {
+                  toast({
+                    title: 'Não foi possivel executar esta ação',
+                    description: 'Tente novamente',
+                  })
                 }
               }}
               className="bg-rose-700"

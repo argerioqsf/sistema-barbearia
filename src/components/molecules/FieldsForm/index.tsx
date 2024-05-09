@@ -52,6 +52,7 @@ export default function FieldsForm<T>({
         optionKeyValue={field?.option?.keyValue}
         variant={field?.option?.variant ?? 'multiple'}
         values={field.option?.values}
+        disable={field.disabled}
       />
     )
   } else if (field.type === 'hidden') {

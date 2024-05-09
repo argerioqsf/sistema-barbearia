@@ -4,6 +4,7 @@ import { actionDefault } from '@/actions/auth'
 import { Button, Form, Text } from '@/components/atoms'
 import Box from '@/components/atoms/Box'
 import FieldsForm from '@/components/molecules/FieldsForm'
+import { useToast } from '@/components/ui/use-toast'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
 import {
   BoxTemplateForm,
@@ -13,6 +14,7 @@ import {
   ServerAction,
   ServerActionId,
   TemplateForm,
+  Toast,
 } from '@/types/general'
 import { Fragment, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
@@ -30,6 +32,7 @@ type FormDashboardProps<T> = {
   defaultValues?: DefaultValues<T & FieldValues>
   errorRequest?: string
   id?: string
+  toastInfo?: Toast
 }
 
 export default function FormDashboard<T>({
@@ -43,6 +46,7 @@ export default function FormDashboard<T>({
   defaultValues,
   errorRequest,
   id,
+  toastInfo,
 }: FormDashboardProps<T>) {
   const { register } = useForm<T & FieldValues>({
     defaultValues: defaultValues ?? undefined,
@@ -53,6 +57,7 @@ export default function FormDashboard<T>({
     errors: undefined,
     ok: false,
   }
+  const { toast } = useToast()
 
   const [state, formAction] = useFormState<InitialState<T>, FormData>(
     actionWithId ? actionWithId.bind(null, id ?? '') : action ?? actionDefault,
@@ -62,8 +67,14 @@ export default function FormDashboard<T>({
   useEffect(() => {
     if (state.ok) {
       pushRouter(pathSuccess)
+      if (toastInfo) {
+        toast({
+          title: toastInfo?.title,
+          description: toastInfo?.description,
+        })
+      }
     }
-  }, [action, pathSuccess, pushRouter, state.ok])
+  }, [state])
 
   const handlerBoxRender = (boxItem: BoxTemplateForm<T>) => {
     const quantInputHidden = boxItem?.fields?.filter(

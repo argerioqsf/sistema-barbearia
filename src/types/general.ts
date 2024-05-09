@@ -70,6 +70,7 @@ export type Profile = {
   userId: string
   // eslint-disable-next-line no-use-before-define
   leadsIndicator?: Lead[]
+  city: string
 }
 
 export type ProfileProps = keyof Profile

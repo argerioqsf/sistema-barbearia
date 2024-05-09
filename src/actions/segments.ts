@@ -135,7 +135,7 @@ export async function getSegment(id: string): Promise<ReturnGet<Segment>> {
         Authorization: `Bearer ${token}`,
       },
       next: {
-        tags: [id],
+        tags: [id, 'courses'],
         revalidate: 60 * 4,
       },
     })
@@ -150,6 +150,34 @@ export async function getSegment(id: string): Promise<ReturnGet<Segment>> {
     return { response: segment }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function deleteSegment(
+  id?: string,
+): Promise<InitialState<Segment>> {
+  try {
+    if (!id) return { errors: { request: 'Id undefined' } }
+    const token = getTokenFromCookieServer()
+    const response = await api(`/segment/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('segments')
+    revalidateTag('units')
+    return {
+      ok: true,
+    }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
   }
 }
 

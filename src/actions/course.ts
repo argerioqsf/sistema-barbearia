@@ -76,7 +76,6 @@ export async function deleteCourse(id?: string): Promise<InitialState<Course>> {
         Authorization: `Bearer ${token}`,
       },
     })
-    console.log('response: ', response)
     if (!response.ok) {
       const errorMessage = await response.text()
       return {
@@ -84,6 +83,8 @@ export async function deleteCourse(id?: string): Promise<InitialState<Course>> {
       }
     }
     revalidateTag('courses')
+    revalidateTag('units')
+    revalidateTag('segments')
     return {
       ok: true,
     }

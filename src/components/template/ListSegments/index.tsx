@@ -1,4 +1,4 @@
-import { listSegments } from '@/actions/segments'
+import { deleteSegment, listSegments } from '@/actions/segments'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
@@ -10,11 +10,15 @@ infoList.listActions = [
   {
     id: 1,
     icon: 'Trash',
-    onclick: async (id) => {
-      'use server'
-      console.log('deletar: ', id)
-    },
+    onclick: deleteSegment,
     name: 'Deletar',
+    alert: {
+      title: 'Você deseja realmente apagar este seguimento?',
+      description: 'Essa ação será irreversível',
+    },
+    toast: {
+      title: 'Seguimento deletado com sucesso!',
+    },
   },
   ...(infoList.listActions ?? []),
 ]
