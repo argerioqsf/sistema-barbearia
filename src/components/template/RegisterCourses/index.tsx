@@ -14,7 +14,6 @@ export default async function RegisterCourses() {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard<Course | Segment>
-            schemaName="EditProfile"
             action={registerCourse}
             templateForm={templateForm}
             pathSuccess="dashboard/courses"

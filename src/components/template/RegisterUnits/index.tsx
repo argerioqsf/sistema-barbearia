@@ -29,7 +29,6 @@ export default async function RegisterUnits() {
           <FormDashboard<Unit | Course | Omit<Segment, 'courses'>>
             templateForm={templateForm}
             action={registerUnit}
-            schemaName="EditProfile"
             pathSuccess="dashboard/units"
           />
         </div>
