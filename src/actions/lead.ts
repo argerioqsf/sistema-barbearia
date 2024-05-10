@@ -147,11 +147,12 @@ export async function registerLeadPublic(
 }
 
 export async function updateLead(
+  id: string,
   prevState: InitialState<Lead>,
   formData: FormData,
 ): Promise<InitialState<Lead>> {
   const validatedFields = formSchemaUpdateLead.safeParse({
-    id: formData.get('id'),
+    id,
     name: formData.get('name'),
     phone: formData.get('phone'),
     document: formData.get('document'),
@@ -169,9 +170,8 @@ export async function updateLead(
           errors: { request: 'Erro de credenciais' },
         }
       }
-      const idLead = formData.get('id')
-      const response = await api(`/lead/${idLead}`, {
-        method: 'POST',
+      const response = await api(`/lead/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN_SIM}`,

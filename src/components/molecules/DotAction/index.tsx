@@ -15,58 +15,35 @@ import {
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
 import { Alert, InitialState, Toast } from '@/types/general'
-import { CatalogIcons, handleIcons } from '@/utils/handleIcons'
-import React from 'react'
-import { twMerge } from 'tailwind-merge'
 
 type AvatarProps<T> = {
-  classIcon?: string
-  size?: number
-  icon?: keyof CatalogIcons
-  colorIcon?: string
-  children?: React.ReactNode
-  onClick?: (id?: string) => void | Promise<InitialState<T>>
   href?: string
+  onClick?: (id?: string) => void | Promise<InitialState<T>>
   toastInfo?: Toast
   alertInfo?: Alert
+  name?: string
 }
 
-export default function IconAction<T>({
+export default function DotAction<T>({
   href = '',
-  classIcon = '',
-  colorIcon = 'white',
-  size = 36,
-  icon,
-  children,
   onClick,
   toastInfo,
   alertInfo,
+  name,
 }: AvatarProps<T>) {
   const { toast } = useToast()
-  const Icon = handleIcons(icon)
-  return href.length > 0 ? (
-    <LinkDefault className="flex justify-center items-center" href={href}>
-      <span
-        className={twMerge(
-          'p-2 rounded-full flex justify-center items-center border-2',
-          classIcon,
-        )}
-      >
-        {children ?? <Icon size={size} color={colorIcon} />}
-      </span>
+  return href?.length > 0 ? (
+    <LinkDefault
+      href={href}
+      className="block px-4 py-2 hover:bg-white dark:hover:bg-white dark:hover:text-secondary-50"
+    >
+      {name}
     </LinkDefault>
   ) : (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
+      <AlertDialogTrigger className="w-full px-4 py-2 justify-start" asChild>
         <Button variant="ghost" size="icon">
-          <span
-            className={twMerge(
-              'p-2 rounded-full flex justify-center items-center border-2',
-              classIcon,
-            )}
-          >
-            {children ?? <Icon size={size} color={colorIcon} />}
-          </span>
+          {name}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="sm:max-w-md">
@@ -88,15 +65,6 @@ export default function IconAction<T>({
                   toast({
                     title: toastInfo?.title,
                     description: toastInfo?.description,
-                  })
-                } else if (resp?.errors) {
-                  toast({
-                    title: resp?.errors.request,
-                  })
-                } else {
-                  toast({
-                    title: 'Não foi possivel executar esta ação',
-                    description: 'Tente novamente',
                   })
                 }
               }}

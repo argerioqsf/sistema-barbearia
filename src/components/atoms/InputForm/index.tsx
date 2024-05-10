@@ -45,7 +45,7 @@ const InputForm = ({
         'block w-full',
         'rounded-md border-0',
         'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-        'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+        'py-1.5 pl-4 shadow-sm ring-1 ring-inset focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
         className,
       )}
       placeholder={placeholder}

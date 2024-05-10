@@ -1,10 +1,28 @@
-import { listCourses } from '@/actions/course'
+import { deleteCourse, listCourses } from '@/actions/course'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
 import { infoList } from './templates'
+
+infoList.listActions = [
+  {
+    id: 1,
+    icon: 'Trash',
+    onclick: deleteCourse,
+    name: 'Deletar',
+    alert: {
+      title: 'Você deseja realmente apagar este curso?',
+      description:
+        'Essa ação será irreversível, ele será apagado em todos os lugares do sistema',
+    },
+    toast: {
+      title: 'Curso deletado com sucesso!',
+    },
+  },
+  ...(infoList.listActions ?? []),
+]
 
 export default async function ListCourses({ searchParams }: SearchParams) {
   const response = await listCourses(

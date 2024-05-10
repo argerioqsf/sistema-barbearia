@@ -1,10 +1,27 @@
-import { listSegments } from '@/actions/segments'
+import { deleteSegment, listSegments } from '@/actions/segments'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
 import { infoList } from './templates'
+
+infoList.listActions = [
+  {
+    id: 1,
+    icon: 'Trash',
+    onclick: deleteSegment,
+    name: 'Deletar',
+    alert: {
+      title: 'Você deseja realmente apagar este seguimento?',
+      description: 'Essa ação será irreversível',
+    },
+    toast: {
+      title: 'Seguimento deletado com sucesso!',
+    },
+  },
+  ...(infoList.listActions ?? []),
+]
 
 export default async function ListSegments({ searchParams }: SearchParams) {
   const response = await listSegments(

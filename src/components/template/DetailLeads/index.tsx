@@ -53,9 +53,8 @@ export default async function DetailLeads({ id }: { id: string }) {
           title={templates.templateForm.title}
           templateForm={templates.templateForm}
           defaultValues={lead ?? undefined}
-          action={updateLead}
-          pathSuccess="/"
-          schemaName={'UpdateUnit'}
+          actionWithId={updateLead}
+          pathSuccess="/dashboard/leads"
           errorRequest={errorRequest}
           id={id}
         />
@@ -64,7 +63,6 @@ export default async function DetailLeads({ id }: { id: string }) {
           templateForm={templates.templateFormTimeLine}
           action={registerTimeLine}
           pathSuccess="/"
-          schemaName={'UpdateUnit'}
           errorRequest={errorRequest}
         />
 

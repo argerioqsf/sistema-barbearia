@@ -5,12 +5,6 @@ export const infoList: InfoList<User> = {
   itemsList: ['name', '', 'email', '', 'profile.role'],
   listActions: [
     {
-      id: 1,
-      icon: 'Edit',
-      href: 'users/edit',
-      name: 'Editar',
-    },
-    {
       id: 2,
       icon: 'Eye',
       href: 'dashboard/users/detail/',

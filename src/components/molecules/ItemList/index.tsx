@@ -3,15 +3,25 @@ import { ItemListType, ListAction } from '@/types/general'
 import { Avatar } from '..'
 import DropDownDots from '../DropDownDots'
 import IconAction from '../IconAction'
+import { Dispatch, SetStateAction } from 'react'
 
-type ItemListProps = {
-  listActions: Array<ListAction>
+type ItemListProps<T> = {
+  listActions: Array<ListAction<T>>
   idx?: number
   item: ItemListType
   id: string
+  setShowDot: Dispatch<SetStateAction<string>>
+  showDot: string
 }
 
-const ItemList = ({ listActions, idx, item, id }: ItemListProps) => {
+export default function ItemList<T>({
+  listActions,
+  idx,
+  item,
+  id,
+  setShowDot,
+  showDot,
+}: ItemListProps<T>) {
   return (
     <div className="w-full relative rounded-full bg-gray-200 flex flex-row justify-start items-center p-3">
       <div className="w-[10%] md:w-[10%] sm:w-[20%] flex flex-row justify-start">
@@ -57,20 +67,26 @@ const ItemList = ({ listActions, idx, item, id }: ItemListProps) => {
       <div className="ml-4 w-full hidden sm:flex flex-row justify-center gap-2 items-center whitespace-nowrap overflow-hidden text-ellipsis">
         {listActions.map((action) => (
           <IconAction
-            href={`${action.href}${id}`}
+            href={action.href ? `${action.href}${id}` : undefined}
+            onClick={action.onclick?.bind(null, id)}
             icon={action.icon}
             key={action.id}
             size={35}
             classIcon="bg-secondary-50 border-transparent size-[35px]"
+            toastInfo={action.toast}
+            alertInfo={action.alert}
           />
         ))}
       </div>
 
       <div className="w-[20%] flex sm:hidden flex-row justify-end items-center">
-        <DropDownDots listActions={listActions} id={id} />
+        <DropDownDots
+          showDot={showDot}
+          setShowDot={setShowDot}
+          listActions={listActions}
+          id={id}
+        />
       </div>
     </div>
   )
 }
-
-export default ItemList

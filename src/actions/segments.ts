@@ -69,12 +69,15 @@ export async function registerSegment(
 }
 
 export async function updateSegment(
+  id: string,
   prevState: InitialState<Segment>,
   formData: FormData,
 ): Promise<InitialState<Segment>> {
+  const courses = JSON.parse(String(formData.get('courses')) ?? '[]')
   const validatedFields = formSchemaUpdateSegment.safeParse({
-    id: formData.get('id'),
+    id,
     name: formData.get('name'),
+    courses,
   })
 
   if (validatedFields.success) {
@@ -85,15 +88,15 @@ export async function updateSegment(
           errors: { request: 'Erro de credenciais' },
         }
       }
-      const idSegment = formData.get('id')
-      const response = await api(`/update/segment/${idSegment}`, {
-        method: 'POST',
+      const response = await api(`/segment/${id}/update`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN_SIM}`,
         },
         body: JSON.stringify({
           name: formData.get('name'),
+          courses: courses ?? [],
         }),
       })
       if (!response.ok) {
@@ -103,6 +106,7 @@ export async function updateSegment(
         }
       }
       revalidateTag('segments')
+      revalidateTag(id)
       return {
         errors: {},
         ok: true,
@@ -131,7 +135,8 @@ export async function getSegment(id: string): Promise<ReturnGet<Segment>> {
         Authorization: `Bearer ${token}`,
       },
       next: {
-        revalidate: 15,
+        tags: [id, 'courses'],
+        revalidate: 60 * 4,
       },
     })
 
@@ -145,6 +150,34 @@ export async function getSegment(id: string): Promise<ReturnGet<Segment>> {
     return { response: segment }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function deleteSegment(
+  id?: string,
+): Promise<InitialState<Segment>> {
+  try {
+    if (!id) return { errors: { request: 'Id undefined' } }
+    const token = getTokenFromCookieServer()
+    const response = await api(`/segment/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('segments')
+    revalidateTag('units')
+    return {
+      ok: true,
+    }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
   }
 }
 

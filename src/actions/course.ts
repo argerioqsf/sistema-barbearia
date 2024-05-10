@@ -48,7 +48,8 @@ export async function getCourse(id: string): Promise<ReturnList<Course>> {
         Authorization: `Bearer ${token}`,
       },
       next: {
-        revalidate: 15,
+        tags: [id],
+        revalidate: 60 * 4,
       },
     })
 
@@ -62,6 +63,33 @@ export async function getCourse(id: string): Promise<ReturnList<Course>> {
     return { response: course }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function deleteCourse(id?: string): Promise<InitialState<Course>> {
+  try {
+    if (!id) return { errors: { request: 'Id undefined' } }
+    const token = getTokenFromCookieServer()
+    const response = await api(`/course/delete/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('courses')
+    revalidateTag('units')
+    revalidateTag('segments')
+    return {
+      ok: true,
+    }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
   }
 }
 
@@ -120,10 +148,12 @@ export async function registerCourse(
 }
 
 export async function updateCourse(
+  id: string,
   prevState: InitialState<Course>,
   formData: FormData,
 ): Promise<InitialState<Course>> {
   const validatedFields = formSchemaUpdateCourse.safeParse({
+    id,
     name: formData.get('name'),
     active: formData.get('active'),
   })
@@ -136,8 +166,7 @@ export async function updateCourse(
           errors: { request: 'Erro de credenciais' },
         }
       }
-      const idCourse = formData.get('id')
-      const response = await api(`update/course/${idCourse}`, {
+      const response = await api(`course/${id}/update`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -145,7 +174,7 @@ export async function updateCourse(
         },
         body: JSON.stringify({
           name: formData.get('name'),
-          active: formData.get('active') === '1',
+          active: formData.get('active') === 'true',
         }),
       })
       if (!response.ok) {
@@ -154,6 +183,8 @@ export async function updateCourse(
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
+      revalidateTag('courses')
+      revalidateTag(id)
       return {
         errors: {},
         ok: true,

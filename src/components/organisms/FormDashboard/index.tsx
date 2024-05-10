@@ -1,8 +1,10 @@
 'use client'
 
+import { actionDefault } from '@/actions/auth'
 import { Button, Form, Text } from '@/components/atoms'
 import Box from '@/components/atoms/Box'
 import FieldsForm from '@/components/molecules/FieldsForm'
+import { useToast } from '@/components/ui/use-toast'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
 import {
   BoxTemplateForm,
@@ -10,7 +12,9 @@ import {
   InitialState,
   LimitColsGrid,
   ServerAction,
+  ServerActionId,
   TemplateForm,
+  Toast,
 } from '@/types/general'
 import { Fragment, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
@@ -21,13 +25,14 @@ type FormDashboardProps<T> = {
   loading?: boolean
   getDefaultValues?: GetDefaultValues<T>
   title?: string
-  action: ServerAction<T>
-  schemaName: string
+  action?: ServerAction<T>
+  actionWithId?: ServerActionId<T>
   pathSuccess: string
   errorMessage?: string
   defaultValues?: DefaultValues<T & FieldValues>
   errorRequest?: string
   id?: string
+  toastInfo?: Toast
 }
 
 export default function FormDashboard<T>({
@@ -35,11 +40,13 @@ export default function FormDashboard<T>({
   loading = false,
   title,
   action,
+  actionWithId,
   pathSuccess,
   errorMessage,
   defaultValues,
   errorRequest,
   id,
+  toastInfo,
 }: FormDashboardProps<T>) {
   const { register } = useForm<T & FieldValues>({
     defaultValues: defaultValues ?? undefined,
@@ -50,17 +57,24 @@ export default function FormDashboard<T>({
     errors: undefined,
     ok: false,
   }
+  const { toast } = useToast()
 
   const [state, formAction] = useFormState<InitialState<T>, FormData>(
-    action,
+    actionWithId ? actionWithId.bind(null, id ?? '') : action ?? actionDefault,
     initialStateForm,
   )
 
   useEffect(() => {
     if (state.ok) {
       pushRouter(pathSuccess)
+      if (toastInfo) {
+        toast({
+          title: toastInfo?.title,
+          description: toastInfo?.description,
+        })
+      }
     }
-  }, [action, pathSuccess, pushRouter, state.ok])
+  }, [state])
 
   const handlerBoxRender = (boxItem: BoxTemplateForm<T>) => {
     const quantInputHidden = boxItem?.fields?.filter(
@@ -98,8 +112,6 @@ export default function FormDashboard<T>({
         newFormData.append(key, valueString)
       })
     }
-    // TODO: aplicar bind
-    if (id) newFormData.append('id', id)
     return newFormData
   }
 

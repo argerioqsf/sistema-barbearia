@@ -1,39 +1,52 @@
 'use server'
 
-import { formSchemaEditProfile } from '@/components/template/ProfileDetail/schema'
+import { formSchemaUpdateProfileUser } from '@/components/template/ProfileDetail/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState, Profile, ReturnGet } from '@/types/general'
-import {
-  getTokenFromCookieServer,
-  setRolesInCookieServer,
-  setTokenInCookieServer,
-  setUserInCookieServer,
-} from '@/utils/cookieServer'
+import { Errors, InitialState, Profile, ReturnGet, User } from '@/types/general'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { revalidateTag } from 'next/cache'
 
-export async function editProfile(
-  prevState: InitialState<Profile>,
+export async function updateProfileUser(
+  prevState: InitialState<Profile | User>,
   formData: FormData,
-): Promise<InitialState<Profile>> {
-  const validatedFields = formSchemaEditProfile.safeParse({
-    name: formData.get('name'),
+): Promise<InitialState<Profile | User>> {
+  const validatedFields = formSchemaUpdateProfileUser.safeParse({
+    'user.name': formData.get('user.name'),
+    'user.email': formData.get('user.email'),
+    'user.active': formData.get('user.active'),
     phone: formData.get('phone'),
     cpf: formData.get('cpf'),
+    genre: formData.get('genre'),
+    birthday: formData.get('birthday'),
     pix: formData.get('pix'),
-    email: formData.get('email'),
     city: formData.get('city'),
-    status: formData.get('status'),
   })
 
   if (validatedFields.success) {
     try {
-      const response = await api(`/sessions`, {
-        method: 'POST',
+      const TOKEN_SIM = getTokenFromCookieServer()
+
+      if (!TOKEN_SIM) {
+        return {
+          errors: { request: 'Erro de credenciais' },
+        }
+      }
+      const response = await api(`/profile`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN_SIM}`,
         },
         body: JSON.stringify({
-          email: formData.get('email'),
-          password: formData.get('password'),
+          name: formData.get('user.name'),
+          email: formData.get('user.email'),
+          active: formData.get('user.active') === 'true',
+          phone: formData.get('phone'),
+          cpf: formData.get('cpf'),
+          genre: formData.get('genre'),
+          birthday: formData.get('birthday'),
+          pix: formData.get('pix'),
+          city: formData.get('city'),
         }),
       })
       if (!response.ok) {
@@ -42,24 +55,20 @@ export async function editProfile(
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
-      const resp = await response.json()
-      const token = resp?.token
-      const user = resp?.user
-      const roles = resp?.roles
-      setTokenInCookieServer(token)
-      setUserInCookieServer(user)
-      setRolesInCookieServer(roles)
+      revalidateTag('users')
       return {
         errors: {},
         ok: true,
       }
     } catch (error) {
       return {
-        errors: { request: 'Failed to Login' },
+        errors: { request: 'Failed to update User' },
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors<Profile>
+    const error = validatedFields.error.flatten().fieldErrors as Errors<
+      Profile & User
+    >
     return {
       errors: { ...error },
     }
@@ -76,6 +85,7 @@ export async function getProfile(): Promise<ReturnGet<Profile>> {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      next: { tags: ['users'], revalidate: 60 * 4 },
     })
 
     if (!response.ok) {

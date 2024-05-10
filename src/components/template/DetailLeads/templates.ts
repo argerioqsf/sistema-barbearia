@@ -62,6 +62,7 @@ export const templateForm: TemplateForm<Lead | User> = {
               required: true,
               type: 'selectSearch',
               label: '',
+              disabled: true,
               option: {
                 keyLabel: 'name',
                 keyValue: 'profile.id',

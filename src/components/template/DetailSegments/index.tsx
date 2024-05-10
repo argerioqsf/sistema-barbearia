@@ -31,10 +31,10 @@ export default async function DetailSegments({ id }: { id: string }) {
           title={templates.templateForm.title}
           templateForm={templates.templateForm}
           defaultValues={segment ?? undefined}
-          action={updateSegment}
-          pathSuccess="/"
-          schemaName={'UpdateIndicator'}
+          actionWithId={updateSegment}
+          pathSuccess="/dashboard/segments"
           errorRequest={errorRequest}
+          id={id}
         />
       </div>
     </ContainerDashboard>

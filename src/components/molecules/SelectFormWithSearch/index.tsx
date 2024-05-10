@@ -35,6 +35,7 @@ interface Props<T> {
   iconDeleteName?: keyof CatalogIcons
   classNameInput?: string
   classNameItem?: string
+  disable?: boolean
 }
 
 export function SelectFormWithSearch<T>({
@@ -54,6 +55,7 @@ export function SelectFormWithSearch<T>({
   iconDeleteName = 'Trash',
   classNameInput,
   classNameItem,
+  disable,
 }: Props<T>) {
   const { getItemValue } = useItemListTransform()
   const getOptionLabel = (option: OptionGeneric<T>, key: OptionKey<T>) =>
@@ -257,24 +259,26 @@ export function SelectFormWithSearch<T>({
     <div className="w-full">
       {label && <LabelForm htmlFor={props.name} label={label} />}
       <div className={twMerge(!light && 'mt-2')}>
-        <InputForm
-          inputRef={inputRef}
-          onChange={handleSearchChange}
-          onFocus={() => {
-            setIsFocused(true)
-          }}
-          value={searchTerm}
-          id="searchSelectMult"
-          type={'text'}
-          placeholder={placeholder ?? 'Search...'}
-          className={twMerge(
-            'rounded-full border-0',
-            'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-            'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
-            `bg-white ${error && 'ring-red-500 focus:ring-red-500'}`,
-            classNameInput,
-          )}
-        />
+        {!disable && (
+          <InputForm
+            inputRef={inputRef}
+            onChange={handleSearchChange}
+            onFocus={() => {
+              setIsFocused(true)
+            }}
+            value={searchTerm}
+            id="searchSelectMult"
+            type={'text'}
+            placeholder={placeholder ?? 'Search...'}
+            className={twMerge(
+              'rounded-full border-0',
+              'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+              'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+              `bg-white ${error && 'ring-red-500 focus:ring-red-500'}`,
+              classNameInput,
+            )}
+          />
+        )}
         {isFocused && (
           <div className=" relative">
             <SelectForm
@@ -287,7 +291,7 @@ export function SelectFormWithSearch<T>({
               className={twMerge(
                 'rounded-2xl border-0 absolute top-full shadow-gray-500',
                 'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-                'py-1.5 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+                'py-1.5 px-2 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
               )}
             />
           </div>
@@ -306,7 +310,7 @@ export function SelectFormWithSearch<T>({
               <div
                 key={idx}
                 className={twMerge(
-                  'bg-slate-50 mt-4 px-8 w-full flex flex-row items-center justify-between rounded-full',
+                  'bg-slate-50 mt-4 min-h-14 px-8 w-full flex flex-row items-center justify-between rounded-full',
                   !light && 'mb-4',
                   classNameItem,
                 )}
@@ -314,13 +318,15 @@ export function SelectFormWithSearch<T>({
                 <li className="min-w-20 flex justify-start truncate">
                   {item.label}
                 </li>
-                <Button
-                  className={twMerge(light && 'p-2')}
-                  type="button"
-                  onClick={() => removeItem(item.value)}
-                >
-                  <IconDelete color="red" />
-                </Button>
+                {!disable && (
+                  <Button
+                    className={twMerge(light && 'p-2')}
+                    type="button"
+                    onClick={() => removeItem(item.value)}
+                  >
+                    <IconDelete color="red" />
+                  </Button>
+                )}
               </div>
             ))}
           </ul>

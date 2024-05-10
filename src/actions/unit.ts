@@ -67,12 +67,14 @@ export async function registerUnit(
 }
 
 export async function updateUnit(
+  id: string,
   prevState: InitialState<Unit>,
   formData: FormData,
 ): Promise<InitialState<Unit>> {
   const segments = JSON.parse(String(formData.get('segments')) ?? '[]')
   const courses = JSON.parse(String(formData.get('courses')) ?? '[]')
   const validatedFields = formSchemaUpdateUnit.safeParse({
+    id,
     name: formData.get('name'),
     segments,
     courses,
@@ -86,7 +88,7 @@ export async function updateUnit(
           errors: { request: 'Erro de credenciais' },
         }
       }
-      const response = await api(`/update/unit`, {
+      const response = await api(`/unit/${id}/update`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -105,6 +107,7 @@ export async function updateUnit(
         }
       }
       revalidateTag('units')
+      revalidateTag(id)
       return {
         errors: {},
         ok: true,
@@ -132,9 +135,7 @@ export async function getUnit(id: string): Promise<ReturnGet<Unit>> {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: {
-        revalidate: 15,
-      },
+      next: { tags: [id, 'segments', 'courses'], revalidate: 60 * 4 },
     })
 
     if (!response.ok) {
@@ -147,6 +148,31 @@ export async function getUnit(id: string): Promise<ReturnGet<Unit>> {
     return { response: list }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function deleteUnit(id?: string): Promise<InitialState<Unit>> {
+  try {
+    if (!id) return { errors: { request: 'Id undefined' } }
+    const token = getTokenFromCookieServer()
+    const response = await api(`/unit/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('units')
+    return {
+      ok: true,
+    }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
   }
 }
 

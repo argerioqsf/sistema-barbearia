@@ -47,10 +47,10 @@ export default async function DetailUsers({ id }: { id: string }) {
             title={templates.templateForm.title}
             templateForm={templates.templateForm}
             defaultValues={user}
-            action={updateUserProfile}
-            pathSuccess="/"
-            schemaName={'formSchemaUpdateUserProfile'}
+            actionWithId={updateUserProfile}
+            pathSuccess="/dashboard/users"
             errorRequest={errorRequest}
+            id={id}
           />
         </div>
       </div>

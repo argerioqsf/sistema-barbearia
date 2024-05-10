@@ -1,6 +1,7 @@
 'use server'
 
 import { formSchemaUpdateUserProfile } from '@/components/template/DetailUsers/schema'
+import { formSchemaRegisterIndicatorProfile } from '@/components/template/RegisterIndicators/schema'
 import { formSchemaRegisterUserProfile } from '@/components/template/RegisterUser/schema'
 import { api } from '@/data/api'
 import {
@@ -9,17 +10,11 @@ import {
   Profile,
   ReturnGet,
   ReturnList,
-  Role,
   Roles,
   User,
 } from '@/types/general'
-import {
-  getRoleUserFromCookieServer,
-  getTokenFromCookieServer,
-} from '@/utils/cookieServer'
-import { checkUserPermissions } from '@/utils/checkUserPermissions'
+import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
-import { formSchemaRegisterIndicatorProfile } from '@/components/template/RegisterIndicators/schema'
 
 export async function getUser(id: string): Promise<ReturnGet<User>> {
   try {
@@ -159,87 +154,6 @@ export async function registerUserProfile(
   }
 }
 
-export async function updateUserProfile(
-  prevState: InitialState<Profile | User>,
-  formData: FormData,
-): Promise<InitialState<Profile | User>> {
-  const role = formData.get('profile.role')
-  const validatedFields = formSchemaUpdateUserProfile.safeParse({
-    id: formData.get('id'),
-    name: formData.get('name'),
-    email: formData.get('email'),
-    active: formData.get('active'),
-    phone: formData.get('profile.phone'),
-    cpf: formData.get('profile.cpf'),
-    genre: formData.get('profile.genre'),
-    birthday: formData.get('profile.birthday'),
-    pix: formData.get('profile.pix'),
-    role: formData.get('profile.role'),
-  })
-
-  if (validatedFields.success) {
-    try {
-      const TOKEN_SIM = getTokenFromCookieServer()
-      const roleUser = getRoleUserFromCookieServer() as Role
-
-      if (role && !checkUserPermissions('user.edit.role', roleUser)) {
-        return {
-          errors: { request: 'Sem permissão para alterar a role do usuário!' },
-        }
-      }
-
-      if (!TOKEN_SIM) {
-        return {
-          errors: { request: 'Erro de credenciais' },
-        }
-      }
-      const idUser = formData.get('id')
-      const response = await api(`/update/user/${idUser}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN_SIM}`,
-        },
-        body: JSON.stringify({
-          name: formData.get('user.name'),
-          email: formData.get('user.email'),
-          active: formData.get('user.active') === 'true',
-          phone: formData.get('phone'),
-          cpf: formData.get('cpf'),
-          genre: formData.get('genre'),
-          birthday: formData.get('birthday'),
-          pix: formData.get('pix'),
-          role,
-        }),
-      })
-      if (!response.ok) {
-        const errorMessage = await response.text()
-        return {
-          errors: { request: JSON.parse(errorMessage).message },
-        }
-      }
-      return {
-        errors: {},
-        ok: true,
-      }
-    } catch (error) {
-      return {
-        errors: { request: 'Failed to update User' },
-      }
-    }
-  } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors<
-      Profile & User
-    >
-    return {
-      errors: { ...error },
-    }
-  } else {
-    console.log('Error unknown: ')
-    return { errors: { request: 'Error unknown' } }
-  }
-}
-
 export async function registerIndicatorProfile(
   prevState: InitialState<Profile | User>,
   formData: FormData,
@@ -367,5 +281,81 @@ export async function listIndicators(
     return { response: users, count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function updateUserProfile(
+  id: string,
+  prevState: InitialState<Profile | User>,
+  formData: FormData,
+): Promise<InitialState<Profile | User>> {
+  const role = formData.get('profile.role')
+  const validatedFields = formSchemaUpdateUserProfile.safeParse({
+    id,
+    name: formData.get('name'),
+    email: formData.get('email'),
+    'profile.active': formData.get('active'),
+    'profile.phone': formData.get('profile.phone'),
+    'profile.cpf': formData.get('profile.cpf'),
+    'profile.genre': formData.get('profile.genre'),
+    'profile.birthday': formData.get('profile.birthday'),
+    'profile.pix': formData.get('profile.pix'),
+    'profile.role': formData.get('profile.role'),
+    'profile.city': formData.get('profile.city'),
+  })
+
+  if (validatedFields.success) {
+    try {
+      const TOKEN_SIM = getTokenFromCookieServer()
+
+      if (!TOKEN_SIM) {
+        return {
+          errors: { request: 'Erro de credenciais' },
+        }
+      }
+      const response = await api(`/profile/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN_SIM}`,
+        },
+        body: JSON.stringify({
+          name: formData.get('name'),
+          email: formData.get('email'),
+          active: formData.get('active') === 'true',
+          phone: formData.get('profile.phone'),
+          cpf: formData.get('profile.cpf'),
+          genre: formData.get('profile.genre'),
+          birthday: formData.get('profile.birthday'),
+          pix: formData.get('profile.pix'),
+          role,
+          city: formData.get('profile.city'),
+        }),
+      })
+      if (!response.ok) {
+        const errorMessage = await response.text()
+        return {
+          errors: { request: JSON.parse(errorMessage).message },
+        }
+      }
+      revalidateTag('users')
+      return {
+        errors: {},
+        ok: true,
+      }
+    } catch (error) {
+      return {
+        errors: { request: 'Failed to update User' },
+      }
+    }
+  } else if (validatedFields.error) {
+    const error = validatedFields.error.flatten().fieldErrors as Errors<
+      Profile & User
+    >
+    return {
+      errors: { ...error },
+    }
+  } else {
+    return { errors: { request: 'Error unknown' } }
   }
 }

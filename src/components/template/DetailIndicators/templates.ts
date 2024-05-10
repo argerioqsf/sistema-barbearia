@@ -17,12 +17,6 @@ const templateForm: TemplateForm<User> = {
               type: 'text',
               label: 'Nome',
             },
-            {
-              id: 'id',
-              required: true,
-              type: 'hidden',
-              label: '',
-            },
           ],
         },
         {

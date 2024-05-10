@@ -1,23 +1,34 @@
 'use client'
 
-import LinkDefault from '@/components/atoms/LinkDefault'
 import { ListAction } from '@/types/general'
-import { useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { twMerge } from 'tailwind-merge'
+import DotAction from '../DotAction'
 
-type DropDownDotsProps = {
-  listActions: Array<ListAction>
+type DropDownDotsProps<T> = {
+  listActions: Array<ListAction<T>>
   className?: string
-  id: number | string
+  id?: string
+  setShowDot: Dispatch<SetStateAction<string>>
+  showDot: string
 }
 
-const DropDownDots = ({ listActions, className, id }: DropDownDotsProps) => {
-  const [show, setShow] = useState(false)
+export default function DropDownDots<T>({
+  listActions,
+  className,
+  id,
+  setShowDot,
+  showDot,
+}: DropDownDotsProps<T>) {
   return (
     <div className={className}>
       <button
         id="dropdownMenuIconButton"
-        onClick={() => setShow(!show)}
+        onClick={() =>
+          setShowDot(
+            id ? (showDot?.length > 0 && showDot === id ? '' : id) : '',
+          )
+        }
         data-dropdown-toggle="dropdownDots"
         className="inline-flex rounded-full items-center p-2 text-sm font-medium text-center text-gray-900 bg-white hover:bg-secondary-50 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-secondary-50 dark:hover:bg-prim dark:focus:ring-gray-600"
         type="button"
@@ -36,7 +47,7 @@ const DropDownDots = ({ listActions, className, id }: DropDownDotsProps) => {
       <div
         id="dropdownDots"
         className={twMerge(
-          !show && 'hidden',
+          showDot === id ? 'flex' : 'hidden',
           'absolute top-6 right-16',
           'z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-secondary-50 dark:divide-gray-600',
         )}
@@ -47,12 +58,13 @@ const DropDownDots = ({ listActions, className, id }: DropDownDotsProps) => {
         >
           {listActions.map((action) => (
             <li key={action.id}>
-              <LinkDefault
-                href={`${action.href}${id}`}
-                className="block px-4 py-2 hover:bg-white dark:hover:bg-white dark:hover:text-secondary-50"
-              >
-                {action.name}
-              </LinkDefault>
+              <DotAction
+                name={action.name}
+                href={action.href ? `${action.href}${id}` : undefined}
+                onClick={action.onclick?.bind(null, id)}
+                toastInfo={action.toast}
+                alertInfo={action.alert}
+              />
             </li>
           ))}
         </ul>
@@ -60,5 +72,3 @@ const DropDownDots = ({ listActions, className, id }: DropDownDotsProps) => {
     </div>
   )
 }
-
-export default DropDownDots

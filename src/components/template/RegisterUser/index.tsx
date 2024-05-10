@@ -37,7 +37,6 @@ export default async function RegisterUser() {
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard
-            schemaName="EditProfile"
             action={registerUserProfile}
             templateForm={templateForm}
             pathSuccess="dashboard/users"

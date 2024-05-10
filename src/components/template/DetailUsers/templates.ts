@@ -18,10 +18,10 @@ export const templateForm: TemplateForm<User | Profile> = {
               label: 'Nome',
             },
             {
-              id: 'id',
+              id: 'profile.pix',
               required: true,
-              type: 'hidden',
-              label: '',
+              type: 'text',
+              label: 'Chave Pix',
             },
           ],
         },
@@ -48,7 +48,7 @@ export const templateForm: TemplateForm<User | Profile> = {
             {
               id: 'profile.birthday',
               required: true,
-              type: 'text',
+              type: 'date',
               label: 'Nascimento',
             },
             {
@@ -61,7 +61,11 @@ export const templateForm: TemplateForm<User | Profile> = {
                 keyValue: 'value',
                 list: [
                   {
-                    label: 'Maculino',
+                    label: 'Selecioinar',
+                    value: '',
+                  },
+                  {
+                    label: 'Masculino',
                     value: 'man',
                   },
                   {
@@ -87,10 +91,10 @@ export const templateForm: TemplateForm<User | Profile> = {
               label: 'E-mail',
             },
             {
-              id: 'profile.pix',
+              id: 'profile.city',
               required: true,
               type: 'text',
-              label: 'Chave pix',
+              label: 'Cidade',
             },
           ],
         },
@@ -121,12 +125,6 @@ export const templateForm: TemplateForm<User | Profile> = {
                 ],
               },
             },
-            {
-              id: 'created_at',
-              required: true,
-              type: 'date',
-              label: 'Data',
-            },
           ],
         },
       ],
@@ -143,7 +141,11 @@ export const templateForm: TemplateForm<User | Profile> = {
               required: true,
               type: 'select',
               label: 'Permissão',
-              option: { keyLabel: 'label', keyValue: 'value', list: [] },
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                list: [],
+              },
             },
           ],
         },

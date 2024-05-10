@@ -19,7 +19,6 @@ const RegisterIndicators: React.FC = () => {
           <FormDashboard<User | Profile>
             templateForm={templateForm}
             action={registerIndicatorProfile}
-            schemaName="EditProfile"
             pathSuccess="dashboard/indicators"
           />
         </div>

@@ -23,10 +23,10 @@ export default async function DetailCourses({ id }: { id: string }) {
           title={templates.templateForm.title}
           templateForm={templates.templateForm}
           defaultValues={course ?? undefined}
-          action={updateCourse}
-          pathSuccess="/"
-          schemaName={'UpdateUnit'}
+          actionWithId={updateCourse}
+          pathSuccess="/dashboard/courses"
           errorRequest={errorRequest}
+          id={id}
         />
       </div>
     </ContainerDashboard>

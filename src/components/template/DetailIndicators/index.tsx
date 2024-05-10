@@ -24,9 +24,8 @@ export default async function DetailIndicator({ id }: { id: string }) {
           title={templates.templateForm.title}
           templateForm={templates.templateForm}
           defaultValues={indicator ?? undefined}
-          action={updateUserProfile}
+          actionWithId={updateUserProfile}
           pathSuccess="/"
-          schemaName={'UpdateIndicator'}
           errorRequest={errorRequest}
         />
       </div>

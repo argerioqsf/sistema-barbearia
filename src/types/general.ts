@@ -70,6 +70,7 @@ export type Profile = {
   userId: string
   // eslint-disable-next-line no-use-before-define
   leadsIndicator?: Lead[]
+  city: string
 }
 
 export type ProfileProps = keyof Profile
@@ -193,17 +194,36 @@ export type ItemListType = {
   info5: string
 }
 
-export type ListAction = {
+export type InitialState<T> = {
+  errors?: Partial<T & { request?: string }>
+  ok?: boolean
+  resp?: Models | Models[]
+}
+
+export type Toast = {
+  title: string
+  description?: string
+}
+
+export type Alert = {
+  title: string
+  description?: string
+}
+
+export type ListAction<T> = {
   id: number
   icon: keyof CatalogIcons
   href?: string
   name: string
+  onclick?: (id?: string) => void | Promise<InitialState<T>>
+  toast?: Toast
+  alert?: Alert
 }
 
 export type InfoList<T> = {
   itemsHeader: string[]
   itemsList: LimitFields<FieldsList<T>>
-  listActions?: ListAction[]
+  listActions?: ListAction<T>[]
   title?: string
   hrefButton?: string
   textButton?: string
@@ -295,13 +315,13 @@ type ZodObjectFromSchema<T> = {
 
 export type SchemaForm<T> = z.ZodObject<ZodObjectFromSchema<T>>
 
-export type InitialState<T> = {
-  errors?: Partial<T & { request?: string }>
-  ok?: boolean
-  resp?: Models | Models[]
-}
-
 export type ServerAction<T> = (
+  prevState: InitialState<T>,
+  formData: FormData,
+) => InitialState<T> | Promise<InitialState<T>>
+
+export type ServerActionId<T> = (
+  id: string,
   prevState: InitialState<T>,
   formData: FormData,
 ) => InitialState<T> | Promise<InitialState<T>>
