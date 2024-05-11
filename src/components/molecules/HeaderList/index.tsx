@@ -2,7 +2,13 @@ import React from 'react'
 import { Avatar } from '..'
 import { Text } from '@/components/atoms'
 
-const HeaderList = ({ itemsHeader }: { itemsHeader: Array<string> }) => {
+const HeaderList = ({
+  itemsHeader,
+  actions,
+}: {
+  itemsHeader: Array<string>
+  actions: boolean
+}) => {
   return (
     <div className="w-full relative rounded-full bg-gray-400 flex flex-row justify-start items-center p-3 mt-8">
       <div className="w-[10%] md:w-[10%] sm:w-[20%] flex flex-row justify-start">
@@ -60,15 +66,16 @@ const HeaderList = ({ itemsHeader }: { itemsHeader: Array<string> }) => {
             return null
           }
         })}
-
-      <div
-        className={`ml-4 md:ml-4 hidden
-        w-full 
-        sm:flex flex-row justify-center items-center gap-2
-        whitespace-nowrap overflow-hidden text-ellipsis`}
-      >
-        <Text className="text-white w-full font-bold text-center">AÇÕES</Text>
-      </div>
+      {actions && (
+        <div
+          className={`ml-4 md:ml-4 hidden
+      w-full 
+      sm:flex flex-row justify-center items-center gap-2
+      whitespace-nowrap overflow-hidden text-ellipsis`}
+        >
+          <Text className="text-white w-full font-bold text-center">AÇÕES</Text>
+        </div>
+      )}
       <div className="w-[20%] flex sm:hidden flex-row justify-end items-center" />
     </div>
   )

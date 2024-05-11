@@ -91,7 +91,10 @@ export default function Listing<T>({
               : 'w-[90vw] md:w-full',
           )}
         >
-          <HeaderList itemsHeader={infoList.itemsHeader} />
+          <HeaderList
+            actions={!!listActions}
+            itemsHeader={infoList.itemsHeader}
+          />
         </div>
       )}
 
@@ -102,18 +105,17 @@ export default function Listing<T>({
             variant === 'segmented' && 'w-[88vw] lg:w-[93vw]',
           )}
         >
-          {listActions &&
-            listTransformResp?.map((item, idx) => (
-              <ItemList
-                showDot={showDot}
-                setShowDot={setShowDot}
-                key={item.id}
-                listActions={listActions}
-                idx={idx + 1}
-                item={item}
-                id={item.id}
-              />
-            ))}
+          {listTransformResp?.map((item, idx) => (
+            <ItemList
+              showDot={showDot}
+              setShowDot={setShowDot}
+              key={item.id}
+              listActions={listActions}
+              idx={idx + 1}
+              item={item}
+              id={item.id}
+            />
+          ))}
         </div>
       ) : loading ? (
         <div className="w-full h-[20vh] p-4 flex justify-center items-center">

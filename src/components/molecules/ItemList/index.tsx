@@ -6,7 +6,7 @@ import IconAction from '../IconAction'
 import { Dispatch, SetStateAction } from 'react'
 
 type ItemListProps<T> = {
-  listActions: Array<ListAction<T>>
+  listActions?: Array<ListAction<T>>
   idx?: number
   item: ItemListType
   id: string
@@ -63,30 +63,33 @@ export default function ItemList<T>({
           </Text>
         </div>
       )}
+      {listActions && (
+        <div className="ml-4 w-full hidden sm:flex flex-row justify-center gap-2 items-center whitespace-nowrap overflow-hidden text-ellipsis">
+          {listActions.map((action) => (
+            <IconAction
+              href={action.href ? `${action.href}${id}` : undefined}
+              onClick={action.onclick?.bind(null, id)}
+              icon={action.icon}
+              key={action.id}
+              size={35}
+              classIcon="bg-secondary-50 border-transparent size-[35px]"
+              toastInfo={action.toast}
+              alertInfo={action.alert}
+            />
+          ))}
+        </div>
+      )}
 
-      <div className="ml-4 w-full hidden sm:flex flex-row justify-center gap-2 items-center whitespace-nowrap overflow-hidden text-ellipsis">
-        {listActions.map((action) => (
-          <IconAction
-            href={action.href ? `${action.href}${id}` : undefined}
-            onClick={action.onclick?.bind(null, id)}
-            icon={action.icon}
-            key={action.id}
-            size={35}
-            classIcon="bg-secondary-50 border-transparent size-[35px]"
-            toastInfo={action.toast}
-            alertInfo={action.alert}
+      {listActions && (
+        <div className="w-[20%] flex sm:hidden flex-row justify-end items-center">
+          <DropDownDots
+            showDot={showDot}
+            setShowDot={setShowDot}
+            listActions={listActions}
+            id={id}
           />
-        ))}
-      </div>
-
-      <div className="w-[20%] flex sm:hidden flex-row justify-end items-center">
-        <DropDownDots
-          showDot={showDot}
-          setShowDot={setShowDot}
-          listActions={listActions}
-          id={id}
-        />
-      </div>
+        </div>
+      )}
     </div>
   )
 }

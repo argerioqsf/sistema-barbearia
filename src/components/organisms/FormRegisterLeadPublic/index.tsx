@@ -7,6 +7,7 @@ import { Button, Link, Text } from '@/components/atoms'
 import SelectFormWithSearch from '@/components/molecules/SelectFormWithSearch'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { Course, InitialState, Lead, Segment, Unit } from '@/types/general'
+import { useLocale } from 'next-intl'
 import { useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -31,6 +32,8 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
     errors: undefined,
     ok: false,
   }
+
+  const locale = useLocale()
   const { register } = useForm<Lead & FieldValues>()
   const [state, formAction] = useFormState<InitialState<Lead>, FormData>(
     registerLeadPublic.bind(null, userId),
@@ -230,7 +233,10 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
           </Text>
         )}
       </div>
-      <Link href="/" className="text-stone-500 font-semibold text-sm">
+      <Link
+        href={`/${locale}/sim/indicator`}
+        className="text-stone-500 font-semibold text-sm"
+      >
         QUERO SER UM INDICADOR
       </Link>
     </form>

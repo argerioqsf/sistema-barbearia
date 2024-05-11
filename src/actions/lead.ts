@@ -239,6 +239,7 @@ export async function getLead(id: string): Promise<ReturnGet<Lead>> {
 export async function listLeads(
   q?: string,
   page?: string,
+  indicatorId?: string,
 ): Promise<ReturnList<Lead>> {
   try {
     const token = getTokenFromCookieServer()
@@ -253,6 +254,7 @@ export async function listLeads(
       },
       page,
       q,
+      indicatorId,
     )
 
     if (!response.ok) {
