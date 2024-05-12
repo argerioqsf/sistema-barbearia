@@ -68,6 +68,10 @@ const verifyPermissionIndicator = {
     ['administrator', 'coordinator'].includes(roleUser),
   'indicator.detail': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
+  'indicator.monitoring.view': (roleUser: string) =>
+    ['indicator'].includes(roleUser),
+  'indicator.files.view': (roleUser: string) =>
+    ['indicator'].includes(roleUser),
 }
 
 const verifyPermissionIndicatorRequest = {
@@ -103,13 +107,9 @@ const verifyPermissionWaitingConfirmedLead = {
 
 const verifyPermissionDashboard = {
   'dashboard.view': (roleUser: string) =>
-    [
-      'coordinator',
-      'administrator',
-      'indicator',
-      'consultant',
-      'financial',
-    ].includes(roleUser),
+    ['coordinator', 'administrator', 'consultant', 'financial'].includes(
+      roleUser,
+    ),
 }
 
 const verifyPermission = {

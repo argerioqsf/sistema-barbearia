@@ -33,6 +33,20 @@ export const siteConfig: SiteConfig = [
     userAction: 'dashboard.view',
   },
   {
+    id: '80',
+    label: 'Monitoramento',
+    href: '/dashboard/indicators/monitoring',
+    icon: 'LayoutDashboard',
+    userAction: 'indicator.monitoring.view',
+  },
+  {
+    id: '82',
+    label: 'Arquivos de divulgação',
+    href: '/dashboard/indicators/monitoring',
+    icon: 'LayoutDashboard',
+    userAction: 'indicator.files.view',
+  },
+  {
     id: '4',
     label: 'Indicadores',
     icon: 'Handshake',

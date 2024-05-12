@@ -1,23 +1,20 @@
-import { listSelectCourses } from '@/actions/course'
-import { listSelectSegments } from '@/actions/segments'
+'use client'
+
 import { registerUnit } from '@/actions/unit'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
+import useRegisterUnit from '@/hooks/use-register-unit'
 import { Course, Segment, Unit } from '@/types/general'
-import { templateForm } from './templateForm'
+import { templateForm as templateFormInit } from './templateForm'
+import { useEffect } from 'react'
 
-export default async function RegisterUnits() {
-  const responseSegments = await listSelectSegments()
-  templateForm.sections[1].boxes[0].fields[0].option = {
-    ...templateForm.sections[1].boxes[0].fields[0].option,
-    list: responseSegments?.response ?? [],
-  }
-  const responseCourses = await listSelectCourses()
-  templateForm.sections[2].boxes[0].fields[0].option = {
-    ...templateForm.sections[2].boxes[0].fields[0].option,
-    list: responseCourses?.response ?? [],
-  }
+export default function RegisterUnits() {
+  const { templateForm, listSegment } = useRegisterUnit(templateFormInit)
+
+  useEffect(() => {
+    listSegment()
+  }, [])
 
   return (
     <ContainerDashboard>

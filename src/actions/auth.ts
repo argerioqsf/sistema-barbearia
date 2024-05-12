@@ -38,7 +38,7 @@ export async function loginUser(
       }
       const resp = await response.json()
       const token = resp?.token
-      const user = resp?.user
+      const user = resp?.user as User
       const roles = resp?.roles
       setTokenInCookieServer(token)
       setUserInCookieServer(user)
@@ -46,6 +46,7 @@ export async function loginUser(
       return {
         errors: {},
         ok: true,
+        resp: user
       }
     } catch (error) {
       return {

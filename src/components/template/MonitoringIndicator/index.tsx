@@ -1,15 +1,14 @@
+import { listLeads } from '@/actions/lead'
 import { getProfile } from '@/actions/profile'
+import { ContainerDashboard } from '@/components/molecules'
 import { CardMonitoring } from '@/components/molecules/CardMonitoring'
 import Search from '@/components/molecules/Search'
-import Footer from '@/components/organisms/Footer'
-import HeaderMonitoring from '@/components/organisms/HeaderMonitoring'
 import Listing from '@/components/organisms/Listing'
 import StatementComponent from '@/components/organisms/StatementComponent'
 import { SearchParams, TimeLine } from '@/types/general'
 import { CatalogIcons } from '@/utils/handleIcons'
 import { notFound } from 'next/navigation'
 import { infoList } from './templates'
-import { listLeads } from '@/actions/lead'
 
 export type Card = {
   label: string
@@ -97,40 +96,40 @@ export async function MonitoringIndicator({ searchParams }: SearchParams) {
   ]
 
   return (
-    <div className="w-full flex flex-col justify-start items-center">
-      <HeaderMonitoring />
-      <section className="flex w-full flex-col justify-start items-center min-h-[var(--height-section)] pt-8">
-        <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-14 lg:gap-20">
-          {cards.map((card, idx) => (
-            <CardMonitoring card={card} key={idx} />
-          ))}
-        </div>
-        {statement.length > 0 && (
-          <>
-            <div className="w-full flex justify-center items-center py-20">
-              <h1 className="text-3xl text-primary-100 font-bold">ESTRATO</h1>
-            </div>
-            <div className="w-full bg-stone-200 mb-16 px-4 lg:px-72">
-              <StatementComponent timeLine={statement} />
-            </div>
-          </>
-        )}
-        <div className="w-full mt-10 mb-10 px-4 lg:px-60 flex flex-col justify-center items-center">
-          <div className="w-full flex flex-row justify-center lg:justify-start items-center">
-            <Search errorRequest={errorRequest} />
+    <ContainerDashboard>
+      <div className="w-full flex flex-col justify-start items-center">
+        <section className="flex w-full flex-col justify-start items-center min-h-[var(--height-section)] pt-8">
+          <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-14 lg:gap-20">
+            {cards.map((card, idx) => (
+              <CardMonitoring card={card} key={idx} />
+            ))}
           </div>
-          <div className="w-full mt-6 lg:mt-8 flex justify-center items-center">
-            <Listing
-              infoList={infoList}
-              list={list}
-              hrefButton="dashboard/leads/register"
-              title="Leads"
-              count={count}
-            />
+          {statement.length > 0 && (
+            <>
+              <div className="w-full flex justify-center items-center py-20">
+                <h1 className="text-3xl text-primary-100 font-bold">ESTRATO</h1>
+              </div>
+              <div className="w-full bg-stone-200 mb-16 px-4 lg:px-72">
+                <StatementComponent timeLine={statement} />
+              </div>
+            </>
+          )}
+          <div className="w-full mt-10 mb-10 px-4 lg:px-60 flex flex-col justify-center items-center">
+            <div className="w-full flex flex-row justify-center lg:justify-start items-center">
+              <Search errorRequest={errorRequest} />
+            </div>
+            <div className="w-full mt-6 lg:mt-8 flex justify-center items-center">
+              <Listing
+                infoList={infoList}
+                list={list}
+                hrefButton="dashboard/leads/register"
+                title="Leads"
+                count={count}
+              />
+            </div>
           </div>
-        </div>
-      </section>
-      <Footer />
-    </div>
+        </section>
+      </div>
+    </ContainerDashboard>
   )
 }
