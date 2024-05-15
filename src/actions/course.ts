@@ -3,7 +3,13 @@
 import { formSchemaUpdateCourse } from '@/components/template/DetailCourses/schema'
 import { formSchemaRegisterCourse } from '@/components/template/RegisterCourses/schema'
 import { api } from '@/data/api'
-import { Course, Errors, InitialState, ReturnList } from '@/types/general'
+import {
+  Course,
+  Errors,
+  InitialState,
+  ReturnList,
+  Segment,
+} from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 
@@ -94,9 +100,9 @@ export async function deleteCourse(id?: string): Promise<InitialState<Course>> {
 }
 
 export async function registerCourse(
-  prevState: InitialState<Course>,
+  prevState: InitialState<Course | Segment>,
   formData: FormData,
-): Promise<InitialState<Course>> {
+): Promise<InitialState<Course | Segment>> {
   const validatedFields = formSchemaRegisterCourse.safeParse({
     name: formData.get('name'),
     active: formData.get('active'),

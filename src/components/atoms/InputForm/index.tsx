@@ -14,6 +14,7 @@ type InputFormPros = {
   onBlur?: () => void
   id?: string
   inputRef?: React.RefObject<HTMLInputElement>
+  disabled?: boolean
 }
 
 const InputForm = ({
@@ -28,6 +29,7 @@ const InputForm = ({
   onBlur,
   id,
   inputRef,
+  disabled,
   ...rest
 }: InputFormPros) => {
   return (
@@ -36,6 +38,7 @@ const InputForm = ({
       {...rest}
       {...propsInput}
       id={id}
+      disabled={disabled}
       onChange={onChange ?? propsInput?.onChange}
       onFocus={onFocus}
       onBlur={onBlur ?? propsInput?.onBlur}

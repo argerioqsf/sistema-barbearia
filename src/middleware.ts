@@ -38,7 +38,7 @@ export default function middleware(request: NextRequest) {
     if (roleUser) {
       const havePermission = verifyPageRole(siteConfig, roleUser, request)
       if (havePermission === false) {
-        return NextResponse.redirect(new URL('/pt-BR/auth/signin', request.url))
+        return NextResponse.redirect(new URL('/pt-BR/404', request.url))
       } else if (havePermission === true) {
         return middlewareIntl(request)
       } else if (havePermission === null) {

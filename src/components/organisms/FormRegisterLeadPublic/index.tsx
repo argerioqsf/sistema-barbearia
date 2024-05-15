@@ -114,6 +114,7 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
         iconDeleteName="X"
         classNameItem="bg-zinc-200"
         values={[]}
+        formDataExtra={formDataExtra}
       />
       {selecteds.segmentId && (
         <SelectFormWithSearch<Lead | Unit>
@@ -133,6 +134,7 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
           light={true}
           iconDeleteName="X"
           classNameItem="bg-zinc-200"
+          formDataExtra={formDataExtra}
         />
       )}
       {selecteds.unitId && (
@@ -151,6 +153,7 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
           light={true}
           iconDeleteName="X"
           classNameItem="bg-zinc-200"
+          formDataExtra={formDataExtra}
         />
       )}
       <div className="w-full">

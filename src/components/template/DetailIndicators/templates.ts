@@ -1,6 +1,6 @@
-import { InfoList, TemplateForm, User } from '@/types/general'
+import { InfoList, Profile, TemplateForm, User } from '@/types/general'
 
-const templateForm: TemplateForm<User> = {
+const templateForm: TemplateForm<User | Profile> = {
   title: 'Indicador',
   textButton: 'Editar',
   sections: [
@@ -16,6 +16,12 @@ const templateForm: TemplateForm<User> = {
               required: true,
               type: 'text',
               label: 'Nome',
+            },
+            {
+              id: 'profile.pix',
+              required: true,
+              type: 'text',
+              label: 'Chave pix',
             },
           ],
         },
@@ -81,10 +87,10 @@ const templateForm: TemplateForm<User> = {
               label: 'E-mail',
             },
             {
-              id: 'profile.pix',
+              id: 'profile.city',
               required: true,
               type: 'text',
-              label: 'Chave pix',
+              label: 'Cidade',
             },
           ],
         },
@@ -114,13 +120,6 @@ const templateForm: TemplateForm<User> = {
                   },
                 ],
               },
-            },
-            {
-              id: 'created_at',
-              required: true,
-              type: 'date',
-              label: 'Data',
-              disabled: true,
             },
           ],
         },

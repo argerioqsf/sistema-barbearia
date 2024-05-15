@@ -61,7 +61,7 @@ const verifyPermissionProfile = {
 
 const verifyPermissionIndicator = {
   'indicator.view': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
+    ['administrator', 'coordinator', 'indicator'].includes(roleUser),
   'indicator.list': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
   'indicator.register': (roleUser: string) =>
@@ -71,6 +71,8 @@ const verifyPermissionIndicator = {
   'indicator.monitoring.view': (roleUser: string) =>
     ['indicator'].includes(roleUser),
   'indicator.files.view': (roleUser: string) =>
+    ['indicator'].includes(roleUser),
+  'indicator.leads.list': (roleUser: string) =>
     ['indicator'].includes(roleUser),
 }
 
@@ -86,8 +88,10 @@ const verifyPermissionLead = {
     ['administrator', 'coordinator'].includes(roleUser),
   'lead.register': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
+  'lead.update': (roleUser: string) =>
+    ['administrator', 'coordinator', 'indicator'].includes(roleUser),
   'lead.detail': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
+    ['administrator', 'coordinator', 'indicator'].includes(roleUser),
 }
 
 const verifyPermissionNewLead = {

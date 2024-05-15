@@ -13,7 +13,7 @@ import React, {
   SetStateAction,
   useEffect,
   useRef,
-  useState
+  useState,
 } from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
@@ -115,18 +115,16 @@ export function SelectFormWithSearch<T>({
       : []
 
     setSelectedItems(initialSelectedItems)
+    return initialSelectedItems
   }
 
   useEffect(() => {
-    setInitialValue()
-  }, [values])
-
-  useEffect(() => {
+    const itemsSelected = setInitialValue()
     // TODO: pegar o initialValue direto do lead
     if (variant === 'multiple') {
       setFormDataExtra((state) => {
         const newState = returnExistingValues(state)
-        const extraDataJson = selectedItems.map((item) => item.value)
+        const extraDataJson = itemsSelected.map((item) => item.value)
         const newValue = [...extraDataJson]
         const newValueString = JSON.stringify(newValue)
         newState.append(props.name, newValueString)
@@ -136,24 +134,16 @@ export function SelectFormWithSearch<T>({
     if (variant === 'single') {
       setFormDataExtra((state) => {
         const newState = returnExistingValues(state)
-        const extraDataJson = selectedItems.map((item) => item.value)
+        const extraDataJson = itemsSelected.map((item) => item.value)
 
-        const newValue2 = extraDataJson[0]
-          ? JSON.stringify(extraDataJson[0])
-          : ''
+        const newValue2 = extraDataJson[0] ? extraDataJson[0] : ''
 
         newState.append(props.name, newValue2)
         return newState
       })
     }
-
-    document.addEventListener('click', handleDocumentClick)
-
-    return () => {
-      document.removeEventListener('click', handleDocumentClick)
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedItems])
+  }, [values])
 
   const filteredOptions: Option[] = OrderOptions.filter((option) =>
     option.label.toLowerCase().includes(searchTerm.toLowerCase()),

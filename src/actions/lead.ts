@@ -10,14 +10,15 @@ import {
   Lead,
   ReturnGet,
   ReturnList,
+  User,
 } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 
 export async function registerLead(
-  prevState: InitialState<Lead>,
+  prevState: InitialState<User | Lead>,
   formData: FormData,
-): Promise<InitialState<Lead>> {
+): Promise<InitialState<User | Lead>> {
   const validatedFields = formSchemaRegisterLead.safeParse({
     name: formData.get('name'),
     phone: formData.get('phone'),
@@ -148,9 +149,9 @@ export async function registerLeadPublic(
 
 export async function updateLead(
   id: string,
-  prevState: InitialState<Lead>,
+  prevState: InitialState<Lead | User>,
   formData: FormData,
-): Promise<InitialState<Lead>> {
+): Promise<InitialState<Lead | User>> {
   const validatedFields = formSchemaUpdateLead.safeParse({
     id,
     name: formData.get('name'),

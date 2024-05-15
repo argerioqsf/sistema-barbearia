@@ -1,5 +1,5 @@
 import { MonitoringIndicator } from '@/components/template/MonitoringIndicator'
-import { ParamsProp, SearchParams } from '@/types/general'
+import { ParamsProp } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata({
@@ -17,6 +17,6 @@ export async function generateMetadata({
   }
 }
 
-export default function Page({ searchParams }: SearchParams) {
-  return <MonitoringIndicator searchParams={searchParams} />
+export default function Page() {
+  return <MonitoringIndicator />
 }

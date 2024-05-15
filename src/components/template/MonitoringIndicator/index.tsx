@@ -1,14 +1,14 @@
-import { listLeads } from '@/actions/lead'
+'use server'
+
 import { getProfile } from '@/actions/profile'
-import { ContainerDashboard } from '@/components/molecules'
+import { ContainerDashboard, FormFieldText } from '@/components/molecules'
+import { ButtonClipBoard } from '@/components/molecules/ButtonClipBoard'
 import { CardMonitoring } from '@/components/molecules/CardMonitoring'
-import Search from '@/components/molecules/Search'
-import Listing from '@/components/organisms/Listing'
 import StatementComponent from '@/components/organisms/StatementComponent'
-import { SearchParams, TimeLine } from '@/types/general'
+import { Profile, TimeLine } from '@/types/general'
 import { CatalogIcons } from '@/utils/handleIcons'
+import { useLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
-import { infoList } from './templates'
 
 export type Card = {
   label: string
@@ -20,20 +20,19 @@ export type Card = {
   }
 }
 
-export async function MonitoringIndicator({ searchParams }: SearchParams) {
+export async function MonitoringIndicator() {
   const response = await getProfile()
-  const profile = response?.response
-  const errorRequest = response.error?.request ?? null
+  const locale = useLocale()
+  const profile = response?.response as
+    | (Profile & {
+        _count: { leadsIndicator: number }
+      })
+    | undefined
   if (!profile || profile?.role !== 'indicator') {
     notFound()
   }
-  const responseLeads = await listLeads(
-    searchParams?.q ?? '',
-    searchParams?.page ?? '',
-    profile?.id,
-  )
-  const list = responseLeads?.response ?? null
-  const count = responseLeads?.count ?? null
+  console.log('profile: ', profile)
+  const link = `${process.env.BASE_URL}/${locale}/sim/indicator/${profile.userId}`
 
   const cards: Card[] = [
     {
@@ -56,7 +55,7 @@ export async function MonitoringIndicator({ searchParams }: SearchParams) {
     },
     {
       label: 'Leads cadastrados',
-      value: 50,
+      value: profile._count.leadsIndicator ?? 0,
       icon: 'UserPlus',
       subinfo: {
         label: 'Ultimo cadastrado',
@@ -98,36 +97,49 @@ export async function MonitoringIndicator({ searchParams }: SearchParams) {
   return (
     <ContainerDashboard>
       <div className="w-full flex flex-col justify-start items-center">
-        <section className="flex w-full flex-col justify-start items-center min-h-[var(--height-section)] pt-8">
-          <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-14 lg:gap-20">
+        <section className="flex w-full px-12 lg:px-0 py-8 max-w-none lg:max-w-[1080px] flex-col justify-start items-center min-h-[var(--height-section)]">
+          <div className="w-full pb-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-14 lg:gap-20 items-center justify-center">
             {cards.map((card, idx) => (
-              <CardMonitoring card={card} key={idx} />
+              <CardMonitoring
+                last={idx === cards.length - 1}
+                card={card}
+                key={idx}
+              />
             ))}
           </div>
-          {statement.length > 0 && (
-            <>
-              <div className="w-full flex justify-center items-center py-20">
-                <h1 className="text-3xl text-primary-100 font-bold">ESTRATO</h1>
+
+          <div className="w-full pb-20 flex flex-col justify-end items-center gap-16">
+            <div className="w-full bg-stone-200 rounded-md p-6 flex flex-col gap-4 lg:flex-row justify-start items-start lg:items-end">
+              <div className="w-full lg:w-11/12">
+                <FormFieldText
+                  label="Link unico"
+                  type="text"
+                  value={link}
+                  disabled={true}
+                  error=""
+                  classInput="bg-white"
+                />
               </div>
-              <div className="w-full bg-stone-200 mb-16 px-4 lg:px-72">
-                <StatementComponent timeLine={statement} />
+              <div className="w-1/12">
+                <ButtonClipBoard
+                  label="Copiar"
+                  value={link}
+                  textToast="Link copiado"
+                />
               </div>
-            </>
-          )}
-          <div className="w-full mt-10 mb-10 px-4 lg:px-60 flex flex-col justify-center items-center">
-            <div className="w-full flex flex-row justify-center lg:justify-start items-center">
-              <Search errorRequest={errorRequest} />
-            </div>
-            <div className="w-full mt-6 lg:mt-8 flex justify-center items-center">
-              <Listing
-                infoList={infoList}
-                list={list}
-                hrefButton="dashboard/leads/register"
-                title="Leads"
-                count={count}
-              />
             </div>
           </div>
+
+          {statement.length > 0 && (
+            <div className="w-full flex flex-col justify-end items-center gap-16">
+              <div className="w-full flex justify-center items-center">
+                <h1 className="text-3xl text-primary-100 font-bold">EXTRATO</h1>
+              </div>
+              <div className="w-full bg-stone-200 rounded-md px-4">
+                <StatementComponent timeLine={statement} />
+              </div>
+            </div>
+          )}
         </section>
       </div>
     </ContainerDashboard>

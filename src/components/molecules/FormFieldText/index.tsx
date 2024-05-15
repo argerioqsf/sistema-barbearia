@@ -12,13 +12,14 @@ type FormFieldTextProps = {
   type: string
   placeholder?: string
   classInput?: string
-  props: UseFormRegisterReturn<string>
+  props?: UseFormRegisterReturn<string>
   error: string
   hidden?: boolean
   value?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   onFocus?: () => void
   onBlur?: () => void
+  disabled?: boolean
 }
 
 const FormFieldText = ({
@@ -32,19 +33,21 @@ const FormFieldText = ({
   onChange,
   onFocus,
   onBlur,
+  disabled,
   ...rest
 }: FormFieldTextProps) => {
   return (
     <div>
-      {label && <LabelForm htmlFor={props.name} label={label} />}
+      {label && <LabelForm htmlFor={props?.name} label={label} />}
       <div className="mt-2">
         <InputForm
+          disabled={disabled}
           onBlur={onBlur}
           onFocus={onFocus}
           onChange={onChange}
           value={value}
           {...rest}
-          propsInput={{ ...props }}
+          propsInput={props ? { ...props } : undefined}
           type={type}
           placeholder={placeholder}
           className={twMerge(

@@ -1,10 +1,10 @@
-import { getIndicator, updateUserProfile } from '@/actions/user'
+import { getIndicator, updateUserProfileIndicator } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import { User } from '@/types/general'
-import { templates } from './templates'
+import { Profile, User } from '@/types/general'
 import { notFound } from 'next/navigation'
+import { templates } from './templates'
 
 export default async function DetailIndicator({ id }: { id: string }) {
   const response = await getIndicator(id)
@@ -20,13 +20,14 @@ export default async function DetailIndicator({ id }: { id: string }) {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        <FormDashboard<User>
+        <FormDashboard<User | Profile>
           title={templates.templateForm.title}
           templateForm={templates.templateForm}
           defaultValues={indicator ?? undefined}
-          actionWithId={updateUserProfile}
-          pathSuccess="/"
+          actionWithId={updateUserProfileIndicator}
+          pathSuccess="/dashboard/indicators"
           errorRequest={errorRequest}
+          id={id}
         />
       </div>
     </ContainerDashboard>

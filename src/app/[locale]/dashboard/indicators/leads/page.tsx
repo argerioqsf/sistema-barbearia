@@ -1,4 +1,4 @@
-import { MonitoringIndicator } from '@/components/template/MonitoringIndicator'
+import ListLeadsIndicator from '@/components/template/ListLeadsIndicator'
 import { ParamsProp, SearchParams } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
@@ -17,6 +17,8 @@ export async function generateMetadata({
   }
 }
 
-export default function Page({ searchParams }: SearchParams) {
-  return <MonitoringIndicator searchParams={searchParams} />
+const page = ({ searchParams }: SearchParams) => {
+  return <ListLeadsIndicator searchParams={searchParams} />
 }
+
+export default page

@@ -1,14 +1,21 @@
 import { Card } from '@/components/template/MonitoringIndicator'
 import { handleIcons } from '@/utils/handleIcons'
+import { twMerge } from 'tailwind-merge'
 
 interface CardMonitoringProps {
   card: Card
+  last: boolean
 }
 
-export function CardMonitoring({ card }: CardMonitoringProps) {
+export function CardMonitoring({ card, last }: CardMonitoringProps) {
   const Icon = handleIcons(card.icon)
   return (
-    <div className="bg-stone-200 rounded-md min-w-[250px]">
+    <div
+      className={twMerge(
+        'bg-stone-200 rounded-md min-w-[250px]',
+        last ? 'col-span-1 md:col-span-2 lg:col-span-1' : 'col-span-1',
+      )}
+    >
       <div className="p-6 flex flex-row justify-between items-center">
         <div className="flex flex-col justify-between">
           <span className="font-bold text-primary-100 text-3xl">

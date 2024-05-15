@@ -1,5 +1,6 @@
 'use server'
 
+import { formSchemaUpdateIndicator } from '@/components/template/DetailIndicators/schema'
 import { formSchemaUpdateUserProfile } from '@/components/template/DetailUsers/schema'
 import { formSchemaRegisterIndicatorProfile } from '@/components/template/RegisterIndicators/schema'
 import { formSchemaRegisterUserProfile } from '@/components/template/RegisterUser/schema'
@@ -313,24 +314,25 @@ export async function updateUserProfile(
           errors: { request: 'Erro de credenciais' },
         }
       }
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        active: formData.get('active') === 'true',
+        phone: formData.get('profile.phone'),
+        cpf: formData.get('profile.cpf'),
+        genre: formData.get('profile.genre'),
+        birthday: formData.get('profile.birthday'),
+        pix: formData.get('profile.pix'),
+        role,
+        city: formData.get('profile.city'),
+      }
       const response = await api(`/profile/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN_SIM}`,
         },
-        body: JSON.stringify({
-          name: formData.get('name'),
-          email: formData.get('email'),
-          active: formData.get('active') === 'true',
-          phone: formData.get('profile.phone'),
-          cpf: formData.get('profile.cpf'),
-          genre: formData.get('profile.genre'),
-          birthday: formData.get('profile.birthday'),
-          pix: formData.get('profile.pix'),
-          role,
-          city: formData.get('profile.city'),
-        }),
+        body: JSON.stringify(data),
       })
       if (!response.ok) {
         const errorMessage = await response.text()
@@ -339,6 +341,82 @@ export async function updateUserProfile(
         }
       }
       revalidateTag('users')
+      return {
+        errors: {},
+        ok: true,
+      }
+    } catch (error) {
+      return {
+        errors: { request: 'Failed to update User' },
+      }
+    }
+  } else if (validatedFields.error) {
+    const error = validatedFields.error.flatten().fieldErrors as Errors<
+      Profile & User
+    >
+    return {
+      errors: { ...error },
+    }
+  } else {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function updateUserProfileIndicator(
+  id: string,
+  prevState: InitialState<Profile | User>,
+  formData: FormData,
+): Promise<InitialState<Profile | User>> {
+  const validatedFields = formSchemaUpdateIndicator.safeParse({
+    id,
+    name: formData.get('name'),
+    email: formData.get('email'),
+    'profile.active': formData.get('active'),
+    'profile.phone': formData.get('profile.phone'),
+    'profile.cpf': formData.get('profile.cpf'),
+    'profile.genre': formData.get('profile.genre'),
+    'profile.birthday': formData.get('profile.birthday'),
+    'profile.pix': formData.get('profile.pix'),
+    'profile.city': formData.get('profile.city'),
+  })
+
+  if (validatedFields.success) {
+    try {
+      const TOKEN_SIM = getTokenFromCookieServer()
+
+      if (!TOKEN_SIM) {
+        return {
+          errors: { request: 'Erro de credenciais' },
+        }
+      }
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        active: formData.get('active') === 'true',
+        phone: formData.get('profile.phone'),
+        cpf: formData.get('profile.cpf'),
+        genre: formData.get('profile.genre'),
+        birthday: formData.get('profile.birthday'),
+        pix: formData.get('profile.pix'),
+        role: 'indicator',
+        city: formData.get('profile.city'),
+      }
+      const response = await api(`/profile/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN_SIM}`,
+        },
+        body: JSON.stringify(data),
+      })
+      if (!response.ok) {
+        const errorMessage = await response.text()
+        return {
+          errors: { request: JSON.parse(errorMessage).message },
+        }
+      }
+      revalidateTag('users')
+      revalidateTag('indicators')
       return {
         errors: {},
         ok: true,
