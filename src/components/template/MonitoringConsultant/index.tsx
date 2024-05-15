@@ -1,13 +1,11 @@
 'use server'
 
 import { getProfile } from '@/actions/profile'
-import { ContainerDashboard, FormFieldText } from '@/components/molecules'
-import { ButtonClipBoard } from '@/components/molecules/ButtonClipBoard'
+import { ContainerDashboard } from '@/components/molecules'
 import { CardMonitoring } from '@/components/molecules/CardMonitoring'
 import StatementComponent from '@/components/organisms/StatementComponent'
 import { Profile, TimeLine } from '@/types/general'
 import { CatalogIcons } from '@/utils/handleIcons'
-import { useLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
 
 export type Card = {
@@ -20,19 +18,16 @@ export type Card = {
   }
 }
 
-export async function MonitoringIndicator() {
+export async function MonitoringConsultant() {
   const response = await getProfile()
-  const locale = useLocale()
   const profile = response?.response as
     | (Profile & {
-        _count: { leadsIndicator: number }
+        _count: { leadsConsultant: number }
       })
     | undefined
-  if (!profile || profile?.role !== 'indicator') {
+  if (!profile || profile?.role !== 'consultant') {
     notFound()
   }
-  console.log('profile: ', profile)
-  const link = `${process.env.BASE_URL}/${locale}/sim/indicator/${profile.userId}`
 
   const cards: Card[] = [
     {
@@ -55,7 +50,7 @@ export async function MonitoringIndicator() {
     },
     {
       label: 'Leads cadastrados',
-      value: profile._count.leadsIndicator ?? 0,
+      value: profile._count.leadsConsultant ?? 0,
       icon: 'UserPlus',
       subinfo: {
         label: 'Ultimo cadastrado',
@@ -106,28 +101,6 @@ export async function MonitoringIndicator() {
                 key={idx}
               />
             ))}
-          </div>
-
-          <div className="w-full pb-20 flex flex-col justify-end items-center gap-16">
-            <div className="w-full bg-stone-200 rounded-md p-6 flex flex-col gap-4 lg:flex-row justify-start items-start lg:items-end">
-              <div className="w-full lg:w-11/12">
-                <FormFieldText
-                  label="Link unico"
-                  type="text"
-                  value={link}
-                  disabled={true}
-                  error=""
-                  classInput="bg-white"
-                />
-              </div>
-              <div className="w-1/12">
-                <ButtonClipBoard
-                  label="Copiar"
-                  value={link}
-                  textToast="Link copiado"
-                />
-              </div>
-            </div>
           </div>
 
           {statement.length > 0 && (

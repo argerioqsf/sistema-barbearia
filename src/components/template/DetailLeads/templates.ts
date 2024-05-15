@@ -87,8 +87,8 @@ export const templateForm: TemplateForm<Lead | User> = {
               type: 'selectSearch',
               label: '',
               option: {
-                keyLabel: 'label',
-                keyValue: 'value',
+                keyLabel: 'name',
+                keyValue: 'profile.id',
                 variant: 'single',
                 list: [],
               },

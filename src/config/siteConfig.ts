@@ -265,6 +265,28 @@ export const siteConfig: SiteConfig = [
       },
     ],
   },
+  {
+    id: '10',
+    label: 'Consultores',
+    icon: 'Handshake',
+    userAction: 'consultant.view',
+    subMenuList: [
+      {
+        id: '80',
+        label: 'Monitoramento',
+        href: '/dashboard/consultants/monitoring',
+        icon: 'Circle',
+        userAction: 'consultant.monitoring.view',
+      },
+      {
+        id: '6',
+        label: 'Leads',
+        href: '/dashboard/consultants/leads',
+        icon: 'Circle',
+        userAction: 'consultant.leads.list',
+      },
+    ],
+  },
 ]
 
 export const formations: Items[] = [

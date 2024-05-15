@@ -29,6 +29,10 @@ export default function middleware(request: NextRequest) {
       return NextResponse.redirect(
         new URL('/pt-BR/dashboard/indicators/monitoring', request.url),
       )
+    } else if (roleUser === 'consultant') {
+      return NextResponse.redirect(
+        new URL('/pt-BR/dashboard/consultants/monitoring', request.url),
+      )
     } else {
       return NextResponse.redirect(
         new URL('/pt-BR/dashboard/home', request.url),

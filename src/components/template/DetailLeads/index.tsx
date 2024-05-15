@@ -10,6 +10,7 @@ import * as templates from './templates'
 import { notFound } from 'next/navigation'
 import { getProfile } from '@/actions/profile'
 import { checkUserPermissions } from '@/utils/checkUserPermissions'
+import { listSelectConsultants } from '@/actions/consultant'
 
 export default async function DetailLeads({ id }: { id: string }) {
   const responseProfile = await getProfile()
@@ -17,6 +18,7 @@ export default async function DetailLeads({ id }: { id: string }) {
   let ownerIndicator = false
   const response = await getLead(id)
   const responseIndicators = await listIndicators()
+  const responseConsultants = await listSelectConsultants()
   const lead = response.response
   if (!lead) {
     notFound()
@@ -38,23 +40,11 @@ export default async function DetailLeads({ id }: { id: string }) {
     list: [...(responseIndicators?.response ?? [])],
     values: [lead?.indicatorId ?? ''],
   }
+  const consultants = responseConsultants?.response ?? []
   const values = lead?.consultantId ? [lead?.consultantId] : []
   templates.templateForm.sections[2].boxes[0].fields[0].option = {
     ...templates.templateForm.sections[2].boxes[0].fields[0].option,
-    list: [
-      {
-        label: 'consultor 1',
-        value: '91003aab-bbc6-4d09-999c-fcae31d3c6e6',
-      },
-      {
-        label: 'consultor 2',
-        value: '91003aab-bbc6-4d09-999c-fcae31d3c6e6',
-      },
-      {
-        label: 'consultor 3',
-        value: '91003aab-bbc6-4d09-999c-fcae31d3c6e6',
-      },
-    ],
+    list: [...consultants],
     values: [...values],
   }
 

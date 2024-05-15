@@ -6,12 +6,14 @@ export function api(
   page?: string,
   query?: string,
   indicatorId?: string,
+  consultantId?: string,
 ) {
   const baseUrl = env.API_BASE_URL
   const queryQ = query && `q=${query}&`
   const queryPage = page && `page=${page}&`
   const queryInd = indicatorId && `indicatorId=${indicatorId}`
-  path = `${path}?${queryQ ?? ''}${queryPage ?? ''}${queryInd ?? ''}`
+  const queryConsu = consultantId && `consultantId=${consultantId}`
+  path = `${path}?${queryQ ?? ''}${queryPage ?? ''}${queryInd ?? ''}${queryConsu ?? ''}`
   const url = new URL(path, baseUrl)
   return fetch(url, init)
 }

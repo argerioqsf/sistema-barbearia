@@ -241,6 +241,7 @@ export async function listLeads(
   q?: string,
   page?: string,
   indicatorId?: string,
+  consultantId?: string,
 ): Promise<ReturnList<Lead>> {
   try {
     const token = getTokenFromCookieServer()
@@ -256,6 +257,7 @@ export async function listLeads(
       page,
       q,
       indicatorId,
+      consultantId,
     )
 
     if (!response.ok) {

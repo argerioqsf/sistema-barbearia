@@ -39,11 +39,12 @@ const FormLogin = ({ action }: FormLoginProps) => {
 
   useEffect(() => {
     if (state.ok) {
-      console.log('resp: ',state.resp)
       const user = state.resp as User
       if (user.profile.role === 'indicator') {
         pushRouter('dashboard/indicators/monitoring')
-      }else{
+      } else if (user.profile.role === 'consultant') {
+        pushRouter('dashboard/consultants/monitoring')
+      } else {
         pushRouter('dashboard/home')
       }
     }

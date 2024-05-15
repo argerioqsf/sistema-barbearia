@@ -76,6 +76,14 @@ const verifyPermissionIndicator = {
     ['indicator'].includes(roleUser),
 }
 
+const verifyPermissionConsultant = {
+  'consultant.view': (roleUser: string) => ['consultant'].includes(roleUser),
+  'consultant.monitoring.view': (roleUser: string) =>
+    ['consultant'].includes(roleUser),
+  'consultant.leads.list': (roleUser: string) =>
+    ['consultant'].includes(roleUser),
+}
+
 const verifyPermissionIndicatorRequest = {
   'indicator_request.list': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
@@ -91,7 +99,9 @@ const verifyPermissionLead = {
   'lead.update': (roleUser: string) =>
     ['administrator', 'coordinator', 'indicator'].includes(roleUser),
   'lead.detail': (roleUser: string) =>
-    ['administrator', 'coordinator', 'indicator'].includes(roleUser),
+    ['administrator', 'coordinator', 'indicator', 'consultant'].includes(
+      roleUser,
+    ),
 }
 
 const verifyPermissionNewLead = {
@@ -111,9 +121,7 @@ const verifyPermissionWaitingConfirmedLead = {
 
 const verifyPermissionDashboard = {
   'dashboard.view': (roleUser: string) =>
-    ['coordinator', 'administrator', 'consultant', 'financial'].includes(
-      roleUser,
-    ),
+    ['coordinator', 'administrator', 'financial'].includes(roleUser),
 }
 
 const verifyPermission = {
@@ -130,6 +138,7 @@ const verifyPermission = {
   ...verifyPermissionConfirmedLead,
   ...verifyPermissionWaitingConfirmedLead,
   ...verifyPermissionDashboard,
+  ...verifyPermissionConsultant,
 }
 
 export type UserAction = keyof typeof verifyPermission
