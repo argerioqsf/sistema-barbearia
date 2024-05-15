@@ -7,6 +7,7 @@ import {
   Course,
   Errors,
   InitialState,
+  ReturnGet,
   ReturnList,
   Segment,
 } from '@/types/general'
@@ -45,7 +46,7 @@ export async function listCourses(
   }
 }
 
-export async function getCourse(id: string): Promise<ReturnList<Course>> {
+export async function getCourse(id: string): Promise<ReturnGet<Course>> {
   try {
     const token = getTokenFromCookieServer()
     const response = await api(`/course/${id}`, {

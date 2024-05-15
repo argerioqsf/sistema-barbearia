@@ -4,6 +4,7 @@ import { formSchemaUpdateSegment } from '@/components/template/DetailSegments/sc
 import { formSchemaRegisterSegment } from '@/components/template/RegisterSegments/schema'
 import { api } from '@/data/api'
 import {
+  Course,
   Errors,
   InitialState,
   ReturnGet,
@@ -14,9 +15,9 @@ import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 
 export async function registerSegment(
-  prevState: InitialState<Segment>,
+  prevState: InitialState<Segment | Course>,
   formData: FormData,
-): Promise<InitialState<Segment>> {
+): Promise<InitialState<Segment | Course>> {
   const courses = JSON.parse(String(formData.get('courses')) ?? '[]')
   const validatedFields = formSchemaRegisterSegment.safeParse({
     name: formData.get('name'),
@@ -59,7 +60,9 @@ export async function registerSegment(
       }
     }
   } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors<Segment>
+    const error = validatedFields.error.flatten().fieldErrors as Errors<
+      Segment | Course
+    >
     return {
       errors: { ...error },
     }
@@ -70,9 +73,9 @@ export async function registerSegment(
 
 export async function updateSegment(
   id: string,
-  prevState: InitialState<Segment>,
+  prevState: InitialState<Segment | Course>,
   formData: FormData,
-): Promise<InitialState<Segment>> {
+): Promise<InitialState<Segment | Course>> {
   const courses = JSON.parse(String(formData.get('courses')) ?? '[]')
   const validatedFields = formSchemaUpdateSegment.safeParse({
     id,

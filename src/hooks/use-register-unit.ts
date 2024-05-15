@@ -70,27 +70,19 @@ export default function useRegisterUnit(
               })
               return verify.length === 0
             })
-            for (let i = 0; i < segmentsInit.length; i++) {
-              const coursesIdSegment = segments
-                .find((segment) => segment.id === id)
-                ?.courses?.map((course) => course.course.id)
-              const exist = coursesSegment?.filter((item) =>
-                coursesIdSegment?.includes(item),
-              )
-            }
             if (coursesSegment) {
               let courses = templateForm.sections[2].boxes[0].fields[0].option
                 ?.list as Course[]
               if (courses) {
                 courses = courses.filter(
-                  (course) => !coursesSegment.includes(course.id),
+                  (course) => !coursesSegment?.includes(course.id),
                 )
                 templateForm.sections[2].boxes[0].fields[0].option = {
                   ...templateForm.sections[2].boxes[0].fields[0].option,
                   list: [...courses],
                   values: [
                     ...coursesInit.filter(
-                      (course) => !coursesSegment.includes(course),
+                      (course) => !coursesSegment?.includes(course),
                     ),
                   ],
                 }

@@ -46,7 +46,7 @@ export async function loginUser(
       return {
         errors: {},
         ok: true,
-        resp: user
+        resp: user,
       }
     } catch (error) {
       return {
