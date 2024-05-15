@@ -21,13 +21,14 @@ import { twMerge } from 'tailwind-merge'
 interface Props<T> {
   options: OptionGeneric<T>[]
   onChange?: (value: string) => void
-  onDelete?: (value: string) => void
+  onDelete?: (value: string, formDataExtra: FormData) => void
   optionKeyLabel?: OptionKey<T>
   optionKeyValue?: OptionKey<T>
   error: string
   props: UseFormRegisterReturn<string>
   label?: string
   setFormDataExtra: Dispatch<SetStateAction<FormData>>
+  formDataExtra: FormData
   variant: VariantOption
   values?: string[]
   placeholder?: string
@@ -49,6 +50,7 @@ export function SelectFormWithSearch<T>({
   label,
   variant,
   setFormDataExtra,
+  formDataExtra,
   values,
   placeholder,
   light,
@@ -63,6 +65,7 @@ export function SelectFormWithSearch<T>({
   const getOptionValue = (option: OptionGeneric<T>, key: OptionKey<T>) =>
     String(getItemValue(option, key))
   const selectRef = useRef<HTMLSelectElement>(null)
+  const ulRef = useRef<HTMLUListElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const IconDelete = handleIcons(iconDeleteName)
   const OrderOptions: Option[] = options.map((option) => {
@@ -88,9 +91,7 @@ export function SelectFormWithSearch<T>({
 
   const [searchTerm, setSearchTerm] = useState('')
   const [isFocused, setIsFocused] = useState(false)
-  const [selectedItems, setSelectedItems] = useState<Option[]>(
-    values ? setInitialValue() : [],
-  )
+  const [selectedItems, setSelectedItems] = useState<Option[]>([])
 
   function setInitialValue() {
     let initialSelectedItems = []
@@ -113,15 +114,17 @@ export function SelectFormWithSearch<T>({
         })
       : []
 
+    setSelectedItems(initialSelectedItems)
     return initialSelectedItems
   }
 
   useEffect(() => {
+    const itemsSelected = setInitialValue()
     // TODO: pegar o initialValue direto do lead
     if (variant === 'multiple') {
       setFormDataExtra((state) => {
         const newState = returnExistingValues(state)
-        const extraDataJson = selectedItems.map((item) => item.value)
+        const extraDataJson = itemsSelected.map((item) => item.value)
         const newValue = [...extraDataJson]
         const newValueString = JSON.stringify(newValue)
         newState.append(props.name, newValueString)
@@ -131,24 +134,16 @@ export function SelectFormWithSearch<T>({
     if (variant === 'single') {
       setFormDataExtra((state) => {
         const newState = returnExistingValues(state)
-        const extraDataJson = selectedItems.map((item) => item.value)
+        const extraDataJson = itemsSelected.map((item) => item.value)
 
-        const newValue2 = extraDataJson[0]
-          ? JSON.stringify(extraDataJson[0])
-          : ''
+        const newValue2 = extraDataJson[0] ? extraDataJson[0] : ''
 
         newState.append(props.name, newValue2)
         return newState
       })
     }
-
-    document.addEventListener('click', handleDocumentClick)
-
-    return () => {
-      document.removeEventListener('click', handleDocumentClick)
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [values])
 
   const filteredOptions: Option[] = OrderOptions.filter((option) =>
     option.label.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -206,7 +201,7 @@ export function SelectFormWithSearch<T>({
     const itemExists = verifyExistsItem(id)
     if (itemExists) {
       if (onDelete) {
-        onDelete(id)
+        onDelete(id, formDataExtra)
       }
       if (variant === 'multiple') {
         setFormDataExtra((state) => {
@@ -241,6 +236,7 @@ export function SelectFormWithSearch<T>({
   const handleDocumentClick = (event: MouseEvent) => {
     if (
       !selectRef.current?.contains(event.target as Node) &&
+      !ulRef.current?.contains(event.target as Node) &&
       !inputRef.current?.contains(event.target as Node)
     ) {
       setIsFocused(false)
@@ -280,21 +276,51 @@ export function SelectFormWithSearch<T>({
           />
         )}
         {isFocused && (
-          <div className=" relative">
-            <SelectForm
-              selectRef={selectRef}
-              classNameOptions="py-2 px-4 mb-2 block w-full text-left bg-white hover:bg-gray-100 border rounded-full border-gray-300 truncate"
-              options={filteredOptions}
-              onChange={handleChange}
-              size={4}
-              onBlur={() => setIsFocused(false)}
-              className={twMerge(
-                'rounded-2xl border-0 absolute top-full shadow-gray-500',
-                'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-                'py-1.5 px-2 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
-              )}
-            />
-          </div>
+          <>
+            <div className="relative hidden lg:flex">
+              <SelectForm
+                selectRef={selectRef}
+                classNameOptions="py-2 px-4 mb-2 block w-full text-left bg-white hover:bg-gray-100 border rounded-full border-gray-300 truncate"
+                options={filteredOptions}
+                onChange={handleChange}
+                size={5}
+                onBlur={() => setIsFocused(false)}
+                className={twMerge(
+                  'rounded-2xl border-0 absolute top-full shadow-gray-500',
+                  'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                  'py-1.5 px-2 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+                )}
+              />
+            </div>
+            <div className="relative flex lg:hidden">
+              <ul
+                ref={ulRef}
+                className={twMerge(
+                  'w-full bg-white rounded-2xl border-0 absolute top-full shadow-gray-500',
+                  'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                  'py-1.5 px-2 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+                )}
+              >
+                {filteredOptions.map((option, idx) => {
+                  return (
+                    <li key={idx} className="">
+                      <button
+                        className="py-2 px-4 mb-2 block w-full text-left bg-white hover:bg-gray-100 border rounded-full border-gray-300 truncate"
+                        type="button"
+                        onClick={() =>
+                          handleChange({
+                            target: { value: option.value },
+                          } as React.ChangeEvent<HTMLSelectElement>)
+                        }
+                      >
+                        {option.label}
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          </>
         )}
 
         <div

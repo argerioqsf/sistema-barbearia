@@ -11,12 +11,14 @@ type PropsFieldsForm<T> = {
   state: InitialState<T>
   setFormDataExtra: Dispatch<SetStateAction<FormData>>
   register: UseFormRegister<T & FieldValues>
+  formDataExtra: FormData
 }
 
 export default function FieldsForm<T>({
   field,
   state,
   setFormDataExtra,
+  formDataExtra,
   register,
 }: PropsFieldsForm<T>) {
   const id = field.id as Path<T & { request?: string }>
@@ -47,12 +49,15 @@ export default function FieldsForm<T>({
         {...propsField}
         label={field.label}
         setFormDataExtra={setFormDataExtra}
+        formDataExtra={formDataExtra}
         options={field?.option?.list ?? []}
         optionKeyLabel={field?.option?.keyLabel}
         optionKeyValue={field?.option?.keyValue}
         variant={field?.option?.variant ?? 'multiple'}
         values={field.option?.values}
         disable={field.disabled}
+        onChange={field.option?.onChange}
+        onDelete={field.option?.onDelete}
       />
     )
   } else if (field.type === 'hidden') {

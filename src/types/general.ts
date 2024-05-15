@@ -197,7 +197,7 @@ export type ItemListType = {
 export type InitialState<T> = {
   errors?: Partial<T & { request?: string }>
   ok?: boolean
-  resp?: Models | Models[]
+  resp?: T | T[]
 }
 
 export type Toast = {
@@ -273,6 +273,8 @@ export type FieldsTemplateForm<T> = {
     keyValue?: OptionKey<T>
     variant?: VariantOption
     values?: string[]
+    onDelete?: (id: string, formDataExtra: FormData) => void
+    onChange?: (id?: string) => void
   }
 }
 

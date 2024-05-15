@@ -7,7 +7,7 @@ export default function RootLayout({
 }>) {
   return (
     <body className="bg-white">
-      <div className="w-full bg-black">{children}</div>
+      <div className="w-full">{children}</div>
     </body>
   )
 }

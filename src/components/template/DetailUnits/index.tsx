@@ -1,32 +1,32 @@
-import { listSelectCourses } from '@/actions/course'
-import { listSelectSegments } from '@/actions/segments'
+'use client'
+
 import { getUnit, updateUnit } from '@/actions/unit'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import { templates } from './templates'
-import { notFound } from 'next/navigation'
+import useRegisterUnit from '@/hooks/use-register-unit'
 import { Segment, Unit } from '@/types/general'
+import { notFound } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { templates } from './templates'
 
-export default async function DetailUnits({ id }: { id: string }) {
-  const response = await getUnit(id)
-  const unit = response?.response ?? null
-  if (!unit) {
-    notFound()
-  }
+export default function DetailUnits({ id }: { id: string }) {
+  const { templateForm, listSegment } = useRegisterUnit(templates.templateForm)
+  const [unit, setUnit] = useState<Unit>()
 
-  const responseSegments = await listSelectSegments()
-  templates.templateForm.sections[1].boxes[0].fields[0].option = {
-    ...templates.templateForm.sections[1].boxes[0].fields[0].option,
-    list: responseSegments?.response ?? [],
-    values: unit?.segments?.map((segment) => segment.segment.id),
-  }
-  const responseCourses = await listSelectCourses()
-  templates.templateForm.sections[2].boxes[0].fields[0].option = {
-    ...templates.templateForm.sections[2].boxes[0].fields[0].option,
-    list: responseCourses?.response ?? [],
-    values: unit?.courses?.map((course) => course.course.id),
-  }
+  useEffect(() => {
+    async function loadUnit() {
+      const response = await getUnit(id)
+      const unitLoad = response?.response ?? null
+      if (!unitLoad) {
+        return notFound()
+      } else {
+        setUnit({ ...unitLoad })
+        listSegment(unitLoad)
+      }
+    }
+    loadUnit()
+  }, [])
 
   return (
     <ContainerDashboard>
@@ -37,8 +37,8 @@ export default async function DetailUnits({ id }: { id: string }) {
         <div className="w-full mt-6 lg:mt-8 grid gap-8">
           <FormDashboard<Unit | Omit<Segment, 'courses'>>
             title={templates.templateForm.title}
-            templateForm={templates.templateForm}
-            defaultValues={unit ?? undefined}
+            templateForm={templateForm}
+            defaultValues={unit}
             actionWithId={updateUnit}
             pathSuccess="/dashboard/units"
             id={id}

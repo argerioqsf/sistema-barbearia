@@ -61,13 +61,27 @@ const verifyPermissionProfile = {
 
 const verifyPermissionIndicator = {
   'indicator.view': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
+    ['administrator', 'coordinator', 'indicator'].includes(roleUser),
   'indicator.list': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
   'indicator.register': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
   'indicator.detail': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
+  'indicator.monitoring.view': (roleUser: string) =>
+    ['indicator'].includes(roleUser),
+  'indicator.files.view': (roleUser: string) =>
+    ['indicator'].includes(roleUser),
+  'indicator.leads.list': (roleUser: string) =>
+    ['indicator'].includes(roleUser),
+}
+
+const verifyPermissionConsultant = {
+  'consultant.view': (roleUser: string) => ['consultant'].includes(roleUser),
+  'consultant.monitoring.view': (roleUser: string) =>
+    ['consultant'].includes(roleUser),
+  'consultant.leads.list': (roleUser: string) =>
+    ['consultant'].includes(roleUser),
 }
 
 const verifyPermissionIndicatorRequest = {
@@ -82,8 +96,12 @@ const verifyPermissionLead = {
     ['administrator', 'coordinator'].includes(roleUser),
   'lead.register': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
+  'lead.update': (roleUser: string) =>
+    ['administrator', 'coordinator', 'indicator'].includes(roleUser),
   'lead.detail': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
+    ['administrator', 'coordinator', 'indicator', 'consultant'].includes(
+      roleUser,
+    ),
 }
 
 const verifyPermissionNewLead = {
@@ -103,13 +121,7 @@ const verifyPermissionWaitingConfirmedLead = {
 
 const verifyPermissionDashboard = {
   'dashboard.view': (roleUser: string) =>
-    [
-      'coordinator',
-      'administrator',
-      'indicator',
-      'consultant',
-      'financial',
-    ].includes(roleUser),
+    ['coordinator', 'administrator', 'financial'].includes(roleUser),
 }
 
 const verifyPermission = {
@@ -126,6 +138,7 @@ const verifyPermission = {
   ...verifyPermissionConfirmedLead,
   ...verifyPermissionWaitingConfirmedLead,
   ...verifyPermissionDashboard,
+  ...verifyPermissionConsultant,
 }
 
 export type UserAction = keyof typeof verifyPermission

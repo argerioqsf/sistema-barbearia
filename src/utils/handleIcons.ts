@@ -1,5 +1,8 @@
 import {
+  Banknote,
+  Bell,
   BookCheck,
+  Check,
   ChevronDown,
   ChevronRight,
   Circle,
@@ -25,6 +28,7 @@ import {
   Trash,
   User,
   UserCog,
+  UserPlus,
   Users,
   X,
   Youtube,
@@ -59,6 +63,10 @@ const catalogIcons = {
   X,
   ThumbsUp,
   CircleDollarSign,
+  Bell,
+  Banknote,
+  UserPlus,
+  Check,
 } as const
 
 export type CatalogIcons = typeof catalogIcons

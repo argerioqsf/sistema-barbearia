@@ -21,7 +21,7 @@ export const templateForm: TemplateForm<User | Profile> = {
               id: 'profile.pix',
               required: true,
               type: 'text',
-              label: 'Chave Pix',
+              label: 'Chave pix',
             },
           ],
         },

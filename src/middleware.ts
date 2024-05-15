@@ -16,6 +16,7 @@ const middlewareIntl = createMiddleware({
 export default function middleware(request: NextRequest) {
   const isLogged = !!getTokenFromCookieRequest(request)
   const isLoginPage = request.nextUrl.pathname.includes('/auth/signin')
+  const roleUser = getRoleUserFromCookieRequest(request) as Role
 
   if (!isLogged) {
     if (isLoginPage) {
@@ -24,13 +25,24 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/pt-BR/auth/signin', request.url))
   }
   if (isLoginPage) {
-    return NextResponse.redirect(new URL('/pt-BR/dashboard/home', request.url))
+    if (roleUser === 'indicator') {
+      return NextResponse.redirect(
+        new URL('/pt-BR/dashboard/indicators/monitoring', request.url),
+      )
+    } else if (roleUser === 'consultant') {
+      return NextResponse.redirect(
+        new URL('/pt-BR/dashboard/consultants/monitoring', request.url),
+      )
+    } else {
+      return NextResponse.redirect(
+        new URL('/pt-BR/dashboard/home', request.url),
+      )
+    }
   } else {
-    const roleUser = getRoleUserFromCookieRequest(request) as Role
     if (roleUser) {
       const havePermission = verifyPageRole(siteConfig, roleUser, request)
       if (havePermission === false) {
-        return NextResponse.redirect(new URL('/pt-BR/auth/signin', request.url))
+        return NextResponse.redirect(new URL('/pt-BR/404', request.url))
       } else if (havePermission === true) {
         return middlewareIntl(request)
       } else if (havePermission === null) {

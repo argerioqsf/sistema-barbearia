@@ -5,6 +5,7 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import { Lead, User } from '@/types/general'
 import { templateForm } from './templateForm'
+import { listSelectConsultants } from '@/actions/consultant'
 
 export default async function RegisterLeads() {
   const responseIndicators = await listIndicators()
@@ -13,22 +14,11 @@ export default async function RegisterLeads() {
     list: [...(responseIndicators?.response ?? [])],
   }
 
+  const responseConsultants = await listSelectConsultants()
+  const consultants = responseConsultants?.response ?? []
   templateForm.sections[2].boxes[0].fields[0].option = {
     ...templateForm.sections[2].boxes[0].fields[0].option,
-    list: [
-      {
-        label: 'consultor 1',
-        value: '920f7b8d-08c1-4735-9c58-c1ffd181d856',
-      },
-      {
-        label: 'consultor 2',
-        value: '91003aab-bbc6-4d09-999c-fcae31d3c6e6',
-      },
-      {
-        label: 'consultor 3',
-        value: '91003aab-bbc6-4d09-999c-fcae31d3c6e6',
-      },
-    ],
+    list: [...consultants],
   }
 
   return (
