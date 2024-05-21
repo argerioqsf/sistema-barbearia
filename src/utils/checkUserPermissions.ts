@@ -102,6 +102,8 @@ const verifyPermissionLead = {
     ['administrator', 'coordinator', 'indicator', 'consultant'].includes(
       roleUser,
     ),
+  'lead.archived.list': (roleUser: string) =>
+    ['administrator', 'coordinator'].includes(roleUser),
 }
 
 const verifyPermissionNewLead = {
