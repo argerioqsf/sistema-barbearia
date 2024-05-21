@@ -140,6 +140,13 @@ export const siteConfig: SiteConfig = [
         hidden: true,
         absolutePath: true,
       },
+      {
+        id: '7',
+        label: 'Leads arquivados',
+        href: '/dashboard/leads/archived',
+        icon: 'Circle',
+        userAction: 'lead.archived.list',
+      },
     ],
   },
   {

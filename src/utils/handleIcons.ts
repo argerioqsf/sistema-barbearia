@@ -1,4 +1,6 @@
 import {
+  Archive,
+  ArchiveRestore,
   Banknote,
   Bell,
   BookCheck,
@@ -67,6 +69,8 @@ const catalogIcons = {
   Banknote,
   UserPlus,
   Check,
+  Archive,
+  ArchiveRestore,
 } as const
 
 export type CatalogIcons = typeof catalogIcons

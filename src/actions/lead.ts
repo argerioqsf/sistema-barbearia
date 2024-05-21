@@ -237,6 +237,62 @@ export async function getLead(id: string): Promise<ReturnGet<Lead>> {
   }
 }
 
+export async function arquivarLead(id?: string): Promise<InitialState<Lead>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/lead/archived/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        archived: true,
+      }),
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('leads')
+    return { ok: true }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function desarquivarLead(
+  id?: string,
+): Promise<InitialState<Lead>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/lead/archived/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        archived: false,
+      }),
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('leads')
+    return { ok: true }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
 export async function listLeads(
   q?: string,
   page?: string,
@@ -247,6 +303,42 @@ export async function listLeads(
     const token = getTokenFromCookieServer()
     const response = await api(
       '/leads',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { tags: ['leads'], revalidate: 60 * 4 },
+      },
+      page,
+      q,
+      indicatorId,
+      consultantId,
+    )
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const { leads, count } = await response.json()
+    return { response: leads, count }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
+  }
+}
+
+export async function listLeadsArquived(
+  q?: string,
+  page?: string,
+  indicatorId?: string,
+  consultantId?: string,
+): Promise<ReturnList<Lead>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(
+      '/leads/archived',
       {
         method: 'GET',
         headers: {

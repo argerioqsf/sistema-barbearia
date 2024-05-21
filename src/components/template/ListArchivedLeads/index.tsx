@@ -1,4 +1,4 @@
-import { arquivarLead, listLeads } from '@/actions/lead'
+import { desarquivarLead, listLeadsArquived } from '@/actions/lead'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
@@ -9,22 +9,24 @@ import { infoList } from './templates'
 infoList.listActions = [
   {
     id: 1,
-    icon: 'Archive',
-    onclick: arquivarLead,
-    name: 'Arquivar',
+    icon: 'ArchiveRestore',
+    onclick: desarquivarLead,
+    name: 'Desarquivar',
     alert: {
-      title: 'Você deseja realmente arquivar este lead?',
-      description: 'Você ainda podera velo na tela de leads arquivados',
+      title: 'Você deseja realmente desarquivar este lead?',
+      description: 'Você podera velo na tela de leads',
     },
     toast: {
-      title: 'Lead arquivado com sucesso!',
+      title: 'Lead desarquivado com sucesso!',
     },
   },
   ...(infoList.listActions ?? []),
 ]
 
-export default async function ListLeads({ searchParams }: SearchParams) {
-  const response = await listLeads(
+export default async function ListArchivedLeads({
+  searchParams,
+}: SearchParams) {
+  const response = await listLeadsArquived(
     searchParams?.q ?? '',
     searchParams?.page ?? '',
   )
@@ -47,8 +49,7 @@ export default async function ListLeads({ searchParams }: SearchParams) {
             list={list}
             listActions={infoList.listActions}
             hrefButton="dashboard/leads/register"
-            textButton="Novo lead"
-            title="Leads"
+            title="Leads Arquivados"
             count={count}
           />
         </div>
