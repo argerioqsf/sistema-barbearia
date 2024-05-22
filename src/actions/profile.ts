@@ -85,7 +85,7 @@ export async function getProfile(): Promise<ReturnGet<Profile>> {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: { tags: ['users'], revalidate: 60 * 4 },
+      next: { tags: ['users', 'leads'], revalidate: 60 * 4 },
     })
 
     if (!response.ok) {

@@ -37,7 +37,6 @@ export default function FieldsForm<T>({
     return (
       <FormFieldSelect
         {...propsField}
-        type="select"
         options={field?.option?.list ?? []}
         optionKeyLabel={field?.option?.keyLabel}
         optionKeyValue={field?.option?.keyValue}

@@ -10,5 +10,5 @@ export const formSchemaRegisterLeadPublic = z.object({
     .string()
     .min(2, { message: 'O campo Formação é obrigatório' }),
   unitId: z.string().min(2, { message: 'O campo Unidade é obrigatório' }),
-  courseId: z.string().min(2, { message: 'O campo Curso é obrigatório' }),
+  // TODO: adicoinar o courseId
 })

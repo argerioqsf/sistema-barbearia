@@ -31,7 +31,6 @@ export async function MonitoringIndicator() {
   if (!profile || profile?.role !== 'indicator') {
     notFound()
   }
-  console.log('profile: ', profile)
   const link = `${process.env.BASE_URL}/${locale}/sim/indicator/${profile.userId}`
 
   const cards: Card[] = [

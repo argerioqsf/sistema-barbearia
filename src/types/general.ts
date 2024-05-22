@@ -27,6 +27,8 @@ export type Segment = {
   name: string
   created_at: string
   courses?: { course: Course }[] | []
+  // eslint-disable-next-line no-use-before-define
+  units?: { unit: Unit }[] | []
 }
 
 export type SegmentProps = keyof Segment

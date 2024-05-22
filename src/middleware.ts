@@ -12,18 +12,30 @@ const middlewareIntl = createMiddleware({
   locales: ['pt-BR'],
   defaultLocale: 'pt-BR',
 })
+function verifyPublicPage(request: NextRequest, publicPages: string[]) {
+  let isPublic = false
+  for (let i = 0; i < publicPages.length; i++) {
+    isPublic = request.nextUrl.pathname.includes(publicPages[i])
+    if (isPublic) break
+  }
+  return isPublic
+}
 
 export default function middleware(request: NextRequest) {
   const isLogged = !!getTokenFromCookieRequest(request)
+  const publicPages = ['/auth/signin', 'sim/indicator']
+  const isPublicPages = verifyPublicPage(request, publicPages)
   const isLoginPage = request.nextUrl.pathname.includes('/auth/signin')
   const roleUser = getRoleUserFromCookieRequest(request) as Role
 
   if (!isLogged) {
-    if (isLoginPage) {
+    if (isPublicPages) {
       return middlewareIntl(request)
+    } else {
+      return NextResponse.redirect(new URL('/pt-BR/auth/signin', request.url))
     }
-    return NextResponse.redirect(new URL('/pt-BR/auth/signin', request.url))
   }
+
   if (isLoginPage) {
     if (roleUser === 'indicator') {
       return NextResponse.redirect(
@@ -39,6 +51,10 @@ export default function middleware(request: NextRequest) {
       )
     }
   } else {
+    if (isPublicPages) {
+      return middlewareIntl(request)
+    }
+
     if (roleUser) {
       const havePermission = verifyPageRole(siteConfig, roleUser, request)
       if (havePermission === false) {
