@@ -97,6 +97,12 @@ export default function useRegisterUnit(
           ...templateForm.sections[2].boxes[0].fields[0].option,
           values: unit?.courses?.map((course) => course.course.id),
         }
+      } else {
+        templateForm.sections[2].boxes[0].fields[0].option = {
+          ...templateForm.sections[2].boxes[0].fields[0].option,
+          list: [],
+          values: [],
+        }
       }
       setTemplateForm({ ...templateForm })
     }

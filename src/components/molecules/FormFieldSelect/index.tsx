@@ -10,13 +10,10 @@ import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
 type FormFieldTextProps<T> = {
-  label: string
-  type: string
-  placeholder?: string
+  label?: string
   classInput?: string
-  bgColor?: string
   props: UseFormRegisterReturn<string>
-  error: string
+  error?: string
   options: OptionGeneric<T>[]
   optionKeyLabel?: OptionKey<T>
   optionKeyValue?: OptionKey<T>

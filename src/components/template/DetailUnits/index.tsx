@@ -4,22 +4,23 @@ import { getUnit, updateUnit } from '@/actions/unit'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
+import { useHandlerRouter } from '@/hooks/use-handler-router'
 import useRegisterUnit from '@/hooks/use-register-unit'
 import { Segment, Unit } from '@/types/general'
-import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { templates } from './templates'
 
 export default function DetailUnits({ id }: { id: string }) {
   const { templateForm, listSegment } = useRegisterUnit(templates.templateForm)
   const [unit, setUnit] = useState<Unit>()
+  const { pushRouter } = useHandlerRouter()
 
   useEffect(() => {
     async function loadUnit() {
       const response = await getUnit(id)
       const unitLoad = response?.response ?? null
       if (!unitLoad) {
-        return notFound()
+        pushRouter('404/')
       } else {
         setUnit({ ...unitLoad })
         listSegment(unitLoad)

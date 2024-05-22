@@ -1,12 +1,12 @@
-import { Button } from '@/components/atoms'
 import { Avatar } from '@/components/molecules'
 import Footer from '@/components/organisms/Footer'
-import { FormRegisterIndicatorPublic } from '@/components/organisms/FormRegisterIndicatorPublic'
+import FormRegisterIndicatorPublic from '@/components/organisms/FormRegisterIndicatorPublic'
 import { benefits } from '@/config/siteConfig'
 import { CatalogIcons } from '@/utils/handleIcons'
 import Image from 'next/image'
+import { ScrollToButton } from './ScrollToButton'
 
-export async function RegisterIndicatorsPublic() {
+export default async function RegisterIndicatorsPublic() {
   return (
     <div>
       <section className="flex flex-col lg:flex-row justify-start items-start">
@@ -37,14 +37,7 @@ export async function RegisterIndicatorsPublic() {
                 efetivada. Comece a Indicar!
               </h2>
               <div className="w-full flex flex-row justify-start items-center">
-                <Button
-                  type="submit"
-                  className="bg-primary-100 rounded-full w-fit"
-                >
-                  <span className="text-white font-semibold">
-                    FAZER MEU CADASTRO
-                  </span>
-                </Button>
+                <ScrollToButton targetName="section-register-indicator" />
               </div>
             </div>
           </div>
@@ -86,7 +79,10 @@ export async function RegisterIndicatorsPublic() {
           </div>
         </div>
       </section>
-      <section className="flex flex-col justify-center items-center p-6 bg-white">
+      <section
+        id="section-register-indicator"
+        className="flex flex-col justify-center items-center p-6 bg-white"
+      >
         <div className="bg-zinc-400 w-full md:w-[400px] rounded-xl lg:w-[500px] py-6 flex justify-center items-center">
           <FormRegisterIndicatorPublic />
         </div>

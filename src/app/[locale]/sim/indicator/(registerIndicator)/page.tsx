@@ -1,4 +1,4 @@
-import { RegisterIndicatorsPublic } from '@/components/template/RegisterIndicatorsPublic'
+import RegisterIndicatorsPublic from '@/components/template/RegisterIndicatorsPublic'
 import { ParamsProp } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 

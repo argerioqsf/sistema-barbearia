@@ -350,7 +350,7 @@ export function SelectFormWithSearch<T>({
                     type="button"
                     onClick={() => removeItem(item.value)}
                   >
-                    <IconDelete color="red" />
+                    <IconDelete color="rgb(185 28 28 / 1)" />
                   </Button>
                 )}
               </div>

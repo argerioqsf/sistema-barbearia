@@ -90,24 +90,17 @@ export async function registerLeadPublic(
     phone: formData.get('phone'),
     document: formData.get('document'),
     email: formData.get('email'),
+    city: formData.get('city'),
     segmentId: formData.get('segmentId'),
     unitId: formData.get('unitId'),
-    courseId: formData.get('courseId'),
   })
 
   if (validatedFields.success) {
     try {
-      const TOKEN_SIM = getTokenFromCookieServer()
-      if (!TOKEN_SIM) {
-        return {
-          errors: { request: 'Erro de credenciais' },
-        }
-      }
-      const response = await api(`/create/leads`, {
+      const response = await api(`/create/lead`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN_SIM}`,
         },
         body: JSON.stringify({
           name: formData.get('name'),
@@ -117,7 +110,6 @@ export async function registerLeadPublic(
           city: formData.get('city'),
           segmentId: formData.get('segmentId'),
           unitId: formData.get('unitId'),
-          courseId: formData.get('courseId'),
           indicatorId: id ?? '',
         }),
       })

@@ -3,6 +3,7 @@
 import { formSchemaUpdateIndicator } from '@/components/template/DetailIndicators/schema'
 import { formSchemaUpdateUserProfile } from '@/components/template/DetailUsers/schema'
 import { formSchemaRegisterIndicatorProfile } from '@/components/template/RegisterIndicators/schema'
+import { formSchemaRegisterIndicatorPublic } from '@/components/template/RegisterIndicatorsPublic/schema'
 import { formSchemaRegisterUserProfile } from '@/components/template/RegisterUser/schema'
 import { api } from '@/data/api'
 import {
@@ -24,6 +25,10 @@ export async function getUser(id: string): Promise<ReturnGet<User>> {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
+      },
+      next: {
+        tags: [id],
+        revalidate: 60 * 4,
       },
     })
 
@@ -156,9 +161,9 @@ export async function registerUserProfile(
 }
 
 export async function registerIndicatorProfile(
-  prevState: InitialState<Profile | User>,
+  prevState: InitialState<User | Profile>,
   formData: FormData,
-): Promise<InitialState<User>> {
+): Promise<InitialState<User | Profile>> {
   const validatedFields = formSchemaRegisterIndicatorProfile.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
@@ -207,7 +212,69 @@ export async function registerIndicatorProfile(
       }
 
       revalidateTag('indicators')
+      revalidateTag('users')
+      return {
+        errors: {},
+        ok: true,
+      }
+    } catch (error) {
+      return {
+        errors: { request: 'Failed to Login' },
+      }
+    }
+  } else if (validatedFields.error) {
+    const error = validatedFields.error.flatten().fieldErrors as Errors<User>
+    return {
+      errors: { ...error },
+    }
+  } else {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
 
+export async function registerIndicatorProfilePublic(
+  prevState: InitialState<User | Profile>,
+  formData: FormData,
+): Promise<InitialState<User>> {
+  const validatedFields = formSchemaRegisterIndicatorPublic.safeParse({
+    name: formData.get('name'),
+    email: formData.get('email'),
+    password: formData.get('password'),
+    'profile.phone': formData.get('profile.phone'),
+    'profile.cpf': formData.get('profile.cpf'),
+    'profile.genre': formData.get('profile.genre'),
+    'profile.birthday': formData.get('profile.birthday'),
+    'profile.pix': formData.get('profile.pix'),
+  })
+
+  if (validatedFields.success) {
+    try {
+      const response = await api(`/create/indicator`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.get('name'),
+          email: formData.get('email'),
+          password: formData.get('password'),
+          phone: formData.get('profile.phone'),
+          cpf: formData.get('profile.cpf'),
+          genre: formData.get('profile.genre'),
+          birthday: formData.get('profile.birthday'),
+          pix: formData.get('profile.pix'),
+        }),
+      })
+
+      if (!response.ok) {
+        const errorMessage = await response.text()
+        return {
+          errors: { request: JSON.parse(errorMessage).message },
+        }
+      }
+
+      revalidateTag('indicators')
+      revalidateTag('users')
       return {
         errors: {},
         ok: true,
@@ -236,7 +303,8 @@ export async function getIndicator(id: string): Promise<ReturnGet<User>> {
         Authorization: `Bearer ${token}`,
       },
       next: {
-        revalidate: 15,
+        tags: [id],
+        revalidate: 60 * 4,
       },
     })
 
@@ -340,7 +408,15 @@ export async function updateUserProfile(
           errors: { request: JSON.parse(errorMessage).message },
         }
       }
-      revalidateTag('users')
+      revalidateTag(id)
+      if (role === 'indicator') {
+        revalidateTag('indicators')
+      } else if (role === 'consultant') {
+        revalidateTag('consultants')
+      } else {
+        revalidateTag('users')
+      }
+
       return {
         errors: {},
         ok: true,
@@ -417,6 +493,7 @@ export async function updateUserProfileIndicator(
       }
       revalidateTag('users')
       revalidateTag('indicators')
+      revalidateTag(id)
       return {
         errors: {},
         ok: true,

@@ -1,11 +1,9 @@
 'use client'
-import { listSelectCourses } from '@/actions/course'
+
 import { registerLeadPublic } from '@/actions/lead'
 import { listSelectSegments } from '@/actions/segments'
-import { listUnits } from '@/actions/unit'
 import { Button, Link, Text } from '@/components/atoms'
 import SelectFormWithSearch from '@/components/molecules/SelectFormWithSearch'
-import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { Course, InitialState, Lead, Segment, Unit } from '@/types/general'
 import { useLocale } from 'next-intl'
 import { useEffect, useState } from 'react'
@@ -13,8 +11,13 @@ import { useFormState } from 'react-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
-export function FormRegisterLeadPublic({ userId }: { userId: string }) {
-  const { pushRouter } = useHandlerRouter()
+export function FormRegisterLeadPublic({
+  userId,
+  name,
+}: {
+  userId: string
+  name: string
+}) {
   const [formDataExtra, setFormDataExtra] = useState<FormData>(new FormData())
   const [segmentsSelect, setSegmentsSelect] = useState<Segment[]>()
   const [unitSelect, setUnitSelect] = useState<Unit[]>()
@@ -46,30 +49,8 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
       const segments = response?.response
       setSegmentsSelect(segments)
     }
-    async function loadUnits() {
-      const response = await listUnits('', '')
-      const units = response?.response
-      setUnitSelect(units)
-    }
-    async function loadCourses() {
-      const response = await listSelectCourses()
-      const courses = response?.response
-      setCourseSelect(courses)
-    }
     loadSegments()
-    if (selecteds.segmentId) {
-      loadUnits()
-    }
-    if (selecteds.unitId) {
-      loadCourses()
-    }
-  }, [selecteds])
-
-  useEffect(() => {
-    if (state.ok) {
-      pushRouter('/')
-    }
-  }, [state.ok])
+  }, [])
 
   function mergeFormData(
     formData1: FormData,
@@ -91,157 +72,264 @@ export function FormRegisterLeadPublic({ userId }: { userId: string }) {
     formAction(payload)
   }
 
+  function onChangeSegment(value: string) {
+    const segment = segmentsSelect?.find((segment) => segment.id === value)
+    if (segment) {
+      const coursesSegment = segment?.courses?.map((course) => course.course)
+      const unitsSegment = segment?.units?.map((unit) => unit.unit)
+      setCourseSelect([...(coursesSegment ?? [])])
+      setUnitSelect([...(unitsSegment ?? [])])
+    }
+    setSelecteds({ ...selecteds, segmentId: value })
+  }
+
   return (
-    <form
-      className="flex flex-col justify-center items-center gap-3 px-10 w-full lg:w-[80%]"
-      action={handleAction}
-    >
-      <SelectFormWithSearch<Lead | Segment>
-        classNameInput="rounded-xl py-3"
-        props={{ ...register('segmentId', { required: true }) }}
-        onChange={(value) => setSelecteds({ ...selecteds, segmentId: value })}
-        onDelete={() =>
-          setSelecteds({ unitId: '', segmentId: '', courseId: '' })
-        }
-        placeholder={'Selecione uma Formação:'}
-        setFormDataExtra={setFormDataExtra}
-        options={segmentsSelect ?? []}
-        optionKeyLabel={'name'}
-        optionKeyValue={'id'}
-        variant={'single'}
-        error={(state?.errors?.segmentId && state.errors?.segmentId[0]) ?? ''}
-        light={true}
-        iconDeleteName="X"
-        classNameItem="bg-zinc-200"
-        values={[]}
-        formDataExtra={formDataExtra}
-      />
-      {selecteds.segmentId && (
-        <SelectFormWithSearch<Lead | Unit>
-          props={{ ...register('unitId', { required: true }) }}
-          onChange={(value) => setSelecteds({ ...selecteds, unitId: value })}
-          onDelete={() =>
-            setSelecteds({ ...selecteds, unitId: '', courseId: '' })
-          }
-          placeholder={'Escolha local/modalidade:'}
-          setFormDataExtra={setFormDataExtra}
-          options={unitSelect ?? []}
-          optionKeyLabel={'name'}
-          optionKeyValue={'id'}
-          variant={'single'}
-          values={[]}
-          error={(state?.errors?.unitId && state.errors?.unitId[0]) ?? ''}
-          light={true}
-          iconDeleteName="X"
-          classNameItem="bg-zinc-200"
-          formDataExtra={formDataExtra}
-        />
+    <>
+      {!state.ok ? (
+        <>
+          <div className="px-2 lg:px-24 flex flex-col gap-4">
+            <h1 className="text-2xl lg:text-4xl font-bold text-center text-primary-100">
+              VEM SER MADRE!
+            </h1>
+
+            <h3 className="text-center text-md lg:text-2xl text-stone-500 font-semibold">
+              ME CHAMO <b>{name}</b> TENHO UMA BOLSA DE DESCONTO DO GRUPO MADRE
+              TEREZA, PARA VOCÊ!.
+            </h3>
+          </div>
+          <form
+            className="flex flex-col justify-center items-center gap-3 px-4 sm:px-12 md:px-32 lg:px-10 w-full lg:w-[80%]"
+            action={handleAction}
+          >
+            <SelectFormWithSearch<Lead | Segment>
+              classNameInput="rounded-xl py-3"
+              props={{ ...register('segmentId', { required: true }) }}
+              onChange={onChangeSegment}
+              onDelete={() => {
+                setCourseSelect([])
+                setUnitSelect([])
+                setSelecteds({ unitId: '', segmentId: '', courseId: '' })
+              }}
+              placeholder={'Selecione uma Formação:'}
+              setFormDataExtra={setFormDataExtra}
+              options={segmentsSelect ?? []}
+              optionKeyLabel={'name'}
+              optionKeyValue={'id'}
+              variant={'single'}
+              error={
+                (state?.errors?.segmentId && state.errors?.segmentId[0]) ?? ''
+              }
+              light={true}
+              iconDeleteName="X"
+              classNameItem="bg-zinc-400 text-white"
+              formDataExtra={formDataExtra}
+            />
+            {selecteds.segmentId && (
+              <SelectFormWithSearch<Lead | Unit>
+                classNameInput="rounded-xl py-3"
+                props={{ ...register('unitId', { required: true }) }}
+                onChange={(value) =>
+                  setSelecteds({ ...selecteds, unitId: value })
+                }
+                onDelete={() =>
+                  setSelecteds({ ...selecteds, unitId: '', courseId: '' })
+                }
+                placeholder={'Escolha local/unidade:'}
+                setFormDataExtra={setFormDataExtra}
+                options={unitSelect ?? []}
+                optionKeyLabel={'name'}
+                optionKeyValue={'id'}
+                variant={'single'}
+                error={(state?.errors?.unitId && state.errors?.unitId[0]) ?? ''}
+                light={true}
+                iconDeleteName="X"
+                classNameItem="bg-zinc-400 text-white"
+                formDataExtra={formDataExtra}
+              />
+            )}
+            {selecteds.segmentId && (
+              <SelectFormWithSearch<Lead | Course>
+                classNameInput="rounded-xl py-3"
+                props={{ ...register('courseId', { required: true }) }}
+                onChange={(value) =>
+                  setSelecteds({ ...selecteds, unitId: value })
+                }
+                onDelete={() => setSelecteds({ ...selecteds, courseId: '' })}
+                placeholder={'Escolha o curso:'}
+                setFormDataExtra={setFormDataExtra}
+                options={courseSelect ?? []}
+                optionKeyLabel={'name'}
+                optionKeyValue={'id'}
+                variant={'single'}
+                error={
+                  (state?.errors?.courseId && state.errors?.courseId[0]) ?? ''
+                }
+                light={true}
+                iconDeleteName="X"
+                classNameItem="bg-zinc-400 text-white"
+                formDataExtra={formDataExtra}
+              />
+            )}
+            <div className="w-full">
+              <input
+                className={twMerge(
+                  'block w-full',
+                  'rounded-xl border-0',
+                  'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                  'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+                )}
+                {...register('name', { required: true })}
+                type={'text'}
+                placeholder={'Seu nome'}
+              />
+              {state?.errors?.name && (
+                <Text
+                  title={state?.errors?.name}
+                  role="alert"
+                  className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
+                >
+                  {state?.errors?.name}
+                </Text>
+              )}
+            </div>
+            <div className="w-full">
+              <input
+                className={twMerge(
+                  'block w-full',
+                  'rounded-xl border-0',
+                  'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                  'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+                )}
+                {...register('document', { required: true })}
+                type={'text'}
+                placeholder={'Seu CPF'}
+              />
+              {state?.errors?.document && (
+                <Text
+                  title={state?.errors?.document}
+                  role="alert"
+                  className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
+                >
+                  {state?.errors?.document}
+                </Text>
+              )}
+            </div>
+            <div className="w-full">
+              <input
+                className={twMerge(
+                  'block w-full',
+                  'rounded-xl border-0',
+                  'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                  'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+                )}
+                {...register('email', { required: true })}
+                type={'email'}
+                placeholder={'Seu E-mail'}
+              />
+              {state?.errors?.email && (
+                <Text
+                  title={state?.errors?.email}
+                  role="alert"
+                  className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
+                >
+                  {state?.errors?.email}
+                </Text>
+              )}
+            </div>
+            <div className="w-full">
+              <input
+                className={twMerge(
+                  'block w-full',
+                  'rounded-xl border-0',
+                  'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                  'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+                )}
+                {...register('city', { required: true })}
+                type={'text'}
+                placeholder={'Sua cidade'}
+              />
+              {state?.errors?.city && (
+                <Text
+                  title={state?.errors?.city}
+                  role="alert"
+                  className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
+                >
+                  {state?.errors?.city}
+                </Text>
+              )}
+            </div>
+            <div className="w-full">
+              <input
+                className={twMerge(
+                  'block w-full',
+                  'rounded-xl border-0',
+                  'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                  'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+                )}
+                {...register('phone', { required: true })}
+                type={'text'}
+                placeholder={'Seu Whatsapp'}
+              />
+              {state?.errors?.phone && (
+                <Text
+                  title={state?.errors?.phone}
+                  role="alert"
+                  className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
+                >
+                  {state?.errors?.phone}
+                </Text>
+              )}
+            </div>
+            <div className="flex flex-col justify-center items-center ">
+              <Button type="submit" className="bg-primary-100 rounded-xl w-fit">
+                <span className="text-white font-semibold">
+                  QUERO ME INSCREVER
+                </span>
+              </Button>
+              {state?.errors?.request && (
+                <Text
+                  title={state?.errors?.request}
+                  role="alert"
+                  className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
+                >
+                  {state?.errors?.request}
+                </Text>
+              )}
+            </div>
+            <Link
+              href={`/${locale}/sim/indicator`}
+              className="text-stone-500 font-semibold text-sm"
+            >
+              QUERO SER UM INDICADOR
+            </Link>
+          </form>
+        </>
+      ) : (
+        <div className="flex flex-col gap-4 px-2 lg:px-24">
+          <div className="flex flex-col gap-4">
+            <h1 className="text-2xl lg:text-4xl font-bold text-center text-primary-100">
+              CADASTRO FEITO COM SUCESSO!
+            </h1>
+
+            <h3 className="text-center text-md lg:text-2xl text-stone-500 font-semibold">
+              COMO DESEJA PROSSEGUIR AGORA?
+            </h3>
+          </div>
+          <Button className="bg-primary-100 text-white">
+            <Link href="https://www.grupomadretereza.com.br/">
+              Atendimento no Whatsapp
+            </Link>
+          </Button>
+          <Button className="bg-primary-50 text-white">
+            <Link
+              href="https://www.grupomadretereza.com.br/"
+              className="bg-primary-50 text-white"
+            >
+              Seguir com matricula online
+            </Link>
+          </Button>
+        </div>
       )}
-      {selecteds.unitId && (
-        <SelectFormWithSearch<Lead | Course>
-          props={{ ...register('courseId', { required: true }) }}
-          onChange={(value) => setSelecteds({ ...selecteds, unitId: value })}
-          onDelete={() => setSelecteds({ ...selecteds, courseId: '' })}
-          placeholder={'Escolha o curso:'}
-          setFormDataExtra={setFormDataExtra}
-          options={courseSelect ?? []}
-          optionKeyLabel={'name'}
-          optionKeyValue={'id'}
-          variant={'single'}
-          values={[]}
-          error={(state?.errors?.courseId && state.errors?.courseId[0]) ?? ''}
-          light={true}
-          iconDeleteName="X"
-          classNameItem="bg-zinc-200"
-          formDataExtra={formDataExtra}
-        />
-      )}
-      <div className="w-full">
-        <input
-          className={twMerge(
-            'block w-full',
-            'rounded-xl border-0',
-            'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-            'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
-          )}
-          {...register('name', { required: true })}
-          type={'text'}
-          placeholder={'Seu nome'}
-        />
-        {state?.errors?.name && (
-          <Text
-            title={state?.errors?.name}
-            role="alert"
-            className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
-          >
-            {state?.errors?.name}
-          </Text>
-        )}
-      </div>
-      <div className="w-full">
-        <input
-          className={twMerge(
-            'block w-full',
-            'rounded-xl border-0',
-            'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-            'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
-          )}
-          {...register('email', { required: true })}
-          type={'text'}
-          placeholder={'Seu E-mail'}
-        />
-        {state?.errors?.email && (
-          <Text
-            title={state?.errors?.email}
-            role="alert"
-            className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
-          >
-            {state?.errors?.email}
-          </Text>
-        )}
-      </div>
-      <div className="w-full">
-        <input
-          className={twMerge(
-            'block w-full',
-            'rounded-xl border-0',
-            'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
-            'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
-          )}
-          {...register('phone', { required: true })}
-          type={'text'}
-          placeholder={'Seu Whatsapp'}
-        />
-        {state?.errors?.phone && (
-          <Text
-            title={state?.errors?.phone}
-            role="alert"
-            className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
-          >
-            {state?.errors?.phone}
-          </Text>
-        )}
-      </div>
-      <div className="flex flex-col justify-center items-center ">
-        <Button type="submit" className="bg-primary-100 rounded-xl w-fit">
-          <span className="text-white font-semibold">QUERO ME INSCREVER</span>
-        </Button>
-        {state?.errors?.request && (
-          <Text
-            title={state?.errors?.request}
-            role="alert"
-            className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis"
-          >
-            {state?.errors?.request}
-          </Text>
-        )}
-      </div>
-      <Link
-        href={`/${locale}/sim/indicator`}
-        className="text-stone-500 font-semibold text-sm"
-      >
-        QUERO SER UM INDICADOR
-      </Link>
-    </form>
+    </>
   )
 }

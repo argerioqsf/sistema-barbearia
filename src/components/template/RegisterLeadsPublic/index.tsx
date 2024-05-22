@@ -20,8 +20,8 @@ export async function RegisterLeadsPublic({ id }: RegisterLeadsPublicProps) {
 
   return (
     <div>
-      <section className="flex flex-col lg:flex-row justify-start items-start">
-        <div className="bg-primary-100 hidden lg:flex w-full lg:w-[50%] h-screen justify-center items-center">
+      <section className="flex flex-col lg:flex-row justify-start items-center min-h-screen bg-primary-100">
+        <div className=" hidden lg:flex w-full lg:w-[50%] h-full justify-center items-center">
           <Image
             src="/logo_madre_w.webp"
             width={420}
@@ -31,20 +31,12 @@ export async function RegisterLeadsPublic({ id }: RegisterLeadsPublicProps) {
           />
         </div>
 
-        <div className="bg-stone-300 w-full lg:w-[50%] min-h-screen lg:h-screen flex flex-col justify-center items-center">
+        <div className="bg-stone-300 w-full lg:w-[50%] min-h-screen flex flex-col justify-center items-center">
           <div className="p-4 w-full py-10 flex flex-col justify-center items-center gap-4 lg:gap-6">
-            <div className="px-2 lg:px-24 flex flex-col gap-4">
-              <h1 className="text-2xl lg:text-4xl font-bold text-center text-primary-100">
-                VEM SER MADRE!
-              </h1>
-
-              <h3 className="text-center text-md lg:text-2xl text-stone-500 font-semibold">
-                ME CHAMO <b>{indicator.name}</b> TENHO UMA BOLSA DE DESCONTO DO
-                GRUPO MADRE TEREZA, PARA VOCÊ!.
-              </h3>
-            </div>
-
-            <FormRegisterLeadPublic userId={id} />
+            <FormRegisterLeadPublic
+              userId={indicator.profile.id}
+              name={indicator.name}
+            />
           </div>
         </div>
       </section>
