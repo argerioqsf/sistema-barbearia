@@ -13,6 +13,7 @@ import {
   ReturnGet,
   ReturnList,
   Roles,
+  Unit,
   User,
 } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
@@ -81,7 +82,7 @@ export async function listUsers(
 }
 
 export async function registerUserProfile(
-  prevState: InitialState<Profile | User>,
+  prevState: InitialState<Profile | User | Unit>,
   formData: FormData,
 ): Promise<InitialState<User>> {
   const validatedFields = formSchemaRegisterUserProfile.safeParse({

@@ -18,7 +18,7 @@ import {
 } from '@/types/general'
 import { Fragment, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
-import { FieldValues, useForm } from 'react-hook-form'
+import { FieldValues, Path, useForm } from 'react-hook-form'
 
 type FormDashboardProps<T> = {
   templateForm?: TemplateForm<T>
@@ -48,7 +48,7 @@ export default function FormDashboard<T>({
   id,
   toastInfo,
 }: FormDashboardProps<T>) {
-  const { register } = useForm<T & FieldValues>({
+  const { register, watch } = useForm<T & FieldValues>({
     values: defaultValues ?? undefined,
   })
   const { pushRouter } = useHandlerRouter()
@@ -86,6 +86,22 @@ export default function FormDashboard<T>({
     return (
       <Box cols={gridCols}>
         {boxItem.fields.map((field, idx) => {
+          if (field.displayLogic && field.displayLogic.fieldId) {
+            const idField = field?.displayLogic?.fieldId as Path<
+              T & FieldValues
+            >
+            const whatchField = watch([idField])
+            const valueField = whatchField[0]
+
+            if (
+              field.displayLogic.expectedValue &&
+              valueField !== field.displayLogic.expectedValue
+            ) {
+              return null
+            } else if (valueField && valueField.length === 0) {
+              return null
+            }
+          }
           return (
             <FieldsForm
               key={idx}
