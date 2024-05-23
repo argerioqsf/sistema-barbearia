@@ -85,6 +85,7 @@ export async function registerUserProfile(
   prevState: InitialState<Profile | User | Unit>,
   formData: FormData,
 ): Promise<InitialState<User>> {
+  const units = JSON.parse(String(formData.get('units')) ?? '[]')
   const validatedFields = formSchemaRegisterUserProfile.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
@@ -96,6 +97,8 @@ export async function registerUserProfile(
     birthday: formData.get('birthday'),
     pix: formData.get('pix'),
     role: formData.get('role'),
+    city: formData.get('city'),
+    units,
   })
 
   if (validatedFields.success) {
@@ -123,6 +126,8 @@ export async function registerUserProfile(
           birthday: formData.get('birthday'),
           pix: formData.get('pix'),
           role: formData.get('role'),
+          city: formData.get('city'),
+          unitsIds: units,
         }),
       })
 
@@ -175,6 +180,7 @@ export async function registerIndicatorProfile(
     genre: formData.get('genre'),
     birthday: formData.get('birthday'),
     pix: formData.get('pix'),
+    city: formData.get('city'),
   })
 
   if (validatedFields.success) {
@@ -202,6 +208,7 @@ export async function registerIndicatorProfile(
           birthday: formData.get('birthday'),
           pix: formData.get('pix'),
           role: 'indicator',
+          city: formData.get('city'),
         }),
       })
 
@@ -356,10 +363,11 @@ export async function listIndicators(
 
 export async function updateUserProfile(
   id: string,
-  prevState: InitialState<Profile | User>,
+  prevState: InitialState<Profile | User | Unit>,
   formData: FormData,
 ): Promise<InitialState<Profile | User>> {
   const role = formData.get('profile.role')
+  const units = JSON.parse(String(formData.get('profile.units')) ?? '[]')
   const validatedFields = formSchemaUpdateUserProfile.safeParse({
     id,
     name: formData.get('name'),
@@ -372,6 +380,7 @@ export async function updateUserProfile(
     'profile.pix': formData.get('profile.pix'),
     'profile.role': formData.get('profile.role'),
     'profile.city': formData.get('profile.city'),
+    'profile.units': units,
   })
 
   if (validatedFields.success) {
@@ -394,6 +403,7 @@ export async function updateUserProfile(
         pix: formData.get('profile.pix'),
         role,
         city: formData.get('profile.city'),
+        units,
       }
       const response = await api(`/profile/${id}`, {
         method: 'PUT',

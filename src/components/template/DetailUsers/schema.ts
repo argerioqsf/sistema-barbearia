@@ -13,4 +13,5 @@ export const formSchemaUpdateUserProfile = z.object({
   'profile.pix': z.string().min(1, 'O campo chave pix é obrigatório'),
   'profile.role': z.nativeEnum(roles).nullable(),
   'profile.city': z.string().min(1, 'O campo cidade é obrigatório'),
+  'profile.units': z.array(z.string()).optional().nullable(),
 })

@@ -287,7 +287,7 @@ export const siteConfig: SiteConfig = [
       },
       {
         id: '6',
-        label: 'Leads',
+        label: 'Meus leads',
         href: '/dashboard/consultants/leads',
         icon: 'Circle',
         userAction: 'consultant.leads.list',

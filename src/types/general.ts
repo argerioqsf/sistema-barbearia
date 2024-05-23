@@ -74,6 +74,7 @@ export type Profile = {
   // eslint-disable-next-line no-use-before-define
   leadsIndicator?: Lead[]
   city: string
+  units?: { unit: Unit }[] | []
 }
 
 export type ProfileProps = keyof Profile
