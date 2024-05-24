@@ -157,6 +157,7 @@ export async function updateLead(
     city: formData.get('city'),
     indicatorId: formData.get('indicatorId'),
     consultantId: formData.get('consultantId'),
+    unitId: formData.get('unitId'),
   })
 
   if (validatedFields.success) {
@@ -181,6 +182,7 @@ export async function updateLead(
           city: formData.get('city'),
           indicatorId: formData.get('indicatorId'),
           consultantId: formData.get('consultantId'),
+          unitId: formData.get('unitId'),
         }),
       })
       if (!response.ok) {
