@@ -155,7 +155,6 @@ export async function updateLead(
     document: formData.get('document'),
     email: formData.get('email'),
     city: formData.get('city'),
-    indicatorId: formData.get('indicatorId'),
     consultantId: formData.get('consultantId'),
     unitId: formData.get('unitId'),
   })
@@ -180,7 +179,6 @@ export async function updateLead(
           document: formData.get('document'),
           email: formData.get('email'),
           city: formData.get('city'),
-          indicatorId: formData.get('indicatorId'),
           consultantId: formData.get('consultantId'),
           unitId: formData.get('unitId'),
         }),

@@ -220,7 +220,7 @@ export function SelectFormWithSearch<T>({
       } else {
         setFormDataExtra((state) => {
           const newState = returnExistingValues(state)
-          newState.append(props.name, '')
+          newState.delete(props.name)
           return newState
         })
         const itemsFilter = selectedItems.filter((item) => item.value !== id)
