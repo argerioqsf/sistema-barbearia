@@ -136,9 +136,10 @@ export function SelectFormWithSearch<T>({
         const newState = returnExistingValues(state)
         const extraDataJson = itemsSelected.map((item) => item.value)
 
-        const newValue2 = extraDataJson[0] ? extraDataJson[0] : ''
-
-        newState.append(props.name, newValue2)
+        const newValue2 = extraDataJson[0] ? extraDataJson[0] : null
+        if (newValue2) {
+          newState.append(props.name, newValue2)
+        }
         return newState
       })
     }
