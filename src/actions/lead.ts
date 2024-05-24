@@ -145,7 +145,7 @@ export async function registerLeadPublic(
 
 export async function updateLead(
   id: string,
-  prevState: InitialState<Lead | User>,
+  prevState: InitialState<Lead | User | Unit>,
   formData: FormData,
 ): Promise<InitialState<Lead | User>> {
   const validatedFields = formSchemaUpdateLead.safeParse({

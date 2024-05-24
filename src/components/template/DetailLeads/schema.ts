@@ -10,6 +10,7 @@ export const formSchemaUpdateLead = z.object({
   indicatorId: z
     .string()
     .min(1, { message: 'O campo indicador é obrigatório' }),
+  unitId: z.string().min(1, { message: 'O campo unidade é obrigatório' }),
   consultantId: z.string().optional().nullable(),
 })
 

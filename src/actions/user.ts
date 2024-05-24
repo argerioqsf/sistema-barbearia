@@ -403,7 +403,7 @@ export async function updateUserProfile(
         pix: formData.get('profile.pix'),
         role,
         city: formData.get('profile.city'),
-        units,
+        unitsIds: units,
       }
       const response = await api(`/profile/${id}`, {
         method: 'PUT',
