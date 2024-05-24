@@ -10,13 +10,14 @@ import {
   Lead,
   ReturnGet,
   ReturnList,
+  Unit,
   User,
 } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 
 export async function registerLead(
-  prevState: InitialState<User | Lead>,
+  prevState: InitialState<User | Lead | Unit>,
   formData: FormData,
 ): Promise<InitialState<User | Lead>> {
   const validatedFields = formSchemaRegisterLead.safeParse({
@@ -27,6 +28,7 @@ export async function registerLead(
     city: formData.get('city'),
     indicatorId: formData.get('indicatorId'),
     consultantId: formData.get('consultantId'),
+    unitId: formData.get('unitId'),
   })
 
   if (validatedFields.success) {
@@ -37,21 +39,23 @@ export async function registerLead(
           errors: { request: 'Erro de credenciais' },
         }
       }
+      const data = {
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        document: formData.get('document'),
+        email: formData.get('email'),
+        city: formData.get('city'),
+        indicatorId: formData.get('indicatorId'),
+        consultantId: formData.get('consultantId'),
+        unitId: formData.get('unitId'),
+      }
       const response = await api(`/create/leads`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN_SIM}`,
         },
-        body: JSON.stringify({
-          name: formData.get('name'),
-          phone: formData.get('phone'),
-          document: formData.get('document'),
-          email: formData.get('email'),
-          city: formData.get('city'),
-          indicatorId: formData.get('indicatorId'),
-          consultantId: formData.get('consultantId'),
-        }),
+        body: JSON.stringify(data),
       })
       if (!response.ok) {
         const errorMessage = await response.text()
@@ -141,7 +145,7 @@ export async function registerLeadPublic(
 
 export async function updateLead(
   id: string,
-  prevState: InitialState<Lead | User>,
+  prevState: InitialState<Lead | User | Unit>,
   formData: FormData,
 ): Promise<InitialState<Lead | User>> {
   const validatedFields = formSchemaUpdateLead.safeParse({
@@ -151,8 +155,8 @@ export async function updateLead(
     document: formData.get('document'),
     email: formData.get('email'),
     city: formData.get('city'),
-    indicatorId: formData.get('indicatorId'),
     consultantId: formData.get('consultantId'),
+    unitId: formData.get('unitId'),
   })
 
   if (validatedFields.success) {
@@ -175,8 +179,8 @@ export async function updateLead(
           document: formData.get('document'),
           email: formData.get('email'),
           city: formData.get('city'),
-          indicatorId: formData.get('indicatorId'),
           consultantId: formData.get('consultantId'),
+          unitId: formData.get('unitId'),
         }),
       })
       if (!response.ok) {

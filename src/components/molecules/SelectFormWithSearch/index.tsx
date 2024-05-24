@@ -136,9 +136,10 @@ export function SelectFormWithSearch<T>({
         const newState = returnExistingValues(state)
         const extraDataJson = itemsSelected.map((item) => item.value)
 
-        const newValue2 = extraDataJson[0] ? extraDataJson[0] : ''
-
-        newState.append(props.name, newValue2)
+        const newValue2 = extraDataJson[0] ? extraDataJson[0] : null
+        if (newValue2) {
+          newState.append(props.name, newValue2)
+        }
         return newState
       })
     }
@@ -220,7 +221,7 @@ export function SelectFormWithSearch<T>({
       } else {
         setFormDataExtra((state) => {
           const newState = returnExistingValues(state)
-          newState.append(props.name, '')
+          newState.delete(props.name)
           return newState
         })
         const itemsFilter = selectedItems.filter((item) => item.value !== id)

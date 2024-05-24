@@ -79,6 +79,12 @@ export const templateForm: TemplateForm<User | Profile> = {
                 ],
               },
             },
+            {
+              id: 'city',
+              required: true,
+              type: 'text',
+              label: 'Cidade',
+            },
           ],
         },
         {

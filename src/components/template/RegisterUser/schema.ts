@@ -13,4 +13,6 @@ export const formSchemaRegisterUserProfile = z.object({
   birthday: z.string().min(1, { message: 'O campo Nascimento é obrigatório' }),
   pix: z.string().min(1, { message: 'O campo Pix é obrigatório' }),
   role: z.enum(roles),
+  city: z.string().min(1, { message: 'O campo Cindade é obrigatório' }),
+  units: z.array(z.string()).optional().nullable(),
 })

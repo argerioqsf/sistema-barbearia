@@ -3,9 +3,10 @@ import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import roles from '@/constants/roles.json'
-import { Option, Profile, Roles, User } from '@/types/general'
+import { Option, Profile, Roles, Unit, User } from '@/types/general'
 import * as templates from './templates'
 import { notFound } from 'next/navigation'
+import { listUnits } from '@/actions/unit'
 
 export default async function DetailUsers({ id }: { id: string }) {
   const response = await getUser(id)
@@ -35,6 +36,14 @@ export default async function DetailUsers({ id }: { id: string }) {
     ...templates.templateForm.sections[1].boxes[0].fields[0].option,
     list: options,
   }
+  const responseUnits = await listUnits('', '')
+  const units = responseUnits?.response ?? []
+
+  templates.templateForm.sections[1].boxes[1].fields[0].option = {
+    ...templates.templateForm.sections[1].boxes[1].fields[0].option,
+    list: [...units],
+    values: user?.profile?.units?.map((unit) => unit.unit.id),
+  }
 
   return (
     <ContainerDashboard>
@@ -43,7 +52,7 @@ export default async function DetailUsers({ id }: { id: string }) {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6 lg:mt-8 grid gap-8">
-          <FormDashboard<User | Profile>
+          <FormDashboard<User | Profile | Unit>
             title={templates.templateForm.title}
             templateForm={templates.templateForm}
             defaultValues={user}

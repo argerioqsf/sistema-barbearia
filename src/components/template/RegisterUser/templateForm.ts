@@ -1,6 +1,6 @@
-import { Profile, TemplateForm, User } from '@/types/general'
+import { Profile, TemplateForm, Unit, User } from '@/types/general'
 
-export const templateForm: TemplateForm<User | Profile> = {
+export const templateForm: TemplateForm<User | Profile | Unit> = {
   title: 'Cadastrar Usuário',
   textButton: 'Cadastrar',
   sections: [
@@ -79,6 +79,12 @@ export const templateForm: TemplateForm<User | Profile> = {
                 ],
               },
             },
+            {
+              id: 'city',
+              required: true,
+              type: 'text',
+              label: 'Cidade',
+            },
           ],
         },
         {
@@ -145,6 +151,27 @@ export const templateForm: TemplateForm<User | Profile> = {
                 keyLabel: 'label',
                 keyValue: 'value',
                 list: [],
+              },
+            },
+          ],
+        },
+        {
+          id: 2,
+          fields: [
+            {
+              id: 'units',
+              required: true,
+              type: 'selectSearch',
+              label: 'Unidades',
+              option: {
+                keyLabel: 'name',
+                keyValue: 'id',
+                variant: 'multiple',
+                list: [],
+              },
+              displayLogic: {
+                fieldId: 'role',
+                expectedValue: 'consultant',
               },
             },
           ],

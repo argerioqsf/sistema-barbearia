@@ -56,6 +56,7 @@ export type User = {
   // eslint-disable-next-line no-use-before-define
   profile: Profile | Record<string, never>
   created_at: string
+  units: Unit[]
 }
 
 export type UserProps = keyof User
@@ -73,6 +74,7 @@ export type Profile = {
   // eslint-disable-next-line no-use-before-define
   leadsIndicator?: Lead[]
   city: string
+  units?: { unit: Unit }[] | []
 }
 
 export type ProfileProps = keyof Profile
@@ -277,6 +279,10 @@ export type FieldsTemplateForm<T> = {
     values?: string[]
     onDelete?: (id: string, formDataExtra: FormData) => void
     onChange?: (id?: string) => void
+  }
+  displayLogic?: {
+    fieldId: string
+    expectedValue?: string
   }
 }
 

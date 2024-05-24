@@ -91,9 +91,9 @@ const verifyPermissionIndicatorRequest = {
 
 const verifyPermissionLead = {
   'lead.view': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
+    ['administrator', 'coordinator', 'consultant'].includes(roleUser),
   'lead.list': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
+    ['administrator', 'coordinator', 'consultant'].includes(roleUser),
   'lead.register': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
   'lead.update': (roleUser: string) =>

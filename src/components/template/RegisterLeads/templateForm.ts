@@ -1,6 +1,6 @@
-import { Lead, TemplateForm, User } from '@/types/general'
+import { Lead, TemplateForm, Unit, User } from '@/types/general'
 
-export const templateForm: TemplateForm<Lead | User> = {
+export const templateForm: TemplateForm<Lead | User | Unit> = {
   title: 'Cadastrar Leads',
   textButton: 'Cadastrar',
   sections: [
@@ -88,6 +88,29 @@ export const templateForm: TemplateForm<Lead | User> = {
               option: {
                 keyLabel: 'name',
                 keyValue: 'profile.id',
+                variant: 'single',
+                list: [],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 4,
+      title: 'Unidade',
+      boxes: [
+        {
+          id: 4,
+          fields: [
+            {
+              id: 'unitId',
+              required: true,
+              type: 'selectSearch',
+              label: '',
+              option: {
+                keyLabel: 'name',
+                keyValue: 'id',
                 variant: 'single',
                 list: [],
               },

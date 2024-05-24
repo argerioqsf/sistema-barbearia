@@ -6,6 +6,7 @@ import { OptionGeneric, Profile, Roles, User } from '@/types/general'
 import React from 'react'
 import { templateForm } from './templateForm'
 import roles from '@/constants/roles.json'
+import { listUnits } from '@/actions/unit'
 
 export default async function RegisterUser() {
   let options: OptionGeneric<User | Profile>[] = [
@@ -27,6 +28,13 @@ export default async function RegisterUser() {
   templateForm.sections[1].boxes[0].fields[0].option = {
     ...templateForm.sections[1].boxes[0].fields[0].option,
     list: options,
+  }
+
+  const responseUnits = await listUnits('', '')
+  const units = responseUnits?.response ?? []
+  templateForm.sections[1].boxes[1].fields[0].option = {
+    ...templateForm.sections[1].boxes[1].fields[0].option,
+    list: [...units],
   }
 
   return (

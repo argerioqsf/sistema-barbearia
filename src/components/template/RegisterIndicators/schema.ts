@@ -9,4 +9,5 @@ export const formSchemaRegisterIndicatorProfile = z.object({
   genre: z.string().min(1, { message: 'O campo Genero é obrigatório' }),
   birthday: z.string().min(1, { message: 'O campo Nascimento é obrigatório' }),
   pix: z.string().min(1, { message: 'O campo Pix é obrigatório' }),
+  city: z.string().min(1, { message: 'O campo Cindade é obrigatório' }),
 })
