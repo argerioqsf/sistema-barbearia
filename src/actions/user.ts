@@ -166,6 +166,97 @@ export async function registerUserProfile(
   }
 }
 
+export async function updateUserProfile(
+  id: string,
+  prevState: InitialState<Profile | User | Unit>,
+  formData: FormData,
+): Promise<InitialState<Profile | User>> {
+  const role = formData.get('profile.role')
+  const units = JSON.parse(String(formData.get('profile.units')) ?? '[]')
+  const validatedFields = formSchemaUpdateUserProfile.safeParse({
+    id,
+    name: formData.get('name'),
+    email: formData.get('email'),
+    'profile.active': formData.get('active'),
+    'profile.phone': formData.get('profile.phone'),
+    'profile.cpf': formData.get('profile.cpf'),
+    'profile.genre': formData.get('profile.genre'),
+    'profile.birthday': formData.get('profile.birthday'),
+    'profile.pix': formData.get('profile.pix'),
+    'profile.role': formData.get('profile.role'),
+    'profile.city': formData.get('profile.city'),
+    'profile.units': units,
+  })
+
+  if (validatedFields.success) {
+    try {
+      const TOKEN_SIM = getTokenFromCookieServer()
+
+      if (!TOKEN_SIM) {
+        return {
+          errors: { request: 'Erro de credenciais' },
+        }
+      }
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        active: formData.get('active') === 'true',
+        phone: formData.get('profile.phone'),
+        cpf: formData.get('profile.cpf'),
+        genre: formData.get('profile.genre'),
+        birthday: formData.get('profile.birthday'),
+        pix: formData.get('profile.pix'),
+        role,
+        city: formData.get('profile.city'),
+        unitsIds: units,
+      }
+      console.log('data:', data)
+      const response = await api(`/profile/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN_SIM}`,
+        },
+        body: JSON.stringify(data),
+      })
+      if (!response.ok) {
+        const errorMessage = await response.text()
+        return {
+          errors: { request: JSON.parse(errorMessage).message },
+        }
+      }
+      revalidateTag(id)
+      if (role === 'indicator') {
+        revalidateTag('indicators')
+      } else if (role === 'consultant') {
+        revalidateTag('consultants')
+      } else {
+        revalidateTag('users')
+      }
+
+      return {
+        errors: {},
+        ok: true,
+      }
+    } catch (error) {
+      return {
+        errors: { request: 'Failed to update User' },
+      }
+    }
+  } else if (validatedFields.error) {
+    const error = validatedFields.error.flatten().fieldErrors as Errors<
+      Profile & User
+    >
+    return {
+      errors: { ...error },
+    }
+  } else {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
+// Indicador
+
 export async function registerIndicatorProfile(
   prevState: InitialState<User | Profile>,
   formData: FormData,
@@ -358,94 +449,6 @@ export async function listIndicators(
     return { response: users, count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
-  }
-}
-
-export async function updateUserProfile(
-  id: string,
-  prevState: InitialState<Profile | User | Unit>,
-  formData: FormData,
-): Promise<InitialState<Profile | User>> {
-  const role = formData.get('profile.role')
-  const units = JSON.parse(String(formData.get('profile.units')) ?? '[]')
-  const validatedFields = formSchemaUpdateUserProfile.safeParse({
-    id,
-    name: formData.get('name'),
-    email: formData.get('email'),
-    'profile.active': formData.get('active'),
-    'profile.phone': formData.get('profile.phone'),
-    'profile.cpf': formData.get('profile.cpf'),
-    'profile.genre': formData.get('profile.genre'),
-    'profile.birthday': formData.get('profile.birthday'),
-    'profile.pix': formData.get('profile.pix'),
-    'profile.role': formData.get('profile.role'),
-    'profile.city': formData.get('profile.city'),
-    'profile.units': units,
-  })
-
-  if (validatedFields.success) {
-    try {
-      const TOKEN_SIM = getTokenFromCookieServer()
-
-      if (!TOKEN_SIM) {
-        return {
-          errors: { request: 'Erro de credenciais' },
-        }
-      }
-      const data = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        active: formData.get('active') === 'true',
-        phone: formData.get('profile.phone'),
-        cpf: formData.get('profile.cpf'),
-        genre: formData.get('profile.genre'),
-        birthday: formData.get('profile.birthday'),
-        pix: formData.get('profile.pix'),
-        role,
-        city: formData.get('profile.city'),
-        unitsIds: units,
-      }
-      const response = await api(`/profile/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN_SIM}`,
-        },
-        body: JSON.stringify(data),
-      })
-      if (!response.ok) {
-        const errorMessage = await response.text()
-        return {
-          errors: { request: JSON.parse(errorMessage).message },
-        }
-      }
-      revalidateTag(id)
-      if (role === 'indicator') {
-        revalidateTag('indicators')
-      } else if (role === 'consultant') {
-        revalidateTag('consultants')
-      } else {
-        revalidateTag('users')
-      }
-
-      return {
-        errors: {},
-        ok: true,
-      }
-    } catch (error) {
-      return {
-        errors: { request: 'Failed to update User' },
-      }
-    }
-  } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors<
-      Profile & User
-    >
-    return {
-      errors: { ...error },
-    }
-  } else {
-    return { errors: { request: 'Error unknown' } }
   }
 }
 

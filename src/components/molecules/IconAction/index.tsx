@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
 import { Alert, InitialState, Toast } from '@/types/general'
 import { CatalogIcons, handleIcons } from '@/utils/handleIcons'
+import { useLocale } from 'next-intl'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -29,6 +30,7 @@ type AvatarProps<T> = {
   href?: string
   toastInfo?: Toast
   alertInfo?: Alert
+  getClipBoard?: (id?: string) => Promise<string>
 }
 
 export default function IconAction<T>({
@@ -41,9 +43,24 @@ export default function IconAction<T>({
   onClick,
   toastInfo,
   alertInfo,
+  getClipBoard,
 }: AvatarProps<T>) {
   const { toast } = useToast()
   const Icon = handleIcons(icon)
+  const locale = useLocale()
+
+  async function clipBoard() {
+    if (getClipBoard) {
+      const id = await getClipBoard()
+      const link = `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}/sim/indicator/${id}`
+      navigator.clipboard.writeText(link)
+      toast({
+        title: toastInfo?.title,
+        description: toastInfo?.description,
+      })
+    }
+  }
+
   return href.length > 0 ? (
     <LinkDefault className="flex justify-center items-center" href={href}>
       <span
@@ -55,7 +72,7 @@ export default function IconAction<T>({
         {children ?? <Icon size={size} color={colorIcon} />}
       </span>
     </LinkDefault>
-  ) : (
+  ) : alertInfo ? (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="ghost" size="icon">
@@ -108,5 +125,22 @@ export default function IconAction<T>({
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
+  ) : (
+    <button
+      onClick={async () => {
+        onClick ? onClick() : clipBoard()
+      }}
+      type="button"
+      className="flex rounded-full justify-center items-center focus:bg-transparent bg-transparent p-0"
+    >
+      <span
+        className={twMerge(
+          'p-2 rounded-full flex justify-center items-center border-2',
+          classIcon,
+        )}
+      >
+        {children ?? <Icon size={size} color={colorIcon} />}
+      </span>
+    </button>
   )
 }

@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
 import { Alert, InitialState, Toast } from '@/types/general'
+import { useLocale } from 'next-intl'
 
 type AvatarProps<T> = {
   href?: string
@@ -22,6 +23,7 @@ type AvatarProps<T> = {
   toastInfo?: Toast
   alertInfo?: Alert
   name?: string
+  getClipBoard?: (id?: string) => Promise<string>
 }
 
 export default function DotAction<T>({
@@ -30,8 +32,23 @@ export default function DotAction<T>({
   toastInfo,
   alertInfo,
   name,
+  getClipBoard,
 }: AvatarProps<T>) {
   const { toast } = useToast()
+  const locale = useLocale()
+
+  async function clipBoard() {
+    if (getClipBoard) {
+      const id = await getClipBoard()
+      const link = `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}/sim/indicator/${id}`
+      navigator.clipboard.writeText(link)
+      toast({
+        title: toastInfo?.title,
+        description: toastInfo?.description,
+      })
+    }
+  }
+
   return href?.length > 0 ? (
     <LinkDefault
       href={href}
@@ -39,7 +56,7 @@ export default function DotAction<T>({
     >
       {name}
     </LinkDefault>
-  ) : (
+  ) : alertInfo ? (
     <AlertDialog>
       <AlertDialogTrigger className="w-full px-4 py-2 justify-start" asChild>
         <Button variant="ghost" size="icon">
@@ -76,5 +93,15 @@ export default function DotAction<T>({
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
+  ) : (
+    <Button
+      variant="ghost"
+      onClick={async () => {
+        onClick ? onClick() : clipBoard()
+      }}
+      className="block px-4 py-2 hover:bg-white dark:hover:bg-white dark:hover:text-secondary-50"
+    >
+      {name}
+    </Button>
   )
 }

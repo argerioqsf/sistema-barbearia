@@ -207,3 +207,27 @@ export async function listUnits(
     return { error: { request: 'Error unknown' } }
   }
 }
+
+export async function listSelectUnits(): Promise<ReturnList<Unit>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/units/select`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: { tags: ['units'], revalidate: 60 * 4 },
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        error: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    const { units } = await response.json()
+    return { response: units }
+  } catch (error) {
+    return { error: { request: 'Error unknown' } }
+  }
+}

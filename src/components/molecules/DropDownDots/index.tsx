@@ -64,6 +64,7 @@ export default function DropDownDots<T>({
                 onClick={action.onclick?.bind(null, id)}
                 toastInfo={action.toast}
                 alertInfo={action.alert}
+                getClipBoard={action.getClipBoard?.bind(null, id ?? '')}
               />
             </li>
           ))}
