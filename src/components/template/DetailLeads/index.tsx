@@ -1,17 +1,17 @@
+import { listSelectConsultants } from '@/actions/consultant'
 import { getLead, updateLead } from '@/actions/lead'
+import { getProfile } from '@/actions/profile'
 import { registerTimeLine } from '@/actions/timeLine'
+import { listSelectUnits } from '@/actions/unit'
 import { listIndicators } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import TimeLineComponent from '@/components/organisms/TimeLineComponent'
 import { Lead, Unit, User } from '@/types/general'
-import * as templates from './templates'
-import { notFound } from 'next/navigation'
-import { getProfile } from '@/actions/profile'
 import { checkUserPermissions } from '@/utils/checkUserPermissions'
-import { listSelectConsultants } from '@/actions/consultant'
-import { listUnits } from '@/actions/unit'
+import { notFound } from 'next/navigation'
+import * as templates from './templates'
 
 export default async function DetailLeads({ id }: { id: string }) {
   const responseProfile = await getProfile()
@@ -49,7 +49,7 @@ export default async function DetailLeads({ id }: { id: string }) {
     values: [...values],
   }
 
-  const responseUnits = await listUnits('', '')
+  const responseUnits = await listSelectUnits()
   const units = responseUnits?.response ?? []
   const valuesUnitId = lead.unitId ? [lead.unitId] : []
   templates.templateForm.sections[3].boxes[0].fields[0].option = {

@@ -279,7 +279,7 @@ export const siteConfig: SiteConfig = [
     userAction: 'consultant.view',
     subMenuList: [
       {
-        id: '80',
+        id: '820',
         label: 'Monitoramento',
         href: '/dashboard/consultants/monitoring',
         icon: 'Circle',

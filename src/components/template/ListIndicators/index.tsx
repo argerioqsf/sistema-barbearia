@@ -6,6 +6,22 @@ import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
 import { infoList } from './templates'
 
+infoList.listActions = [
+  {
+    id: 1,
+    icon: 'Link',
+    getClipBoard: async (id: string) => {
+      'use server'
+      return id
+    },
+    name: 'Link',
+    toast: {
+      title: 'Link copiado com sucesso!',
+    },
+  },
+  ...(infoList.listActions ?? []),
+]
+
 export default async function ListIndicators({ searchParams }: SearchParams) {
   const response = await listIndicators(
     searchParams?.q ?? '',

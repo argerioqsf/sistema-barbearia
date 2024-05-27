@@ -1,12 +1,12 @@
+import { listSelectConsultants } from '@/actions/consultant'
 import { registerLead } from '@/actions/lead'
+import { listSelectUnits } from '@/actions/unit'
 import { listIndicators } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import { Lead, Unit, User } from '@/types/general'
 import { templateForm } from './templateForm'
-import { listSelectConsultants } from '@/actions/consultant'
-import { listUnits } from '@/actions/unit'
 
 export default async function RegisterLeads() {
   const responseIndicators = await listIndicators()
@@ -22,7 +22,7 @@ export default async function RegisterLeads() {
     list: [...consultants],
   }
 
-  const responseUnits = await listUnits('', '')
+  const responseUnits = await listSelectUnits()
   const units = responseUnits?.response ?? []
   templateForm.sections[3].boxes[0].fields[0].option = {
     ...templateForm.sections[3].boxes[0].fields[0].option,

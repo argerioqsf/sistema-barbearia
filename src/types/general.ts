@@ -220,6 +220,7 @@ export type ListAction<T> = {
   href?: string
   name: string
   onclick?: (id?: string) => void | Promise<InitialState<T>>
+  getClipBoard?: (id: string) => Promise<string>
   toast?: Toast
   alert?: Alert
 }

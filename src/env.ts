@@ -2,10 +2,12 @@ import { z } from 'zod'
 
 const envSchema = z.object({
   API_BASE_URL: z.string().url(),
+  BASE_URL: z.string().url(),
 })
 
 const parseEnv = envSchema.safeParse({
   API_BASE_URL: process.env.API_BASE_URL,
+  BASE_URL: process.env.BASE_URL,
 })
 
 if (!parseEnv.success) {

@@ -69,6 +69,7 @@ export default function ItemList<T>({
             <IconAction
               href={action.href ? `${action.href}${id}` : undefined}
               onClick={action.onclick?.bind(null, id)}
+              getClipBoard={action.getClipBoard?.bind(null, id)}
               icon={action.icon}
               key={action.id}
               size={35}
