@@ -1,8 +1,8 @@
-import { Profile, TemplateForm, User } from '@/types/general'
+import { Organization, Profile, TemplateForm, User } from '@/types/general'
 
 export const templateForm: TemplateForm<Profile | User> = {
   title: 'Perfil',
-  textButton: 'Editar',
+  textButton: 'Editar Perfil',
   sections: [
     {
       id: 1,
@@ -124,6 +124,53 @@ export const templateForm: TemplateForm<Profile | User> = {
                   },
                 ],
               },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
+
+export const templateFormOrganization: TemplateForm<Organization> = {
+  title: 'Organização',
+  textButton: 'Editar Organização',
+  sections: [
+    {
+      id: 1,
+      title: 'Dados da Organização',
+      boxes: [
+        {
+          id: 1,
+          fields: [
+            {
+              id: 'name',
+              required: true,
+              type: 'text',
+              label: 'Nome',
+            },
+            {
+              id: 'slugs',
+              required: true,
+              type: 'text',
+              label: 'Nome único de identificação',
+            },
+          ],
+        },
+        {
+          id: 3,
+          fields: [
+            {
+              id: 'consultant_bonus',
+              required: true,
+              type: 'number',
+              label: 'Bônus do Cosultor',
+            },
+            {
+              id: 'indicator_bonus',
+              required: true,
+              type: 'number',
+              label: 'Bônus do Indicador',
             },
           ],
         },

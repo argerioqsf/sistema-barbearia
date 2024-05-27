@@ -126,6 +126,13 @@ const verifyPermissionDashboard = {
     ['coordinator', 'administrator', 'financial'].includes(roleUser),
 }
 
+const verifyPermissionOrganization = {
+  'organization.detail': (roleUser: string) =>
+    ['administrator'].includes(roleUser),
+  'organization.update': (roleUser: string) =>
+    ['administrator'].includes(roleUser),
+}
+
 const verifyPermission = {
   ...verifyPermissionGeneral,
   ...verifyPermissionUser,
@@ -141,6 +148,7 @@ const verifyPermission = {
   ...verifyPermissionWaitingConfirmedLead,
   ...verifyPermissionDashboard,
   ...verifyPermissionConsultant,
+  ...verifyPermissionOrganization,
 }
 
 export type UserAction = keyof typeof verifyPermission

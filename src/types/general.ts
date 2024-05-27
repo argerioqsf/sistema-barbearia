@@ -47,6 +47,16 @@ export type Unit = {
 
 export type UnitProps = keyof Unit
 
+export type Organization = {
+  id: string
+  name: string
+  consultant_bonus: number
+  indicator_bonus: number
+  slugs: string
+  // eslint-disable-next-line no-use-before-define
+  users: { user: User }[]
+}
+
 export type User = {
   id: string
   name: string
@@ -57,6 +67,7 @@ export type User = {
   profile: Profile | Record<string, never>
   created_at: string
   units: Unit[]
+  organizations: { organization: Organization }[]
 }
 
 export type UserProps = keyof User
@@ -259,6 +270,7 @@ export type FieldsTemplateForm<T> = {
   id: Path<T>
   required: boolean
   type:
+    | 'number'
     | 'text'
     | 'date'
     | 'image'
