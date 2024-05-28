@@ -28,7 +28,16 @@ const TimeLineComponent = ({ timeLine }: TimeLineComponentProps) => {
             <div className="w-full p-3 border border-gray-300 rounded-lg mb-4 bg-white">
               <div className="w-full flex flex-row justify-between items-center border-b border-gray-300 pb-2 text-wrap">
                 <h2>{item?.status}</h2>
-                <h4>{format.relativeTime(new Date(item.createdAt))}</h4>
+                <h4>
+                  {format.dateTime(new Date(item.createdAt), {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                  })}
+                </h4>
               </div>
               <div className="pt-2 text-wrap">
                 <Text>{item.description}</Text>
