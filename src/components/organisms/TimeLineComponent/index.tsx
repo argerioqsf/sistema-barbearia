@@ -1,13 +1,16 @@
-import { Text } from '@/components/atoms'
-import { Avatar } from '@/components/molecules'
-import { TimeLine } from '@/types/general'
-import React from 'react'
+import { Text } from "@/components/atoms";
+import { Avatar } from "@/components/molecules";
+import { TimeLine } from "@/types/general";
+import React from "react";
+import { useFormatter } from "next-intl";
 
 type TimeLineComponentProps = {
-  timeLine: TimeLine[]
-}
+  timeLine: TimeLine[];
+};
 
 const TimeLineComponent = ({ timeLine }: TimeLineComponentProps) => {
+  const format = useFormatter();
+
   return (
     <div className="w-[90vw] md:w-full">
       <div className="p-4 pb-2 bg-gray-200 rounded-xl rounded-b-none w-56 shadow-md shadow-slate-400">
@@ -25,7 +28,7 @@ const TimeLineComponent = ({ timeLine }: TimeLineComponentProps) => {
             <div className="w-full p-3 border border-gray-300 rounded-lg mb-4 bg-white">
               <div className="w-full flex flex-row justify-between items-center border-b border-gray-300 pb-2 text-wrap">
                 <h2>{item?.status}</h2>
-                <h4>{item?.created_at}</h4>
+                <h4>{format.relativeTime(new Date(item.createdAt))}</h4>
               </div>
               <div className="pt-2 text-wrap">
                 <Text>{item.description}</Text>
@@ -42,7 +45,7 @@ const TimeLineComponent = ({ timeLine }: TimeLineComponentProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TimeLineComponent
+export default TimeLineComponent;

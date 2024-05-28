@@ -100,7 +100,7 @@ export type TimeLine = {
   leadsId: string
   course?: Course
   course_id?: string
-  created_at: string
+  createdAt: string
 }
 
 export type TimeLineProps = keyof TimeLine
