@@ -14,7 +14,7 @@ export async function updateOrganization(
   const validatedFields = formSchemaUpdateOrganization.safeParse({
     id,
     name: formData.get('name'),
-    slugs: formData.get('slugs'),
+    slug: formData.get('slug'),
     consultant_bonus: formData.get('consultant_bonus'),
     indicator_bonus: formData.get('indicator_bonus'),
   })
@@ -35,7 +35,7 @@ export async function updateOrganization(
         },
         body: JSON.stringify({
           name: formData.get('name'),
-          slugs: formData.get('slugs'),
+          slug: formData.get('slug'),
           consultant_bonus: Number(formData.get('consultant_bonus')),
           indicator_bonus: Number(formData.get('indicator_bonus')),
         }),

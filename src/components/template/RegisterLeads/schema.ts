@@ -10,5 +10,7 @@ export const formSchemaRegisterLead = z.object({
     .string()
     .min(1, { message: 'O campo indicador é obrigatório' }),
   unitId: z.string().min(1, { message: 'O campo unidade é obrigatório' }),
+  courseId: z.string().min(1, { message: 'O campo Curso é obrigatório' }),
+  segmentId: z.string().min(1, { message: 'O campo Seguimento é obrigatório' }),
   consultantId: z.string().optional().nullable(),
 })

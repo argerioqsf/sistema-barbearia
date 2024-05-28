@@ -33,7 +33,7 @@ export const siteConfig: SiteConfig = [
     userAction: 'dashboard.view',
   },
   {
-    id: '3',
+    id: '12',
     label: 'Organização',
     href: '/dashboard/organization/detail',
     icon: 'LayoutDashboard',

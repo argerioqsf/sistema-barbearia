@@ -7,6 +7,8 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import { Lead, Unit, User } from '@/types/general'
 import { templateForm } from './templateForm'
+import { listSelectCourses } from '@/actions/course'
+import { listSelectSegments } from '@/actions/segments'
 
 export default async function RegisterLeads() {
   const responseIndicators = await listIndicators()
@@ -27,6 +29,20 @@ export default async function RegisterLeads() {
   templateForm.sections[3].boxes[0].fields[0].option = {
     ...templateForm.sections[3].boxes[0].fields[0].option,
     list: [...units],
+  }
+
+  const responseCourses = await listSelectCourses()
+  const courses = responseCourses?.response ?? []
+  templateForm.sections[4].boxes[0].fields[0].option = {
+    ...templateForm.sections[4].boxes[0].fields[0].option,
+    list: [...courses],
+  }
+
+  const responseSegments = await listSelectSegments()
+  const segments = responseSegments?.response ?? []
+  templateForm.sections[5].boxes[0].fields[0].option = {
+    ...templateForm.sections[5].boxes[0].fields[0].option,
+    list: [...segments],
   }
 
   return (

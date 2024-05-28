@@ -16,8 +16,8 @@ const TimeLineComponent = ({ timeLine }: TimeLineComponentProps) => {
         </Text>
       </div>
       <div className="bg-gray-200 rounded-xl rounded-tl-none p-6 pl-0 shadow-md shadow-slate-400">
-        {timeLine?.map((item) => (
-          <div className="w-full flex flex-row" key={item.id}>
+        {timeLine?.map((item, idx) => (
+          <div className="w-full flex flex-row" key={idx}>
             <div className="flex flex-col justify-center items-center px-4">
               <Avatar size={20} classIcon="bg-blue-500" icon="Circle" />
               <div className="h-full w-1 bg-gray-300" />

@@ -7,15 +7,15 @@ import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 
 export async function registerTimeLine(
+  id: string,
   prevState: InitialState<TimeLine>,
   formData: FormData,
 ): Promise<InitialState<TimeLine>> {
   const validatedFields = formSchemaCreateTimeLine.safeParse({
-    title: formData.get('title'),
+    id,
+    title: 'title',
     description: formData.get('description'),
     status: formData.get('status'),
-    leadsId: formData.get('lead.id'),
-    courseId: formData.get('courseId'),
   })
 
   if (validatedFields.success) {
@@ -26,14 +26,14 @@ export async function registerTimeLine(
           errors: { request: 'Erro de credenciais' },
         }
       }
-      const response = await api(`/time_line`, {
+      const response = await api(`/create/timeline/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${TOKEN_SIM}`,
         },
         body: JSON.stringify({
-          title: formData.get('title'),
+          title: 'title',
           description: formData.get('description'),
           status: formData.get('status'),
           leadsId: formData.get('lead.id'),
@@ -47,6 +47,7 @@ export async function registerTimeLine(
         }
       }
       revalidateTag('timelines')
+      revalidateTag(id)
       return {
         errors: {},
         ok: true,

@@ -29,6 +29,8 @@ export async function registerLead(
     indicatorId: formData.get('indicatorId'),
     consultantId: formData.get('consultantId'),
     unitId: formData.get('unitId'),
+    courseId: formData.get('courseId'),
+    segmentId: formData.get('segmentId'),
   })
 
   if (validatedFields.success) {
@@ -48,6 +50,8 @@ export async function registerLead(
         indicatorId: formData.get('indicatorId'),
         consultantId: formData.get('consultantId'),
         unitId: formData.get('unitId'),
+        courseId: formData.get('courseId'),
+        segmentId: formData.get('segmentId'),
       }
       const response = await api(`/create/leads`, {
         method: 'POST',
@@ -88,15 +92,15 @@ export async function registerLeadPublic(
   prevState: InitialState<Lead>,
   formData: FormData,
 ): Promise<InitialState<Lead>> {
-  console.log('formData: ', formData)
   const validatedFields = formSchemaRegisterLeadPublic.safeParse({
     name: formData.get('name'),
     phone: formData.get('phone'),
     document: formData.get('document'),
     email: formData.get('email'),
     city: formData.get('city'),
-    segmentId: formData.get('segmentId'),
     unitId: formData.get('unitId'),
+    courseId: formData.get('courseId'),
+    segmentId: formData.get('segmentId'),
   })
 
   if (validatedFields.success) {
@@ -112,9 +116,10 @@ export async function registerLeadPublic(
           document: formData.get('document'),
           email: formData.get('email'),
           city: formData.get('city'),
-          segmentId: formData.get('segmentId'),
           unitId: formData.get('unitId'),
           indicatorId: id ?? '',
+          courseId: formData.get('courseId'),
+          segmentId: formData.get('segmentId'),
         }),
       })
       if (!response.ok) {
@@ -157,6 +162,8 @@ export async function updateLead(
     city: formData.get('city'),
     consultantId: formData.get('consultantId'),
     unitId: formData.get('unitId'),
+    courseId: formData.get('courseId'),
+    segmentId: formData.get('segmentId'),
   })
 
   if (validatedFields.success) {
@@ -181,6 +188,8 @@ export async function updateLead(
           city: formData.get('city'),
           consultantId: formData.get('consultantId'),
           unitId: formData.get('unitId'),
+          courseId: formData.get('courseId'),
+          segmentId: formData.get('segmentId'),
         }),
       })
       if (!response.ok) {
@@ -190,6 +199,7 @@ export async function updateLead(
         }
       }
       revalidateTag('leads')
+      revalidateTag(id)
       return {
         errors: {},
         ok: true,
@@ -217,7 +227,7 @@ export async function getLead(id: string): Promise<ReturnGet<Lead>> {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      next: { tags: ['leads'], revalidate: 60 * 4 },
+      next: { tags: [id], revalidate: 60 * 4 },
     })
 
     if (!response.ok) {

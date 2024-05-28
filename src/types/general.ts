@@ -52,7 +52,7 @@ export type Organization = {
   name: string
   consultant_bonus: number
   indicator_bonus: number
-  slugs: string
+  slug: string
   // eslint-disable-next-line no-use-before-define
   users: { user: User }[]
 }

@@ -15,7 +15,7 @@ export const formSchemaUpdateProfileUser = z.object({
 export const formSchemaUpdateOrganization = z.object({
   id: z.string().min(1, 'O campo Id é obrigatório'),
   name: z.string().min(1, 'O campo Nome é obrigatório'),
-  slugs: z.string().min(1, 'O campo Nome unico é obrigatório'),
+  slug: z.string().min(1, 'O campo Nome unico é obrigatório'),
   consultant_bonus: z
     .string()
     .min(1, 'O campo Bônus do consultor é obrigatório'),

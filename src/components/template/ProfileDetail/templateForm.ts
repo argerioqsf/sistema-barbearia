@@ -150,7 +150,7 @@ export const templateFormOrganization: TemplateForm<Organization> = {
               label: 'Nome',
             },
             {
-              id: 'slugs',
+              id: 'slug',
               required: true,
               type: 'text',
               label: 'Nome único de identificação',

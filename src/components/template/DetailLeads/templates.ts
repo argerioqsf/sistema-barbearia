@@ -127,6 +127,52 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
         },
       ],
     },
+    {
+      id: 5,
+      title: 'Curso',
+      boxes: [
+        {
+          id: 4,
+          fields: [
+            {
+              id: 'courseId',
+              required: true,
+              type: 'selectSearch',
+              label: '',
+              option: {
+                keyLabel: 'name',
+                keyValue: 'id',
+                variant: 'single',
+                list: [],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 5,
+      title: 'Seguimento',
+      boxes: [
+        {
+          id: 4,
+          fields: [
+            {
+              id: 'segmentId',
+              required: true,
+              type: 'selectSearch',
+              label: '',
+              option: {
+                keyLabel: 'name',
+                keyValue: 'id',
+                variant: 'single',
+                list: [],
+              },
+            },
+          ],
+        },
+      ],
+    },
   ],
 }
 
@@ -138,28 +184,6 @@ export const templateFormTimeLine: TemplateForm<TimeLine> = {
       id: 1,
       title: 'Registro de status',
       boxes: [
-        {
-          id: 2,
-          fields: [
-            {
-              id: 'title',
-              required: true,
-              type: 'text',
-              label: 'Nome',
-            },
-          ],
-        },
-        {
-          id: 3,
-          fields: [
-            {
-              id: 'description',
-              required: true,
-              type: 'text',
-              label: 'Descrição',
-            },
-          ],
-        },
         {
           id: 4,
           fields: [
@@ -173,11 +197,15 @@ export const templateFormTimeLine: TemplateForm<TimeLine> = {
                 keyValue: 'value',
                 list: [
                   {
-                    value: '2',
+                    value: '',
+                    label: 'Selecione',
+                  },
+                  {
+                    value: 'Interessado',
                     label: 'Interessado',
                   },
                   {
-                    value: '3',
+                    value: 'Sem interesse',
                     label: 'Sem interesse',
                   },
                 ],
@@ -186,27 +214,13 @@ export const templateFormTimeLine: TemplateForm<TimeLine> = {
           ],
         },
         {
-          id: 1,
+          id: 3,
           fields: [
             {
-              id: 'course_id',
+              id: 'description',
               required: true,
-              type: 'select',
-              label: 'Curso',
-              option: {
-                keyLabel: 'label',
-                keyValue: 'value',
-                list: [
-                  {
-                    value: '2',
-                    label: 'curso 1',
-                  },
-                  {
-                    value: '3',
-                    label: 'curso 2',
-                  },
-                ],
-              },
+              type: 'text',
+              label: 'Descrição',
             },
           ],
         },
