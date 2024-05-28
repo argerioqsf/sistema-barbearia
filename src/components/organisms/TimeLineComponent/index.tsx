@@ -1,15 +1,15 @@
-import { Text } from "@/components/atoms";
-import { Avatar } from "@/components/molecules";
-import { TimeLine } from "@/types/general";
-import React from "react";
-import { useFormatter } from "next-intl";
+import { Text } from '@/components/atoms'
+import { Avatar } from '@/components/molecules'
+import { TimeLine } from '@/types/general'
+import React from 'react'
+import { useFormatter } from 'next-intl'
 
 type TimeLineComponentProps = {
-  timeLine: TimeLine[];
-};
+  timeLine: TimeLine[]
+}
 
 const TimeLineComponent = ({ timeLine }: TimeLineComponentProps) => {
-  const format = useFormatter();
+  const format = useFormatter()
 
   return (
     <div className="w-[90vw] md:w-full">
@@ -45,7 +45,7 @@ const TimeLineComponent = ({ timeLine }: TimeLineComponentProps) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TimeLineComponent;
+export default TimeLineComponent
