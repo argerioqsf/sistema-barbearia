@@ -25,7 +25,7 @@ export type CourseProps = keyof Course
 export type Segment = {
   id: string
   name: string
-  created_at: string
+  createdAt: string
   courses?: { course: Course }[] | []
   // eslint-disable-next-line no-use-before-define
   units?: { unit: Unit }[] | []
@@ -36,7 +36,7 @@ export type SegmentProps = keyof Segment
 export type Unit = {
   id: string
   name: string
-  created_at?: string
+  createdAt?: string
   segments?: { segment: Segment }[] | []
   courses?: { course: Course }[] | []
   _count?: {
@@ -52,7 +52,7 @@ export type Organization = {
   name: string
   consultant_bonus: number
   indicator_bonus: number
-  slugs: string
+  slug: string
   // eslint-disable-next-line no-use-before-define
   users: { user: User }[]
 }
@@ -65,7 +65,7 @@ export type User = {
   password?: string
   // eslint-disable-next-line no-use-before-define
   profile: Profile | Record<string, never>
-  created_at: string
+  createdAt: string
   units: Unit[]
   organizations: { organization: Organization }[]
 }
@@ -100,7 +100,7 @@ export type TimeLine = {
   leadsId: string
   course?: Course
   course_id?: string
-  created_at: string
+  createdAt: string
 }
 
 export type TimeLineProps = keyof TimeLine
@@ -129,7 +129,7 @@ export type Models = Segment | User | Unit | Course | TimeLine | Profile | Lead
 const fieldsForm = [
   'id',
   'name',
-  'created_at',
+  'createdAt',
   'quant_leads',
   'status',
   'segments',

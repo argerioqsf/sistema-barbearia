@@ -119,5 +119,51 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
         },
       ],
     },
+    {
+      id: 5,
+      title: 'Curso',
+      boxes: [
+        {
+          id: 4,
+          fields: [
+            {
+              id: 'courseId',
+              required: true,
+              type: 'selectSearch',
+              label: '',
+              option: {
+                keyLabel: 'name',
+                keyValue: 'id',
+                variant: 'single',
+                list: [],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 5,
+      title: 'Seguimento',
+      boxes: [
+        {
+          id: 4,
+          fields: [
+            {
+              id: 'segmentId',
+              required: true,
+              type: 'selectSearch',
+              label: '',
+              option: {
+                keyLabel: 'name',
+                keyValue: 'id',
+                variant: 'single',
+                list: [],
+              },
+            },
+          ],
+        },
+      ],
+    },
   ],
 }

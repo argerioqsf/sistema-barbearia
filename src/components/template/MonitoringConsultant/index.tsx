@@ -63,7 +63,7 @@ export async function MonitoringConsultant() {
     {
       id: '1',
       status: 'R$50,00 PAGO',
-      created_at: '05/02/2024 17:40',
+      createdAt: '05/02/2024 17:40',
       title: 'teste',
       description: 'teste',
       leadsId: 'teste',
@@ -72,7 +72,7 @@ export async function MonitoringConsultant() {
     {
       id: '2',
       status: 'R$50,00 PAGO',
-      created_at: '05/02/2024 17:40',
+      createdAt: '05/02/2024 17:40',
       title: 'teste',
       description: 'teste',
       leadsId: 'teste',
@@ -81,7 +81,7 @@ export async function MonitoringConsultant() {
     {
       id: '3',
       status: 'R$50,00 PAGO',
-      created_at: '05/02/2024 17:40',
+      createdAt: '05/02/2024 17:40',
       title: 'teste',
       description: 'teste',
       leadsId: 'teste',

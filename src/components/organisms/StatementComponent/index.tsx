@@ -23,7 +23,7 @@ const StatementComponent = ({ timeLine }: StatementComponentProps) => {
                     {item?.status}
                   </h2>
                   <h4 className="font-medium text-stone-500 truncate">
-                    {item?.created_at}
+                    {item?.createdAt}
                   </h4>
                 </div>
               </div>

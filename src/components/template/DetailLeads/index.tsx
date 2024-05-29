@@ -12,6 +12,8 @@ import { Lead, Unit, User } from '@/types/general'
 import { checkUserPermissions } from '@/utils/checkUserPermissions'
 import { notFound } from 'next/navigation'
 import * as templates from './templates'
+import { listSelectCourses } from '@/actions/course'
+import { listSelectSegments } from '@/actions/segments'
 
 export default async function DetailLeads({ id }: { id: string }) {
   const responseProfile = await getProfile()
@@ -58,6 +60,24 @@ export default async function DetailLeads({ id }: { id: string }) {
     values: [...valuesUnitId],
   }
 
+  const responseCourses = await listSelectCourses()
+  const courses = responseCourses?.response ?? []
+  const valuesCourseId = lead.courseId ? [lead.courseId] : []
+  templates.templateForm.sections[4].boxes[0].fields[0].option = {
+    ...templates.templateForm.sections[4].boxes[0].fields[0].option,
+    list: [...courses],
+    values: [...valuesCourseId],
+  }
+
+  const responseSegments = await listSelectSegments()
+  const segments = responseSegments?.response ?? []
+  const valuesSegmentId = lead.segmentId ? [lead.segmentId] : []
+  templates.templateForm.sections[5].boxes[0].fields[0].option = {
+    ...templates.templateForm.sections[5].boxes[0].fields[0].option,
+    list: [...segments],
+    values: [...valuesSegmentId],
+  }
+
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full flex flex-col justify-start items-center gap-4">
@@ -78,9 +98,10 @@ export default async function DetailLeads({ id }: { id: string }) {
         <FormDashboard
           title={templates.templateFormTimeLine.title}
           templateForm={templates.templateFormTimeLine}
-          action={registerTimeLine}
-          pathSuccess="/"
+          actionWithId={registerTimeLine}
+          pathSuccess={`/dashboard/leads/detail/${id}`}
           errorRequest={errorRequest}
+          id={lead.id}
         />
 
         {lead?.timeline && <TimeLineComponent timeLine={lead?.timeline} />}

@@ -2,12 +2,15 @@ import { Text } from '@/components/atoms'
 import { Avatar } from '@/components/molecules'
 import { TimeLine } from '@/types/general'
 import React from 'react'
+import { useFormatter } from 'next-intl'
 
 type TimeLineComponentProps = {
   timeLine: TimeLine[]
 }
 
 const TimeLineComponent = ({ timeLine }: TimeLineComponentProps) => {
+  const format = useFormatter()
+
   return (
     <div className="w-[90vw] md:w-full">
       <div className="p-4 pb-2 bg-gray-200 rounded-xl rounded-b-none w-56 shadow-md shadow-slate-400">
@@ -16,8 +19,8 @@ const TimeLineComponent = ({ timeLine }: TimeLineComponentProps) => {
         </Text>
       </div>
       <div className="bg-gray-200 rounded-xl rounded-tl-none p-6 pl-0 shadow-md shadow-slate-400">
-        {timeLine?.map((item) => (
-          <div className="w-full flex flex-row" key={item.id}>
+        {timeLine?.map((item, idx) => (
+          <div className="w-full flex flex-row" key={idx}>
             <div className="flex flex-col justify-center items-center px-4">
               <Avatar size={20} classIcon="bg-blue-500" icon="Circle" />
               <div className="h-full w-1 bg-gray-300" />
@@ -25,7 +28,16 @@ const TimeLineComponent = ({ timeLine }: TimeLineComponentProps) => {
             <div className="w-full p-3 border border-gray-300 rounded-lg mb-4 bg-white">
               <div className="w-full flex flex-row justify-between items-center border-b border-gray-300 pb-2 text-wrap">
                 <h2>{item?.status}</h2>
-                <h4>{item?.created_at}</h4>
+                <h4>
+                  {format.dateTime(new Date(item.createdAt), {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                  })}
+                </h4>
               </div>
               <div className="pt-2 text-wrap">
                 <Text>{item.description}</Text>
