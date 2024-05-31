@@ -300,10 +300,8 @@ export async function desarquivarLead(
 }
 
 export async function listLeads(
-  q?: string,
   page?: string,
-  indicatorId?: string,
-  consultantId?: string,
+  where?: Partial<Lead>,
 ): Promise<ReturnList<Lead>> {
   try {
     const token = getTokenFromCookieServer()
@@ -317,45 +315,7 @@ export async function listLeads(
         next: { tags: ['leads'], revalidate: 60 * 4 },
       },
       page,
-      q,
-      indicatorId,
-      consultantId,
-    )
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const { leads, count } = await response.json()
-    return { response: leads, count }
-  } catch (error) {
-    return { error: { request: 'Error unknown' } }
-  }
-}
-
-export async function listLeadsArquived(
-  q?: string,
-  page?: string,
-  indicatorId?: string,
-  consultantId?: string,
-): Promise<ReturnList<Lead>> {
-  try {
-    const token = getTokenFromCookieServer()
-    const response = await api(
-      '/leads/archived',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        next: { tags: ['leads'], revalidate: 60 * 4 },
-      },
-      page,
-      q,
-      indicatorId,
-      consultantId,
+      where,
     )
 
     if (!response.ok) {

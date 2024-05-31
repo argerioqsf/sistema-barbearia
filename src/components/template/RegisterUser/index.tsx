@@ -1,12 +1,11 @@
+import { listSelectUnits } from '@/actions/unit'
 import { registerUserProfile } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import { OptionGeneric, Profile, Roles, User } from '@/types/general'
-import React from 'react'
-import { templateForm } from './templateForm'
 import roles from '@/constants/roles.json'
-import { listUnits } from '@/actions/unit'
+import { OptionGeneric, Profile, Roles, User } from '@/types/general'
+import { templateForm } from './templateForm'
 
 export default async function RegisterUser() {
   let options: OptionGeneric<User | Profile>[] = [
@@ -30,7 +29,7 @@ export default async function RegisterUser() {
     list: options,
   }
 
-  const responseUnits = await listUnits('', '')
+  const responseUnits = await listSelectUnits()
   const units = responseUnits?.response ?? []
   templateForm.sections[1].boxes[1].fields[0].option = {
     ...templateForm.sections[1].boxes[1].fields[0].option,

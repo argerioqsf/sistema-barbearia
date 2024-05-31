@@ -177,8 +177,8 @@ export async function deleteUnit(id?: string): Promise<InitialState<Unit>> {
 }
 
 export async function listUnits(
-  q: string,
   page: string,
+  where?: Partial<Unit>,
 ): Promise<ReturnList<Unit>> {
   try {
     const token = getTokenFromCookieServer()
@@ -192,7 +192,7 @@ export async function listUnits(
         next: { tags: ['units'], revalidate: 60 * 4 },
       },
       page,
-      q,
+      where,
     )
 
     if (!response.ok) {

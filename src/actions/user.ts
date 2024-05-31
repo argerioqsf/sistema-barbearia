@@ -47,8 +47,8 @@ export async function getUser(id: string): Promise<ReturnGet<User>> {
 }
 
 export async function listUsers(
-  q: string,
   page: string,
+  where?: Partial<User>,
 ): Promise<ReturnList<User>> {
   try {
     const token = getTokenFromCookieServer()
@@ -65,7 +65,7 @@ export async function listUsers(
         },
       },
       page,
-      q,
+      where,
     )
 
     if (!response.ok) {
@@ -421,8 +421,8 @@ export async function getIndicator(id: string): Promise<ReturnGet<User>> {
 }
 
 export async function listIndicators(
-  q?: string,
   page?: string,
+  where?: Partial<User>,
 ): Promise<ReturnList<User>> {
   try {
     const token = getTokenFromCookieServer()
@@ -436,7 +436,7 @@ export async function listIndicators(
         next: { tags: ['indicators'], revalidate: 60 * 4 },
       },
       page,
-      q,
+      where,
     )
 
     if (!response.ok) {

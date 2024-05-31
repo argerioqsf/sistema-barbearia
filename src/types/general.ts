@@ -120,6 +120,7 @@ export type Lead = {
   segmentId?: string
   courseId?: string
   unitId?: string
+  archived: boolean
 }
 
 export type LeadProps = keyof Lead

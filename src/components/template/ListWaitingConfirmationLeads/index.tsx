@@ -9,10 +9,9 @@ import { infoList } from './templates'
 export default async function ListWaitingConfirmationLeads({
   searchParams,
 }: SearchParams) {
-  const response = await listLeads(
-    searchParams?.q ?? '',
-    searchParams?.page ?? '',
-  )
+  const response = await listLeads(searchParams?.page ?? '', {
+    name: searchParams?.q ?? '',
+  })
   const list = response?.response ?? null
   const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null

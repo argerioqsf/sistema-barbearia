@@ -24,10 +24,9 @@ infoList.listActions = [
 ]
 
 export default async function ListUnits({ searchParams }: SearchParams) {
-  const response = await listUnits(
-    searchParams?.q ?? '',
-    searchParams?.page ?? '',
-  )
+  const response = await listUnits(searchParams?.page ?? '', {
+    name: searchParams?.q ?? '',
+  })
   const list = response?.response ?? null
   const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
