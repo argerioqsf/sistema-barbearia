@@ -28,7 +28,7 @@ export default async function ListArchivedLeads({
 }: SearchParams) {
   const response = await listLeads(searchParams?.page ?? '', {
     name: searchParams?.q ?? '',
-    archived: false,
+    archived: true,
   })
   const list = response?.response ?? null
   const count = response?.count ?? null
