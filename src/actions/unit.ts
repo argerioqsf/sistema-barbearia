@@ -5,7 +5,7 @@ import { formSchemaRegisterUnit } from '@/components/template/RegisterUnits/sche
 import { api } from '@/data/api'
 import { InitialState, ReturnGet, ReturnList, Unit } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
-import { revalidateTag } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 
 export async function registerUnit(
   prevState: InitialState<Unit>,
@@ -108,6 +108,7 @@ export async function updateUnit(
       }
       revalidateTag('units')
       revalidateTag(id)
+      revalidatePath('[locale]/sim/indicator/[id]', 'page')
       return {
         errors: {},
         ok: true,
