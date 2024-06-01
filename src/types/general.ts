@@ -86,6 +86,7 @@ export type Profile = {
   leadsIndicator?: Lead[]
   city: string
   units?: { unit: Unit }[] | []
+  amountToReceive?: number
 }
 
 export type ProfileProps = keyof Profile
@@ -121,6 +122,9 @@ export type Lead = {
   courseId?: string
   unitId?: string
   archived: boolean
+  matriculation?: boolean
+  documents?: boolean
+  course: Course
 }
 
 export type LeadProps = keyof Lead

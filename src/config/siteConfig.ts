@@ -108,7 +108,7 @@ export const siteConfig: SiteConfig = [
         label: 'Listagem',
         href: '/dashboard/leads',
         icon: 'Circle',
-        userAction: 'lead.view',
+        userAction: 'lead.list',
       },
       {
         id: '2',
@@ -132,13 +132,6 @@ export const siteConfig: SiteConfig = [
         userAction: 'waiting_confirmation_lead.list',
       },
       {
-        id: '5',
-        label: 'Cadastrar Leads',
-        href: '/dashboard/leads/register',
-        icon: 'Circle',
-        userAction: 'lead.register',
-      },
-      {
         id: '6',
         label: 'Detail',
         href: '/dashboard/leads/detail',
@@ -153,6 +146,13 @@ export const siteConfig: SiteConfig = [
         href: '/dashboard/leads/archived',
         icon: 'Circle',
         userAction: 'lead.archived.list',
+      },
+      {
+        id: '5',
+        label: 'Cadastrar Leads',
+        href: '/dashboard/leads/register',
+        icon: 'Circle',
+        userAction: 'lead.register',
       },
     ],
   },

@@ -91,9 +91,11 @@ const verifyPermissionIndicatorRequest = {
 
 const verifyPermissionLead = {
   'lead.view': (roleUser: string) =>
-    ['administrator', 'coordinator', 'consultant'].includes(roleUser),
+    ['administrator', 'coordinator', 'consultant', 'secretary'].includes(
+      roleUser,
+    ),
   'lead.list': (roleUser: string) =>
-    ['administrator', 'coordinator', 'consultant'].includes(roleUser),
+    ['administrator', 'coordinator'].includes(roleUser),
   'lead.register': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
   'lead.update': (roleUser: string) =>
@@ -104,16 +106,23 @@ const verifyPermissionLead = {
     ),
   'lead.archived.list': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
+  'lead.archived.set': (roleUser: string) =>
+    ['administrator', 'coordinator'].includes(roleUser),
+  'lead.pegar.set': (roleUser: string) => ['consultant'].includes(roleUser),
+  'lead.matriculation.set': (roleUser: string) =>
+    ['consultant', 'administrator'].includes(roleUser),
+  'lead.documents.set': (roleUser: string) =>
+    ['administrator', 'secretary'].includes(roleUser),
 }
 
 const verifyPermissionNewLead = {
   'new_lead.list': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
+    ['administrator', 'coordinator', 'consultant'].includes(roleUser),
 }
 
 const verifyPermissionConfirmedLead = {
   'confirmed_lead.list': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
+    ['administrator', 'coordinator', 'secretary'].includes(roleUser),
 }
 
 const verifyPermissionWaitingConfirmedLead = {
@@ -123,7 +132,9 @@ const verifyPermissionWaitingConfirmedLead = {
 
 const verifyPermissionDashboard = {
   'dashboard.view': (roleUser: string) =>
-    ['coordinator', 'administrator', 'financial'].includes(roleUser),
+    ['coordinator', 'administrator', 'financial', 'secretary'].includes(
+      roleUser,
+    ),
 }
 
 const verifyPermissionOrganization = {

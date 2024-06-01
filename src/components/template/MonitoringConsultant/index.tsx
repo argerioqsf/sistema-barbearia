@@ -32,7 +32,7 @@ export async function MonitoringConsultant() {
   const cards: Card[] = [
     {
       label: 'Valor a receber',
-      value: 'R$200',
+      value: `R$${profile.amountToReceive ?? 0}`,
       icon: 'Banknote',
       subinfo: {
         label: 'Inicio do ciclo',
