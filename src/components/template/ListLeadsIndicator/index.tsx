@@ -36,7 +36,7 @@ export default async function ListLeadsIndicator({
             listActions={infoList.listActions}
             hrefButton="dashboard/leads/register"
             textButton="Novo lead"
-            title="Leads"
+            title="Meus Leads"
             count={count}
           />
         </div>

@@ -41,7 +41,7 @@ export async function MonitoringConsultant() {
     },
     {
       label: 'Leads confirmados',
-      value: 20,
+      value: profile._count.leadsConsultant ?? 0,
       icon: 'Users',
       subinfo: {
         label: 'Ultimo confirmado',
@@ -49,11 +49,11 @@ export async function MonitoringConsultant() {
       },
     },
     {
-      label: 'Leads cadastrados',
-      value: profile._count.leadsConsultant ?? 0,
+      label: 'valor total recebido',
+      value: profile.totalAmount ?? 0,
       icon: 'UserPlus',
       subinfo: {
-        label: 'Ultimo cadastrado',
+        label: 'Ultimo pagamento',
         value: '09/05/2024',
       },
     },

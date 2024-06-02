@@ -45,7 +45,7 @@ export async function MonitoringIndicator() {
     },
     {
       label: 'Leads confirmados',
-      value: 20,
+      value: profile._count.leadsIndicator ?? 0,
       icon: 'Users',
       subinfo: {
         label: 'Ultimo confirmado',
@@ -53,11 +53,11 @@ export async function MonitoringIndicator() {
       },
     },
     {
-      label: 'Leads cadastrados',
-      value: profile._count.leadsIndicator ?? 0,
+      label: 'valor total recebido',
+      value: profile.totalAmount ?? 0,
       icon: 'UserPlus',
       subinfo: {
-        label: 'Ultimo cadastrado',
+        label: 'Ultimo recebimento',
         value: '09/05/2024',
       },
     },

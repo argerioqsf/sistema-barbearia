@@ -87,6 +87,7 @@ export type Profile = {
   city: string
   units?: { unit: Unit }[] | []
   amountToReceive?: number
+  totalAmount?: number
 }
 
 export type ProfileProps = keyof Profile
@@ -102,6 +103,18 @@ export type TimeLine = {
   course?: Course
   course_id?: string
   createdAt: string
+}
+
+export type Cyclo = {
+  id: string
+  description: string
+  status: string
+  start_cycle: string
+  end_cycle?: string
+  // eslint-disable-next-line no-use-before-define
+  leads: Lead[]
+  organization?: Organization
+  organizationId?: string
 }
 
 export type TimeLineProps = keyof TimeLine

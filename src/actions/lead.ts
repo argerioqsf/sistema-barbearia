@@ -347,6 +347,7 @@ export async function documentsConfirmed(
       }
     }
     revalidateTag('leads')
+    revalidateTag('users')
     return { ok: true }
   } catch (error) {
     return { errors: { request: 'Error unknown' } }

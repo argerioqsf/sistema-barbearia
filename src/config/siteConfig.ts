@@ -54,7 +54,7 @@ export const siteConfig: SiteConfig = [
       },
       {
         id: '6',
-        label: 'Leads',
+        label: 'Meus leads',
         href: '/dashboard/indicators/leads',
         icon: 'Circle',
         userAction: 'indicator.leads.list',
