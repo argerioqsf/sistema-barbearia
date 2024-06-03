@@ -354,6 +354,58 @@ export async function documentsConfirmed(
   }
 }
 
+export async function createCycle(): Promise<InitialState<Lead>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/create/cycle`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({}),
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('leads')
+    revalidateTag('users')
+    return { ok: true }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function endCycle(id?: string): Promise<InitialState<Lead>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/update/cycle/${id}/end_cycle`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({}),
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('leads')
+    revalidateTag('users')
+    return { ok: true }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
 export async function desarquivarLead(
   id?: string,
 ): Promise<InitialState<Lead>> {

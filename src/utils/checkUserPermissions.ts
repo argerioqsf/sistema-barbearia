@@ -74,14 +74,19 @@ const verifyPermissionIndicator = {
     ['indicator'].includes(roleUser),
   'indicator.leads.list': (roleUser: string) =>
     ['indicator'].includes(roleUser),
+  'indicator.pendingPayment.list': (roleUser: string) =>
+    ['administrator', 'financial'].includes(roleUser),
 }
 
 const verifyPermissionConsultant = {
-  'consultant.view': (roleUser: string) => ['consultant'].includes(roleUser),
+  'consultant.view': (roleUser: string) =>
+    ['consultant', 'administrator', 'financial'].includes(roleUser),
   'consultant.monitoring.view': (roleUser: string) =>
     ['consultant'].includes(roleUser),
   'consultant.leads.list': (roleUser: string) =>
     ['consultant'].includes(roleUser),
+  'consultant.pendingPayment.list': (roleUser: string) =>
+    ['administrator', 'financial'].includes(roleUser),
 }
 
 const verifyPermissionIndicatorRequest = {

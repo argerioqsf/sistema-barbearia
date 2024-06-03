@@ -4,16 +4,27 @@ import { Cyclo } from '@/types/general'
 import { useFormatter } from 'next-intl'
 
 type CycleComponentProps = {
-  cyclos: Cyclo[]
+  cycles: Cyclo[]
 }
 
-const CycleComponent = ({ cyclos }: CycleComponentProps) => {
+const CycleComponent = ({ cycles }: CycleComponentProps) => {
   const format = useFormatter()
+
+  function getStatus(cycle: Cyclo) {
+    let amountIndicators = 0
+    let amountConsultant = 0
+    for (let i = 0; i < cycle?.leads.length; i++) {
+      amountIndicators = amountIndicators + cycle?.leads[i].amount_pay_indicator
+      amountConsultant =
+        amountConsultant + cycle?.leads[i].amount_pay_consultant
+    }
+    return `Indicadores: R$${amountIndicators} | Consultores: R$${amountConsultant}`
+  }
 
   return (
     <div className="w-full">
       <div className="bg-gray-200 rounded-xl rounded-tl-none">
-        {cyclos?.map((item, idx) => (
+        {cycles?.map((item, idx) => (
           <div className="w-full flex flex-row" key={idx}>
             <div className="flex flex-col justify-center items-center px-2">
               <Avatar size={20} classIcon="bg-blue-500" icon="Circle" />
@@ -21,7 +32,7 @@ const CycleComponent = ({ cyclos }: CycleComponentProps) => {
             </div>
             <div className="w-full p-3 border border-gray-300 rounded-lg mb-4 bg-white">
               <div className="w-full flex flex-row justify-between items-center border-b border-gray-300 pb-2 text-wrap">
-                <h2>{item?.status}</h2>
+                <h2>{getStatus(item)}</h2>
                 <h4 className="text-lime-800">
                   {`incio ${format.dateTime(new Date(item.start_cycle), {
                     day: '2-digit',
@@ -34,7 +45,7 @@ const CycleComponent = ({ cyclos }: CycleComponentProps) => {
                 </h4>
               </div>
               <div className="pt-2 w-full flex flex-row justify-between items-center text-wrap">
-                <Text>{item.description}</Text>
+                <Text>{item.leads.length ?? 0} leads confirmados</Text>
                 {item.end_cycle ? (
                   <h4 className="text-red-700">
                     {`fim ${format.dateTime(new Date(item.end_cycle), {

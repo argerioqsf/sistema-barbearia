@@ -108,7 +108,7 @@ export async function MonitoringConsultant() {
               <div className="w-full flex justify-center items-center">
                 <h1 className="text-3xl text-primary-100 font-bold">EXTRATO</h1>
               </div>
-              <StatementComponent timeLine={statement} />
+              <StatementComponent extract={profile.extract_profile} />
             </div>
           )}
         </section>
