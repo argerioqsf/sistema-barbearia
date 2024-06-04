@@ -1,4 +1,4 @@
-import { desarquivarLead, listLeadsArquived } from '@/actions/lead'
+import { desarquivarLead, listLeads } from '@/actions/lead'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
@@ -26,10 +26,10 @@ infoList.listActions = [
 export default async function ListArchivedLeads({
   searchParams,
 }: SearchParams) {
-  const response = await listLeadsArquived(
-    searchParams?.q ?? '',
-    searchParams?.page ?? '',
-  )
+  const response = await listLeads(searchParams?.page ?? '', {
+    name: searchParams?.q ?? '',
+    archived: true,
+  })
   const list = response?.response ?? null
   const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null

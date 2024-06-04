@@ -12,11 +12,10 @@ export default async function ListLeadsIndicator({
 }: SearchParams) {
   const responseProfile = await getProfile()
   const profile = responseProfile?.response
-  const response = await listLeads(
-    searchParams?.q ?? '',
-    searchParams?.page ?? '',
-    profile?.id,
-  )
+  const response = await listLeads(searchParams?.page ?? '', {
+    name: searchParams?.q ?? '',
+    indicatorId: profile?.id,
+  })
   const list = response?.response ?? null
   const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
@@ -37,7 +36,7 @@ export default async function ListLeadsIndicator({
             listActions={infoList.listActions}
             hrefButton="dashboard/leads/register"
             textButton="Novo lead"
-            title="Leads"
+            title="Meus Leads"
             count={count}
           />
         </div>

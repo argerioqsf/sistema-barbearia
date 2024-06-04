@@ -1,33 +1,47 @@
 import { arquivarLead, listLeads } from '@/actions/lead'
+import { getProfile } from '@/actions/profile'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
+import { checkUserPermissions } from '@/utils/checkUserPermissions'
+import { notFound } from 'next/navigation'
 import { infoList } from './templates'
 
-infoList.listActions = [
-  {
-    id: 1,
-    icon: 'Archive',
-    onclick: arquivarLead,
-    name: 'Arquivar',
-    alert: {
-      title: 'Você deseja realmente arquivar este lead?',
-      description: 'Você ainda podera velo na tela de leads arquivados',
-    },
-    toast: {
-      title: 'Lead arquivado com sucesso!',
-    },
-  },
-  ...(infoList.listActions ?? []),
-]
-
 export default async function ListLeads({ searchParams }: SearchParams) {
-  const response = await listLeads(
-    searchParams?.q ?? '',
-    searchParams?.page ?? '',
-  )
+  const responseProfile = await getProfile()
+  const profile = responseProfile?.response
+  const errorRequestProfile = responseProfile.error?.request ?? null
+  if (!profile) {
+    notFound()
+  }
+
+  if (checkUserPermissions('lead.archived.set', profile.role)) {
+    const getForId = infoList.listActions?.find((action) => action.id === 1)
+    if (getForId === undefined) {
+      infoList.listActions = [
+        {
+          id: 1,
+          icon: 'Archive',
+          onclick: arquivarLead,
+          name: 'Arquivar',
+          alert: {
+            title: 'Você deseja realmente arquivar este lead?',
+            description: 'Você ainda podera velo na tela de leads arquivados',
+          },
+          toast: {
+            title: 'Lead arquivado com sucesso!',
+          },
+        },
+        ...(infoList.listActions ?? []),
+      ]
+    }
+  }
+
+  const response = await listLeads(searchParams?.page ?? '', {
+    name: searchParams?.q ?? '',
+  })
   const list = response?.response ?? null
   const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
@@ -39,7 +53,7 @@ export default async function ListLeads({ searchParams }: SearchParams) {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search errorRequest={errorRequest} />
+          <Search errorRequest={errorRequest ?? errorRequestProfile} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
@@ -47,7 +61,11 @@ export default async function ListLeads({ searchParams }: SearchParams) {
             list={list}
             listActions={infoList.listActions}
             hrefButton="dashboard/leads/register"
-            textButton="Novo lead"
+            textButton={
+              checkUserPermissions('lead.register', profile.role)
+                ? 'Novo lead'
+                : undefined
+            }
             title="Leads"
             count={count}
           />

@@ -23,6 +23,7 @@ import {
   LockIcon,
   LucideIcon,
   Menu,
+  Pointer,
   Search,
   Shield,
   TestTubeDiagonal,
@@ -71,6 +72,7 @@ const catalogIcons = {
   Check,
   Archive,
   ArchiveRestore,
+  Pointer,
 } as const
 
 export type CatalogIcons = typeof catalogIcons

@@ -15,8 +15,8 @@ import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 
 export async function listCourses(
-  q?: string,
   page?: string,
+  where?: Partial<Course>,
 ): Promise<ReturnList<Course>> {
   try {
     const token = getTokenFromCookieServer()
@@ -30,7 +30,7 @@ export async function listCourses(
         next: { tags: ['courses'], revalidate: 60 * 4 },
       },
       page,
-      q,
+      where,
     )
 
     if (!response.ok) {

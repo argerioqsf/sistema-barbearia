@@ -5,7 +5,7 @@ import { ContainerDashboard, FormFieldText } from '@/components/molecules'
 import { ButtonClipBoard } from '@/components/molecules/ButtonClipBoard'
 import { CardMonitoring } from '@/components/molecules/CardMonitoring'
 import StatementComponent from '@/components/organisms/StatementComponent'
-import { Profile, TimeLine } from '@/types/general'
+import { Profile } from '@/types/general'
 import { CatalogIcons } from '@/utils/handleIcons'
 import { useLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
@@ -36,7 +36,7 @@ export async function MonitoringIndicator() {
   const cards: Card[] = [
     {
       label: 'Valor a receber',
-      value: 'R$200',
+      value: `R$${profile.amountToReceive ?? 0}`,
       icon: 'Banknote',
       subinfo: {
         label: 'Inicio do ciclo',
@@ -45,7 +45,7 @@ export async function MonitoringIndicator() {
     },
     {
       label: 'Leads confirmados',
-      value: 20,
+      value: profile._count.leadsIndicator ?? 0,
       icon: 'Users',
       subinfo: {
         label: 'Ultimo confirmado',
@@ -53,43 +53,13 @@ export async function MonitoringIndicator() {
       },
     },
     {
-      label: 'Leads cadastrados',
-      value: profile._count.leadsIndicator ?? 0,
+      label: 'valor total recebido',
+      value: profile.totalAmount ?? 0,
       icon: 'UserPlus',
       subinfo: {
-        label: 'Ultimo cadastrado',
+        label: 'Ultimo recebimento',
         value: '09/05/2024',
       },
-    },
-  ]
-
-  const statement: TimeLine[] = [
-    {
-      id: '1',
-      status: 'R$50,00 PAGO',
-      createdAt: '05/02/2024 17:40',
-      title: 'teste',
-      description: 'teste',
-      leadsId: 'teste',
-      course_id: 'teste',
-    },
-    {
-      id: '2',
-      status: 'R$50,00 PAGO',
-      createdAt: '05/02/2024 17:40',
-      title: 'teste',
-      description: 'teste',
-      leadsId: 'teste',
-      course_id: 'teste',
-    },
-    {
-      id: '3',
-      status: 'R$50,00 PAGO',
-      createdAt: '05/02/2024 17:40',
-      title: 'teste',
-      description: 'teste',
-      leadsId: 'teste',
-      course_id: 'teste',
     },
   ]
 
@@ -129,12 +99,12 @@ export async function MonitoringIndicator() {
             </div>
           </div>
 
-          {statement.length > 0 && (
+          {profile?.extract_profile && profile.extract_profile.length > 0 && (
             <div className="w-full flex flex-col justify-end items-center gap-16">
               <div className="w-full flex justify-center items-center">
                 <h1 className="text-3xl text-primary-100 font-bold">EXTRATO</h1>
               </div>
-              <StatementComponent timeLine={statement} />
+              <StatementComponent extract={profile.extract_profile} />
             </div>
           )}
         </section>

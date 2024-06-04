@@ -47,8 +47,8 @@ export async function getUser(id: string): Promise<ReturnGet<User>> {
 }
 
 export async function listUsers(
-  q: string,
   page: string,
+  where?: Partial<User>,
 ): Promise<ReturnList<User>> {
   try {
     const token = getTokenFromCookieServer()
@@ -65,7 +65,7 @@ export async function listUsers(
         },
       },
       page,
-      q,
+      where,
     )
 
     if (!response.ok) {
@@ -257,6 +257,35 @@ export async function updateUserProfile(
 
 // Indicador
 
+export async function confirmPayment(
+  id?: string,
+): Promise<InitialState<Profile>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/profile/confirm_payment/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({}),
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('indicators')
+    revalidateTag('consultants')
+    revalidateTag('users')
+    return { ok: true }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
 export async function registerIndicatorProfile(
   prevState: InitialState<User | Profile>,
   formData: FormData,
@@ -421,8 +450,8 @@ export async function getIndicator(id: string): Promise<ReturnGet<User>> {
 }
 
 export async function listIndicators(
-  q?: string,
   page?: string,
+  where?: Partial<User | Omit<Profile, 'units'>>,
 ): Promise<ReturnList<User>> {
   try {
     const token = getTokenFromCookieServer()
@@ -436,7 +465,7 @@ export async function listIndicators(
         next: { tags: ['indicators'], revalidate: 60 * 4 },
       },
       page,
-      q,
+      where,
     )
 
     if (!response.ok) {

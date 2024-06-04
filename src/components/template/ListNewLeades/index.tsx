@@ -1,16 +1,49 @@
-import { listLeads } from '@/actions/lead'
+import { listLeads, pegarLead } from '@/actions/lead'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
 import { infoList } from './templates'
+import { getProfile } from '@/actions/profile'
+import { notFound } from 'next/navigation'
+import { checkUserPermissions } from '@/utils/checkUserPermissions'
 
 export default async function ListNewLeads({ searchParams }: SearchParams) {
-  const response = await listLeads(
-    searchParams?.q ?? '',
-    searchParams?.page ?? '',
-  )
+  const responseProfile = await getProfile()
+  const profile = responseProfile?.response
+  const errorRequestProfile = responseProfile.error?.request ?? null
+  if (!profile) {
+    notFound()
+  }
+  const response = await listLeads(searchParams?.page ?? '', {
+    name: searchParams?.q ?? '',
+    consultantId: 'null',
+  })
+
+  if (checkUserPermissions('lead.pegar.set', profile.role)) {
+    const getForId = infoList.listActions?.find((action) => action.id === 3)
+    if (getForId === undefined) {
+      infoList.listActions = [
+        {
+          id: 3,
+          icon: 'Pointer',
+          onclick: pegarLead,
+          name: 'Pegar',
+          alert: {
+            title: 'Você deseja realmente pegar este lead?',
+            description:
+              'Assim que pegalo poderá velo na sua listagem de leads',
+          },
+          toast: {
+            title: 'Lead pegado com sucesso!',
+          },
+        },
+        ...(infoList.listActions ?? []),
+      ]
+    }
+  }
+
   const list = response?.response ?? null
   const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
@@ -22,7 +55,7 @@ export default async function ListNewLeads({ searchParams }: SearchParams) {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6">
-          <Search errorRequest={errorRequest} />
+          <Search errorRequest={errorRequest ?? errorRequestProfile} />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
@@ -30,7 +63,11 @@ export default async function ListNewLeads({ searchParams }: SearchParams) {
             list={list}
             listActions={infoList.listActions}
             hrefButton="dashboard/leads/register"
-            textButton="Novo lead"
+            textButton={
+              checkUserPermissions('lead.register', profile.role)
+                ? 'Novo lead'
+                : undefined
+            }
             title="Novos Leads"
             count={count}
           />

@@ -55,6 +55,8 @@ export type Organization = {
   slug: string
   // eslint-disable-next-line no-use-before-define
   users: { user: User }[]
+  // eslint-disable-next-line no-use-before-define
+  cycles: Cyclo[]
 }
 
 export type User = {
@@ -72,6 +74,15 @@ export type User = {
 
 export type UserProps = keyof User
 
+export type ExtractProfile = {
+  id: string
+  amount_receive: number
+  // eslint-disable-next-line no-use-before-define
+  profile: Profile
+  profileId: string
+  createdAt: string
+}
+
 export type Profile = {
   id: string
   phone: string
@@ -86,6 +97,9 @@ export type Profile = {
   leadsIndicator?: Lead[]
   city: string
   units?: { unit: Unit }[] | []
+  amountToReceive?: number | string
+  totalAmount?: number
+  extract_profile?: ExtractProfile[]
 }
 
 export type ProfileProps = keyof Profile
@@ -101,6 +115,18 @@ export type TimeLine = {
   course?: Course
   course_id?: string
   createdAt: string
+}
+
+export type Cyclo = {
+  id: string
+  description: string
+  status: string
+  start_cycle: string
+  end_cycle?: string
+  // eslint-disable-next-line no-use-before-define
+  leads: Lead[]
+  organization?: Organization
+  organizationId?: string
 }
 
 export type TimeLineProps = keyof TimeLine
@@ -120,6 +146,12 @@ export type Lead = {
   segmentId?: string
   courseId?: string
   unitId?: string
+  archived: boolean
+  matriculation?: boolean
+  documents?: boolean
+  course: Course
+  amount_pay_indicator: number
+  amount_pay_consultant: number
 }
 
 export type LeadProps = keyof Lead

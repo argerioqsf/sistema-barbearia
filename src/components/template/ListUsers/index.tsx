@@ -7,10 +7,9 @@ import { SearchParams } from '@/types/general'
 import { infoList } from './templates'
 
 export default async function ListUsers({ searchParams }: SearchParams) {
-  const response = await listUsers(
-    searchParams?.q ?? '',
-    searchParams?.page ?? '',
-  )
+  const response = await listUsers(searchParams?.page ?? '', {
+    name: searchParams?.q ?? '',
+  })
   const list = response?.response ?? null
   const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null

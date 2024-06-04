@@ -1,12 +1,12 @@
+import { listSelectUnits } from '@/actions/unit'
 import { getUser, updateUserProfile } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import roles from '@/constants/roles.json'
 import { Option, Profile, Roles, Unit, User } from '@/types/general'
-import * as templates from './templates'
 import { notFound } from 'next/navigation'
-import { listUnits } from '@/actions/unit'
+import * as templates from './templates'
 
 export default async function DetailUsers({ id }: { id: string }) {
   const response = await getUser(id)
@@ -36,7 +36,7 @@ export default async function DetailUsers({ id }: { id: string }) {
     ...templates.templateForm.sections[1].boxes[0].fields[0].option,
     list: options,
   }
-  const responseUnits = await listUnits('', '')
+  const responseUnits = await listSelectUnits()
   const units = responseUnits?.response ?? []
 
   templates.templateForm.sections[1].boxes[1].fields[0].option = {

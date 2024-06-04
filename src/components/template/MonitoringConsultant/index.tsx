@@ -32,7 +32,7 @@ export async function MonitoringConsultant() {
   const cards: Card[] = [
     {
       label: 'Valor a receber',
-      value: 'R$200',
+      value: `R$${profile.amountToReceive ?? 0}`,
       icon: 'Banknote',
       subinfo: {
         label: 'Inicio do ciclo',
@@ -41,7 +41,7 @@ export async function MonitoringConsultant() {
     },
     {
       label: 'Leads confirmados',
-      value: 20,
+      value: profile._count.leadsConsultant ?? 0,
       icon: 'Users',
       subinfo: {
         label: 'Ultimo confirmado',
@@ -49,11 +49,11 @@ export async function MonitoringConsultant() {
       },
     },
     {
-      label: 'Leads cadastrados',
-      value: profile._count.leadsConsultant ?? 0,
+      label: 'valor total recebido',
+      value: profile.totalAmount ?? 0,
       icon: 'UserPlus',
       subinfo: {
-        label: 'Ultimo cadastrado',
+        label: 'Ultimo pagamento',
         value: '09/05/2024',
       },
     },
@@ -108,7 +108,7 @@ export async function MonitoringConsultant() {
               <div className="w-full flex justify-center items-center">
                 <h1 className="text-3xl text-primary-100 font-bold">EXTRATO</h1>
               </div>
-              <StatementComponent timeLine={statement} />
+              <StatementComponent extract={profile.extract_profile} />
             </div>
           )}
         </section>

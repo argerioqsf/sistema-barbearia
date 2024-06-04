@@ -23,10 +23,9 @@ infoList.listActions = [
 ]
 
 export default async function ListIndicators({ searchParams }: SearchParams) {
-  const response = await listIndicators(
-    searchParams?.q ?? '',
-    searchParams?.page ?? '',
-  )
+  const response = await listIndicators(searchParams?.page ?? '', {
+    name: searchParams?.q ?? '',
+  })
 
   const list = response?.response ?? null
   const count = response?.count ?? null

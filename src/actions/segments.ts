@@ -210,8 +210,8 @@ export async function listSelectSegments(): Promise<ReturnList<Segment>> {
 }
 
 export async function listSegments(
-  q?: string,
   page?: string,
+  where?: Partial<Segment>,
 ): Promise<ReturnList<Segment>> {
   try {
     const token = getTokenFromCookieServer()
@@ -225,7 +225,7 @@ export async function listSegments(
         next: { tags: ['segments'], revalidate: 60 * 4 },
       },
       page,
-      q,
+      where,
     )
 
     if (!response.ok) {

@@ -12,12 +12,10 @@ export default async function ListLeadsConsultant({
 }: SearchParams) {
   const responseProfile = await getProfile()
   const profile = responseProfile?.response
-  const response = await listLeads(
-    searchParams?.q ?? '',
-    searchParams?.page ?? '',
-    undefined,
-    profile?.id,
-  )
+  const response = await listLeads(searchParams?.page ?? '', {
+    name: searchParams?.q ?? '',
+    consultantId: profile?.id,
+  })
   const list = response?.response ?? null
   const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null

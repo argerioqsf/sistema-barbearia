@@ -1,19 +1,19 @@
 import { env } from '@/env'
 
-export function api(
+export function api<T>(
   path: string,
   init?: RequestInit,
   page?: string,
-  query?: string,
-  indicatorId?: string,
-  consultantId?: string,
+  where?: Partial<T>,
 ) {
   const baseUrl = env.API_BASE_URL
-  const queryQ = query && `q=${query}&`
   const queryPage = page && `page=${page}&`
-  const queryInd = indicatorId && `indicatorId=${indicatorId}`
-  const queryConsu = consultantId && `consultantId=${consultantId}`
-  path = `${path}?${queryQ ?? ''}${queryPage ?? ''}${queryInd ?? ''}${queryConsu ?? ''}`
+  path = `${path}?${queryPage ?? ''}`
+  if (where) {
+    for (const key in where) {
+      path = `${path}${key}=${where[key]}&`
+    }
+  }
   const url = new URL(path, baseUrl)
   return fetch(url, init)
 }

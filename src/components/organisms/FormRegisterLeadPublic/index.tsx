@@ -75,12 +75,25 @@ export function FormRegisterLeadPublic({
   function onChangeSegment(value: string) {
     const segment = segmentsSelect?.find((segment) => segment.id === value)
     if (segment) {
-      const coursesSegment = segment?.courses?.map((course) => course.course)
       const unitsSegment = segment?.units?.map((unit) => unit.unit)
-      setCourseSelect([...(coursesSegment ?? [])])
       setUnitSelect([...(unitsSegment ?? [])])
     }
     setSelecteds({ ...selecteds, segmentId: value })
+  }
+
+  function onChangeUnit(value: string) {
+    const unit = unitSelect?.find((unit) => unit.id === value)
+    const segment = segmentsSelect?.find(
+      (segment) => segment.id === selecteds.segmentId,
+    )
+    if (unit && segment) {
+      const idsCourseunit = unit.courses?.map((course) => course.course.id)
+      const coursesSegment = segment?.courses
+        ?.filter((course) => idsCourseunit?.includes(course.course.id))
+        .map((course) => course.course)
+      setCourseSelect([...(coursesSegment ?? [])])
+    }
+    setSelecteds({ ...selecteds, unitId: value })
   }
 
   return (
@@ -128,12 +141,11 @@ export function FormRegisterLeadPublic({
               <SelectFormWithSearch<Lead | Unit>
                 classNameInput="rounded-xl py-3"
                 props={{ ...register('unitId', { required: true }) }}
-                onChange={(value) =>
-                  setSelecteds({ ...selecteds, unitId: value })
-                }
-                onDelete={() =>
+                onChange={onChangeUnit}
+                onDelete={() => {
+                  setCourseSelect([])
                   setSelecteds({ ...selecteds, unitId: '', courseId: '' })
-                }
+                }}
                 placeholder={'Escolha local/unidade:'}
                 setFormDataExtra={setFormDataExtra}
                 options={unitSelect ?? []}
@@ -147,7 +159,7 @@ export function FormRegisterLeadPublic({
                 formDataExtra={formDataExtra}
               />
             )}
-            {selecteds.segmentId && (
+            {selecteds.unitId && (
               <SelectFormWithSearch<Lead | Course>
                 classNameInput="rounded-xl py-3"
                 props={{ ...register('courseId', { required: true }) }}

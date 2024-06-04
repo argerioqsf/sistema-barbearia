@@ -270,6 +270,142 @@ export async function arquivarLead(id?: string): Promise<InitialState<Lead>> {
   }
 }
 
+export async function pegarLead(id?: string): Promise<InitialState<Lead>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/lead/consultant/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({}),
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('leads')
+    return { ok: true }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function matriculationConfirmed(
+  id?: string,
+): Promise<InitialState<Lead>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/lead/status/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        matriculation: true,
+      }),
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('leads')
+    return { ok: true }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function documentsConfirmed(
+  id?: string,
+): Promise<InitialState<Lead>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/lead/status/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        documents: true,
+      }),
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('leads')
+    revalidateTag('users')
+    return { ok: true }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function createCycle(): Promise<InitialState<Lead>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/create/cycle`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({}),
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('leads')
+    revalidateTag('users')
+    return { ok: true }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function endCycle(id?: string): Promise<InitialState<Lead>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/update/cycle/${id}/end_cycle`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({}),
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('leads')
+    revalidateTag('users')
+    return { ok: true }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
 export async function desarquivarLead(
   id?: string,
 ): Promise<InitialState<Lead>> {
@@ -300,10 +436,8 @@ export async function desarquivarLead(
 }
 
 export async function listLeads(
-  q?: string,
   page?: string,
-  indicatorId?: string,
-  consultantId?: string,
+  where?: Partial<Lead>,
 ): Promise<ReturnList<Lead>> {
   try {
     const token = getTokenFromCookieServer()
@@ -317,45 +451,7 @@ export async function listLeads(
         next: { tags: ['leads'], revalidate: 60 * 4 },
       },
       page,
-      q,
-      indicatorId,
-      consultantId,
-    )
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const { leads, count } = await response.json()
-    return { response: leads, count }
-  } catch (error) {
-    return { error: { request: 'Error unknown' } }
-  }
-}
-
-export async function listLeadsArquived(
-  q?: string,
-  page?: string,
-  indicatorId?: string,
-  consultantId?: string,
-): Promise<ReturnList<Lead>> {
-  try {
-    const token = getTokenFromCookieServer()
-    const response = await api(
-      '/leads/archived',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        next: { tags: ['leads'], revalidate: 60 * 4 },
-      },
-      page,
-      q,
-      indicatorId,
-      consultantId,
+      where,
     )
 
     if (!response.ok) {

@@ -75,7 +75,7 @@ export default function IconAction<T>({
   ) : alertInfo ? (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button className="w-fit" variant="ghost" size="icon">
           <span
             className={twMerge(
               'p-2 rounded-full flex justify-center items-center border-2',
