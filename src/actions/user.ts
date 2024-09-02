@@ -286,6 +286,36 @@ export async function confirmPayment(
   }
 }
 
+export async function activeIndicator(
+  id?: string,
+): Promise<InitialState<Profile>> {
+  try {
+    const token = getTokenFromCookieServer()
+    const response = await api(`/indicator/active/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        active: true,
+      }),
+    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return {
+        errors: { request: JSON.parse(errorMessage).message },
+      }
+    }
+    revalidateTag('indicators')
+    revalidateTag('users')
+    return { ok: true }
+  } catch (error) {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
 export async function registerIndicatorProfile(
   prevState: InitialState<User | Profile>,
   formData: FormData,

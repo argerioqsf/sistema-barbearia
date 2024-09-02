@@ -6,7 +6,13 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import { ButtonCycle } from '@/components/molecules/ButtonCycle'
 import CycleComponent from '@/components/organisms/CycleComponent'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import { Organization, Profile, User } from '@/types/general'
+import {
+  FieldsTemplateForm,
+  LimitFieldsForm,
+  Organization,
+  Profile,
+  User,
+} from '@/types/general'
 import { checkUserPermissions } from '@/utils/checkUserPermissions'
 import { notFound } from 'next/navigation'
 import { Fragment } from 'react'
@@ -19,9 +25,17 @@ export default async function ProfileDetail() {
   if (!profile) {
     notFound()
   }
+
   const organizations = profile.user?.organizations.map(
     (organization) => organization.organization,
   )
+
+  if (!checkUserPermissions('user.edit.own.active', profile.role)) {
+    templateForm.sections[0].boxes[4].fields =
+      templateForm.sections[0].boxes[4].fields.filter(
+        (field) => field.id !== 'user.active',
+      ) as LimitFieldsForm<FieldsTemplateForm<Profile | User>>
+  }
 
   return (
     <ContainerDashboard>

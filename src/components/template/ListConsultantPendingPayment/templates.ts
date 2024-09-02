@@ -1,8 +1,8 @@
 import { InfoList, Profile, User } from '@/types/general'
 
 export const infoList: InfoList<User | Profile> = {
-  itemsHeader: ['N', 'NOME', '', '', ''],
-  itemsList: ['name', '', '', '', ''],
+  itemsHeader: ['N', 'NOME', 'Valor a receber', 'PIX', ''],
+  itemsList: ['name', '', 'profile.amountToReceive', 'profile.pix', ''],
   listActions: [
     {
       id: 2,

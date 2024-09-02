@@ -54,7 +54,7 @@ export async function MonitoringIndicator() {
     },
     {
       label: 'valor total recebido',
-      value: profile.totalAmount ?? 0,
+      value: `R$${profile.totalAmount ?? 0}`,
       icon: 'UserPlus',
       subinfo: {
         label: 'Ultimo recebimento',

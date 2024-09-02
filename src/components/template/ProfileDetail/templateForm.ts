@@ -88,7 +88,7 @@ export const templateForm: TemplateForm<Profile | User> = {
               id: 'user.email',
               required: true,
               type: 'text',
-              label: 'E-mail 2',
+              label: 'E-mail',
             },
             {
               id: 'city',

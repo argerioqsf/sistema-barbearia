@@ -35,7 +35,7 @@ export default async function ListConfirmedLeads({
           alert: {
             title: 'Você deseja confirmar a entrega dos documentos deste lead?',
             description:
-              'Assim que confirmar a entrega dos documentos o pagamento aos indicadores e consultores seram contabilizdo',
+              'Assim que confirmar a entrega dos documentos o pagamento aos indicadores e consultores seram contabilizados',
           },
           toast: {
             title: 'Documentos confirmada com sucesso!',
