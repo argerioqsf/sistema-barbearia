@@ -1,4 +1,4 @@
-import { listIndicators } from '@/actions/user'
+import { activeIndicator, listIndicators } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
@@ -6,11 +6,28 @@ import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
 import { infoList } from './templates'
 
+infoList.listActions = [
+  {
+    id: 1,
+    icon: 'Unlock',
+    onclick: activeIndicator,
+    name: 'Ativar',
+    alert: {
+      title: 'Você deseja realmente ativar este indicador?',
+    },
+    toast: {
+      title: 'Indicador ativado com sucesso!',
+    },
+  },
+  ...(infoList.listActions ?? []),
+]
+
 export default async function ListRequestIndicators({
   searchParams,
 }: SearchParams) {
   const response = await listIndicators(searchParams?.page ?? '', {
     name: searchParams?.q ?? '',
+    active: false,
   })
   const list = response?.response ?? null
   const count = response?.count ?? null

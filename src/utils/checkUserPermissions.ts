@@ -13,6 +13,8 @@ const verifyPermissionGeneral = {
 
 const verifyPermissionUser = {
   'user.edit.role': (roleUser: string) => ['administrator'].includes(roleUser),
+  'user.edit.own.active': (roleUser: string) =>
+    ['administrator'].includes(roleUser),
   'user.view': (roleUser: string) => ['administrator'].includes(roleUser),
   'user.detail': (roleUser: string) => ['administrator'].includes(roleUser),
   'user.register': (roleUser: string) => ['administrator'].includes(roleUser),

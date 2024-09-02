@@ -26,8 +26,8 @@ export function CardMonitoring({ card, last }: CardMonitoringProps) {
         <Icon size={30} />
       </div>
       <div className="p-4 bg-primary-100 rounded-b-md flex flex-row justify-between items-center text-white text-xs">
-        <span>{card.subinfo.label}</span>
-        <span>{card.subinfo.value}</span>
+        {/* <span>{card.subinfo.label}</span>
+        <span>{card.subinfo.value}</span> */}
       </div>
     </div>
   )

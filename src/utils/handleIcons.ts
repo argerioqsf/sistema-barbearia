@@ -29,6 +29,7 @@ import {
   TestTubeDiagonal,
   ThumbsUp,
   Trash,
+  Unlock,
   User,
   UserCog,
   UserPlus,
@@ -73,6 +74,7 @@ const catalogIcons = {
   Archive,
   ArchiveRestore,
   Pointer,
+  Unlock,
 } as const
 
 export type CatalogIcons = typeof catalogIcons

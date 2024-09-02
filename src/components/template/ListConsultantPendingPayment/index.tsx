@@ -9,18 +9,6 @@ import { infoList } from './templates'
 
 infoList.listActions = [
   {
-    id: 1,
-    icon: 'Link',
-    getClipBoard: async (id: string) => {
-      'use server'
-      return id
-    },
-    name: 'Link',
-    toast: {
-      title: 'Link copiado com sucesso!',
-    },
-  },
-  {
     id: 3,
     icon: 'Banknote',
     onclick: confirmPayment,
