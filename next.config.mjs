@@ -51,7 +51,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'sim.grupomadretereza.com.br',
+        hostname: 'api.grupomadretereza.com.br',
         port: '',
       },
     ],
