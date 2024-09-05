@@ -421,7 +421,7 @@ export type SearchParams = {
     page: string
   }
 }
-export type File = {
+export type FileCustom = {
   filename: string
   url: string
 }

@@ -2,11 +2,11 @@
 
 import { formSchemaRegisterFile } from '@/components/template/RegisterFiles/schema'
 import { api } from '@/data/api'
-import { Errors, File, InitialState, ReturnList } from '@/types/general'
+import { Errors, FileCustom, InitialState, ReturnList } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 
-export async function getFiles(): Promise<ReturnList<File>> {
+export async function getFiles(): Promise<ReturnList<FileCustom>> {
   try {
     const token = getTokenFromCookieServer()
     const response = await api(
@@ -16,7 +16,7 @@ export async function getFiles(): Promise<ReturnList<File>> {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        next: { tags: ['files'], revalidate: 60 * 4 },
+        next: { tags: ['FileCustoms'], revalidate: 60 * 4 },
       },
       '1',
       {},
@@ -86,7 +86,9 @@ export async function registerFile(
   }
 }
 
-export async function deleteFile(id?: string): Promise<InitialState<File>> {
+export async function deleteFile(
+  id?: string,
+): Promise<InitialState<FileCustom>> {
   try {
     if (!id) return { errors: { request: 'Id undefined' } }
     const token = getTokenFromCookieServer()
