@@ -42,7 +42,7 @@ export default async function FilesDissemination() {
                   >
                     <Image
                       className="rounded-md rounded-b-none"
-                      src={`${process.env.BASE_URL}${file.url}`}
+                      src={`${process.env.API_BASE_URL}${file.url}`}
                       width={400}
                       height={80}
                       alt=""
@@ -50,7 +50,7 @@ export default async function FilesDissemination() {
                     <div className="w-full rounded-md rounded-t-none p-2 flex flex-row justify-between items-center bg-primary-100">
                       <ButtonDownloadImage
                         name={file.filename}
-                        href={`${process.env.BASE_URL}${file.url}`}
+                        href={`${process.env.API_BASE_URL}${file.url}`}
                       />
                       {checkUserPermissions('file.delete', profile.role) && (
                         <IconAction
