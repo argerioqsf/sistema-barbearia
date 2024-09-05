@@ -61,6 +61,11 @@ const verifyPermissionProfile = {
     ].includes(roleUser),
 }
 
+const verifyPermissionFile = {
+  'file.create': (roleUser: string) => ['administrator'].includes(roleUser),
+  'file.delete': (roleUser: string) => ['administrator'].includes(roleUser),
+}
+
 const verifyPermissionIndicator = {
   'indicator.view': (roleUser: string) =>
     ['administrator', 'coordinator', 'indicator'].includes(roleUser),
@@ -73,7 +78,7 @@ const verifyPermissionIndicator = {
   'indicator.monitoring.view': (roleUser: string) =>
     ['indicator'].includes(roleUser),
   'indicator.files.view': (roleUser: string) =>
-    ['indicator'].includes(roleUser),
+    ['indicator', 'administrator'].includes(roleUser),
   'indicator.leads.list': (roleUser: string) =>
     ['indicator'].includes(roleUser),
   'indicator.pendingPayment.list': (roleUser: string) =>
@@ -167,6 +172,7 @@ const verifyPermission = {
   ...verifyPermissionDashboard,
   ...verifyPermissionConsultant,
   ...verifyPermissionOrganization,
+  ...verifyPermissionFile,
 }
 
 export type UserAction = keyof typeof verifyPermission
