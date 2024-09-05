@@ -1,12 +1,7 @@
 import { z } from 'zod'
 
 const MAX_FILE_SIZE = 5000000
-const ACCEPTED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-  'image/webp',
-]
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
 
 export const formSchemaRegisterFile = z.object({
   avatar: z
