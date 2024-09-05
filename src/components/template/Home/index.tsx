@@ -123,8 +123,8 @@ export default async function Home() {
             <h1>Erro ao buscar gráficos</h1>
           </div>
         ) : (
-          <div className="p-5 w-full grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-6">
-            <div className="w-full col-span-4">
+          <div className="p-5 w-full grid grid-cols-12 gap-6">
+            <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
               <ChartTitle
                 title="teste de titulo"
                 description="teste de descrição"
@@ -134,7 +134,7 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="w-full col-span-4">
+            <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
               <ChartTitle
                 title="teste de titulo"
                 description="teste de descrição"
@@ -144,7 +144,17 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="w-full col-span-4">
+            <div className="w-full col-span-12 md:col-span-12 lg:col-span-4">
+              <ChartTitle
+                title="teste de titulo"
+                description="teste de descrição"
+              />
+              <div className="p-4 border border-black border-t-0">
+                <Chart options={options2} />
+              </div>
+            </div>
+
+            <div className="w-full col-span-12">
               <ChartTitle
                 title="teste de titulo"
                 description="teste de descrição"

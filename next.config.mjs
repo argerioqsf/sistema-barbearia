@@ -39,6 +39,11 @@ const nextConfig = {
         hostname: 'img.myloview.com.br',
         port: '',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3333',
+      },
     ],
   },
 }

@@ -3,7 +3,8 @@
 import { Text } from '@/components/atoms'
 import InputForm from '@/components/atoms/InputForm'
 import LabelForm from '@/components/atoms/LabelForm'
-import React from 'react'
+import Image from 'next/image'
+import React, { useState } from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
@@ -36,15 +37,27 @@ const FormFieldText = ({
   disabled,
   ...rest
 }: FormFieldTextProps) => {
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+
+  function addImagePreview(event: React.ChangeEvent<HTMLInputElement>) {
+    if (event?.target?.files) {
+      const url = URL.createObjectURL(event?.target?.files[0])
+      setImagePreview(url)
+    }
+    if (onChange) {
+      onChange(event)
+    }
+  }
+
   return (
     <div>
       {label && <LabelForm htmlFor={props?.name} label={label} />}
-      <div className="mt-2">
+      <div className="mt-2 flex flex-col justify-start items-center">
         <InputForm
           disabled={disabled}
           onBlur={onBlur}
           onFocus={onFocus}
-          onChange={onChange}
+          onChange={type === 'file' ? addImagePreview : onChange}
           value={value}
           {...rest}
           propsInput={props ? { ...props } : undefined}
@@ -57,6 +70,16 @@ const FormFieldText = ({
             classInput,
           )}
         />
+        {type === 'file' && imagePreview && (
+          <div className="w-full bg-gray-300 p-4 flex flex-col justify-start items-center">
+            <Image
+              width={400}
+              height={600}
+              src={imagePreview}
+              alt="image-preview"
+            />
+          </div>
+        )}
       </div>
 
       {error && error.length > 0 && (
