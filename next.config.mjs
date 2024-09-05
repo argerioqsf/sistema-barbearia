@@ -44,6 +44,11 @@ const nextConfig = {
         hostname: 'localhost',
         port: '3333',
       },
+      {
+        protocol: 'https',
+        hostname: 'sistema-madre-sim-back-madre.mvgvsw.easypanel.host',
+        port: '',
+      },
     ],
   },
 }
