@@ -354,10 +354,10 @@ export async function documentsConfirmed(
   }
 }
 
-export async function createCycle(): Promise<InitialState<Lead>> {
+export async function createCycle(id?: string): Promise<InitialState<Lead>> {
   try {
     const token = getTokenFromCookieServer()
-    const response = await api(`/create/cycle`, {
+    const response = await api(`/create/cycle/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

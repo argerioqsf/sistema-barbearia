@@ -81,7 +81,10 @@ export default async function ProfileDetail() {
                         <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
                           Ciclos de pagamentos
                         </Text>
-                        <ButtonCycle activeCycle={activeCycle} />
+                        <ButtonCycle
+                          idOrganization={organization.id}
+                          activeCycle={activeCycle}
+                        />
                       </div>
 
                       <div className="w-[90vw] md:w-full mt-10 lg:mt-8">

@@ -1,20 +1,31 @@
+'use client'
+
 import { Button, Text } from '@/components/atoms'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import {
+  getUserFromCookie,
   removeRolesCookieClient,
   removeTokenCookieClient,
   removeUserCookieClient,
 } from '@/utils/cookieClient'
+import { User } from '@/types/general'
+import LinkDefault from '@/components/atoms/LinkDefault'
 
 type InfoUserNavProps = {
-  nameUser: string
   className?: string
 }
 
-const InfoUserNav: React.FC<InfoUserNavProps> = ({ nameUser, className }) => {
+const InfoUserNav: React.FC<InfoUserNavProps> = ({ className }) => {
   const { pushRouter } = useHandlerRouter()
+  const [user, setUser] = useState<User>()
+
+  useEffect(() => {
+    const user = getUserFromCookie()
+    setUser(user)
+  }, [])
+
   function logOut() {
     removeTokenCookieClient()
     removeUserCookieClient()
@@ -23,8 +34,14 @@ const InfoUserNav: React.FC<InfoUserNavProps> = ({ nameUser, className }) => {
   }
 
   return (
-    <div className={twMerge('pt-1 flex-col', className)}>
-      <Text className="text-indigo-600 font-bold">{nameUser}</Text>
+    <div className={twMerge('pt-1 flex flex-row gap-4', className)}>
+      {user && (
+        <LinkDefault href="/dashboard/profile">
+          <Text className="text-indigo-600 font-bold capitalize">
+            {user?.name}
+          </Text>
+        </LinkDefault>
+      )}
       <Button
         type="button"
         onClick={logOut}

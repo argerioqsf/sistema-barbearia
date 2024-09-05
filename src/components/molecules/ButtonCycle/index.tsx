@@ -4,9 +4,10 @@ import IconAction from '../IconAction'
 
 interface ButtonCycleProps {
   activeCycle?: Cyclo
+  idOrganization: string
 }
 
-export function ButtonCycle({ activeCycle }: ButtonCycleProps) {
+export function ButtonCycle({ activeCycle, idOrganization }: ButtonCycleProps) {
   return activeCycle && activeCycle.id ? (
     <IconAction
       onClick={endCycle.bind(null, activeCycle.id)}
@@ -19,7 +20,7 @@ export function ButtonCycle({ activeCycle }: ButtonCycleProps) {
     </IconAction>
   ) : (
     <IconAction
-      onClick={createCycle}
+      onClick={createCycle.bind(null, idOrganization)}
       size={35}
       classIcon="w-full rounded-xl border-transparent text-white bg-secondary-50"
       toastInfo={{ title: 'Ciclo inicializado com sucesso' }}
