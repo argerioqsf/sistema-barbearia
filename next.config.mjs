@@ -49,6 +49,11 @@ const nextConfig = {
         hostname: 'sistema-madre-sim-back-madre.mvgvsw.easypanel.host',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'sim.grupomadretereza.com.br',
+        port: '',
+      },
     ],
   },
 }
