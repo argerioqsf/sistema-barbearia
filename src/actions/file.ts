@@ -16,7 +16,7 @@ export async function getFiles(): Promise<ReturnList<FileCustom>> {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        next: { tags: ['FileCustoms'], revalidate: 60 * 4 },
+        next: { tags: ['files'], revalidate: 60 * 4 },
       },
       '1',
       {},
