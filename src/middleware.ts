@@ -37,19 +37,22 @@ export default function middleware(request: NextRequest) {
   }
 
   if (isLoginPage) {
-    if (roleUser === 'indicator') {
-      return NextResponse.redirect(
-        new URL('/pt-BR/dashboard/indicators/monitoring', request.url),
-      )
-    } else if (roleUser === 'consultant') {
-      return NextResponse.redirect(
-        new URL('/pt-BR/dashboard/consultants/monitoring', request.url),
-      )
-    } else {
-      return NextResponse.redirect(
-        new URL('/pt-BR/dashboard/home', request.url),
-      )
+    let path = '/pt-BR/dashboard/home'
+    switch (roleUser) {
+      case 'indicator':
+        path = '/pt-BR/dashboard/indicators/monitoring'
+        break
+      case 'consultant':
+        path = '/pt-BR/dashboard/consultants/monitoring'
+        break
+      case 'auxiliary':
+        path = '/pt-BR/dashboard/leads'
+        break
+      default:
+        path = '/pt-BR/dashboard/home'
+        break
     }
+    return NextResponse.redirect(new URL(path, request.url))
   } else {
     if (isPublicPages) {
       return middlewareIntl(request)

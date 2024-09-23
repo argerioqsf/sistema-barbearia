@@ -19,6 +19,8 @@ export default async function ListNewLeads({ searchParams }: SearchParams) {
   const response = await listLeads(searchParams?.page ?? '', {
     name: searchParams?.q ?? '',
     consultantId: 'null',
+    archived: false,
+    released: true,
   })
 
   if (checkUserPermissions('lead.pegar.set', profile.role)) {

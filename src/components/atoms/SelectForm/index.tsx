@@ -15,6 +15,7 @@ type SelectFormPros = {
   size?: number
   onBlur?: () => void
   selectRef?: React.RefObject<HTMLSelectElement>
+  disabled?: boolean
 }
 
 export default function SelectForm({
@@ -27,6 +28,7 @@ export default function SelectForm({
   onBlur,
   classNameOptions,
   selectRef,
+  disabled,
 }: SelectFormPros) {
   return (
     <>
@@ -41,6 +43,7 @@ export default function SelectForm({
         onChange={onChange ?? propsSelect?.onChange}
         onBlur={onBlur ?? propsSelect?.onBlur}
         ref={selectRef ?? propsSelect?.ref}
+        disabled={disabled}
       >
         {options &&
           options.map((option, index) => (

@@ -40,6 +40,7 @@ export default function FieldsForm<T>({
         options={field?.option?.list ?? []}
         optionKeyLabel={field?.option?.keyLabel}
         optionKeyValue={field?.option?.keyValue}
+        disabled={field.disabled}
       />
     )
   } else if (field.type === 'selectSearch') {

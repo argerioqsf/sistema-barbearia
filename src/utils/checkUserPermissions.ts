@@ -58,12 +58,17 @@ const verifyPermissionProfile = {
       'indicator',
       'consultant',
       'financial',
+      'auxiliary',
     ].includes(roleUser),
 }
 
 const verifyPermissionFile = {
   'file.create': (roleUser: string) => ['administrator'].includes(roleUser),
   'file.delete': (roleUser: string) => ['administrator'].includes(roleUser),
+}
+
+const verifyPermissionAuxiliary = {
+  'auxiliary.view': (roleUser: string) => ['auxiliary'].includes(roleUser),
 }
 
 const verifyPermissionIndicator = {
@@ -103,28 +108,44 @@ const verifyPermissionIndicatorRequest = {
 
 const verifyPermissionLead = {
   'lead.view': (roleUser: string) =>
-    ['administrator', 'coordinator', 'consultant', 'secretary'].includes(
-      roleUser,
-    ),
+    [
+      'administrator',
+      'coordinator',
+      'consultant',
+      'secretary',
+      'auxiliary',
+    ].includes(roleUser),
   'lead.list': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
   'lead.register': (roleUser: string) =>
     ['administrator', 'coordinator'].includes(roleUser),
   'lead.update': (roleUser: string) =>
-    ['administrator', 'coordinator', 'indicator'].includes(roleUser),
-  'lead.detail': (roleUser: string) =>
-    ['administrator', 'coordinator', 'indicator', 'consultant'].includes(
+    ['administrator', 'coordinator', 'indicator', 'auxiliary'].includes(
       roleUser,
     ),
+  'lead.detail': (roleUser: string) =>
+    [
+      'administrator',
+      'coordinator',
+      'indicator',
+      'consultant',
+      'auxiliary',
+    ].includes(roleUser),
   'lead.archived.list': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
+    ['administrator', 'coordinator', 'auxiliary'].includes(roleUser),
+  'lead.firstContact.list': (roleUser: string) =>
+    ['administrator', 'auxiliary'].includes(roleUser),
   'lead.archived.set': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
+    ['administrator', 'coordinator', 'auxiliary'].includes(roleUser),
   'lead.pegar.set': (roleUser: string) => ['consultant'].includes(roleUser),
   'lead.matriculation.set': (roleUser: string) =>
     ['consultant', 'administrator'].includes(roleUser),
   'lead.documents.set': (roleUser: string) =>
     ['administrator', 'secretary'].includes(roleUser),
+  'lead.consultant.set': (roleUser: string) =>
+    ['auxiliary', 'administrator'].includes(roleUser),
+  'lead.released.set': (roleUser: string) =>
+    ['auxiliary', 'administrator', 'consultant'].includes(roleUser),
 }
 
 const verifyPermissionNewLead = {
@@ -173,6 +194,7 @@ const verifyPermission = {
   ...verifyPermissionConsultant,
   ...verifyPermissionOrganization,
   ...verifyPermissionFile,
+  ...verifyPermissionAuxiliary,
 }
 
 export type UserAction = keyof typeof verifyPermission

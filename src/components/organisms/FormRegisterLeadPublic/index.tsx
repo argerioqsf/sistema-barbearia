@@ -328,7 +328,7 @@ export function FormRegisterLeadPublic({
             </h3>
           </div>
           <Button className="bg-primary-100 text-white">
-            <Link href="https://www.grupomadretereza.com.br/">
+            <Link href="https://wa.me/message/HDPQFMYF6KEZN1">
               Atendimento no Whatsapp
             </Link>
           </Button>

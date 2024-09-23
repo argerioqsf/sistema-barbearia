@@ -9,7 +9,9 @@ import { checkUserPermissions } from '@/utils/checkUserPermissions'
 import { notFound } from 'next/navigation'
 import { infoList } from './templates'
 
-export default async function ListLeads({ searchParams }: SearchParams) {
+export default async function ListFirstContactLeads({
+  searchParams,
+}: SearchParams) {
   const responseProfile = await getProfile()
   const profile = responseProfile?.response
   const errorRequestProfile = responseProfile.error?.request ?? null
@@ -42,6 +44,7 @@ export default async function ListLeads({ searchParams }: SearchParams) {
   const response = await listLeads(searchParams?.page ?? '', {
     name: searchParams?.q ?? '',
     archived: false,
+    consultantId: 'null',
   })
   const list = response?.response ?? null
   const count = response?.count ?? null

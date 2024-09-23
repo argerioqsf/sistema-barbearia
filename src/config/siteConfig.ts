@@ -140,6 +140,13 @@ export const siteConfig: SiteConfig = [
         userAction: 'lead.list',
       },
       {
+        id: '8',
+        label: 'Primeiro Contato',
+        href: '/dashboard/leads/firstContact',
+        icon: 'Circle',
+        userAction: 'lead.firstContact.list',
+      },
+      {
         id: '2',
         label: 'Novos Leads',
         href: '/dashboard/leads/new',

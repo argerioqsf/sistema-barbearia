@@ -4,5 +4,6 @@
     "indicator": "indicator",
     "coordinator": "coordinator",
     "financial": "financial",
-    "secretary": "secretary"
+    "secretary": "secretary",
+    "auxiliary": "auxiliary"
 }
