@@ -152,6 +152,7 @@ export type Lead = {
   course: Course
   amount_pay_indicator: number
   amount_pay_consultant: number
+  released: boolean
 }
 
 export type LeadProps = keyof Lead

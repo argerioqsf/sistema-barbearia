@@ -17,6 +17,7 @@ type FormFieldTextProps<T> = {
   options: OptionGeneric<T>[]
   optionKeyLabel?: OptionKey<T>
   optionKeyValue?: OptionKey<T>
+  disabled?: boolean
 }
 
 export default function FormFieldSelect<T>({
@@ -27,6 +28,7 @@ export default function FormFieldSelect<T>({
   options,
   optionKeyLabel,
   optionKeyValue,
+  disabled,
 }: FormFieldTextProps<T>) {
   const { getItemValue } = useItemListTransform()
   const getOptionLabel = (option: OptionGeneric<T>, key: OptionKey<T>) =>
@@ -46,11 +48,13 @@ export default function FormFieldSelect<T>({
       {label && <LabelForm htmlFor={props.name} label={label} />}
       <div className="mt-2">
         <SelectForm
+          disabled={disabled}
           options={OrderOptions}
           className={twMerge(
             'rounded-md border-0',
             'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
             'py-1.5 pl-4 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
+            disabled && 'opacity-25',
             classInput,
           )}
           propsSelect={{ ...props }}

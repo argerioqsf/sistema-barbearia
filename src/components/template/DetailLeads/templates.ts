@@ -53,6 +53,31 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
               type: 'text',
               label: 'Whatsapp',
             },
+            {
+              id: 'released',
+              required: true,
+              type: 'select',
+              label: 'Pronto',
+              disabled: true,
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                list: [
+                  {
+                    value: '',
+                    label: 'Selecione',
+                  },
+                  {
+                    value: 'true',
+                    label: 'Sim',
+                  },
+                  {
+                    value: 'false',
+                    label: 'Não',
+                  },
+                ],
+              },
+            },
           ],
         },
       ],
@@ -93,6 +118,7 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
               required: true,
               type: 'selectSearch',
               label: '',
+              disabled: true,
               option: {
                 keyLabel: 'name',
                 keyValue: 'profile.id',

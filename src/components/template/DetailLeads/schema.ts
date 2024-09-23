@@ -11,6 +11,7 @@ export const formSchemaUpdateLead = z.object({
   courseId: z.string().min(1, { message: 'O campo Curso é obrigatório' }),
   segmentId: z.string().min(1, { message: 'O campo Seguimento é obrigatório' }),
   consultantId: z.string().optional().nullable(),
+  released: z.enum(['true', 'false']),
 })
 
 export const formSchemaCreateTimeLine = z.object({

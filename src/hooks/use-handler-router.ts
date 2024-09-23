@@ -12,5 +12,10 @@ export const useHandlerRouter = () => {
     const newPath = `/${pathNames[0]}/${path}`
     return newPath
   }
-  return { pushRouter, generatePath }
+
+  const goBack = () => {
+    router.back()
+  }
+
+  return { pushRouter, generatePath, goBack }
 }

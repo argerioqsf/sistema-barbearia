@@ -11,7 +11,7 @@ import TimeLineComponent from '@/components/organisms/TimeLineComponent'
 import { Lead, Unit, User } from '@/types/general'
 import { checkUserPermissions } from '@/utils/checkUserPermissions'
 import { notFound } from 'next/navigation'
-import * as templates from './templates'
+import * as templatesRaw from './templates'
 import { listSelectCourses } from '@/actions/course'
 import { listSelectSegments } from '@/actions/segments'
 
@@ -34,9 +34,13 @@ export default async function DetailLeads({ id }: { id: string }) {
     } else {
       notFound()
     }
+  } else {
+    notFound()
   }
 
   const errorRequest = response.error?.request ?? undefined
+
+  const templates = templatesRaw as typeof templatesRaw
 
   templates.templateForm.sections[1].boxes[0].fields[0].option = {
     ...templates.templateForm.sections[1].boxes[0].fields[0].option,
@@ -49,6 +53,32 @@ export default async function DetailLeads({ id }: { id: string }) {
     ...templates.templateForm.sections[2].boxes[0].fields[0].option,
     list: [...consultants],
     values: [...values],
+  }
+
+  // Verifica se o usuario tem permissao para setar um consultor para o lead
+  if (profile && checkUserPermissions('lead.consultant.set', profile.role)) {
+    templates.templateForm.sections[2].boxes[0].fields[0] = {
+      ...templates.templateForm.sections[2].boxes[0].fields[0],
+      disabled: false,
+    }
+  } else {
+    templates.templateForm.sections[2].boxes[0].fields[0] = {
+      ...templates.templateForm.sections[2].boxes[0].fields[0],
+      disabled: true,
+    }
+  }
+
+  // Verifica se o usuario tem permissao para setar o lead como released
+  if (profile && checkUserPermissions('lead.released.set', profile.role)) {
+    templates.templateForm.sections[0].boxes[1].fields[2] = {
+      ...templates.templateForm.sections[0].boxes[1].fields[2],
+      disabled: false,
+    }
+  } else {
+    templates.templateForm.sections[0].boxes[1].fields[2] = {
+      ...templates.templateForm.sections[0].boxes[1].fields[2],
+      disabled: true,
+    }
   }
 
   const responseUnits = await listSelectUnits()

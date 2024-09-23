@@ -164,6 +164,7 @@ export async function updateLead(
     unitId: formData.get('unitId'),
     courseId: formData.get('courseId'),
     segmentId: formData.get('segmentId'),
+    released: formData.get('released'),
   })
 
   if (validatedFields.success) {
@@ -190,6 +191,7 @@ export async function updateLead(
           unitId: formData.get('unitId'),
           courseId: formData.get('courseId'),
           segmentId: formData.get('segmentId'),
+          released: formData.get('released') === 'true',
         }),
       })
       if (!response.ok) {

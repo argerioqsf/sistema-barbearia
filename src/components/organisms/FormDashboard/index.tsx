@@ -27,7 +27,7 @@ type FormDashboardProps<T> = {
   title?: string
   action?: ServerAction<T>
   actionWithId?: ServerActionId<T>
-  pathSuccess: string
+  pathSuccess?: string
   errorMessage?: string
   defaultValues?: T & FieldValues
   errorRequest?: string
@@ -41,7 +41,6 @@ export default function FormDashboard<T>({
   title,
   action,
   actionWithId,
-  pathSuccess,
   errorMessage,
   defaultValues,
   errorRequest,
@@ -51,7 +50,7 @@ export default function FormDashboard<T>({
   const { register, watch } = useForm<T & FieldValues>({
     values: defaultValues ?? undefined,
   })
-  const { pushRouter } = useHandlerRouter()
+  const { goBack } = useHandlerRouter()
   const [formDataExtra, setFormDataExtra] = useState<FormData>(new FormData())
   const initialStateForm: InitialState<T> = {
     errors: undefined,
@@ -66,7 +65,7 @@ export default function FormDashboard<T>({
 
   useEffect(() => {
     if (state.ok) {
-      pushRouter(pathSuccess)
+      goBack()
       if (toastInfo) {
         toast({
           title: toastInfo?.title,
