@@ -1,30 +1,30 @@
 'use client'
 
-import { InputForm, Text } from '@/components/atoms'
-import { SearchType } from '@/types/general'
+import { Text } from '@/components/atoms'
+import SelectForm from '@/components/atoms/SelectForm'
+import { Option, SearchType } from '@/types/general'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
-import { SubmitHandler } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
-let timeout: NodeJS.Timeout | null
-
-const Search = ({
+const Filter = ({
   errorRequest,
   paramsName = 'q',
   placeholder = 'Buscar...',
+  options,
 }: {
   errorRequest: string | null
   paramsName?: keyof SearchType
   placeholder?: string
+  options: Option[]
 }) => {
   const paths = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const query = searchParams.get(paramsName)
+  const queryDefault = searchParams.get(paramsName)
 
-  const handleSearch: SubmitHandler<SearchType> = (data: SearchType) => {
-    const query = data[paramsName]
+  const handleSearch = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const query = event.target.value
     const lastQuery = searchParams.toString()
     if (lastQuery.includes(paramsName)) {
       const regex = new RegExp(`${paramsName}=([^&]*)`, 'g')
@@ -35,28 +35,19 @@ const Search = ({
     }
   }
 
-  const onChangeDebounce = (event: React.ChangeEvent<HTMLInputElement>) => {
-    timeout && clearTimeout(timeout)
-    const target = event.target
-    timeout = setTimeout(
-      () => handleSearch({ [paramsName]: target.value }),
-      500,
-    )
-  }
-
   return (
     <div className="flex flex-col">
       <div className="w-[90vw] md:w-full flex flex-col md:flex-row justify-start items-center">
         <div className="w-[90vw] md:w-full flex flex-row justify-start items-center">
-          <InputForm
-            defaultValue={query ?? ''}
-            type="text"
-            id="q"
-            onChange={onChangeDebounce}
-            className={twMerge(
-              'block w-full md:w-56 rounded-full border-2 border-primary-100 h-10 ring-blue',
-            )}
+          <SelectForm
+            defaultValue={queryDefault ?? ''}
+            id={paramsName}
             placeholder={placeholder}
+            options={options}
+            onChange={handleSearch}
+            className={twMerge(
+              'block w-full md:w-56 rounded-full border-2 pl-4 border-primary-100 h-10 ring-blue',
+            )}
           />
         </div>
       </div>
@@ -72,4 +63,4 @@ const Search = ({
   )
 }
 
-export default Search
+export default Filter

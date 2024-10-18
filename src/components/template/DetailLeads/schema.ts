@@ -9,7 +9,7 @@ export const formSchemaUpdateLead = z.object({
   city: z.string().min(1, { message: 'O campo Cidade é obrigatório' }),
   unitId: z.string().min(1, { message: 'O campo unidade é obrigatório' }),
   courseId: z.string().min(1, { message: 'O campo Curso é obrigatório' }),
-  segmentId: z.string().min(1, { message: 'O campo Seguimento é obrigatório' }),
+  segmentId: z.string().min(1, { message: 'O campo Segmento é obrigatório' }),
   consultantId: z.string().optional().nullable(),
   released: z.enum(['true', 'false']),
 })

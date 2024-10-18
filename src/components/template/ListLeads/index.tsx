@@ -4,10 +4,13 @@ import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { SearchParams } from '@/types/general'
+import { Option, SearchParams } from '@/types/general'
 import { checkUserPermissions } from '@/utils/checkUserPermissions'
 import { notFound } from 'next/navigation'
 import { infoList } from './templates'
+import Filter from '@/components/molecules/Filter'
+import { listSelectSegments } from '@/actions/segments'
+import { listSelectCourses } from '@/actions/course'
 
 export default async function ListLeads({ searchParams }: SearchParams) {
   const responseProfile = await getProfile()
@@ -16,6 +19,26 @@ export default async function ListLeads({ searchParams }: SearchParams) {
   if (!profile) {
     notFound()
   }
+
+  const responseSegments = await listSelectSegments()
+  const segments = responseSegments?.response ?? []
+  const errorRequestSegment = responseSegments.error?.request ?? null
+  const optionsSegment: Option[] = segments.map((option) => {
+    return {
+      label: option.name,
+      value: option.id,
+    }
+  })
+
+  const responseCourses = await listSelectCourses()
+  const courses = responseCourses?.response ?? []
+  const errorRequestCourse = responseSegments.error?.request ?? null
+  const optionsCourse: Option[] = courses.map((option) => {
+    return {
+      label: option.name,
+      value: option.id,
+    }
+  })
 
   if (checkUserPermissions('lead.archived.set', profile.role)) {
     const getForId = infoList.listActions?.find((action) => action.id === 1)
@@ -42,6 +65,9 @@ export default async function ListLeads({ searchParams }: SearchParams) {
   const response = await listLeads(searchParams?.page ?? '', {
     name: searchParams?.q ?? '',
     archived: false,
+    segmentId: searchParams?.segmentId ?? '',
+    courseId: searchParams?.courseId ?? '',
+    phone: searchParams?.phone ?? '',
   })
   const list = response?.response ?? null
   const count = response?.count ?? null
@@ -53,8 +79,28 @@ export default async function ListLeads({ searchParams }: SearchParams) {
         <div className="w-full">
           <Breadcrumb />
         </div>
-        <div className="w-full mt-6">
-          <Search errorRequest={errorRequest ?? errorRequestProfile} />
+        <div className="w-full flex flex-col md:flex-row gap-4 mt-6">
+          <Search
+            placeholder="Nome"
+            errorRequest={errorRequest ?? errorRequestProfile}
+          />
+          <Search
+            placeholder="Numero"
+            paramsName="phone"
+            errorRequest={errorRequest ?? errorRequestProfile}
+          />
+          <Filter
+            paramsName="segmentId"
+            placeholder="Segmento"
+            errorRequest={errorRequestSegment ?? errorRequestProfile}
+            options={optionsSegment}
+          />
+          <Filter
+            paramsName="courseId"
+            placeholder="Curso"
+            errorRequest={errorRequestCourse ?? errorRequestProfile}
+            options={optionsCourse}
+          />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing
