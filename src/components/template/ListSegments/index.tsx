@@ -13,11 +13,11 @@ infoList.listActions = [
     onclick: deleteSegment,
     name: 'Deletar',
     alert: {
-      title: 'Você deseja realmente apagar este seguimento?',
+      title: 'Você deseja realmente apagar este segmento?',
       description: 'Essa ação será irreversível',
     },
     toast: {
-      title: 'Seguimento deletado com sucesso!',
+      title: 'Segmento deletado com sucesso!',
     },
   },
   ...(infoList.listActions ?? []),
@@ -46,8 +46,8 @@ export default async function ListSegments({ searchParams }: SearchParams) {
             infoList={infoList}
             listActions={infoList.listActions}
             hrefButton="dashboard/segments/register"
-            textButton="Novo Seguimento"
-            title="Seguimentos"
+            textButton="Novo Segmento"
+            title="Segmentos"
             count={count}
           />
         </div>

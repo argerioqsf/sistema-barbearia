@@ -40,8 +40,8 @@ export default async function ListArchivedLeads({
         <div className="w-full">
           <Breadcrumb />
         </div>
-        <div className="w-full mt-6">
-          <Search errorRequest={errorRequest} />
+        <div className="w-full mt-6 flex flex-col md:flex-row gap-1">
+          <Search errorRequest={errorRequest} placeholder="Nome do lead" />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <Listing

@@ -255,7 +255,7 @@ export const siteConfig: SiteConfig = [
   },
   {
     id: '8',
-    label: 'Seguimentos',
+    label: 'Segmentos',
     icon: 'Clipboard',
     userAction: 'segment.view',
     subMenuList: [

@@ -23,7 +23,7 @@ export const templateForm: TemplateForm<Unit | Course | Segment> = {
     },
     {
       id: 1,
-      title: 'Seguimentos',
+      title: 'Segmentos',
       boxes: [
         {
           id: 2,

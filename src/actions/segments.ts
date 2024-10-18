@@ -116,7 +116,7 @@ export async function updateSegment(
       }
     } catch (error) {
       return {
-        errors: { request: 'Falha ao atualizar o  Seguimento' },
+        errors: { request: 'Falha ao atualizar o  Segmento' },
       }
     }
   } else if (validatedFields.error) {

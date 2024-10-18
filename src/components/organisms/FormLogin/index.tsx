@@ -49,7 +49,7 @@ const FormLogin = ({ action }: FormLoginProps) => {
           path = 'dashboard/consultants/monitoring'
           break
         case 'auxiliary':
-          path = 'dashboard/leads'
+          path = 'dashboard/leads/firstContact'
           break
         default:
           path = 'dashboard/home'

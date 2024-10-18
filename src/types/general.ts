@@ -402,6 +402,10 @@ export type Form<T> = {
 
 export type SearchType = {
   q?: string
+  segmentId?: string
+  courseId?: string
+  phone?: string
+  page?: string
 }
 
 export interface ReturnList<T> {
@@ -417,10 +421,7 @@ export interface ReturnGet<T> {
 
 export type SearchParams = {
   params?: { locale: string }
-  searchParams?: {
-    q: string
-    page: string
-  }
+  searchParams?: SearchType
 }
 export type FileCustom = {
   filename: string

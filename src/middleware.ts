@@ -46,7 +46,7 @@ export default function middleware(request: NextRequest) {
         path = '/pt-BR/dashboard/consultants/monitoring'
         break
       case 'auxiliary':
-        path = '/pt-BR/dashboard/leads'
+        path = '/pt-BR/dashboard/leads/firstContact'
         break
       default:
         path = '/pt-BR/dashboard/home'

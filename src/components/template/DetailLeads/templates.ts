@@ -178,7 +178,7 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
     },
     {
       id: 5,
-      title: 'Seguimento',
+      title: 'Segmento',
       boxes: [
         {
           id: 4,

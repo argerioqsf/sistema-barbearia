@@ -1,12 +1,12 @@
 import { Course, Segment, TemplateForm } from '@/types/general'
 
 export const templateForm: TemplateForm<Segment | Course> = {
-  title: 'Seguimento',
+  title: 'Segmento',
   textButton: 'Editar',
   sections: [
     {
       id: 1,
-      title: 'Dados do Seguimento',
+      title: 'Dados do Segmento',
       boxes: [
         {
           id: 1,

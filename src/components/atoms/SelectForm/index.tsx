@@ -4,8 +4,7 @@ import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
 type SelectFormPros = {
-  type?: string
-  placeholder?: string
+  id?: string
   className?: string
   classNameOptions?: string
   propsSelect?: UseFormRegisterReturn<string>
@@ -16,9 +15,12 @@ type SelectFormPros = {
   onBlur?: () => void
   selectRef?: React.RefObject<HTMLSelectElement>
   disabled?: boolean
+  placeholder?: string
+  defaultValue?: string
 }
 
 export default function SelectForm({
+  id,
   className,
   propsSelect,
   options,
@@ -29,7 +31,18 @@ export default function SelectForm({
   classNameOptions,
   selectRef,
   disabled,
+  placeholder,
+  defaultValue,
 }: SelectFormPros) {
+  if (placeholder) {
+    const ifExists = options?.find((option) => option.label === placeholder)
+    if (ifExists === undefined) {
+      options?.unshift({
+        label: placeholder,
+        value: '',
+      })
+    }
+  }
   return (
     <>
       <select
@@ -44,6 +57,9 @@ export default function SelectForm({
         onBlur={onBlur ?? propsSelect?.onBlur}
         ref={selectRef ?? propsSelect?.ref}
         disabled={disabled}
+        id={id}
+        name={id}
+        defaultValue={defaultValue}
       >
         {options &&
           options.map((option, index) => (
