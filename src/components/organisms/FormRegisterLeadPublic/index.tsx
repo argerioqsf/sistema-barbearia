@@ -97,7 +97,7 @@ export function FormRegisterLeadPublic({
   }
 
   return (
-    <div className="w-full py-10 flex flex-col justify-center items-center gap-4 lg:gap-6 bg-white rounded-md">
+    <div className="w-full m-8 py-10 flex flex-col justify-center items-center gap-4 lg:gap-6 bg-white rounded-md">
       {!state.ok ? (
         <>
           <div className="px-4 sm:px-24 flex flex-col gap-4">
