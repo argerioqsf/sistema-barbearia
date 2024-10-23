@@ -117,6 +117,22 @@ module.exports = {
             width: 'w-screen',
           },
         },
+        opacityUp: {
+          '0%': {
+            opacity: '0',
+          },
+          '100%': {
+            opacity: '1',
+          },
+        },
+        opacityDown: {
+          '0%': {
+            opacity: '1',
+          },
+          '100%': {
+            opacity: '0',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -127,6 +143,8 @@ module.exports = {
         closeMenuChildren: 'closeMenuChildren 0.4s ease forwards',
         openNavBar: 'openNavBar 0.4s ease forwards',
         closeNavBar: 'closeNavBar 0.4s ease forwards',
+        opacityUp: 'opacityUp 0.4s ease-out',
+        opacityDown: 'opacityDown 5s ease forwards',
       },
     },
   },
