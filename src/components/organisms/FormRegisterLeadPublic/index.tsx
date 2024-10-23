@@ -13,7 +13,6 @@ import { twMerge } from 'tailwind-merge'
 
 export function FormRegisterLeadPublic({
   userId,
-  name,
 }: {
   userId: string
   name: string
