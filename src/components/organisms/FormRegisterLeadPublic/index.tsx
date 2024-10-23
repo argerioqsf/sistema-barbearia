@@ -13,7 +13,6 @@ import { twMerge } from 'tailwind-merge'
 
 export function FormRegisterLeadPublic({
   userId,
-  name,
 }: {
   userId: string
   name: string
@@ -97,25 +96,25 @@ export function FormRegisterLeadPublic({
   }
 
   return (
-    <>
+    <div className="w-full m-8 py-10 flex flex-col justify-center items-center gap-4 lg:gap-6 bg-white rounded-md">
       {!state.ok ? (
         <>
-          <div className="px-2 lg:px-24 flex flex-col gap-4">
+          <div className="px-4 sm:px-24 flex flex-col gap-4">
             <h1 className="text-2xl lg:text-4xl font-bold text-center text-primary-100">
-              VEM SER MADRE!
+              Vem Ser Madre!
             </h1>
 
-            <h3 className="text-center text-md lg:text-2xl text-stone-500 font-semibold">
-              ME CHAMO <b>{name}</b> TENHO UMA BOLSA DE DESCONTO DO GRUPO MADRE
-              TEREZA, PARA VOCÊ!.
+            <h3 className="text-center text-md lg:text-lg text-primary-100 font-semibold">
+              O <b>GRUPO MADRE TEREZA</b>, disponibiliza bolsas de desconto para
+              você, escolha sua formação
             </h3>
           </div>
           <form
-            className="flex flex-col justify-center items-center gap-3 px-4 sm:px-12 md:px-32 lg:px-10 w-full lg:w-[80%]"
+            className="flex flex-col justify-center items-center gap-3 px-4 sm:px-20 md:px-32 lg:px-2 w-full lg:w-[80%]"
             action={handleAction}
           >
             <SelectFormWithSearch<Lead | Segment>
-              classNameInput="rounded-xl py-3"
+              classNameInput="rounded-xl py-3 bg-primary-100"
               props={{ ...register('segmentId', { required: true }) }}
               onChange={onChangeSegment}
               onDelete={() => {
@@ -139,7 +138,7 @@ export function FormRegisterLeadPublic({
             />
             {selecteds.segmentId && (
               <SelectFormWithSearch<Lead | Unit>
-                classNameInput="rounded-xl py-3"
+                classNameInput="rounded-xl py-3 bg-primary-100"
                 props={{ ...register('unitId', { required: true }) }}
                 onChange={onChangeUnit}
                 onDelete={() => {
@@ -161,7 +160,7 @@ export function FormRegisterLeadPublic({
             )}
             {selecteds.unitId && (
               <SelectFormWithSearch<Lead | Course>
-                classNameInput="rounded-xl py-3"
+                classNameInput="rounded-xl py-3 bg-primary-100"
                 props={{ ...register('courseId', { required: true }) }}
                 onChange={(value) =>
                   setSelecteds({ ...selecteds, unitId: value })
@@ -185,7 +184,7 @@ export function FormRegisterLeadPublic({
             <div className="w-full">
               <input
                 className={twMerge(
-                  'block w-full',
+                  'block w-full bg-primary-100',
                   'rounded-xl border-0',
                   'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
                   'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
@@ -207,7 +206,7 @@ export function FormRegisterLeadPublic({
             <div className="w-full">
               <input
                 className={twMerge(
-                  'block w-full',
+                  'block w-full bg-primary-100',
                   'rounded-xl border-0',
                   'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
                   'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
@@ -229,7 +228,7 @@ export function FormRegisterLeadPublic({
             <div className="w-full">
               <input
                 className={twMerge(
-                  'block w-full',
+                  'block w-full bg-primary-100',
                   'rounded-xl border-0',
                   'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
                   'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
@@ -251,7 +250,7 @@ export function FormRegisterLeadPublic({
             <div className="w-full">
               <input
                 className={twMerge(
-                  'block w-full',
+                  'block w-full bg-primary-100',
                   'rounded-xl border-0',
                   'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
                   'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
@@ -273,7 +272,7 @@ export function FormRegisterLeadPublic({
             <div className="w-full">
               <input
                 className={twMerge(
-                  'block w-full',
+                  'block w-full bg-primary-100',
                   'rounded-xl border-0',
                   'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
                   'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
@@ -293,7 +292,10 @@ export function FormRegisterLeadPublic({
               )}
             </div>
             <div className="flex flex-col justify-center items-center ">
-              <Button type="submit" className="bg-primary-100 rounded-xl w-fit">
+              <Button
+                type="submit"
+                className="bg-secondary-100 rounded-xl w-fit"
+              >
                 <span className="text-white font-semibold">
                   QUERO ME INSCREVER
                 </span>
@@ -342,6 +344,6 @@ export function FormRegisterLeadPublic({
           </Button>
         </div>
       )}
-    </>
+    </div>
   )
 }

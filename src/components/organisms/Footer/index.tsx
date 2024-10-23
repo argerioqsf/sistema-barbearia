@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
   const YoutubeIcon = handleIcons('Youtube')
   return (
     <div>
-      <div className="w-screen p-8 bg-[#0a1635] w-full flex flex-col items-center justify-center">
+      <div className="w-screen p-8 bg-primary-100 flex flex-col items-center justify-center">
         <Image
           width={150}
           height={150}

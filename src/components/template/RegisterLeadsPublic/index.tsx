@@ -19,24 +19,34 @@ export async function RegisterLeadsPublic({ id }: RegisterLeadsPublicProps) {
   }
 
   return (
-    <div>
-      <section className="flex flex-col lg:flex-row justify-start items-center min-h-screen bg-primary-100">
-        <div className=" hidden lg:flex w-full lg:w-[50%] h-full justify-center items-center">
-          <Image
-            src="/logo_madre_w.webp"
-            width={420}
-            height={420}
-            quality={100}
-            alt=""
-          />
-        </div>
+    <div className="w-full">
+      <section className="w-full">
+        <div className="w-full relative bg-cover bg-center lg:bg-[url('https://cdn.brasildefato.com.br/media/05888e43d7d546ed88b58bfdc8ca13b3.jpg')]">
+          <div className="w-full absolute min-h-full bg-primary-100 lg:bg-gradient-to-r from-primary-100 from-40% via-primary-100 via-75% to-secondary-100 to-100% lg:opacity-90" />
+          <div className="w-full flex flex-col lg:flex-row justify-start items-end h-full">
+            <div className="bg-[url('https://cdn.brasildefato.com.br/media/05888e43d7d546ed88b58bfdc8ca13b3.jpg')] lg:bg-none min-h-screen lg:min-h-full w-full z-20 fixed animate-opacityDown lg:relative flex lg:w-[50%] lg:animate-opacityUp flex-col justify-end items-center">
+              <Image
+                className="z-20"
+                src="/logo_madre_w.webp"
+                width={420}
+                height={420}
+                quality={100}
+                alt=""
+              />
+              <h2 className="z-40 font-bold text-5xl text-stone-400 tracking-wider text-center mb-24">
+                Seu futuro bem <br /> na sua frente!
+              </h2>
+              <div className="min-h-full z-30 w-[50vw] hidden lg:flex absolute top-0 bg-gradient-to-b from-transparent from-05% to-primary-100 to-90%" />
+              <div className="z-30 lg:z-30 min-h-screen w-full lg:w-[50vw] flex absolute lg:hidden top-0 bg-gradient-to-b from-transparent from-55% to-green-500 to-100%" />
+              <div className="z-10 w-full absolute flex lg:hidden min-h-screen bg-primary-100 opacity-90" />
+            </div>
 
-        <div className="bg-stone-300 w-full lg:w-[50%] min-h-screen flex flex-col justify-center items-center">
-          <div className="p-4 w-full py-10 flex flex-col justify-center items-center gap-4 lg:gap-6">
-            <FormRegisterLeadPublic
-              userId={indicator.profile.id}
-              name={indicator.name}
-            />
+            <div className="z-10 w-full lg:w-[45%] min-h-screen flex flex-col justify-center items-center">
+              <FormRegisterLeadPublic
+                userId={indicator.profile.id}
+                name={indicator.name}
+              />
+            </div>
           </div>
         </div>
       </section>
