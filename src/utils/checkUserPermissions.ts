@@ -145,7 +145,7 @@ const verifyPermissionLead = {
   'lead.consultant.set': (roleUser: string) =>
     ['auxiliary', 'administrator'].includes(roleUser),
   'lead.released.set': (roleUser: string) =>
-    ['auxiliary', 'administrator', 'consultant'].includes(roleUser),
+    ['auxiliary', 'administrator'].includes(roleUser),
 }
 
 const verifyPermissionNewLead = {
@@ -165,9 +165,13 @@ const verifyPermissionWaitingConfirmedLead = {
 
 const verifyPermissionDashboard = {
   'dashboard.view': (roleUser: string) =>
-    ['coordinator', 'administrator', 'financial', 'secretary'].includes(
-      roleUser,
-    ),
+    [
+      'coordinator',
+      'administrator',
+      'financial',
+      'secretary',
+      'indicator',
+    ].includes(roleUser),
 }
 
 const verifyPermissionOrganization = {

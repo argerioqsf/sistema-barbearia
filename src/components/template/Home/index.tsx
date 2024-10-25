@@ -1,4 +1,5 @@
 import { getCharts } from '@/actions/chart'
+import { getGraphics } from '@/actions/graphics'
 import Chart from '@/components/atoms/Chart'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import ChartTitle from '@/components/molecules/ChartTitle'
@@ -8,6 +9,13 @@ export default async function Home() {
   const response = await getCharts()
   const charts = response?.response ?? null
   const errorRequest = response.error?.request ?? null
+
+  const responseGraphics = await getGraphics()
+  const graphics = responseGraphics?.response ?? null
+  const errorGraphics = responseGraphics.error?.request ?? null
+
+  console.log('graphics: ', graphics)
+  console.log('errorGraphics: ', errorGraphics)
 
   const data1 = [charts ? charts.length : 20]
   const data2 = [charts ? charts.length : 60]

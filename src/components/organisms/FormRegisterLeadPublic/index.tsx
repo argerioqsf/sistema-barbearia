@@ -186,7 +186,7 @@ export function FormRegisterLeadPublic({
                 className={twMerge(
                   'block w-full bg-primary-100',
                   'rounded-xl border-0',
-                  'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                  'ring-gray-300 placeholder:text-gray-400  text-white focus:ring-secondary-100',
                   'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
                 )}
                 {...register('name', { required: true })}
@@ -208,7 +208,7 @@ export function FormRegisterLeadPublic({
                 className={twMerge(
                   'block w-full bg-primary-100',
                   'rounded-xl border-0',
-                  'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                  'ring-gray-300 placeholder:text-gray-400  text-white focus:ring-secondary-100',
                   'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
                 )}
                 {...register('document', { required: true })}
@@ -230,7 +230,7 @@ export function FormRegisterLeadPublic({
                 className={twMerge(
                   'block w-full bg-primary-100',
                   'rounded-xl border-0',
-                  'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                  'ring-gray-300 placeholder:text-gray-400  text-white focus:ring-secondary-100',
                   'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
                 )}
                 {...register('email', { required: true })}
@@ -252,7 +252,7 @@ export function FormRegisterLeadPublic({
                 className={twMerge(
                   'block w-full bg-primary-100',
                   'rounded-xl border-0',
-                  'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                  'ring-gray-300 placeholder:text-gray-400  text-white focus:ring-secondary-100',
                   'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
                 )}
                 {...register('city', { required: true })}
@@ -274,7 +274,7 @@ export function FormRegisterLeadPublic({
                 className={twMerge(
                   'block w-full bg-primary-100',
                   'rounded-xl border-0',
-                  'ring-gray-300 placeholder:text-gray-400 text-gray-900 focus:ring-secondary-100',
+                  'ring-gray-300 placeholder:text-gray-400  text-white focus:ring-secondary-100',
                   'py-3 pl-8 shadow-sm ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
                 )}
                 {...register('phone', { required: true })}
