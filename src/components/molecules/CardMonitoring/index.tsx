@@ -42,10 +42,10 @@ export function CardMonitoring({
       >
         {card.subinfo && (
           <>
-            <span className={twMerge('text-base font-bold', classSubinfoLabel)}>
+            <span className={twMerge(classSubinfoLabel)}>
               {card.subinfo.label}
             </span>
-            <span className={twMerge('text-2xl font-bold ', classSubinfoValue)}>
+            <span className={twMerge(classSubinfoValue)}>
               {card.subinfo.value}
             </span>
           </>
