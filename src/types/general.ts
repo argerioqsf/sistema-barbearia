@@ -427,3 +427,47 @@ export type FileCustom = {
   filename: string
   url: string
 }
+
+type ListRanking = { name: string; quant: number }
+
+export type Graphics = {
+  leads_per_day?: {
+    value: number
+    diff: number
+  }
+  leads_per_cycle?: {
+    value: number
+    diff: number
+  }
+  average_service_time?: {
+    dias: number
+    horas: number
+    minutos: number
+    segundos: number
+    media_em_dias: number
+    totalLeads?: number
+  }
+  leads_by_steps?: {
+    countStepClosing: number
+    countStepNegotiation: number
+    countStepNewLeads: number
+    countStepPreService: number
+    countStepPresentationOportunity: number
+  }
+  bonus?: {
+    bonus_awaiting_confirmation: {
+      total: number
+      indicator: number
+      consultant: number
+    }
+    bonus_confirmed: {
+      total: number
+      indicator: number
+      consultant: number
+    }
+  }
+  leadsRankingConsultant?: ListRanking[]
+  leadsRankingIndicator?: ListRanking[]
+  coursesRanking?: ListRanking[]
+  rankingConsultantsCloseSales?: ListRanking[]
+}

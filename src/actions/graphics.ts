@@ -1,10 +1,10 @@
 'use server'
 
 import { api } from '@/data/api'
-import { FileCustom, ReturnList } from '@/types/general'
+import { Graphics, ReturnGet } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 
-export async function getGraphics(): Promise<ReturnList<FileCustom>> {
+export async function getGraphics(): Promise<ReturnGet<Graphics>> {
   try {
     const token = getTokenFromCookieServer()
     const response = await api('/graphics', {
