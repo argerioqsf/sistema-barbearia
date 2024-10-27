@@ -57,8 +57,8 @@ export default function SelectForm({
         onBlur={onBlur ?? propsSelect?.onBlur}
         ref={selectRef ?? propsSelect?.ref}
         disabled={disabled}
-        id={id}
-        name={id}
+        id={propsSelect?.name ?? id}
+        name={propsSelect?.name ?? id}
         defaultValue={defaultValue}
       >
         {options &&

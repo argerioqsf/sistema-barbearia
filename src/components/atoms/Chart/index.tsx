@@ -3,6 +3,11 @@
 import HighchartsReact from 'highcharts-react-official'
 import * as Highcharts from 'highcharts'
 import { useRef } from 'react'
+import highchartsMore from 'highcharts/highcharts-more'
+import solidGauge from 'highcharts/modules/solid-gauge'
+
+highchartsMore(Highcharts)
+solidGauge(Highcharts)
 
 const Chart = (props: HighchartsReact.Props) => {
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null)

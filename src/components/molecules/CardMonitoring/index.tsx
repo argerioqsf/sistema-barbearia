@@ -5,9 +5,18 @@ import { twMerge } from 'tailwind-merge'
 interface CardMonitoringProps {
   card: Card
   last: boolean
+  classSubinfoValue?: string
+  classSubinfoLabel?: string
+  classSubinfo?: string
 }
 
-export function CardMonitoring({ card, last }: CardMonitoringProps) {
+export function CardMonitoring({
+  card,
+  last,
+  classSubinfoValue,
+  classSubinfoLabel,
+  classSubinfo,
+}: CardMonitoringProps) {
   const Icon = handleIcons(card.icon)
   return (
     <div
@@ -25,9 +34,22 @@ export function CardMonitoring({ card, last }: CardMonitoringProps) {
         </div>
         <Icon size={30} />
       </div>
-      <div className="p-4 bg-primary-100 rounded-b-md flex flex-row justify-between items-center text-white text-xs">
-        {/* <span>{card.subinfo.label}</span>
-        <span>{card.subinfo.value}</span> */}
+      <div
+        className={twMerge(
+          'p-4 bg-primary-100 rounded-b-md flex flex-row justify-between items-center text-white text-xs',
+          classSubinfo,
+        )}
+      >
+        {card.subinfo && (
+          <>
+            <span className={twMerge(classSubinfoLabel)}>
+              {card.subinfo.label}
+            </span>
+            <span className={twMerge(classSubinfoValue)}>
+              {card.subinfo.value}
+            </span>
+          </>
+        )}
       </div>
     </div>
   )

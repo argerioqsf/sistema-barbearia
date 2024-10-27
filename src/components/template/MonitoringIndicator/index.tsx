@@ -14,7 +14,7 @@ export type Card = {
   label: string
   value: string | number
   icon: keyof CatalogIcons
-  subinfo: {
+  subinfo?: {
     label: string
     value: string | number
   }
