@@ -402,7 +402,7 @@ export default async function Home() {
                     last={false}
                     card={{
                       subinfo: {
-                        value: `${graphics.leads_per_day.diff}`,
+                        value: `${graphics.leads_per_day.diff > 0 ? '+' + graphics.leads_per_day.diff : graphics.leads_per_day.diff}`,
                         label: 'Diferença para ontem',
                       },
                       icon:
@@ -441,9 +441,11 @@ export default async function Home() {
                     classSubinfoValue="text-2xl font-bold"
                     classSubinfoLabel="text-base font-bold"
                     classSubinfo={
-                      graphics.leads_per_cycle.diff > 0
+                      graphics.leads_per_cycle.diff === 0
                         ? 'bg-primary-100'
-                        : 'bg-red-800'
+                        : graphics.leads_per_cycle.diff > 0
+                          ? 'bg-lime-800'
+                          : 'bg-red-800'
                     }
                   />
                 )}
