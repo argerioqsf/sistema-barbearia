@@ -441,9 +441,11 @@ export default async function Home() {
                     classSubinfoValue="text-2xl font-bold"
                     classSubinfoLabel="text-base font-bold"
                     classSubinfo={
-                      graphics.leads_per_cycle.diff > 0
+                      graphics.leads_per_cycle.diff === 0
                         ? 'bg-primary-100'
-                        : 'bg-red-800'
+                        : graphics.leads_per_cycle.diff > 0
+                          ? 'bg-lime-800'
+                          : 'bg-red-800'
                     }
                   />
                 )}
