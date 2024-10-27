@@ -402,7 +402,7 @@ export default async function Home() {
                     last={false}
                     card={{
                       subinfo: {
-                        value: `${graphics.leads_per_day.diff}`,
+                        value: `${graphics.leads_per_day.diff > 0 ? '+' + graphics.leads_per_day.diff : graphics.leads_per_day.diff}`,
                         label: 'Diferença para ontem',
                       },
                       icon:
