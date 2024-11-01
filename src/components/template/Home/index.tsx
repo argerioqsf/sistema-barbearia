@@ -51,8 +51,8 @@ export default async function Home() {
     },
     yAxis: {
       min: 0,
-      max: 90,
-      tickPixelInterval: 30,
+      max: 9,
+      tickPixelInterval: 50,
       tickPosition: 'inside',
       tickColor: '#FFFFFF',
       tickLength: 10,
@@ -68,21 +68,21 @@ export default async function Home() {
       plotBands: [
         {
           from: 0,
-          to: 30,
+          to: 2,
           color: '#55BF3B', // green
           thickness: 20,
           borderRadius: '30%',
         },
         {
-          from: 32,
-          to: 62,
+          from: 2.1,
+          to: 5,
           color: '#DDDF0D', // yellow
           thickness: 20,
           borderRadius: '30%',
         },
         {
-          from: 64,
-          to: 90,
+          from: 5.1,
+          to: 9,
           color: '#DF5353', // red
           thickness: 20,
           borderRadius: '30%',

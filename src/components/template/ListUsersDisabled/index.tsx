@@ -1,4 +1,4 @@
-import { disableUser, listUsers } from '@/actions/user'
+import { activeUser, listUsers } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
@@ -10,23 +10,23 @@ import { infoList } from './templates'
 infoList.listActions = [
   {
     id: 3,
-    icon: 'Lock',
-    onclick: disableUser,
-    name: 'Desativar',
+    icon: 'Unlock',
+    onclick: activeUser,
+    name: 'Ativar',
     alert: {
-      title: 'Você deseja realmente desativar este usuário?',
+      title: 'Você deseja realmente ativar este usuário?',
     },
     toast: {
-      title: 'Usuário desativado com sucesso!',
+      title: 'Usuário ativado com sucesso!',
     },
   },
   ...(infoList.listActions ?? []),
 ]
 
-export default async function ListUsers({ searchParams }: SearchParams) {
+export default async function ListUsersDisabled({ searchParams }: SearchParams) {
   const response = await listUsers(searchParams?.page ?? '', {
     name: searchParams?.q ?? '',
-    active: true
+    active: false
   })
   const list = response?.response ?? null
   const count = response?.count ?? null
