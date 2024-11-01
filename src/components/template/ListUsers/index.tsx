@@ -6,7 +6,6 @@ import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
 import { infoList } from './templates'
 
-
 infoList.listActions = [
   {
     id: 3,
@@ -26,7 +25,7 @@ infoList.listActions = [
 export default async function ListUsers({ searchParams }: SearchParams) {
   const response = await listUsers(searchParams?.page ?? '', {
     name: searchParams?.q ?? '',
-    active: true
+    active: true,
   })
   const list = response?.response ?? null
   const count = response?.count ?? null

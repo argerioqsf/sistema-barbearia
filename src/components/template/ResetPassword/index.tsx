@@ -5,7 +5,6 @@ import FormDashboard from '@/components/organisms/FormDashboard'
 import { templateForm } from './templateForm'
 
 export default async function ResetPassword() {
-
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">

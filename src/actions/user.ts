@@ -314,7 +314,6 @@ export async function resetPasswordUser(
   }
 }
 
-
 // Indicador
 
 export async function confirmPayment(
@@ -359,7 +358,7 @@ export async function activeUserEmail(
       },
       body: JSON.stringify({
         active: true,
-        sendEmail: true
+        sendEmail: true,
       }),
     })
 
@@ -377,9 +376,7 @@ export async function activeUserEmail(
   }
 }
 
-export async function disableUser(
-  id?: string,
-): Promise<InitialState<User>> {
+export async function disableUser(id?: string): Promise<InitialState<User>> {
   try {
     const token = getTokenFromCookieServer()
     const response = await api(`/indicator/active/${id}`, {
@@ -390,7 +387,7 @@ export async function disableUser(
       },
       body: JSON.stringify({
         active: false,
-        sendEmail: false
+        sendEmail: false,
       }),
     })
 
@@ -408,9 +405,7 @@ export async function disableUser(
   }
 }
 
-export async function activeUser(
-  id?: string,
-): Promise<InitialState<User>> {
+export async function activeUser(id?: string): Promise<InitialState<User>> {
   try {
     const token = getTokenFromCookieServer()
     const response = await api(`/indicator/active/${id}`, {
@@ -421,7 +416,7 @@ export async function activeUser(
       },
       body: JSON.stringify({
         active: true,
-        sendEmail: false
+        sendEmail: false,
       }),
     })
 

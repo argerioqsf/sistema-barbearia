@@ -6,7 +6,6 @@ import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
 import { infoList } from './templates'
 
-
 infoList.listActions = [
   {
     id: 3,
@@ -23,10 +22,12 @@ infoList.listActions = [
   ...(infoList.listActions ?? []),
 ]
 
-export default async function ListUsersDisabled({ searchParams }: SearchParams) {
+export default async function ListUsersDisabled({
+  searchParams,
+}: SearchParams) {
   const response = await listUsers(searchParams?.page ?? '', {
     name: searchParams?.q ?? '',
-    active: false
+    active: false,
   })
   const list = response?.response ?? null
   const count = response?.count ?? null

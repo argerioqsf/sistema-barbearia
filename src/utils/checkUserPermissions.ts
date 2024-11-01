@@ -19,8 +19,10 @@ const verifyPermissionUser = {
   'user.detail': (roleUser: string) => ['administrator'].includes(roleUser),
   'user.register': (roleUser: string) => ['administrator'].includes(roleUser),
   'user.list': (roleUser: string) => ['administrator'].includes(roleUser),
-  'user.list.disabled': (roleUser: string) => ['administrator'].includes(roleUser),
-  'user.resetPassword': (roleUser: string) => ['administrator'].includes(roleUser),
+  'user.list.disabled': (roleUser: string) =>
+    ['administrator'].includes(roleUser),
+  'user.resetPassword': (roleUser: string) =>
+    ['administrator'].includes(roleUser),
 }
 
 const verifyPermissionUnit = {
