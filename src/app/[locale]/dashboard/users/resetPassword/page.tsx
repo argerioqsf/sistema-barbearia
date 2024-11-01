@@ -1,4 +1,3 @@
-import RegisterUser from '@/components/template/RegisterUser'
 import ResetPassword from '@/components/template/ResetPassword'
 import { ParamsProp } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
