@@ -205,6 +205,13 @@ export const siteConfig: SiteConfig = [
         userAction: 'user.list',
       },
       {
+        id: '5',
+        label: 'Listagem Desativados',
+        href: '/dashboard/users/disabled',
+        icon: 'Circle',
+        userAction: 'user.list.disabled',
+      },
+      {
         id: '2',
         label: 'Cadastrar Usuários',
         href: '/dashboard/users/register',
@@ -219,6 +226,13 @@ export const siteConfig: SiteConfig = [
         hidden: true,
         absolutePath: true,
         userAction: 'user.detail',
+      },
+      {
+        id: '4',
+        label: 'Resetar senha',
+        href: '/dashboard/users/resetPassword',
+        icon: 'Circle',
+        userAction: 'user.resetPassword',
       },
     ],
   },

@@ -1,4 +1,4 @@
-import { activeIndicator, listIndicators } from '@/actions/user'
+import { activeUserEmail, listIndicators } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
@@ -10,7 +10,7 @@ infoList.listActions = [
   {
     id: 1,
     icon: 'Unlock',
-    onclick: activeIndicator,
+    onclick: activeUserEmail,
     name: 'Ativar',
     alert: {
       title: 'Você deseja realmente ativar este indicador?',
