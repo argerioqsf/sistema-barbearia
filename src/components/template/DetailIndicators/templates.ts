@@ -160,7 +160,56 @@ const infoList: InfoList<User> = {
   title: 'Leads',
 }
 
+const templateFormAssinaDoc: TemplateForm<User | Profile> = {
+  title: '',
+  textButton: 'Enviar Contrato',
+  sections: [
+    {
+      id: 1,
+      title: 'Assinadoc',
+      boxes: [
+        {
+          id: 1,
+          fields: [
+            {
+              id: 'profile.contractLink',
+              required: true,
+              type: 'text',
+              label: 'Link',
+            },
+            {
+              id: 'profile.contractSent',
+              required: true,
+              type: 'select',
+              label: 'Contrato enviado',
+              disabled: true,
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                list: [
+                  {
+                    label: 'Selecionar',
+                    value: '',
+                  },
+                  {
+                    label: 'Sim',
+                    value: 'true',
+                  },
+                  {
+                    label: 'Não',
+                    value: 'false',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
 export const templates = {
   templateForm,
   infoList,
+  templateFormAssinaDoc,
 }
