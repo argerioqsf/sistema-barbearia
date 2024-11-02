@@ -129,6 +129,18 @@ module.exports = {
           '0%': {
             opacity: '1',
           },
+          '40%': {
+            opacity: '1',
+          },
+          '75%': {
+            opacity: '0.8',
+          },
+          '80%': {
+            opacity: '0.6',
+          },
+          '90%': {
+            opacity: '0.3',
+          },
           '100%': {
             opacity: '0',
             display: 'none',

@@ -25,20 +25,46 @@ export async function RegisterLeadsPublic({ id }: RegisterLeadsPublicProps) {
           <div className="w-full absolute min-h-full bg-primary-100 lg:bg-gradient-to-r from-primary-100 from-40% via-primary-100 via-75% to-secondary-100 to-100% lg:opacity-90" />
           <div className="w-full flex flex-col lg:flex-row justify-start items-end h-full">
             <div className="bg-[url('https://cdn.brasildefato.com.br/media/05888e43d7d546ed88b58bfdc8ca13b3.jpg')] lg:bg-none min-h-screen lg:min-h-full w-full z-20 fixed animate-opacityDown lg:relative flex lg:w-[50%] lg:animate-opacityUp flex-col justify-end items-center">
-              <Image
-                className="z-20"
-                src="/logo_madre_w.webp"
-                width={420}
-                height={420}
-                quality={100}
-                alt=""
-              />
-              <h2 className="z-40 font-bold text-5xl text-stone-400 tracking-wider text-center mb-24">
+              <div className="relative flex  justify-center items-end translate-y-20 min-h-[600px] overflow-hidden">
+                <Image
+                  className="z-20 absolute h-auto translate-y-14 translate-x-2"
+                  src="/logo_madre_verde.png"
+                  width={490}
+                  height={500}
+                  quality={100}
+                  alt=""
+                />
+                <Image
+                  className="z-20 translate-x-64"
+                  src="/moca_1.png"
+                  width={360}
+                  height={360}
+                  quality={100}
+                  alt=""
+                />
+                <Image
+                  className="z-30 translate-x-14 translate-y-12"
+                  src="/moca_2.png"
+                  width={400}
+                  height={400}
+                  quality={100}
+                  alt=""
+                />
+                <Image
+                  className="z-20 -translate-x-48 -translate-y-4"
+                  src="/moca_3.png"
+                  width={420}
+                  height={420}
+                  quality={100}
+                  alt=""
+                />
+              </div>
+              <h2 className="z-40 font-bold text-5xl text-primary-100 lg:text-stone-400 tracking-wider text-center mb-24">
                 Seu futuro bem <br /> na sua frente!
               </h2>
               <div className="min-h-full z-30 w-[50vw] hidden lg:flex absolute top-0 bg-gradient-to-b from-transparent from-05% to-primary-100 to-90%" />
-              <div className="z-30 lg:z-30 min-h-screen w-full lg:w-[50vw] flex absolute lg:hidden top-0 bg-gradient-to-b from-transparent from-55% to-green-500 to-100%" />
-              <div className="z-10 w-full absolute flex lg:hidden min-h-screen bg-primary-100 opacity-90" />
+              <div className="z-30 lg:z-30 min-h-screen w-full lg:w-[50vw] flex absolute lg:hidden top-0 bg-gradient-to-b opacity-70 from-primary-100 from-55% to-white to-100%" />
+              {/* <div className="z-10 w-full absolute flex lg:hidden min-h-screen bg-primary-100 opacity-90" /> */}
             </div>
 
             <div className="z-10 w-full lg:w-[45%] min-h-screen flex flex-col justify-center items-center">
