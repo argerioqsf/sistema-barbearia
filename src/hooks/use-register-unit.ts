@@ -8,7 +8,7 @@ export default function useRegisterUnit(
   const [templateForm, setTemplateForm] =
     useState<TemplateForm<Unit | Course | Segment>>(template)
 
-  function addCourse(segment?: Segment): Course[]  {
+  function addCourse(segment?: Segment): Course[] {
     if (segment) {
       // Field de Cursos
       const courses = templateForm.sections[2].boxes[0].fields[0].option
@@ -55,12 +55,12 @@ export default function useRegisterUnit(
         values: unit?.segments?.map((segment) => segment.segment.id),
         onChange: (id?: string) => {
           const segment = segments.find((segment) => segment.id === id)
-          const newCourses_temp = addCourse(segment)
-          if (newCourses_temp) {
+          const newCoursesTemp = addCourse(segment)
+          if (newCoursesTemp) {
             // Field de Cursos
             templateForm.sections[2].boxes[0].fields[0].option = {
               ...templateForm.sections[2].boxes[0].fields[0].option,
-              list: [...newCourses_temp],
+              list: [...newCoursesTemp],
             }
           }
           setTemplateForm({ ...templateForm })
@@ -127,7 +127,7 @@ export default function useRegisterUnit(
           values: [],
         }
       }
-      
+
       setTemplateForm({ ...templateForm })
     }
   }
