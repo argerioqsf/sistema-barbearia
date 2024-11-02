@@ -1,6 +1,9 @@
 'use server'
 
-import { formSchemaUpdateIndicator } from '@/components/template/DetailIndicators/schema'
+import {
+  formSchemaSentContract,
+  formSchemaUpdateIndicator,
+} from '@/components/template/DetailIndicators/schema'
 import { formSchemaUpdateUserProfile } from '@/components/template/DetailUsers/schema'
 import { formSchemaRegisterIndicatorProfile } from '@/components/template/RegisterIndicators/schema'
 import { formSchemaRegisterIndicatorPublic } from '@/components/template/RegisterIndicatorsPublic/schema'
@@ -698,6 +701,61 @@ export async function updateUserProfileIndicator(
     const error = validatedFields.error.flatten().fieldErrors as Errors<
       Profile & User
     >
+    return {
+      errors: { ...error },
+    }
+  } else {
+    return { errors: { request: 'Error unknown' } }
+  }
+}
+
+export async function sendContractIndicator(
+  id: string,
+  prevState: InitialState<User | Profile>,
+  formData: FormData,
+): Promise<InitialState<User | Profile>> {
+  const validatedFields = formSchemaSentContract.safeParse({
+    contractLink: formData.get('profile.contractLink'),
+  })
+
+  if (validatedFields.success) {
+    try {
+      const TOKEN_SIM = getTokenFromCookieServer()
+      if (!TOKEN_SIM) {
+        return {
+          errors: { request: 'Erro de credenciais' },
+        }
+      }
+      const response = await api(`/indicator/sentContract/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN_SIM}`,
+        },
+        body: JSON.stringify({
+          contractLink: formData.get('profile.contractLink'),
+        }),
+      })
+
+      if (!response.ok) {
+        const errorMessage = await response.text()
+        return {
+          errors: { request: JSON.parse(errorMessage).message },
+        }
+      }
+
+      revalidateTag(id)
+      return {
+        errors: {},
+        ok: true,
+      }
+    } catch (error) {
+      return {
+        errors: { request: 'Failed send contract' },
+      }
+    }
+  } else if (validatedFields.error) {
+    const error = validatedFields.error.flatten().fieldErrors as Errors<User>
     return {
       errors: { ...error },
     }

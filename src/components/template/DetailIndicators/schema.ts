@@ -12,3 +12,7 @@ export const formSchemaUpdateIndicator = z.object({
   'profile.pix': z.string().min(1, 'O campo chave pix é obrigatório'),
   'profile.city': z.string().min(1, 'O campo cidade é obrigatório'),
 })
+
+export const formSchemaSentContract = z.object({
+  contractLink: z.string().optional().nullable(),
+})

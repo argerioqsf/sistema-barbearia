@@ -1,4 +1,8 @@
-import { getIndicator, updateUserProfileIndicator } from '@/actions/user'
+import {
+  getIndicator,
+  sendContractIndicator,
+  updateUserProfileIndicator,
+} from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
@@ -25,7 +29,15 @@ export default async function DetailIndicator({ id }: { id: string }) {
           templateForm={templates.templateForm}
           defaultValues={indicator ?? undefined}
           actionWithId={updateUserProfileIndicator}
-          pathSuccess="/dashboard/indicators"
+          errorRequest={errorRequest}
+          id={id}
+        />
+        <FormDashboard<User | Profile>
+          title={templates.templateFormAssinaDoc.title}
+          templateForm={templates.templateFormAssinaDoc}
+          defaultValues={indicator ?? undefined}
+          actionWithId={sendContractIndicator}
+          pathSuccess={`/dashboard/indicators/detail/${id}`}
           errorRequest={errorRequest}
           id={id}
         />

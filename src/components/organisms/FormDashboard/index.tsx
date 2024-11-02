@@ -46,11 +46,12 @@ export default function FormDashboard<T>({
   errorRequest,
   id,
   toastInfo,
+  pathSuccess,
 }: FormDashboardProps<T>) {
   const { register, watch } = useForm<T & FieldValues>({
     values: defaultValues ?? undefined,
   })
-  const { goBack } = useHandlerRouter()
+  const { goBack, pushRouter } = useHandlerRouter()
   const [formDataExtra, setFormDataExtra] = useState<FormData>(new FormData())
   const initialStateForm: InitialState<T> = {
     errors: undefined,
@@ -65,7 +66,11 @@ export default function FormDashboard<T>({
 
   useEffect(() => {
     if (state.ok) {
-      goBack()
+      if (pathSuccess) {
+        pushRouter(pathSuccess)
+      } else {
+        goBack()
+      }
       if (toastInfo) {
         toast({
           title: toastInfo?.title,

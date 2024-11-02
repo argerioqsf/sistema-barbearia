@@ -100,6 +100,8 @@ export type Profile = {
   amountToReceive?: number | string
   totalAmount?: number
   extract_profile?: ExtractProfile[]
+  contractLink?: string
+  contractSent: boolean
 }
 
 export type ProfileProps = keyof Profile
