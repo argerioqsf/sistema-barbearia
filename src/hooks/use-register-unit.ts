@@ -8,41 +8,62 @@ export default function useRegisterUnit(
   const [templateForm, setTemplateForm] =
     useState<TemplateForm<Unit | Course | Segment>>(template)
 
-  function addCourse(segment?: Segment) {
+  function addCourse(segment?: Segment): Course[] {
     if (segment) {
+      // Field de Cursos
       const courses = templateForm.sections[2].boxes[0].fields[0].option
         ?.list as Course[]
       const idsCourses = courses?.map((course) => course.id)
       const coursesSegment = segment?.courses
         ?.map((course) => course.course)
         .filter((course) => !idsCourses.includes(course.id))
+
       if (coursesSegment && courses) {
-        templateForm.sections[2].boxes[0].fields[0].option = {
-          ...templateForm.sections[2].boxes[0].fields[0].option,
-          list: [...courses, ...coursesSegment],
-        }
-        setTemplateForm({ ...templateForm })
+        return [...courses, ...coursesSegment]
       }
+
+      return []
     }
+    return []
   }
   // TODO: refatorar para selecionar um segmento por vez e seus cursos
   async function listSegment(unit?: Unit) {
     const resp = await listSelectSegments()
     if (resp.response) {
       const segments = resp.response
+      let newCourses: Course[] = []
+
       if (unit && unit.segments) {
         for (let i = 0; i < unit.segments.length; i++) {
           const segment = unit.segments[i].segment
-          addCourse(segment)
+          const coursesSegments = addCourse(segment)
+          newCourses = [...newCourses, ...coursesSegments]
         }
       }
+
+      if (newCourses && newCourses.length > 0) {
+        // Field de Cursos
+        templateForm.sections[2].boxes[0].fields[0].option = {
+          ...templateForm.sections[2].boxes[0].fields[0].option,
+          list: [...newCourses],
+        }
+      }
+
       templateForm.sections[1].boxes[0].fields[0].option = {
         ...templateForm.sections[1].boxes[0].fields[0].option,
         list: segments,
         values: unit?.segments?.map((segment) => segment.segment.id),
         onChange: (id?: string) => {
           const segment = segments.find((segment) => segment.id === id)
-          addCourse(segment)
+          const newCoursesTemp = addCourse(segment)
+          if (newCoursesTemp) {
+            // Field de Cursos
+            templateForm.sections[2].boxes[0].fields[0].option = {
+              ...templateForm.sections[2].boxes[0].fields[0].option,
+              list: [...newCoursesTemp],
+            }
+          }
+          setTemplateForm({ ...templateForm })
         },
         onDelete: (id: string, formDataExtra: FormData) => {
           const coursesInit = JSON.parse(
@@ -92,7 +113,9 @@ export default function useRegisterUnit(
           }
         },
       }
+
       if (unit?.courses && unit?.courses?.length > 0) {
+        // Field de Cursos
         templateForm.sections[2].boxes[0].fields[0].option = {
           ...templateForm.sections[2].boxes[0].fields[0].option,
           values: unit?.courses?.map((course) => course.course.id),
@@ -100,10 +123,11 @@ export default function useRegisterUnit(
       } else {
         templateForm.sections[2].boxes[0].fields[0].option = {
           ...templateForm.sections[2].boxes[0].fields[0].option,
-          list: [],
+          // list: [],
           values: [],
         }
       }
+
       setTemplateForm({ ...templateForm })
     }
   }
