@@ -165,6 +165,13 @@ export async function updateLead(
     courseId: formData.get('courseId'),
     segmentId: formData.get('segmentId'),
     released: formData.get('released'),
+    birthday: formData.get('birthday'),
+    class: formData.get('class'),
+    noteLead: formData.get('noteLead'),
+    shift: formData.get('shift'),
+    course_modality: formData.get('course_modality'),
+    education: formData.get('education'),
+    personalityTraits: formData.get('personalityTraits'),
   })
 
   if (validatedFields.success) {
@@ -192,10 +199,18 @@ export async function updateLead(
           courseId: formData.get('courseId'),
           segmentId: formData.get('segmentId'),
           released: formData.get('released') === 'true',
+          birthday: formData.get('birthday'),
+          class: formData.get('class'),
+          noteLead: formData.get('noteLead'),
+          shift: formData.get('shift'),
+          course_modality: formData.get('course_modality'),
+          education: formData.get('education'),
+          personalityTraits: formData.get('personalityTraits'),
         }),
       })
       if (!response.ok) {
         const errorMessage = await response.text()
+        console.log('errorMessage: ', errorMessage)
         return {
           errors: { request: JSON.parse(errorMessage).message },
         }
@@ -213,6 +228,7 @@ export async function updateLead(
     }
   } else if (validatedFields.error) {
     const error = validatedFields.error.flatten().fieldErrors as Errors<Lead>
+    console.log('error: ', error)
     return {
       errors: { ...error },
     }

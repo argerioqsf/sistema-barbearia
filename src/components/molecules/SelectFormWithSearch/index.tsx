@@ -36,7 +36,7 @@ interface Props<T> {
   iconDeleteName?: keyof CatalogIcons
   classNameInput?: string
   classNameItem?: string
-  disable?: boolean
+  disabled?: boolean
 }
 
 export function SelectFormWithSearch<T>({
@@ -57,7 +57,7 @@ export function SelectFormWithSearch<T>({
   iconDeleteName = 'Trash',
   classNameInput,
   classNameItem,
-  disable,
+  disabled,
 }: Props<T>) {
   const { getItemValue } = useItemListTransform()
   const getOptionLabel = (option: OptionGeneric<T>, key: OptionKey<T>) =>
@@ -256,7 +256,7 @@ export function SelectFormWithSearch<T>({
     <div className="w-full">
       {label && <LabelForm htmlFor={props.name} label={label} />}
       <div className={twMerge(!light && 'mt-2')}>
-        {!disable && (
+        {!disabled && (
           <InputForm
             inputRef={inputRef}
             onChange={handleSearchChange}
@@ -345,7 +345,7 @@ export function SelectFormWithSearch<T>({
                 <li className="min-w-20 flex justify-start truncate">
                   {item.label}
                 </li>
-                {!disable && (
+                {!disabled && (
                   <Button
                     className={twMerge(light && 'p-2')}
                     type="button"

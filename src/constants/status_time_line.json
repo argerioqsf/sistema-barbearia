@@ -1,0 +1,38 @@
+[
+    {
+        "value": "",
+        "label": "Selecione"
+    },
+    {
+        "value": "aguardando_consultor",
+        "label": "Aguardando consultor"
+    },
+    {
+        "value": "interessado",
+        "label": "Interessado"
+    },
+    {
+        "value": "sem_interesse",
+        "label": "Sem interesse"
+    },
+    {
+        "value": "sem_resposta",
+        "label": "Sem resposta"
+    },
+    {
+        "value": "agendou_matricula",
+        "label": "Agendou matrícula"
+    },
+    {
+        "value": "agendou_visita",
+        "label": "Agendou visita"
+    },
+    {
+        "value": "contato_errado",
+        "label": "Contato errado"
+    },
+    {
+        "value": "matriculado",
+        "label": "Matriculado"
+    }
+]

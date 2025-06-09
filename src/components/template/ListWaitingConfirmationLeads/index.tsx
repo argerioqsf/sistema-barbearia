@@ -24,7 +24,7 @@ export default async function ListWaitingConfirmationLeads({
     matriculation: false,
   })
 
-  if (checkUserPermissions('lead.matriculation.set', profile.role)) {
+  if (checkUserPermissions('lead.form.matriculation', profile.role)) {
     const getForId = infoList.listActions?.find((action) => action.id === 3)
     if (getForId === undefined) {
       infoList.listActions = [

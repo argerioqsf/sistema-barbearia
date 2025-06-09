@@ -106,6 +106,7 @@ export const templateForm: TemplateForm<Profile | User> = {
               required: true,
               type: 'select',
               label: 'Status',
+              roleVisible: 'user.edit.own.active',
               option: {
                 keyLabel: 'label',
                 keyValue: 'value',

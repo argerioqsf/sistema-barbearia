@@ -38,6 +38,7 @@ export default async function DetailLeads({ id }: { id: string }) {
     notFound()
   }
 
+
   const errorRequest = response.error?.request ?? undefined
 
   const templates = templatesRaw as typeof templatesRaw
@@ -53,32 +54,6 @@ export default async function DetailLeads({ id }: { id: string }) {
     ...templates.templateForm.sections[2].boxes[0].fields[0].option,
     list: [...consultants],
     values: [...values],
-  }
-
-  // Verifica se o usuario tem permissao para setar um consultor para o lead
-  if (profile && checkUserPermissions('lead.consultant.set', profile.role)) {
-    templates.templateForm.sections[2].boxes[0].fields[0] = {
-      ...templates.templateForm.sections[2].boxes[0].fields[0],
-      disabled: false,
-    }
-  } else {
-    templates.templateForm.sections[2].boxes[0].fields[0] = {
-      ...templates.templateForm.sections[2].boxes[0].fields[0],
-      disabled: true,
-    }
-  }
-
-  // Verifica se o usuario tem permissao para setar o lead como released
-  if (profile && checkUserPermissions('lead.released.set', profile.role)) {
-    templates.templateForm.sections[0].boxes[1].fields[2] = {
-      ...templates.templateForm.sections[0].boxes[1].fields[2],
-      disabled: false,
-    }
-  } else {
-    templates.templateForm.sections[0].boxes[1].fields[2] = {
-      ...templates.templateForm.sections[0].boxes[1].fields[2],
-      disabled: true,
-    }
   }
 
   const responseUnits = await listSelectUnits()
@@ -120,19 +95,25 @@ export default async function DetailLeads({ id }: { id: string }) {
           defaultValues={lead ?? undefined}
           actionWithId={updateLead}
           pathSuccess={
-            ownerIndicator ? '/dashboard/indicators/leads' : '/dashboard/leads'
+            ownerIndicator ? '/dashboard/indicators/leads' : undefined
           }
+          roleUser={profile.role}
           errorRequest={errorRequest}
           id={id}
         />
-        <FormDashboard
-          title={templates.templateFormTimeLine.title}
-          templateForm={templates.templateFormTimeLine}
-          actionWithId={registerTimeLine}
-          pathSuccess={`/dashboard/leads/detail/${id}`}
-          errorRequest={errorRequest}
-          id={lead.id}
-        />
+       {
+         checkUserPermissions('lead.form.timeline', profile.role) &&
+         (
+          <FormDashboard
+            title={templates.templateFormTimeLine.title}
+            templateForm={templates.templateFormTimeLine}
+            actionWithId={registerTimeLine}
+            pathSuccess={`/dashboard/leads/detail/${id}`}
+            errorRequest={errorRequest}
+            id={lead.id}
+          />
+         )
+       }
 
         {lead?.timeline && <TimeLineComponent timeLine={lead?.timeline} />}
       </div>

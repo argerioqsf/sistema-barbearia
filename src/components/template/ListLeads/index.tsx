@@ -40,7 +40,7 @@ export default async function ListLeads({ searchParams }: SearchParams) {
     }
   })
 
-  if (checkUserPermissions('lead.archived.set', profile.role)) {
+  if (checkUserPermissions('lead.form.archived', profile.role)) {
     const getForId = infoList.listActions?.find((action) => action.id === 1)
     if (getForId === undefined) {
       infoList.listActions = [

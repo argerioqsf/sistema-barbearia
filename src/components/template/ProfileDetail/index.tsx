@@ -30,13 +30,6 @@ export default async function ProfileDetail() {
     (organization) => organization.organization,
   )
 
-  if (!checkUserPermissions('user.edit.own.active', profile.role)) {
-    templateForm.sections[0].boxes[4].fields =
-      templateForm.sections[0].boxes[4].fields.filter(
-        (field) => field.id !== 'user.active',
-      ) as LimitFieldsForm<FieldsTemplateForm<Profile | User>>
-  }
-
   return (
     <ContainerDashboard>
       <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
@@ -53,6 +46,7 @@ export default async function ProfileDetail() {
             toastInfo={{
               title: 'Perfil atualizado com sucesso!',
             }}
+            roleUser={profile.role}
           />
           {checkUserPermissions('organization.update', profile.role) && (
             <>
@@ -61,7 +55,6 @@ export default async function ProfileDetail() {
                 const activeCycle = organization.cycles.find(
                   (cycle) => cycle.end_cycle === null,
                 )
-                console.log('activeCycle: ', activeCycle)
                 return (
                   <Fragment key={idx}>
                     <FormDashboard<Organization>

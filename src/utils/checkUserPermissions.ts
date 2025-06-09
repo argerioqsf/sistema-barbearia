@@ -139,17 +139,50 @@ const verifyPermissionLead = {
     ['administrator', 'coordinator', 'auxiliary'].includes(roleUser),
   'lead.firstContact.list': (roleUser: string) =>
     ['administrator', 'auxiliary'].includes(roleUser),
-  'lead.archived.set': (roleUser: string) =>
-    ['administrator', 'coordinator', 'auxiliary'].includes(roleUser),
   'lead.pegar.set': (roleUser: string) => ['consultant'].includes(roleUser),
-  'lead.matriculation.set': (roleUser: string) =>
-    ['consultant', 'administrator'].includes(roleUser),
   'lead.documents.set': (roleUser: string) =>
     ['administrator', 'secretary'].includes(roleUser),
-  'lead.consultant.set': (roleUser: string) =>
+  //Form
+  'lead.form.name': (roleUser: string) =>
+    ['administrator','auxiliary','consultant'].includes(roleUser),
+  'lead.form.phone': (roleUser: string) =>
+    ['administrator', 'consultant','auxiliary'].includes(roleUser),
+  'lead.form.document': (roleUser: string) =>
+    ['administrator', 'consultant'].includes(roleUser),
+  'lead.form.email': (roleUser: string) =>
+    ['administrator', 'consultant'].includes(roleUser),
+  'lead.form.city': (roleUser: string) =>
+    ['administrator','auxiliary'].includes(roleUser),
+  'lead.form.indicator': (roleUser: string) =>
+    ['administrator'].includes(roleUser),
+  'lead.form.consultant': (roleUser: string) =>
     ['auxiliary', 'administrator'].includes(roleUser),
-  'lead.released.set': (roleUser: string) =>
-    ['auxiliary', 'administrator'].includes(roleUser),
+  'lead.form.timeline': (roleUser: string) =>
+    ['administrator','auxiliary', 'consultant'].includes(roleUser),
+  'lead.form.segment': (roleUser: string) =>
+    ['administrator'].includes(roleUser),
+  'lead.form.course': (roleUser: string) =>
+    ['administrator','auxiliary','consultant'].includes(roleUser),
+  'lead.form.unit': (roleUser: string) =>
+    ['administrator'].includes(roleUser),
+  'lead.form.archived': (roleUser: string) =>
+    ['administrator', 'coordinator', 'auxiliary'].includes(roleUser),
+  'lead.form.matriculation': (roleUser: string) =>
+    ['consultant', 'administrator'].includes(roleUser),
+  'lead.form.released': (roleUser: string) =>
+    ['administrator','auxiliary'].includes(roleUser),
+  'lead.form.shift': (roleUser: string) =>
+    ['administrator', 'auxiliary', 'consultant'].includes(roleUser),
+  'lead.form.course_modality': (roleUser: string) =>
+    ['administrator', 'consultant'].includes(roleUser),
+  'lead.form.education': (roleUser: string) =>
+    ['administrator', 'auxiliary', 'consultant'].includes(roleUser),
+  'lead.form.personalityTraits': (roleUser: string) =>
+    ['administrator', 'consultant'].includes(roleUser),
+  'lead.form.class': (roleUser: string) =>
+    ['administrator', 'consultant'].includes(roleUser),
+  'lead.form.birthday': (roleUser: string) =>
+    ['administrator', 'consultant'].includes(roleUser),
 }
 
 const verifyPermissionNewLead = {

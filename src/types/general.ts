@@ -2,6 +2,7 @@ import { DefaultValues, Path } from 'react-hook-form'
 import roles from '@/constants/roles.json'
 import { z } from 'zod'
 import { CatalogIcons } from '@/utils/handleIcons'
+import { UserAction } from '@/utils/checkUserPermissions'
 
 export type LimitFieldsForm<G> = [G, ...G[]] & {
   length: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
@@ -133,6 +134,11 @@ export type Cyclo = {
 
 export type TimeLineProps = keyof TimeLine
 
+type Shift = "manha" | "tarde" | "noite" | "finais_de_semana"
+type Modalities = "presencial_100" | "online_100" | "semi_presencial"
+type personalityTraits = "colerico" | "melancolico" | "fleumatico" | "sanguineo"
+type Education = "ensino_fundamental_incompleto" | "ensino_fundamental_completo"| "ensino_medio_incompleto"| "ensino_medio_completo"| "ensino_superior_incompleto"| "ensino_superior_completo"| "sem_escolaridade"
+
 export type Lead = {
   id: string
   name: string
@@ -155,6 +161,13 @@ export type Lead = {
   amount_pay_indicator: number
   amount_pay_consultant: number
   released: boolean
+  birthday?: string
+  class?: string
+  noteLead?: 1 | 2 | 3
+  shift?: Shift
+  course_modality?: Modalities
+  education?: Education
+  personalityTraits?: personalityTraits
 }
 
 export type LeadProps = keyof Lead
@@ -305,20 +318,22 @@ export type FieldsTemplateForm<T> = {
   id: Path<T>
   required: boolean
   type:
-    | 'number'
-    | 'text'
-    | 'date'
-    | 'image'
-    | 'select'
-    | 'password'
-    | 'file'
-    | 'hidden'
-    | 'selectSearch'
+  | 'number'
+  | 'text'
+  | 'date'
+  | 'image'
+  | 'select'
+  | 'password'
+  | 'file'
+  | 'hidden'
+  | 'selectSearch'
   label: string
   classInput?: string
   value?: string | number
   disabled?: boolean
   placeholder?: string
+  roleVisible?: UserAction
+  roleDisable?: UserAction
   option?: {
     list?: OptionGeneric<T>[]
     keyLabel?: OptionKey<T>
@@ -342,6 +357,7 @@ export type BoxTemplateForm<T> = {
 export type SectionTemplateForm<T> = {
   id: number
   title: string
+  roleVisible?: UserAction
   boxes: Array<BoxTemplateForm<T>>
 }
 
