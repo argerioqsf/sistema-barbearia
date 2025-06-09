@@ -6,13 +6,7 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import { ButtonCycle } from '@/components/molecules/ButtonCycle'
 import CycleComponent from '@/components/organisms/CycleComponent'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import {
-  FieldsTemplateForm,
-  LimitFieldsForm,
-  Organization,
-  Profile,
-  User,
-} from '@/types/general'
+import { Organization, Profile, User } from '@/types/general'
 import { checkUserPermissions } from '@/utils/checkUserPermissions'
 import { notFound } from 'next/navigation'
 import { Fragment } from 'react'

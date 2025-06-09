@@ -6,7 +6,7 @@ import {
   Unit,
   User,
 } from '@/types/general'
-import status_time_line from '@/constants/status_time_line.json'
+import statusTimeLine from '@/constants/status_time_line.json'
 import shift from '@/constants/shift.json'
 import modalities from '@/constants/modalities.json'
 import education from '@/constants/education.json'
@@ -352,7 +352,7 @@ export const templateFormTimeLine: TemplateForm<TimeLine> = {
               option: {
                 keyLabel: 'label',
                 keyValue: 'value',
-                list: status_time_line,
+                list: statusTimeLine,
               },
             },
           ],
