@@ -51,7 +51,7 @@ export default function FormDashboard<T>({
   id,
   toastInfo,
   pathSuccess,
-  roleUser
+  roleUser,
 }: FormDashboardProps<T>) {
   const { register, watch } = useForm<T & FieldValues>({
     values: defaultValues ?? undefined,
@@ -87,9 +87,13 @@ export default function FormDashboard<T>({
 
   const handlerBoxRender = (boxItem: BoxTemplateForm<T>) => {
     const quantInputHidden = boxItem?.fields?.filter(
-      (field) => field.type === 'hidden' || ((roleUser !== undefined && field.roleVisible !== undefined) && !checkUserPermissions(field.roleVisible, roleUser)),
+      (field) =>
+        field.type === 'hidden' ||
+        (roleUser !== undefined &&
+          field.roleVisible !== undefined &&
+          !checkUserPermissions(field.roleVisible, roleUser)),
     )
-    
+
     const gridCols = (boxItem?.fields?.length -
       quantInputHidden.length) as LimitColsGrid
 
@@ -150,7 +154,6 @@ export default function FormDashboard<T>({
   }
 
   function renderSection(section: SectionTemplateForm<T>, idx: number) {
-    
     if (roleUser !== undefined && section.roleVisible !== undefined) {
       if (!checkUserPermissions(section.roleVisible, roleUser)) {
         return null
@@ -181,7 +184,6 @@ export default function FormDashboard<T>({
         </div>
       </div>
     )
-
   }
 
   return (
@@ -209,11 +211,10 @@ export default function FormDashboard<T>({
             {errorRequest ?? state?.errors?.request}
           </Text>
         )}
-        
-        {templateForm?.sections.map((section, idx) => (
-          renderSection(section, idx)
-        ))}
 
+        {templateForm?.sections.map((section, idx) =>
+          renderSection(section, idx),
+        )}
       </Form>
     </div>
   )

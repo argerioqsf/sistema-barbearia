@@ -28,21 +28,21 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
               required: true,
               type: 'text',
               label: 'Nome',
-              roleVisible: 'lead.form.name'
+              roleVisible: 'lead.form.name',
             },
             {
               id: 'email',
               required: true,
               type: 'text',
               label: 'E-mail',
-              roleVisible: 'lead.form.email'
+              roleVisible: 'lead.form.email',
             },
             {
               id: 'city',
               required: true,
               type: 'text',
               label: 'Cidade',
-              roleVisible: 'lead.form.city'
+              roleVisible: 'lead.form.city',
             },
           ],
         },
@@ -54,14 +54,14 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
               required: true,
               type: 'text',
               label: 'Documento',
-              roleVisible: 'lead.form.document'
+              roleVisible: 'lead.form.document',
             },
             {
               id: 'phone',
               required: true,
               type: 'text',
               label: 'Whatsapp',
-              roleVisible: 'lead.form.phone'
+              roleVisible: 'lead.form.phone',
             },
             {
               id: 'released',
@@ -108,12 +108,12 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
                     value: undefined,
                     label: 'Selecione',
                   },
-                  ...Object.keys(shift).map(item=>{
+                  ...Object.keys(shift).map((item) => {
                     return {
                       value: item,
                       label: item,
                     }
-                  })
+                  }),
                 ],
               },
             },
@@ -131,12 +131,12 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
                     value: undefined,
                     label: 'Selecione',
                   },
-                  ...Object.keys(modalities).map(item=>{
+                  ...Object.keys(modalities).map((item) => {
                     return {
                       value: item,
                       label: item,
                     }
-                  })
+                  }),
                 ],
               },
             },
@@ -145,7 +145,7 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
               required: true,
               type: 'text',
               label: 'Turma',
-              roleVisible: 'lead.form.class'
+              roleVisible: 'lead.form.class',
             },
           ],
         },
@@ -166,12 +166,12 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
                     value: undefined,
                     label: 'Selecione',
                   },
-                  ...Object.keys(education).map(item=>{
+                  ...Object.keys(education).map((item) => {
                     return {
                       value: item,
                       label: item,
                     }
-                  })
+                  }),
                 ],
               },
             },
@@ -189,12 +189,12 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
                     value: undefined,
                     label: 'Selecione',
                   },
-                  ...Object.keys(personalityTraits).map(item=>{
+                  ...Object.keys(personalityTraits).map((item) => {
                     return {
                       value: item,
                       label: item,
                     }
-                  })
+                  }),
                 ],
               },
             },
@@ -203,7 +203,7 @@ export const templateForm: TemplateForm<Lead | User | Unit> = {
               required: true,
               type: 'date',
               label: 'Aniversário',
-              roleVisible: 'lead.form.birthday'
+              roleVisible: 'lead.form.birthday',
             },
           ],
         },

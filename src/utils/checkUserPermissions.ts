@@ -142,35 +142,34 @@ const verifyPermissionLead = {
   'lead.pegar.set': (roleUser: string) => ['consultant'].includes(roleUser),
   'lead.documents.set': (roleUser: string) =>
     ['administrator', 'secretary'].includes(roleUser),
-  //Form
+  // Form
   'lead.form.name': (roleUser: string) =>
-    ['administrator','auxiliary','consultant'].includes(roleUser),
+    ['administrator', 'auxiliary', 'consultant'].includes(roleUser),
   'lead.form.phone': (roleUser: string) =>
-    ['administrator', 'consultant','auxiliary'].includes(roleUser),
+    ['administrator', 'consultant', 'auxiliary'].includes(roleUser),
   'lead.form.document': (roleUser: string) =>
     ['administrator', 'consultant'].includes(roleUser),
   'lead.form.email': (roleUser: string) =>
     ['administrator', 'consultant'].includes(roleUser),
   'lead.form.city': (roleUser: string) =>
-    ['administrator','auxiliary'].includes(roleUser),
+    ['administrator', 'auxiliary'].includes(roleUser),
   'lead.form.indicator': (roleUser: string) =>
     ['administrator'].includes(roleUser),
   'lead.form.consultant': (roleUser: string) =>
     ['auxiliary', 'administrator'].includes(roleUser),
   'lead.form.timeline': (roleUser: string) =>
-    ['administrator','auxiliary', 'consultant'].includes(roleUser),
+    ['administrator', 'auxiliary', 'consultant'].includes(roleUser),
   'lead.form.segment': (roleUser: string) =>
     ['administrator'].includes(roleUser),
   'lead.form.course': (roleUser: string) =>
-    ['administrator','auxiliary','consultant'].includes(roleUser),
-  'lead.form.unit': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
+    ['administrator', 'auxiliary', 'consultant'].includes(roleUser),
+  'lead.form.unit': (roleUser: string) => ['administrator'].includes(roleUser),
   'lead.form.archived': (roleUser: string) =>
     ['administrator', 'coordinator', 'auxiliary'].includes(roleUser),
   'lead.form.matriculation': (roleUser: string) =>
     ['consultant', 'administrator'].includes(roleUser),
   'lead.form.released': (roleUser: string) =>
-    ['administrator','auxiliary'].includes(roleUser),
+    ['administrator', 'auxiliary'].includes(roleUser),
   'lead.form.shift': (roleUser: string) =>
     ['administrator', 'auxiliary', 'consultant'].includes(roleUser),
   'lead.form.course_modality': (roleUser: string) =>

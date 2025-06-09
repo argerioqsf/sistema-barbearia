@@ -38,7 +38,6 @@ export default async function DetailLeads({ id }: { id: string }) {
     notFound()
   }
 
-
   const errorRequest = response.error?.request ?? undefined
 
   const templates = templatesRaw as typeof templatesRaw
@@ -101,9 +100,7 @@ export default async function DetailLeads({ id }: { id: string }) {
           errorRequest={errorRequest}
           id={id}
         />
-       {
-         checkUserPermissions('lead.form.timeline', profile.role) &&
-         (
+        {checkUserPermissions('lead.form.timeline', profile.role) && (
           <FormDashboard
             title={templates.templateFormTimeLine.title}
             templateForm={templates.templateFormTimeLine}
@@ -112,8 +109,7 @@ export default async function DetailLeads({ id }: { id: string }) {
             errorRequest={errorRequest}
             id={lead.id}
           />
-         )
-       }
+        )}
 
         {lead?.timeline && <TimeLineComponent timeLine={lead?.timeline} />}
       </div>

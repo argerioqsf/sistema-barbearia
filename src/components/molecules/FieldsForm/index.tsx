@@ -22,7 +22,7 @@ export default function FieldsForm<T>({
   setFormDataExtra,
   formDataExtra,
   register,
-  roleUser
+  roleUser,
 }: PropsFieldsForm<T>) {
   const id = field.id as Path<T & { request?: string }>
 
@@ -31,7 +31,7 @@ export default function FieldsForm<T>({
       return null
     }
   }
-  
+
   const propsField = {
     props: { ...register(id, { required: field.required }) },
     label: field.label,
@@ -39,9 +39,11 @@ export default function FieldsForm<T>({
       state?.errors?.[id] && 'ring-red-500 focus:ring-red-500'
     }`,
     error: (state?.errors?.[id] && state.errors[id]?.[0]) ?? '',
-    disabled: roleUser && field.roleDisable? !checkUserPermissions(field.roleDisable, roleUser): field.disabled,
+    disabled:
+      roleUser && field.roleDisable
+        ? !checkUserPermissions(field.roleDisable, roleUser)
+        : field.disabled,
   }
-  
 
   if (field.type === 'select') {
     return (

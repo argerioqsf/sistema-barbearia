@@ -134,10 +134,17 @@ export type Cyclo = {
 
 export type TimeLineProps = keyof TimeLine
 
-type Shift = "manha" | "tarde" | "noite" | "finais_de_semana"
-type Modalities = "presencial_100" | "online_100" | "semi_presencial"
-type personalityTraits = "colerico" | "melancolico" | "fleumatico" | "sanguineo"
-type Education = "ensino_fundamental_incompleto" | "ensino_fundamental_completo"| "ensino_medio_incompleto"| "ensino_medio_completo"| "ensino_superior_incompleto"| "ensino_superior_completo"| "sem_escolaridade"
+type Shift = 'manha' | 'tarde' | 'noite' | 'finais_de_semana'
+type Modalities = 'presencial_100' | 'online_100' | 'semi_presencial'
+type personalityTraits = 'colerico' | 'melancolico' | 'fleumatico' | 'sanguineo'
+type Education =
+  | 'ensino_fundamental_incompleto'
+  | 'ensino_fundamental_completo'
+  | 'ensino_medio_incompleto'
+  | 'ensino_medio_completo'
+  | 'ensino_superior_incompleto'
+  | 'ensino_superior_completo'
+  | 'sem_escolaridade'
 
 export type Lead = {
   id: string
@@ -318,15 +325,15 @@ export type FieldsTemplateForm<T> = {
   id: Path<T>
   required: boolean
   type:
-  | 'number'
-  | 'text'
-  | 'date'
-  | 'image'
-  | 'select'
-  | 'password'
-  | 'file'
-  | 'hidden'
-  | 'selectSearch'
+    | 'number'
+    | 'text'
+    | 'date'
+    | 'image'
+    | 'select'
+    | 'password'
+    | 'file'
+    | 'hidden'
+    | 'selectSearch'
   label: string
   classInput?: string
   value?: string | number
