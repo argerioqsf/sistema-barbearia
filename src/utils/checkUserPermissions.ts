@@ -217,6 +217,64 @@ const verifyPermissionOrganization = {
     ['administrator'].includes(roleUser),
 }
 
+const verifyPermissionProducts = {
+  'products.view': (roleUser: Role) => {
+    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+    return roles.includes(roleUser)
+  },
+  'products.list': (roleUser: Role) => {
+    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+    return roles.includes(roleUser)
+  },
+  'products.register': (roleUser: Role) => {
+    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+    return roles.includes(roleUser)
+  },
+}
+
+const verifyPermissionCoupons = {
+  'coupons.view': (roleUser: Role) => {
+    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+    return roles.includes(roleUser)
+  },
+  'coupons.list': (roleUser: Role) => {
+    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+    return roles.includes(roleUser)
+  },
+  'coupons.register': (roleUser: Role) => {
+    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+    return roles.includes(roleUser)
+  },
+}
+
+const verifyPermissionAppointments = {
+  'appointments.view': (roleUser: Role) => {
+    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+    return roles.includes(roleUser)
+  },
+}
+
+const verifyPermissionCashier = {
+  'cashier.view': (roleUser: Role) => {
+    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+    return roles.includes(roleUser)
+  },
+}
+
+const verifyPermissionSales = {
+  'sales.view': (roleUser: Role) => {
+    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+    return roles.includes(roleUser)
+  },
+}
+
+const verifyPermissionSettings = {
+  'settings.view': (roleUser: Role) => {
+    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+    return roles.includes(roleUser)
+  },
+}
+
 const verifyPermission = {
   ...verifyPermissionGeneral,
   ...verifyPermissionUser,
@@ -235,6 +293,12 @@ const verifyPermission = {
   ...verifyPermissionOrganization,
   ...verifyPermissionFile,
   ...verifyPermissionAuxiliary,
+  ...verifyPermissionProducts,
+  ...verifyPermissionCoupons,
+  ...verifyPermissionAppointments,
+  ...verifyPermissionCashier,
+  ...verifyPermissionSales,
+  ...verifyPermissionSettings,
 }
 
 export type UserAction = keyof typeof verifyPermission

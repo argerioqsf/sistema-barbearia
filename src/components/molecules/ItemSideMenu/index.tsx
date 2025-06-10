@@ -22,6 +22,9 @@ type ItemSideMenuProps = {
   setOpenMenu: Dispatch<SetStateAction<boolean | null>>
   userAction: UserAction
   hidden?: boolean
+  classIconReal?: string
+  classItem?: string
+  classTextItem?: string
 }
 
 const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
@@ -34,6 +37,9 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   setOpenMenu,
   userAction,
   hidden,
+  classIconReal,
+  classItem,
+  classTextItem,
 }) => {
   const [open, setOpen] = useState(false)
   const { pushRouter } = useHandlerRouter()
@@ -58,9 +64,12 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   const ArrowDownIcon = handleIcons('ChevronDown')
   return (
     !hidden && (
-      <div className="flex w-full flex-col min-h-[var(--navbar-height)] justify-start items-center border-b border-primary-50">
+      <div className="flex pb-4 w-full flex-col min-h-[var(--sidebar-height)] justify-center items-center">
         <Button
-          className="w-full rounded-none h-full flex flex-row justify-start items-center px-4 py-4"
+          className={twMerge(
+            'w-[80%] bg-secondary-50 rounded-lg h-[60px] flex flex-row justify-start items-center px-4 py-4',
+            classItem,
+          )}
           type="button"
           onClick={openSubMenu}
         >
@@ -70,8 +79,14 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
               size={sizeAvatar}
               icon={icon && icon}
               image={image && image}
+              classIconReal={twMerge('stroke-primary-100', classIconReal)}
             />
-            <Text className="text-lg font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
+            <Text
+              className={twMerge(
+                'text-base font-bold text-primary-100 whitespace-nowrap overflow-hidden text-ellipsis',
+                classTextItem,
+              )}
+            >
               {label}
             </Text>
           </div>
@@ -80,9 +95,9 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
             {href.length > 0 ||
               (subMenuList &&
                 (open ? (
-                  <ArrowDownIcon size={15} color="white" />
+                  <ArrowDownIcon size={20} className="stroke-primary-100" />
                 ) : (
-                  <ArrowRightIcon size={20} color="white" />
+                  <ArrowRightIcon size={20} className="stroke-primary-100" />
                 )))}
           </div>
         </Button>
@@ -90,7 +105,7 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
         {subMenuList && (
           <div
             className={twMerge(
-              'w-full bg-primary-50 flex flex-col justify-between items-start overflow-y-auto overflow-x-hidden whitespace-nowrap',
+              'w-full mt-4 pt-4 bg-secondary-100 flex flex-col justify-between items-start overflow-y-auto overflow-x-hidden whitespace-nowrap',
               open === false && 'hidden',
               open === true && 'flex',
             )}
@@ -106,6 +121,9 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
                   key={menu.id}
                   userAction={menu.userAction}
                   hidden={menu.hidden}
+                  classIconReal="fill-white"
+                  classTextItem="text-white"
+                  classItem="bg-primary-100"
                 />
               )
             })}

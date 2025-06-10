@@ -335,6 +335,8 @@ export type FieldsTemplateForm<T> = {
     | 'hidden'
     | 'selectSearch'
   label: string
+  row?: number
+  cols?: number
   classInput?: string
   value?: string | number
   disabled?: boolean
@@ -358,6 +360,8 @@ export type FieldsTemplateForm<T> = {
 
 export type BoxTemplateForm<T> = {
   id: number
+  cols?: LimitColsGrid
+  row?: LimitColsGrid
   fields: LimitFieldsForm<FieldsTemplateForm<T>>
 }
 
@@ -365,6 +369,7 @@ export type SectionTemplateForm<T> = {
   id: number
   title: string
   roleVisible?: UserAction
+  cols?: number
   boxes: Array<BoxTemplateForm<T>>
 }
 

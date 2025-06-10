@@ -10,11 +10,11 @@ const HeaderList = ({
   actions: boolean
 }) => {
   return (
-    <div className="w-full relative rounded-full bg-gray-400 flex flex-row justify-start items-center p-3 mt-8">
+    <div className="w-full relative mb-4 rounded-full bg-primary-100 flex flex-row justify-start items-center p-2 mt-8">
       <div className="w-[10%] md:w-[10%] sm:w-[20%] flex flex-row justify-start">
         <Avatar
           colorIcon="white"
-          classIcon="bg-gray-300 border-transparent size-[60px]"
+          classIcon="bg-gray-300 border-transparent size-[45px]"
         >
           {itemsHeader[0]}
         </Avatar>

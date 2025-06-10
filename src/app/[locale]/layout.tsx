@@ -1,6 +1,7 @@
 import { Providers } from './providers'
 import './global.css'
 import { Inter } from 'next/font/google'
+import ColorInitializer from '@/components/molecules/ColorInitialize'
 import { initColorScript } from '@/utils/colorScript'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -21,7 +22,10 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <ColorInitializer />
+          {children}
+        </Providers>
       </body>
     </html>
   )

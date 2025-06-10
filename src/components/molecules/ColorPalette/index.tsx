@@ -10,7 +10,7 @@ type ColorPair = {
 
 const PALETTES: ColorPair[] = [
   { primary: '#0a1635', secondary: '#01DA7C' },
-  { primary: '#000000', secondary: '#858585' },
+  { primary: '#000000', secondary: '#747474' },
   { primary: '#e11d48', secondary: '#facc15' },
   { primary: '#0e7490', secondary: '#059669' },
 ]

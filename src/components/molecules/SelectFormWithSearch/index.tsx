@@ -37,6 +37,7 @@ interface Props<T> {
   classNameInput?: string
   classNameItem?: string
   disabled?: boolean
+  className?: string
 }
 
 export function SelectFormWithSearch<T>({
@@ -58,6 +59,7 @@ export function SelectFormWithSearch<T>({
   classNameInput,
   classNameItem,
   disabled,
+  className
 }: Props<T>) {
   const { getItemValue } = useItemListTransform()
   const getOptionLabel = (option: OptionGeneric<T>, key: OptionKey<T>) =>
@@ -253,7 +255,7 @@ export function SelectFormWithSearch<T>({
   }, [])
 
   return (
-    <div className="w-full">
+    <div className={twMerge(className,"w-full")}>
       {label && <LabelForm htmlFor={props.name} label={label} />}
       <div className={twMerge(!light && 'mt-2')}>
         {!disabled && (

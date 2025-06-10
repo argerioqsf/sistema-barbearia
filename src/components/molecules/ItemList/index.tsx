@@ -4,6 +4,7 @@ import { Avatar } from '..'
 import DropDownDots from '../DropDownDots'
 import IconAction from '../IconAction'
 import { Dispatch, SetStateAction } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 type ItemListProps<T> = {
   listActions?: Array<ListAction<T>>
@@ -12,6 +13,7 @@ type ItemListProps<T> = {
   id: string
   setShowDot: Dispatch<SetStateAction<string>>
   showDot: string
+  length: number
 }
 
 export default function ItemList<T>({
@@ -21,13 +23,14 @@ export default function ItemList<T>({
   id,
   setShowDot,
   showDot,
+  length,
 }: ItemListProps<T>) {
   return (
-    <div className="w-full relative rounded-full bg-gray-200 flex flex-row justify-start items-center p-3">
+    <div className={twMerge("w-full relative border-secondary-50 border-b flex flex-row justify-start items-center p-2", length === idx && 'border-b-0')}>
       <div className="w-[10%] md:w-[10%] sm:w-[20%] flex flex-row justify-start">
         <Avatar
           colorIcon="white"
-          classIcon="bg-gray-300 border-transparent size-[60px]"
+          classIcon="bg-secondary-100 border-transparent size-[45px] text-white"
         >
           {idx ?? ''}
         </Avatar>

@@ -34,6 +34,11 @@ export const templateForm: TemplateForm<User | Profile | Unit> = {
               type: 'text',
               label: 'Whatsapp',
             },
+          ],
+        },
+        {
+          id: 33,
+          fields: [
             {
               id: 'cpf',
               required: true,

@@ -3,18 +3,13 @@
 import { siteConfig } from '@/config/siteConfig'
 import ItemSideMenu from '@/components/molecules/ItemSideMenu'
 import { useGeneral } from '@/contexts/general-context'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { twMerge } from 'tailwind-merge'
-import { getUserFromCookie } from '@/utils/cookieClient'
-import { User } from '@/types/general'
+import { Avatar } from '@/components/molecules'
+import logoBarbearia from '../../../../public/logo_barbearia.png'
 
 function SideMenu() {
   const { openMenu, setOpenMenu } = useGeneral()
-  const [user, setUser] = useState<User>()
-  useEffect(() => {
-    const user = getUserFromCookie()
-    setUser(user)
-  }, [])
   return (
     <div className="fixed flex flex-row w-auto z-50">
       <div
@@ -28,12 +23,13 @@ function SideMenu() {
         )}
       >
         <div className="w-full flex flex-col justify-between items-center">
-          <ItemSideMenu
-            setOpenMenu={setOpenMenu}
-            label={user?.name ?? 'Carregando...'}
-            href={'/dashboard/profile'}
-            userAction={'profile.view'}
+          <Avatar
+            router={'/dashboard/profile'}
+            size={140}
+            image={logoBarbearia}
+            classAvatar='mb-2'
           />
+
           {siteConfig.map((config) => (
             <ItemSideMenu
               setOpenMenu={setOpenMenu}

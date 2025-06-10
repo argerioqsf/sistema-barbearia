@@ -52,28 +52,10 @@ const FormFieldText = ({
   }
 
   return (
-    <div className={className}>
-      {label && <LabelForm htmlFor={props?.name} label={label} />}
-      <div className="mt-2 flex flex-col justify-start items-center">
-        <InputForm
-          disabled={disabled}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          onChange={type === 'file' ? addImagePreview : onChange}
-          value={value}
-          {...rest}
-          propsInput={props ? { ...props } : undefined}
-          type={type}
-          placeholder={placeholder}
-          className={twMerge(
-            'rounded-md border-0 bg-zinc-100',
-            'ring-gray-300 placeholder:text-gray-400 text-gray-900',
-            'py-1.5 shadow-none ring-1 ring-inset  focus:ring-inset focus:ring-2 sm:text-sm sm:leading-6',
-            classInput,
-          )}
-        />
-        {type === 'file' && imagePreview && (
-          <div className="w-full bg-gray-300 p-4 flex flex-col justify-start items-center">
+    <div className={twMerge(className, 'flex justify-center')}>
+      <label className="w-full min-h-56 h-full border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-600 cursor-pointer hover:border-gray-500 transition">
+        { imagePreview ? (
+          <div className="w-full p-4 flex flex-col justify-start items-center">
             <Image
               width={400}
               height={600}
@@ -81,8 +63,26 @@ const FormFieldText = ({
               alt="image-preview"
             />
           </div>
+        ):
+        (
+          <span className="text-gray-500">Imagem</span>
         )}
-      </div>
+        <InputForm
+          disabled={disabled}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          onChange={addImagePreview}
+          value={value}
+          {...rest}
+          propsInput={props ? { ...props } : undefined}
+          type={type}
+          placeholder={placeholder}
+          className={twMerge(
+            'hidden',
+            classInput,
+          )}
+        />
+      </label>
 
       {error && error.length > 0 && (
         <Text

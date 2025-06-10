@@ -101,7 +101,7 @@ export async function deleteCourse(id?: string): Promise<InitialState<Course>> {
 }
 
 export async function registerCourse(
-  prevState: InitialState<Course | Segment>,
+  prevState: InitialState<Course | Segment | { image: string }>,
   formData: FormData,
 ): Promise<InitialState<Course | Segment>> {
   const validatedFields = formSchemaRegisterCourse.safeParse({

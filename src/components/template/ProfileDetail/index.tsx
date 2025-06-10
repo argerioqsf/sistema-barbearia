@@ -11,6 +11,7 @@ import { checkUserPermissions } from '@/utils/checkUserPermissions'
 import { notFound } from 'next/navigation'
 import { Fragment } from 'react'
 import { templateForm, templateFormOrganization } from './templateForm'
+import ColorPalette from '@/components/molecules/ColorPalette'
 
 export default async function ProfileDetail() {
   const response = await getProfile()
@@ -29,6 +30,12 @@ export default async function ProfileDetail() {
       <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
         <div className="w-full ">
           <Breadcrumb />
+        </div>
+        <div className="w-full mt-4">
+          <Text className="text-black font-normal text-sm text-left uppercase mb-2 whitespace-nowrap overflow-hidden text-ellipsis">
+            Escolha o seu tema:
+          </Text>
+          <ColorPalette />
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard<Profile | User>

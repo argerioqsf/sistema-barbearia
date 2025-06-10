@@ -1,9 +1,7 @@
 {
     "administrator": "administrator",
-    "consultant": "consultant",
-    "indicator": "indicator",
-    "coordinator": "coordinator",
-    "financial": "financial",
-    "secretary": "secretary",
-    "auxiliary": "auxiliary"
+    "barber": "barber",
+    "receptionist": "receptionist",
+    "manager": "manager",
+    "client": "client"
 }

@@ -63,10 +63,10 @@ export default function Listing<T>({
         variant === 'segmented' && 'p-[1vw] rounded-xl bg-gray-500',
       )}
     >
-      <div className="w-full flex flex-row justify-between items-center">
+      <div className="w-full p-3 rounded-full flex flex-row justify-between items-center">
         <Text
           className={twMerge(
-            `uppercase font-bold text-2xl lg:text-4xl ${
+            `uppercase ml-4 font-bold text-xl lg:text-2xl ${
               variant === 'default' ? 'text-black' : 'text-white'
             } whitespace-nowrap overflow-hidden text-ellipsis`,
           )}
@@ -76,7 +76,7 @@ export default function Listing<T>({
         {textButton && (
           <Button
             onClick={async () => await pushRouter(hrefButton)}
-            className="rounded-xl h-10 flex justify-center items-center px-2 sm:px-5 md:px-10 bg-secondary-50 text-white"
+            className="rounded-full mr-1 h-10 flex justify-center items-center px-2 sm:px-5 md:px-10 bg-secondary-100 text-white"
             type="button"
           >
             {textButton}
@@ -101,12 +101,13 @@ export default function Listing<T>({
       {listTransformResp !== undefined ? (
         <div
           className={twMerge(
-            'w-full mt-4 flex flex-col gap-4 pb-4 justify-start items-center',
+            'w-full flex flex-col justify-start items-center border-secondary-50 border rounded-t-2xl rounded-b-2xl',
             variant === 'segmented' && 'w-[88vw] lg:w-[93vw]',
           )}
         >
           {listTransformResp?.map((item, idx) => (
             <ItemList
+              length={listTransformResp.length}
               showDot={showDot}
               setShowDot={setShowDot}
               key={item.id}

@@ -22,6 +22,8 @@ import { checkUserPermissions } from '@/utils/checkUserPermissions'
 import { Fragment, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
 import { FieldValues, Path, useForm } from 'react-hook-form'
+import { twMerge } from 'tailwind-merge'
+import grid from '../../../constants/grid.json'
 
 type FormDashboardProps<T> = {
   templateForm?: TemplateForm<T>
@@ -86,19 +88,12 @@ export default function FormDashboard<T>({
   }, [state])
 
   const handlerBoxRender = (boxItem: BoxTemplateForm<T>) => {
-    const quantInputHidden = boxItem?.fields?.filter(
-      (field) =>
-        field.type === 'hidden' ||
-        (roleUser !== undefined &&
-          field.roleVisible !== undefined &&
-          !checkUserPermissions(field.roleVisible, roleUser)),
-    )
 
-    const gridCols = (boxItem?.fields?.length -
-      quantInputHidden.length) as LimitColsGrid
-
+    const cols: LimitColsGrid = boxItem?.cols??1
+    const row: LimitColsGrid = boxItem?.row??1
+    
     return (
-      <Box cols={gridCols}>
+      <Box cols={cols} row={row}>
         {boxItem.fields.map((field, idx) => {
           if (field.displayLogic && field.displayLogic.fieldId) {
             const idField = field?.displayLogic?.fieldId as Path<
@@ -116,17 +111,16 @@ export default function FormDashboard<T>({
               return null
             }
           }
-
           return (
-            <FieldsForm
-              key={idx}
-              field={field}
-              state={state}
-              setFormDataExtra={setFormDataExtra}
-              formDataExtra={formDataExtra}
-              register={register}
-              roleUser={roleUser}
-            />
+              <FieldsForm
+                key={idx}
+                field={field}
+                state={state}
+                setFormDataExtra={setFormDataExtra}
+                formDataExtra={formDataExtra}
+                register={register}
+                roleUser={roleUser}
+              />
           )
         })}
       </Box>
@@ -160,18 +154,23 @@ export default function FormDashboard<T>({
       }
     }
 
+    let gridColsGeral = 0
+    if (section.cols) {
+      gridColsGeral = section.cols
+    } else {
+      section?.boxes.forEach(element => {
+        gridColsGeral = gridColsGeral + (element?.fields.length??1) as LimitColsGrid
+      });
+    }
+
     return (
       <div key={idx} className="w-[90vw] md:w-full mt-10 lg:mt-8">
-        <div className="p-4 pb-2 bg-gray-200 rounded-xl rounded-b-none w-full lg:w-56 shadow-md lg:shadow-slate-400">
-          <Text className="text-black font-normal text-sm text-center uppercase whitespace-nowrap overflow-hidden text-ellipsis">
-            {section.title}
-          </Text>
-        </div>
-        <div className="w-[90vw] grid-cols-12 md:w-full border-2 flex flex-col gap-4 bg-gray-200 p-6 rounded-b-xl lg:rounded-xl lg:rounded-tl-none lg:shadow-md shadow-slate-400">
+        
+        <div className={twMerge(grid.gridCols[gridColsGeral - 1],"w-[90vw] md:w-full grid gap-4 py-6 rounded-b-xl lg:rounded-xl lg:rounded-tl-none")}>
           {!loading && !errorMessage ? (
-            section?.boxes.map((boxItem, idx) => (
-              <Fragment key={idx}>{handlerBoxRender(boxItem)}</Fragment>
-            ))
+            section?.boxes.map((boxItem, idx) => {
+             return  <Fragment key={idx}>{handlerBoxRender(boxItem)}</Fragment>
+            })
           ) : !errorMessage ? (
             <div className="w-full h-[20vh] p-4 flex justify-center items-center">
               <Text>Loading...</Text>
