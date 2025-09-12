@@ -4,9 +4,9 @@ import { getTranslations } from 'next-intl/server'
 export const usePathTranslations = (componentPath?: string) => {
   const at = useTranslations('general')
   const sc = useTranslations('specific')
-  const any = useTranslations(componentPath)
+  const t = useTranslations(componentPath)
 
-  return { at, sc, any }
+  return { at, sc, t }
 }
 
 export const usePathTranslationsMetadata = (

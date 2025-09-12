@@ -1,6 +1,7 @@
 'use server'
 
 import { ReturnGet, ReturnList, InitialState } from '@/types/general'
+import type { QueryParams } from '@/types/http'
 import { fetchProduct, fetchProducts } from '@/features/products/api'
 import type { ZProduct as Product } from '@/features/products/schemas'
 import { api } from '@/data/api'
@@ -12,10 +13,7 @@ export async function listProducts(
   where?: Partial<Product>,
 ): Promise<ReturnList<Product>> {
   try {
-    const { items, count } = await fetchProducts(
-      page,
-      where as Record<string, unknown>,
-    )
+    const { items, count } = await fetchProducts(page, where as QueryParams)
     return { response: items, count }
   } catch (error) {
     return {

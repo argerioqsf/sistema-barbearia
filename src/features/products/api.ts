@@ -5,12 +5,11 @@ import {
   ProductDetailResponseSchema,
   ProductSellersResponseSchema,
 } from './schemas'
-import { safeJson, readMessage, updateTokenFromResponse } from '@/shared/http'
+import { safeJson, readMessage } from '@/shared/http'
 
-export async function fetchProducts(
-  page?: string,
-  where?: Record<string, unknown>,
-) {
+import type { QueryParams } from '@/types/http'
+
+export async function fetchProducts(page?: string, where?: QueryParams) {
   const token = await getBackendToken()
   console.log('token', token)
   const response = await api(
@@ -26,7 +25,6 @@ export async function fetchProducts(
   console.log('response', response)
   if (!response.ok) throw new Error(await readMessage(response))
   const json = await safeJson(response)
-  updateTokenFromResponse(response, json)
   console.log('json', json)
   const parsed = ProductsListResponseSchema.safeParse(json)
   if (!parsed.success) throw new Error('Invalid products list response')
@@ -42,7 +40,6 @@ export async function fetchProduct(id: string) {
   })
   if (!response.ok) throw new Error(await readMessage(response))
   const json = await safeJson(response)
-  updateTokenFromResponse(response, json)
   // Accept object { product } or direct product
   const data = json
   const parsed = ProductDetailResponseSchema.safeParse({ product: data })

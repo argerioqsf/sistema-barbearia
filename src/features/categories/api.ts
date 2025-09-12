@@ -5,10 +5,11 @@ import {
   CategorySchema,
   type ZCategory,
 } from './schemas'
+import type { QueryParams } from '@/types/http'
 
 export async function fetchCategories(
   page?: string,
-  where?: Record<string, unknown>,
+  where?: QueryParams,
 ): Promise<{ categories: ZCategory[]; count: number }> {
   const token = await getBackendToken()
   const response = await api(

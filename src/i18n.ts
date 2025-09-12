@@ -3,8 +3,7 @@ import { getRequestConfig } from 'next-intl/server'
 import { locales } from './locales'
 
 export default getRequestConfig(async ({ locale }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if (!locales.includes(locale as any)) notFound()
+  if (!locales.includes(locale as (typeof locales)[number])) notFound()
 
   return {
     messages: (await import(`../src/messages/${locale}.json`)).default,

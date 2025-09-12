@@ -25,6 +25,6 @@ export async function fetchFiles() {
     : Array.isArray(json.files)
       ? json.files
       : []
-  const parsed = arr.map((f: unknown) => FileSchema.parse(f))
+  const parsed = arr.map((f: Record<string, unknown>) => FileSchema.parse(f))
   return parsed
 }

@@ -18,17 +18,15 @@ import {
   fetchCourses,
   fetchCoursesSelect,
 } from '@/features/courses/api'
+import type { QueryParams } from '@/types/http'
 
 export async function listCourses(
   page?: string,
   where?: Partial<Course>,
 ): Promise<ReturnList<Course>> {
   try {
-    const { courses, count } = await fetchCourses(
-      page,
-      where as Record<string, unknown>,
-    )
-    return { response: courses as unknown as Course[], count }
+    const { courses, count } = await fetchCourses(page, where as QueryParams)
+    return { response: courses as Course[], count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -37,7 +35,7 @@ export async function listCourses(
 export async function getCourse(id: string): Promise<ReturnGet<Course>> {
   try {
     const course = await fetchCourse(id)
-    return { response: course as unknown as Course }
+    return { response: course as Course }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -184,7 +182,7 @@ export async function updateCourse(
 export async function listSelectCourses(): Promise<ReturnList<Course>> {
   try {
     const courses = await fetchCoursesSelect()
-    return { response: courses as unknown as Course[] }
+    return { response: courses as Course[] }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

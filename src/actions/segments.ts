@@ -18,6 +18,7 @@ import {
   fetchSegments,
   fetchSegmentsSelect,
 } from '@/features/segments/api'
+import type { QueryParams } from '@/types/http'
 
 export async function registerSegment(
   prevState: InitialState<Segment | Course>,
@@ -137,7 +138,7 @@ export async function updateSegment(
 export async function getSegment(id: string): Promise<ReturnGet<Segment>> {
   try {
     const segment = await fetchSegment(id)
-    return { response: segment as unknown as Segment }
+    return { response: segment as Segment }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -174,7 +175,7 @@ export async function deleteSegment(
 export async function listSelectSegments(): Promise<ReturnList<Segment>> {
   try {
     const segments = await fetchSegmentsSelect()
-    return { response: segments as unknown as Segment[] }
+    return { response: segments as Segment[] }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -185,11 +186,8 @@ export async function listSegments(
   where?: Partial<Segment>,
 ): Promise<ReturnList<Segment>> {
   try {
-    const { segments, count } = await fetchSegments(
-      page,
-      where as Record<string, unknown>,
-    )
-    return { response: segments as unknown as Segment[], count }
+    const { segments, count } = await fetchSegments(page, where as QueryParams)
+    return { response: segments as Segment[], count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

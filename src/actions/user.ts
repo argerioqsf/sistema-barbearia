@@ -23,11 +23,12 @@ import {
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 import { fetchUser, fetchUsers } from '@/features/users/api'
+import type { QueryParams } from '@/types/http'
 
 export async function getUser(id: string): Promise<ReturnGet<User>> {
   try {
     const user = await fetchUser(id)
-    return { response: user as unknown as User }
+    return { response: user as User }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -38,11 +39,8 @@ export async function listUsers(
   where?: Partial<User>,
 ): Promise<ReturnList<User>> {
   try {
-    const { users, count } = await fetchUsers(
-      page,
-      where as Record<string, unknown>,
-    )
-    return { response: users as unknown as User[], count }
+    const { users, count } = await fetchUsers(page, where as QueryParams)
+    return { response: users as User[], count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

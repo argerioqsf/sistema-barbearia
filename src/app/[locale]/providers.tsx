@@ -3,6 +3,7 @@
 import { NextIntlClientProvider, type AbstractIntlMessages } from 'next-intl'
 import { SessionProvider } from 'next-auth/react'
 import type { Session } from 'next-auth'
+import { LoadingProvider } from '@/contexts/loading-context'
 
 export interface ProvidersProps {
   children: React.ReactNode
@@ -23,7 +24,7 @@ export function Providers({
       session={session}
     >
       <NextIntlClientProvider messages={messages} locale={locale}>
-        {children}
+        <LoadingProvider>{children}</LoadingProvider>
       </NextIntlClientProvider>
     </SessionProvider>
   )

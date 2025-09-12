@@ -12,7 +12,10 @@ export default async function DetailProducts({ id }: { id: string }) {
   const errorRequest = response.error?.request ?? undefined
   if (errorRequest) {
     return (
-      <ErrorState title="Erro ao carregar produto" message={String(errorRequest)} />
+      <ErrorState
+        title="Erro ao carregar produto"
+        message={String(errorRequest)}
+      />
     )
   }
   if (!product) {

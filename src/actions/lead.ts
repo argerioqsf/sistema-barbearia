@@ -16,6 +16,7 @@ import {
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 import { fetchLead, fetchLeads } from '@/features/leads/api'
+import type { QueryParams } from '@/types/http'
 
 export async function registerLead(
   prevState: InitialState<User | Lead | Unit>,
@@ -239,7 +240,7 @@ export async function updateLead(
 export async function getLead(id: string): Promise<ReturnGet<Lead>> {
   try {
     const lead = await fetchLead(id)
-    return { response: lead as unknown as Lead }
+    return { response: lead as Lead }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -442,11 +443,8 @@ export async function listLeads(
   where?: Partial<Lead>,
 ): Promise<ReturnList<Lead>> {
   try {
-    const { leads, count } = await fetchLeads(
-      page,
-      where as Record<string, unknown>,
-    )
-    return { response: leads as unknown as Lead[], count }
+    const { leads, count } = await fetchLeads(page, where as QueryParams)
+    return { response: leads as Lead[], count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

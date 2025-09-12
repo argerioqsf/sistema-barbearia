@@ -21,13 +21,14 @@ export function AuthProvider({
 }) {
   const [user, setUser] = useState<User | undefined>(initialUser)
   const [role, setRole] = useState<Role | undefined>(
-    normalizeRole(initialUser?.profile?.role as unknown),
+    normalizeRole(initialUser?.profile?.role),
   )
   const { data } = useSession()
   useEffect(() => {
     if (data?.user) {
       setUser(data.user as User)
-      const roleRaw = (data.user as unknown as User)?.profile?.role as unknown
+      const sessionUser = data.user as Partial<User>
+      const roleRaw = sessionUser?.profile?.role
       setRole(normalizeRole(roleRaw))
     }
   }, [data?.user])

@@ -444,7 +444,7 @@ export default function WeekCalendar({
             <div className="grid grid-cols-[4rem_repeat(7,12rem)] min-w-max gap-4 pb-3">
               {/* Coluna de horários sticky à esquerda durante scroll horizontal */}
               <div
-                className="relative sticky left-0 bg-white z-40 w-[4rem] shrink-0 shadow-[inset_-1px_0_0_rgba(0,0,0,0.08)]"
+                className="sticky left-0 bg-white z-40 w-[4rem] shrink-0 shadow-[inset_-1px_0_0_rgba(0,0,0,0.08)]"
                 style={{ height: dayHeight, willChange: 'left' }}
               >
                 {Array.from({ length: 24 }, (_, h) => (

@@ -15,8 +15,8 @@ export async function POST(req: Request) {
   const jar = cookies()
   try {
     const backendToken = token.accessToken as string | undefined
-    const user = token.user as unknown
-    const roles = token.roles as unknown
+    const user = token.user as Record<string, unknown> | undefined
+    const roles = token.roles as Record<string, boolean> | string[] | undefined
     if (backendToken) {
       jar.set({
         name: cookiesName.TOKEN_SIM_COOKIE,

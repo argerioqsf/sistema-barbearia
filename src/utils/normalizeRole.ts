@@ -16,12 +16,14 @@ const roleMap: Record<string, Role> = {
   SECRETARY: 'secretary',
 }
 
-export function normalizeRole(val: unknown): Role | undefined {
+export function normalizeRole(
+  val: string | RoleObject | null | undefined,
+): Role | undefined {
   if (typeof val === 'string') {
     const key = val.toUpperCase()
     return roleMap[key]
   }
-  const obj = val as RoleObject | undefined
+  const obj: RoleObject | undefined = val ?? undefined
   const name = obj?.name
   if (typeof name === 'string') {
     const key = name.toUpperCase()

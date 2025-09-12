@@ -1,29 +1,24 @@
 import { cookies } from 'next/headers'
 import { getToken } from 'next-auth/jwt'
-import type { IncomingMessage } from 'http'
+import { NextRequest } from 'next/server'
+import cookiesName from '@/constants/cookies_name.json'
 
-// Minimal union member of GetTokenParams['req'] used by next-auth to read cookies.
-type RequestWithCookies = IncomingMessage & {
-  cookies: Partial<Record<string, string>>
-}
-
-function createRequestFromCookies(): RequestWithCookies | undefined {
+function createRequestFromCookies(): NextRequest | undefined {
   const all = cookies().getAll()
   if (all.length === 0) return undefined
-  const cookieMap: Record<string, string> = Object.fromEntries(
-    all.map((c) => [c.name, c.value]),
-  )
   const cookieHeader = all.map((c) => `${c.name}=${c.value}`).join('; ')
-  return {
-    headers: { cookie: cookieHeader },
-    cookies: cookieMap,
-  } as unknown as RequestWithCookies
+  const req = new Request('http://local', { headers: { cookie: cookieHeader } })
+  return new NextRequest(req)
 }
 
 export async function getBackendToken(): Promise<string | undefined> {
   const secret = process.env.NEXTAUTH_SECRET
   if (!secret) return undefined
-
+  // Prefer cookie set by updateTokenFromResponse (fresh token), fallback to NextAuth JWT
+  const tokenCookie = cookies().get(cookiesName.TOKEN_SIM_COOKIE)?.value as
+    | string
+    | undefined
+  if (tokenCookie) return tokenCookie
   const req = createRequestFromCookies()
   if (!req) return undefined
   const jwt = await getToken({ req, secret })

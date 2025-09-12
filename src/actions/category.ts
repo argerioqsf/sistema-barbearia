@@ -3,6 +3,7 @@
 import { ReturnGet, ReturnList, InitialState } from '@/types/general'
 import type { ZCategory as Category } from '@/features/categories/schemas'
 import { fetchCategory, fetchCategories } from '@/features/categories/api'
+import type { QueryParams } from '@/types/http'
 import { api } from '@/data/api'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
@@ -14,7 +15,7 @@ export async function listCategories(
   try {
     const { categories, count } = await fetchCategories(
       page,
-      where as Record<string, unknown>,
+      where as QueryParams,
     )
     return { response: categories, count }
   } catch (error) {

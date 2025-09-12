@@ -20,7 +20,6 @@ import BlockedHoursForm from './BlockedHoursForm'
 
 export default async function ProfileDetail() {
   const response = await getProfile()
-  console.log('response: ', response)
   const profile = response?.response
   const errorRequest = response.error?.request
   // Show a friendly error UI when the API is unavailable or request fails
@@ -49,7 +48,6 @@ export default async function ProfileDetail() {
   if (!profile) {
     notFound()
   }
-  console.log('profile', profile)
 
   // const organizations = profile.user?.organizations.map(
   //   (organization) => organization.organization,

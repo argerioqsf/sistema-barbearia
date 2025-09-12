@@ -6,10 +6,8 @@ import {
   SegmentsSelectResponseSchema,
 } from './schemas'
 // TODO: Remover segments do projeto
-export async function fetchSegments(
-  page?: string,
-  where?: Record<string, unknown>,
-) {
+import type { QueryParams } from '@/types/http'
+export async function fetchSegments(page?: string, where?: QueryParams) {
   const token = await getBackendToken()
   const response = await api(
     '/segments',

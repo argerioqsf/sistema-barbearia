@@ -53,12 +53,15 @@ export const authOptions: NextAuthOptions = {
         const u = user
         token.accessToken = u.token
         // Extract role from various shapes
-        const roleRaw: unknown = (u.user as unknown as AppUser)?.profile?.role
+        const roleRaw = (u.user as AppUser)?.profile?.role as
+          | string
+          | { name?: string }
+          | undefined
         const roleName =
           typeof roleRaw === 'string'
             ? roleRaw
             : roleRaw && typeof roleRaw === 'object' && 'name' in roleRaw
-              ? ((roleRaw as { name?: unknown }).name as string | undefined)
+              ? (roleRaw as { name?: string }).name
               : undefined
         token.user = {
           id: u.user.id,

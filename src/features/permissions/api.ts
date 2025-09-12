@@ -6,6 +6,7 @@ import {
   type ZPermission,
 } from './schemas'
 import { readMessage, safeJson } from '@/shared/http'
+import type { JsonObject } from '@/types/http'
 
 export async function listPermissions() {
   const token = await getBackendToken()
@@ -21,9 +22,7 @@ export async function listPermissions() {
   return PermissionsListSchema.parse(json)
 }
 
-export async function createPermission(
-  body: Record<string, unknown>,
-): Promise<ZPermission> {
+export async function createPermission(body: JsonObject): Promise<ZPermission> {
   const token = await getBackendToken()
   const response = await api('/permissions', {
     method: 'POST',
@@ -39,7 +38,7 @@ export async function createPermission(
 
 export async function updatePermission(
   id: string,
-  body: Record<string, unknown>,
+  body: JsonObject,
 ): Promise<ZPermission> {
   const token = await getBackendToken()
   const response = await api(`/permissions/${id}`, {

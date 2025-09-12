@@ -2,8 +2,9 @@ import { api } from '@/data/api'
 import { getBackendToken } from '@/utils/authServer'
 import { SaleSchema, SalesListResponseSchema, type ZSale } from './schemas'
 import { safeJson, readMessage } from '@/shared/http'
+import type { JsonObject, QueryParams } from '@/types/http'
 
-export async function fetchSales(params?: Record<string, unknown>): Promise<{
+export async function fetchSales(params?: QueryParams): Promise<{
   items: ZSale[]
   count?: number
   page?: number
@@ -38,7 +39,7 @@ export async function fetchSale(id: string) {
   return SaleSchema.parse(await safeJson(response))
 }
 
-export async function createSale(body: Record<string, unknown>) {
+export async function createSale(body: JsonObject) {
   const token = await getBackendToken()
   const response = await api('/sales', {
     method: 'POST',
@@ -52,7 +53,7 @@ export async function createSale(body: Record<string, unknown>) {
   return SaleSchema.parse(await safeJson(response))
 }
 
-export async function updateSale(id: string, body: Record<string, unknown>) {
+export async function updateSale(id: string, body: JsonObject) {
   const token = await getBackendToken()
   const response = await api(`/sales/${id}`, {
     method: 'PATCH',
@@ -66,10 +67,7 @@ export async function updateSale(id: string, body: Record<string, unknown>) {
   return SaleSchema.parse(await safeJson(response))
 }
 
-export async function updateSaleItems(
-  id: string,
-  body: Record<string, unknown>,
-) {
+export async function updateSaleItems(id: string, body: JsonObject) {
   const token = await getBackendToken()
   const response = await api(`/sales/${id}/saleItems`, {
     method: 'PATCH',
@@ -83,10 +81,7 @@ export async function updateSaleItems(
   return await safeJson(response)
 }
 
-export async function updateSaleCoupon(
-  id: string,
-  body: Record<string, unknown>,
-) {
+export async function updateSaleCoupon(id: string, body: JsonObject) {
   const token = await getBackendToken()
   const response = await api(`/sales/${id}/coupon`, {
     method: 'PATCH',
@@ -100,7 +95,7 @@ export async function updateSaleCoupon(
   return await safeJson(response)
 }
 
-export async function paySale(id: string, body: Record<string, unknown>) {
+export async function paySale(id: string, body: JsonObject) {
   const token = await getBackendToken()
   const response = await api(`/sales/${id}/pay`, {
     method: 'PATCH',
@@ -114,10 +109,7 @@ export async function paySale(id: string, body: Record<string, unknown>) {
   return await safeJson(response)
 }
 
-export async function updateSaleClient(
-  id: string,
-  body: Record<string, unknown>,
-) {
+export async function updateSaleClient(id: string, body: JsonObject) {
   const token = await getBackendToken()
   const response = await api(`/sales/${id}/client`, {
     method: 'PATCH',
@@ -131,10 +123,7 @@ export async function updateSaleClient(
   return await safeJson(response)
 }
 
-export async function updateSaleItem(
-  id: string,
-  body: Record<string, unknown>,
-) {
+export async function updateSaleItem(id: string, body: JsonObject) {
   const token = await getBackendToken()
   const response = await api(`/sales/saleItem/${id}`, {
     method: 'PATCH',

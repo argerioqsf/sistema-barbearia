@@ -1,6 +1,7 @@
 import { api } from '@/data/api'
 import { getBackendToken } from '@/utils/authServer'
 import { safeJson, readMessage } from '@/shared/http'
+import type { JsonObject, QueryParams } from '@/types/http'
 import {
   AppointmentSchema,
   AppointmentsListResponseSchema,
@@ -8,9 +9,7 @@ import {
   type ZAppointment,
 } from './schemas'
 
-export async function fetchAppointments(
-  params?: Record<string, unknown>,
-): Promise<{
+export async function fetchAppointments(params?: QueryParams): Promise<{
   items: ZAppointment[]
   count?: number
   page?: number
@@ -34,7 +33,7 @@ export async function fetchAppointments(
   return AppointmentsListResponseSchema.parse(json)
 }
 
-export async function createAppointment(body: Record<string, unknown>) {
+export async function createAppointment(body: JsonObject) {
   const token = await getBackendToken()
   const response = await api('/create/appointment', {
     method: 'POST',
@@ -48,10 +47,7 @@ export async function createAppointment(body: Record<string, unknown>) {
   return AppointmentSchema.parse(await safeJson(response))
 }
 
-export async function updateAppointment(
-  id: string,
-  body: Record<string, unknown>,
-) {
+export async function updateAppointment(id: string, body: JsonObject) {
   const token = await getBackendToken()
   const response = await api(`/appointments/${id}`, {
     method: 'PATCH',

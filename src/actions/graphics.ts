@@ -6,7 +6,7 @@ import { fetchGraphics } from '@/features/graphics/api'
 export async function getGraphics(): Promise<ReturnGet<Graphics>> {
   try {
     const graphics = await fetchGraphics()
-    return { response: graphics as unknown as Graphics }
+    return { response: graphics as Graphics }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

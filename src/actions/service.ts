@@ -3,6 +3,7 @@
 import { ReturnGet, ReturnList, InitialState } from '@/types/general'
 import type { ZService as Service } from '@/features/services/schemas'
 import { fetchService, fetchServices } from '@/features/services/api'
+import type { QueryParams } from '@/types/http'
 import { api } from '@/data/api'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
@@ -12,10 +13,7 @@ export async function listServices(
   where?: Partial<Service>,
 ): Promise<ReturnList<Service>> {
   try {
-    const { services, count } = await fetchServices(
-      page,
-      where as Record<string, unknown>,
-    )
+    const { services, count } = await fetchServices(page, where as QueryParams)
     return { response: services, count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }

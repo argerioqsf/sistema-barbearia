@@ -1,9 +1,17 @@
 import { env } from '@/env'
 import { clearAuthCookiesServer } from '@/utils/cookieServer'
+import { updateTokenFromResponse } from '@/shared/http'
+
+type NextFetchOptions = {
+  revalidate?: number
+  tags?: string[]
+}
+
+type ExtendedRequestInit = RequestInit & { next?: NextFetchOptions }
 
 export async function api<T>(
   path: string,
-  init?: RequestInit,
+  init?: ExtendedRequestInit,
   page?: string,
   where?: Partial<T>,
 ): Promise<Response> {
@@ -26,7 +34,7 @@ export async function api<T>(
   // If the caller specifies revalidate via Next.js fetch options (init.next.revalidate),
   // do not force cache: 'no-store' to avoid the Next.js warning about mixed caching.
   const hasRevalidate = Boolean(init?.next?.revalidate)
-  const reqInit: RequestInit = { ...init }
+  const reqInit: ExtendedRequestInit = { ...init }
   if (reqInit.cache === undefined && !hasRevalidate) {
     reqInit.cache = 'no-store'
   }
@@ -50,7 +58,24 @@ export async function api<T>(
       try {
         clearAuthCookiesServer()
       } catch {}
+    } else {
+      // Client: logout immediately and redirect to signin
+      try {
+        await fetch('/api/logout', { method: 'POST' })
+      } catch {}
+      try {
+        const parts = window.location.pathname.split('/').filter(Boolean)
+        const maybeLocale = parts[0] || 'pt-BR'
+        // Avoid loop if already on signin
+        if (!window.location.pathname.includes('/auth/signin')) {
+          window.location.href = `/${maybeLocale}/auth/signin`
+        }
+      } catch {}
     }
   }
+  // Update backend token if server sent a new one
+  try {
+    await updateTokenFromResponse(resp)
+  } catch {}
   return resp
 }

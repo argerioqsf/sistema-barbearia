@@ -9,7 +9,7 @@ type ButtonProps = {
   type?: 'submit' | 'reset' | 'button' | undefined
   className?: string
   children: ReactNode
-  onClick?: (state: unknown) => void
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
   disabled?: boolean
 }
 
@@ -24,7 +24,7 @@ const Button = ({
   // TODO: analisar mudanças que ia fez, se faz sentido
   return (
     <UIButton
-      onClick={onClick as never}
+      onClick={onClick}
       type={type}
       className={twMerge(className)}
       aria-disabled={pending}

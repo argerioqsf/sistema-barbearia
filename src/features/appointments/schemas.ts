@@ -19,8 +19,15 @@ export const AppointmentsListResponseSchema = z.object({
   perPage: z.number().optional(),
 })
 
+export const BarberSchema = z
+  .object({
+    id: z.string().optional(),
+    name: z.string().optional(),
+  })
+  .passthrough()
+
 export const BarbersListResponseSchema = z.object({
-  users: z.array(z.any()),
+  users: z.array(BarberSchema),
 })
 
 export type ZAppointment = z.infer<typeof AppointmentSchema>

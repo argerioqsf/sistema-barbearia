@@ -2,8 +2,9 @@ import { api } from '@/data/api'
 import { getBackendToken } from '@/utils/authServer'
 import { DebtSchema, DebtsListResponseSchema, type ZDebt } from './schemas'
 import { safeJson, readMessage } from '@/shared/http'
+import type { JsonObject, QueryParams } from '@/types/http'
 
-export async function fetchDebts(params?: Record<string, unknown>): Promise<{
+export async function fetchDebts(params?: QueryParams): Promise<{
   items: ZDebt[]
   count?: number
   page?: number
@@ -37,7 +38,7 @@ export async function fetchDebt(id: string) {
   return DebtSchema.parse(await safeJson(response))
 }
 
-export async function createDebt(body: Record<string, unknown>) {
+export async function createDebt(body: JsonObject) {
   const token = await getBackendToken()
   const response = await api('/debts', {
     method: 'POST',
@@ -51,7 +52,7 @@ export async function createDebt(body: Record<string, unknown>) {
   return DebtSchema.parse(await safeJson(response))
 }
 
-export async function updateDebt(id: string, body: Record<string, unknown>) {
+export async function updateDebt(id: string, body: JsonObject) {
   const token = await getBackendToken()
   const response = await api(`/debts/${id}`, {
     method: 'PATCH',
@@ -65,7 +66,7 @@ export async function updateDebt(id: string, body: Record<string, unknown>) {
   return DebtSchema.parse(await safeJson(response))
 }
 
-export async function payDebt(id: string, body: Record<string, unknown>) {
+export async function payDebt(id: string, body: JsonObject) {
   const token = await getBackendToken()
   const response = await api(`/debts/${id}/pay`, {
     method: 'PATCH',

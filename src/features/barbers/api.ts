@@ -6,10 +6,11 @@ import {
   type ZBarber,
 } from './schemas'
 import { safeJson, readMessage } from '@/shared/http'
+import type { JsonObject, QueryParams } from '@/types/http'
 
 export async function fetchBarbers(
   page?: string,
-  where?: Record<string, unknown>,
+  where?: QueryParams,
 ): Promise<{ users: ZBarber[]; count?: number }> {
   const token = await getBackendToken()
   const response = await api(
@@ -40,7 +41,7 @@ export async function fetchBarber(id: string) {
   return BarberSchema.parse(await safeJson(response))
 }
 
-export async function createBarber(body: Record<string, unknown>) {
+export async function createBarber(body: JsonObject) {
   const token = await getBackendToken()
   const response = await api('/barber/users', {
     method: 'POST',
@@ -54,7 +55,7 @@ export async function createBarber(body: Record<string, unknown>) {
   return BarberSchema.parse(await safeJson(response))
 }
 
-export async function updateBarber(id: string, body: Record<string, unknown>) {
+export async function updateBarber(id: string, body: JsonObject) {
   const token = await getBackendToken()
   const response = await api(`/barber/users/${id}`, {
     method: 'PUT',

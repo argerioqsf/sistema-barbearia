@@ -2,6 +2,7 @@
 
 import { ReturnGet, ReturnList, InitialState } from '@/types/general'
 import { fetchCoupon, fetchCoupons } from '@/features/coupons/api'
+import type { QueryParams } from '@/types/http'
 import type { ZCoupon as Coupon } from '@/features/coupons/schemas'
 import { api } from '@/data/api'
 import { getBackendToken } from '@/utils/authServer'
@@ -12,10 +13,7 @@ export async function listCoupons(
   where?: Partial<Coupon>,
 ): Promise<ReturnList<Coupon>> {
   try {
-    const { coupons, count } = await fetchCoupons(
-      page,
-      where as Record<string, unknown>,
-    )
+    const { coupons, count } = await fetchCoupons(page, where as QueryParams)
     return { response: coupons, count }
   } catch (error) {
     return {

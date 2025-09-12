@@ -2,6 +2,7 @@ import { api } from '@/data/api'
 import { getBackendToken } from '@/utils/authServer'
 import { RolesListSchema, RoleSchema, type ZRole } from './schemas'
 import { readMessage, safeJson } from '@/shared/http'
+import type { JsonObject } from '@/types/http'
 
 export async function listRoles() {
   const token = await getBackendToken()
@@ -17,9 +18,7 @@ export async function listRoles() {
   return RolesListSchema.parse(json)
 }
 
-export async function createRole(
-  body: Record<string, unknown>,
-): Promise<ZRole> {
+export async function createRole(body: JsonObject): Promise<ZRole> {
   const token = await getBackendToken()
   const response = await api('/roles', {
     method: 'POST',
@@ -33,10 +32,7 @@ export async function createRole(
   return RoleSchema.parse(await safeJson(response))
 }
 
-export async function updateRole(
-  id: string,
-  body: Record<string, unknown>,
-): Promise<ZRole> {
+export async function updateRole(id: string, body: JsonObject): Promise<ZRole> {
   const token = await getBackendToken()
   const response = await api(`/roles/${id}`, {
     method: 'PUT',

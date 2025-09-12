@@ -3,7 +3,7 @@ import type { JWT as DefaultJWT } from 'next-auth/jwt'
 import type { User as AppUser } from '@/types/general'
 
 type AuthUser = Pick<AppUser, 'id' | 'name' | 'email'> & {
-  profile?: { role?: unknown }
+  profile?: { role?: string | { name?: string } }
 }
 
 type RolesPayload = Record<string, boolean> | string[] | undefined

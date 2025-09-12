@@ -5,11 +5,9 @@ import {
   UnitDetailWrappedSchema,
   UnitSchema,
 } from './schemas'
+import type { QueryParams } from '@/types/http'
 
-export async function fetchUnits(
-  page: string,
-  where?: Record<string, unknown>,
-) {
+export async function fetchUnits(page: string, where?: QueryParams) {
   const token = await getBackendToken()
   const response = await api(
     '/units',
