@@ -30,7 +30,7 @@ export default function FormFieldSelect<T>({
   optionKeyLabel,
   optionKeyValue,
   disabled,
-  className
+  className,
 }: FormFieldTextProps<T>) {
   const { getItemValue } = useItemListTransform()
   const getOptionLabel = (option: OptionGeneric<T>, key: OptionKey<T>) =>

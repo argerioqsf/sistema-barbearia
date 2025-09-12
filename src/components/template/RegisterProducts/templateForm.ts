@@ -1,6 +1,7 @@
-import { Course, InfoList, Segment, TemplateForm, User } from '@/types/general'
+import { TemplateForm } from '@/types/general'
+import type { ZProduct } from '@/features/products/schemas'
 
-export const templateForm: TemplateForm<Course | Segment | { image: string }> = {
+export const templateForm: TemplateForm<ZProduct | { image: string }> = {
   title: 'Cadastrar Produtos',
   textButton: 'Cadastrar',
   sections: [
@@ -21,23 +22,24 @@ export const templateForm: TemplateForm<Course | Segment | { image: string }> = 
               cols: 2,
             },
             {
-              id: 'name',
-              required: true,
-              type: 'text',
-              label: 'Descrição',
-              cols: 2,
-            },
-            {
-              id: 'name',
+              id: 'price',
               required: true,
               type: 'number',
-              label: 'Valor de custo',
+              label: 'Preço',
             },
             {
-              id: 'name',
+              id: 'active',
               required: true,
-              type: 'number',
-              label: 'Valor de venda',
+              type: 'select',
+              label: 'Ativo',
+              option: {
+                keyLabel: 'label',
+                keyValue: 'value',
+                list: [
+                  { value: 'true', label: 'Sim' },
+                  { value: 'false', label: 'Não' },
+                ],
+              },
             },
           ],
         },
@@ -51,19 +53,7 @@ export const templateForm: TemplateForm<Course | Segment | { image: string }> = 
               type: 'file',
               label: 'Image',
               row: 2,
-              cols:2
-            },
-          ],
-        },
-        {
-          id: 3,
-          cols: 2,
-          fields: [
-            {
-              id: 'name',
-              required: true,
-              type: 'text',
-              label: 'teste',
+              cols: 2,
             },
           ],
         },

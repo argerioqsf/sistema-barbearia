@@ -4,14 +4,23 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import * as templates from './templates'
 import { notFound } from 'next/navigation'
+import ErrorState from '@/components/molecules/ErrorState'
 
 export default async function DetailCourses({ id }: { id: string }) {
   const response = await getCourse(id)
   const course = response.response
+  const errorRequest = response.error?.request ?? undefined
+  if (errorRequest) {
+    return (
+      <ErrorState
+        title="Erro ao carregar curso"
+        message={String(errorRequest)}
+      />
+    )
+  }
   if (!course) {
     notFound()
   }
-  const errorRequest = response.error?.request ?? undefined
 
   return (
     <ContainerDashboard>

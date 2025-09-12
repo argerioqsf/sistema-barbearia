@@ -22,29 +22,12 @@ import {
 } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
+import { fetchUser, fetchUsers } from '@/features/users/api'
 
 export async function getUser(id: string): Promise<ReturnGet<User>> {
   try {
-    const token = getTokenFromCookieServer()
-    const response = await api(`/user/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      next: {
-        tags: [id],
-        revalidate: 60 * 4,
-      },
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const user = await response.json()
-    return { response: user }
+    const user = await fetchUser(id)
+    return { response: user as unknown as User }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -55,31 +38,11 @@ export async function listUsers(
   where?: Partial<User>,
 ): Promise<ReturnList<User>> {
   try {
-    const token = getTokenFromCookieServer()
-    const response = await api(
-      '/users',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        next: {
-          tags: ['users', 'indicators', 'consultants'],
-          revalidate: 60 * 4,
-        },
-      },
+    const { users, count } = await fetchUsers(
       page,
-      where,
+      where as Record<string, unknown>,
     )
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const { users, count } = await response.json()
-    return { response: users, count }
+    return { response: users as unknown as User[], count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -214,7 +177,6 @@ export async function updateUserProfile(
         city: formData.get('profile.city'),
         unitsIds: units,
       }
-      console.log('data:', data)
       const response = await api(`/profile/${id}`, {
         method: 'PUT',
         headers: {
@@ -290,7 +252,6 @@ export async function resetPasswordUser(
 
       if (!response.ok) {
         const errorMessage = await response.text()
-        console.log('errorMessage: ', errorMessage)
         return {
           errors: { request: JSON.parse(errorMessage).message },
         }
@@ -307,8 +268,6 @@ export async function resetPasswordUser(
     }
   } else if (validatedFields.error) {
     const error = validatedFields.error.flatten().fieldErrors as Errors<User>
-
-    console.log('error: ', error)
     return {
       errors: { ...error },
     }

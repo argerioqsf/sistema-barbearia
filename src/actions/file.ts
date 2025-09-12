@@ -5,31 +5,12 @@ import { api } from '@/data/api'
 import { Errors, FileCustom, InitialState, ReturnList } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
+import { fetchFiles } from '@/features/files/api'
 
 export async function getFiles(): Promise<ReturnList<FileCustom>> {
   try {
-    const token = getTokenFromCookieServer()
-    const response = await api(
-      '/uploads',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        next: { tags: ['files'], revalidate: 60 * 4 },
-      },
-      '1',
-      {},
-    )
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const files = await response.json()
-    return { response: files }
+    const files = await fetchFiles()
+    return { response: files as unknown as FileCustom[] }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

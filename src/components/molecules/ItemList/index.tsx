@@ -26,7 +26,12 @@ export default function ItemList<T>({
   length,
 }: ItemListProps<T>) {
   return (
-    <div className={twMerge("w-full relative border-secondary-50 border-b flex flex-row justify-start items-center p-2", length === idx && 'border-b-0')}>
+    <div
+      className={twMerge(
+        'w-full relative border-secondary-50 border-b flex flex-row justify-start items-center p-2',
+        length === idx && 'border-b-0',
+      )}
+    >
       <div className="w-[10%] md:w-[10%] sm:w-[20%] flex flex-row justify-start">
         <Avatar
           colorIcon="white"

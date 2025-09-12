@@ -207,6 +207,11 @@ const verifyPermissionDashboard = {
       'financial',
       'secretary',
       'indicator',
+      // New roles supported in the system
+      'barber',
+      'manager',
+      'receptionist',
+      'ADMIN',
     ].includes(roleUser),
 }
 
@@ -256,7 +261,13 @@ const verifyPermissionAppointments = {
 
 const verifyPermissionCashier = {
   'cashier.view': (roleUser: Role) => {
-    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+    const roles: Role[] = [
+      'ADMIN',
+      'administrator',
+      'barber',
+      'manager',
+      'receptionist',
+    ]
     return roles.includes(roleUser)
   },
 }

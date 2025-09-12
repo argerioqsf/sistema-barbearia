@@ -1,10 +1,11 @@
-import { listIndicators } from '@/actions/user'
+import { listProducts } from '@/actions/product'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
 import { infoList } from './templates'
+import ErrorState from '@/components/molecules/ErrorState'
 
 infoList.listActions = [
   {
@@ -23,13 +24,23 @@ infoList.listActions = [
 ]
 
 export default async function ListProducts({ searchParams }: SearchParams) {
-  const response = await listIndicators(searchParams?.page ?? '', {
+  const response = await listProducts(searchParams?.page ?? '', {
     name: searchParams?.q ?? '',
+    withCount: true,
+    perPage: 10,
   })
 
   const list = response?.response ?? null
   const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
+  if (errorRequest) {
+    return (
+      <ErrorState
+        title="Erro ao carregar produtos"
+        message={String(errorRequest)}
+      />
+    )
+  }
 
   return (
     <ContainerDashboard>

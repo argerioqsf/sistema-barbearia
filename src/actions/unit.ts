@@ -6,6 +6,7 @@ import { api } from '@/data/api'
 import { InitialState, ReturnGet, ReturnList, Unit } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
+import { fetchUnit, fetchUnits, fetchUnitsSelect } from '@/features/units/api'
 
 export async function registerUnit(
   prevState: InitialState<Unit>,
@@ -130,23 +131,8 @@ export async function updateUnit(
 
 export async function getUnit(id: string): Promise<ReturnGet<Unit>> {
   try {
-    const token = getTokenFromCookieServer()
-    const response = await api(`/unit/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      next: { tags: [id, 'segments', 'courses'], revalidate: 60 * 4 },
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const list = await response.json()
-    return { response: list }
+    const unit = await fetchUnit(id)
+    return { response: unit as unknown as Unit }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -182,28 +168,11 @@ export async function listUnits(
   where?: Partial<Unit>,
 ): Promise<ReturnList<Unit>> {
   try {
-    const token = getTokenFromCookieServer()
-    const response = await api(
-      '/units',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        next: { tags: ['units'], revalidate: 60 * 4 },
-      },
+    const { units, count } = await fetchUnits(
       page,
-      where,
+      where as Record<string, unknown>,
     )
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const { units, count } = await response.json()
-    return { response: units, count }
+    return { response: units as unknown as Unit[], count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -211,23 +180,8 @@ export async function listUnits(
 
 export async function listSelectUnits(): Promise<ReturnList<Unit>> {
   try {
-    const token = getTokenFromCookieServer()
-    const response = await api(`/units/select`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      next: { tags: ['units'], revalidate: 60 * 4 },
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const { units } = await response.json()
-    return { response: units }
+    const units = await fetchUnitsSelect()
+    return { response: units as unknown as Unit[] }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

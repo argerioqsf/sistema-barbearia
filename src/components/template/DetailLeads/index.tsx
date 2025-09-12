@@ -14,12 +14,29 @@ import { notFound } from 'next/navigation'
 import * as templatesRaw from './templates'
 import { listSelectCourses } from '@/actions/course'
 import { listSelectSegments } from '@/actions/segments'
+import ErrorState from '@/components/molecules/ErrorState'
 
 export default async function DetailLeads({ id }: { id: string }) {
   const responseProfile = await getProfile()
   const profile = responseProfile?.response
+  if (responseProfile.error?.request) {
+    return (
+      <ErrorState
+        title="Erro ao carregar perfil"
+        message={String(responseProfile.error?.request)}
+      />
+    )
+  }
   let ownerIndicator = false
   const response = await getLead(id)
+  if (response.error?.request) {
+    return (
+      <ErrorState
+        title="Erro ao carregar lead"
+        message={String(response.error?.request)}
+      />
+    )
+  }
   const responseIndicators = await listIndicators()
   const responseConsultants = await listSelectConsultants()
   const lead = response.response

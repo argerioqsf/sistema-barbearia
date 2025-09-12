@@ -8,6 +8,7 @@ import { infoList } from './templates'
 import { getProfile } from '@/actions/profile'
 import { notFound } from 'next/navigation'
 import { checkUserPermissions } from '@/utils/checkUserPermissions'
+import ErrorState from '@/components/molecules/ErrorState'
 
 export default async function ListConfirmedLeads({
   searchParams,
@@ -15,6 +16,14 @@ export default async function ListConfirmedLeads({
   const responseProfile = await getProfile()
   const profile = responseProfile?.response
   const errorRequestProfile = responseProfile.error?.request ?? null
+  if (errorRequestProfile) {
+    return (
+      <ErrorState
+        title="Erro ao carregar perfil"
+        message={String(errorRequestProfile)}
+      />
+    )
+  }
   if (!profile) {
     notFound()
   }
@@ -48,6 +57,14 @@ export default async function ListConfirmedLeads({
   const list = response?.response ?? null
   const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
+  if (errorRequest) {
+    return (
+      <ErrorState
+        title="Erro ao carregar leads confirmados"
+        message={String(errorRequest)}
+      />
+    )
+  }
 
   return (
     <ContainerDashboard>

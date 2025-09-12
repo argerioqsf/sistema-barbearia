@@ -8,6 +8,7 @@ import { SearchParams } from '@/types/general'
 import { checkUserPermissions } from '@/utils/checkUserPermissions'
 import { notFound } from 'next/navigation'
 import { infoList } from './templates'
+import ErrorState from '@/components/molecules/ErrorState'
 
 export default async function ListWaitingConfirmationLeads({
   searchParams,
@@ -15,6 +16,14 @@ export default async function ListWaitingConfirmationLeads({
   const responseProfile = await getProfile()
   const profile = responseProfile?.response
   const errorRequestProfile = responseProfile.error?.request ?? null
+  if (errorRequestProfile) {
+    return (
+      <ErrorState
+        title="Erro ao carregar perfil"
+        message={String(errorRequestProfile)}
+      />
+    )
+  }
   if (!profile) {
     notFound()
   }
@@ -50,6 +59,14 @@ export default async function ListWaitingConfirmationLeads({
   const list = response?.response ?? null
   const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
+  if (errorRequest) {
+    return (
+      <ErrorState
+        title="Erro ao carregar leads aguardando"
+        message={String(errorRequest)}
+      />
+    )
+  }
 
   return (
     <ContainerDashboard>

@@ -1,11 +1,7 @@
 import NotFoundPage from '@/components/template/NotFoundPage/page'
+import { getLocale } from 'next-intl/server'
 
-export default function NotFound() {
-  return (
-    <html lang="pt">
-      <body>
-        <NotFoundPage href="/pt-BR/dashboard/home" absolute={true} />
-      </body>
-    </html>
-  )
+export default async function NotFound() {
+  const locale = await getLocale()
+  return <NotFoundPage href={`/${locale}/dashboard/home`} absolute={true} />
 }

@@ -1,0 +1,42 @@
+{
+  "general": {
+    "email": "E-mail",
+    "password": "Senha",
+    "register": "Cadastrar",
+    "login": "Entrar",
+    "exit": "Sair",
+    "remember_me": "Lembrar-me",
+    "not-found": {
+      "title": "Página não encontrada"
+    }
+  },
+  "specific": {
+    "form_login": {
+      "forgot_password": "Esqueceu a senha?",
+      "not_have_account": "Não possui conta?"
+    },
+    "form_register": {}
+  },
+  "metadata": {
+    "index": {
+      "title": "SIM | Grupo Madre Tereza",
+      "description": "SIM | Grupo Madre Tereza"
+    },
+    "auth": {
+      "signin": {
+        "title": "Login SIM",
+        "description": "Faça login na plataforma SIM"
+      }
+    },
+    "dashboard": {
+      "home": {
+        "title": "Home SIM",
+        "description": "Home da plataforma SIM"
+      },
+      "profile": {
+        "title": "Perfil SIM",
+        "description": "Perfil da plataforma SIM"
+      }
+    }
+  }
+}

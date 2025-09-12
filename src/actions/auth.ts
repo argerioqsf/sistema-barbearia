@@ -63,12 +63,11 @@ export async function loginUser(
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function actionDefault<T>(
-  prevState: InitialState<T>,
-  formData: FormData,
+  _prevState: InitialState<T>, // eslint-disable-line @typescript-eslint/no-unused-vars
+  _formData: FormData, // eslint-disable-line @typescript-eslint/no-unused-vars
 ): Promise<InitialState<T>> {
-  console.log('prevState: ', prevState)
-  console.log('formData: ', formData)
   return {
     errors: {},
     ok: true,

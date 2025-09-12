@@ -16,7 +16,14 @@ const getCookie = (
 }
 
 const setCookie = (name: string, value: string) => {
-  cookies().set(name, value)
+  cookies().set({
+    name,
+    value,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+  })
 }
 
 export const getTokenFromCookieServer = () => {
@@ -46,4 +53,17 @@ export const getRolesFromCookieServer = (): EnumLike => {
 
 export const setRolesInCookieServer = (roles: EnumLike) => {
   setCookie(cookiesName.ROLES_SIM_COOKIE, JSON.stringify(roles))
+}
+
+export function clearAuthCookiesServer() {
+  const jar = cookies()
+  try {
+    jar.delete(cookiesName.TOKEN_SIM_COOKIE)
+    jar.delete(cookiesName.USER_SIM_COOKIE)
+    jar.delete(cookiesName.ROLES_SIM_COOKIE)
+    // Best-effort: clear common NextAuth cookies (names vary by env)
+    jar.delete('next-auth.session-token')
+    jar.delete('__Secure-next-auth.session-token')
+    jar.delete('next-auth.csrf-token')
+  } catch {}
 }

@@ -12,7 +12,16 @@ type BoxProps = {
 
 const Box = ({ children, className, cols = 1, row = 1 }: BoxProps) => {
   return (
-    <div className={twMerge(grid.colSpan[cols - 1], grid.gridCols[cols - 1],grid.rowSpan[row -1], className)}>{children}</div>
+    <div
+      className={twMerge(
+        grid.colSpan[cols - 1],
+        grid.gridCols[cols - 1],
+        grid.rowSpan[row - 1],
+        className,
+      )}
+    >
+      {children}
+    </div>
   )
 }
 

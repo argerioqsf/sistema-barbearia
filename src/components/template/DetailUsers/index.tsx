@@ -6,15 +6,24 @@ import FormDashboard from '@/components/organisms/FormDashboard'
 import roles from '@/constants/roles.json'
 import { Option, Profile, Roles, Unit, User } from '@/types/general'
 import { notFound } from 'next/navigation'
+import ErrorState from '@/components/molecules/ErrorState'
 import * as templates from './templates'
 
 export default async function DetailUsers({ id }: { id: string }) {
   const response = await getUser(id)
   const user = response.response
+  const errorRequest = response.error?.request ?? undefined
+  if (errorRequest) {
+    return (
+      <ErrorState
+        title="Erro ao carregar usuário"
+        message={String(errorRequest)}
+      />
+    )
+  }
   if (!user) {
     notFound()
   }
-  const errorRequest = response.error?.request ?? undefined
 
   let options: Option[] = [
     {

@@ -4,16 +4,25 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import * as templates from './templates'
 import { notFound } from 'next/navigation'
+import ErrorState from '@/components/molecules/ErrorState'
 import { listSelectCourses } from '@/actions/course'
 import { Course, Segment } from '@/types/general'
 
 export default async function DetailSegments({ id }: { id: string }) {
   const response = await getSegment(id)
   const segment = response.response
+  const errorRequest = response.error?.request ?? undefined
+  if (errorRequest) {
+    return (
+      <ErrorState
+        title="Erro ao carregar segmento"
+        message={String(errorRequest)}
+      />
+    )
+  }
   if (!segment) {
     notFound()
   }
-  const errorRequest = response.error?.request ?? undefined
   const responseCourses = await listSelectCourses()
   templates.templateForm.sections[1].boxes[0].fields[0].option = {
     ...templates.templateForm.sections[1].boxes[0].fields[0].option,

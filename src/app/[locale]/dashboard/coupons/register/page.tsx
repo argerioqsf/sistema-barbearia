@@ -1,5 +1,4 @@
 import RegisterCoupons from '@/components/template/RegisterCoupons'
-import RegisterProducts from '@/components/template/RegisterProducts'
 import { ParamsProp } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 

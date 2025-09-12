@@ -41,7 +41,7 @@ const Avatar: React.FC<AvatarProps> = ({
     href.length > 0 || (router && router.length > 0) ? Link : 'div'
   const routerPath = generatePath(router)
   return (
-    <div className={twMerge(`size-[${size}px]`)}>
+    <div style={{ width: size, height: size }}>
       <Component
         className={twMerge('flex justify-center items-center', classAvatar)}
         href={routerPath}
@@ -60,6 +60,8 @@ const Avatar: React.FC<AvatarProps> = ({
               'p-2 rounded-full flex justify-center items-center border-2',
               classIcon,
             )}
+            // TODO: verficar se faz sentido utilizar o size novamente aqui
+            style={{ width: size, height: size }}
           >
             {children ?? (
               <Icon size={size} className={classIconReal} color={colorIcon} />

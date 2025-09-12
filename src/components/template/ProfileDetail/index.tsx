@@ -1,29 +1,59 @@
-import { updateOrganization } from '@/actions/organization'
-import { getProfile, updateProfileUser } from '@/actions/profile'
+import {
+  deleteBlockedHour,
+  deleteWorkHour,
+  getProfile,
+  registerBlockedHour,
+  registerWorkHour,
+  updateProfileUser,
+} from '@/actions/profile'
 import { Text } from '@/components/atoms'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import { ButtonCycle } from '@/components/molecules/ButtonCycle'
-import CycleComponent from '@/components/organisms/CycleComponent'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import { Organization, Profile, User } from '@/types/general'
-import { checkUserPermissions } from '@/utils/checkUserPermissions'
+import { Profile, User } from '@/types/general'
 import { notFound } from 'next/navigation'
-import { Fragment } from 'react'
-import { templateForm, templateFormOrganization } from './templateForm'
+import { templateForm } from './templateForm'
 import ColorPalette from '@/components/molecules/ColorPalette'
+import LogoutButton from '@/components/molecules/LogoutButton'
+// import WorkHoursForm from './WorkHoursForm'
+import BlockedHoursForm from './BlockedHoursForm'
 
 export default async function ProfileDetail() {
   const response = await getProfile()
+  console.log('response: ', response)
   const profile = response?.response
   const errorRequest = response.error?.request
+  // Show a friendly error UI when the API is unavailable or request fails
+  if (errorRequest) {
+    return (
+      <ContainerDashboard>
+        <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
+          <div className="w-full ">
+            <Breadcrumb />
+          </div>
+          <div className="w-full mt-6">
+            <Text className="uppercase font-bold text-xl lg:text-2xl text-black">
+              Erro ao carregar seu perfil
+            </Text>
+            <Text className="text-red-600 mt-2">
+              {String(
+                errorRequest ||
+                  'Serviço temporariamente indisponível. Tente novamente mais tarde.',
+              )}
+            </Text>
+          </div>
+        </div>
+      </ContainerDashboard>
+    )
+  }
   if (!profile) {
     notFound()
   }
+  console.log('profile', profile)
 
-  const organizations = profile.user?.organizations.map(
-    (organization) => organization.organization,
-  )
+  // const organizations = profile.user?.organizations.map(
+  //   (organization) => organization.organization,
+  // )
 
   return (
     <ContainerDashboard>
@@ -36,6 +66,9 @@ export default async function ProfileDetail() {
             Escolha o seu tema:
           </Text>
           <ColorPalette />
+          <div className="mt-4">
+            <LogoutButton />
+          </div>
         </div>
         <div className="w-full mt-6 lg:mt-8">
           <FormDashboard<Profile | User>
@@ -49,7 +82,50 @@ export default async function ProfileDetail() {
             }}
             roleUser={profile.role}
           />
-          {checkUserPermissions('organization.update', profile.role) && (
+          {/* Calendar Management */}
+          <div className="w-full mt-10">
+            <Text className="uppercase font-bold text-xl lg:text-2xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
+              Calendário
+            </Text>
+            <div className="mt-6">
+              <BlockedHoursForm
+                onSubmit={async (_prev, formData) => {
+                  'use server'
+                  return registerBlockedHour(profile.id, {}, formData)
+                }}
+                blocked={profile.blockedHours || []}
+                workHours={profile.workHours || []}
+                openingHours={profile.openingHours || []}
+                onCreateWorkHour={async (_prev, formData) => {
+                  'use server'
+                  return registerWorkHour(profile.id, {}, formData)
+                }}
+                onDeleteWorkHour={async (_prev, formData) => {
+                  'use server'
+                  const id = String(formData.get('id'))
+                  if (!id)
+                    return {
+                      ok: false,
+                      errors: { request: 'ID inválido' },
+                    }
+                  return deleteWorkHour(profile.id, id)
+                }}
+                onDelete={async (_prev, fd) => {
+                  'use server'
+                  const id = String(fd.get('id'))
+                  return deleteBlockedHour(profile.id, id)
+                }}
+                onUpdate={async (id, _prev, fd) => {
+                  'use server'
+                  const { updateBlockedHour } = await import(
+                    '@/actions/profile'
+                  )
+                  return updateBlockedHour(profile.id, id, {}, fd)
+                }}
+              />
+            </div>
+          </div>
+          {/* {checkUserPermissions('organization.update', profile.role) && (
             <>
               {organizations?.map((organization, idx) => {
                 templateFormOrganization.title = `Organização ${organization.name}`
@@ -93,7 +169,7 @@ export default async function ProfileDetail() {
                 )
               })}
             </>
-          )}
+          )} */}
         </div>
       </div>
     </ContainerDashboard>

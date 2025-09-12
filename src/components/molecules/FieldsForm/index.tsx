@@ -27,21 +27,21 @@ export default function FieldsForm<T>({
   register,
   roleUser,
 }: PropsFieldsForm<T>) {
-  const rows = field.row??1
-  const cols = field.cols??1
+  const rows = field.row ?? 1
+  const cols = field.cols ?? 1
   const id = field.id as Path<T & { request?: string }>
   if (roleUser !== undefined && field.roleVisible !== undefined) {
     if (!checkUserPermissions(field.roleVisible, roleUser)) {
       return null
     }
   }
-    const classInput = `${field.classInput ?? ''} ${
-      state?.errors?.[id] && 'ring-red-500 focus:ring-red-500'
-    }`
+  const classInput = `${field.classInput ?? ''} ${
+    state?.errors?.[id] && 'ring-red-500 focus:ring-red-500'
+  }`
   const propsField = {
     props: { ...register(id, { required: field.required }) },
     label: field.label,
-    classInput: classInput,
+    classInput,
     className: twMerge(grid.rowSpan[rows - 1], grid.colSpan[cols - 1]),
     error: (state?.errors?.[id] && state.errors[id]?.[0]) ?? '',
     disabled:
@@ -83,8 +83,9 @@ export default function FieldsForm<T>({
         placeholder={field.placeholder}
       />
     )
-  } if (field.type === 'file'){
-    return <FormFieldImage {...propsField} type={field.type}/>
+  }
+  if (field.type === 'file') {
+    return <FormFieldImage {...propsField} type={field.type} />
   } else {
     return <FormFieldText {...propsField} type={field.type} />
   }

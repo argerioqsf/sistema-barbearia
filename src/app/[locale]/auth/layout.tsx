@@ -10,8 +10,6 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <body className="bg-primary-100">
-      <div className={twMerge(inter.className)}>{children}</div>
-    </body>
+    <div className={twMerge('bg-primary-100', inter.className)}>{children}</div>
   )
 }

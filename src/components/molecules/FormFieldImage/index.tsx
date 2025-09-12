@@ -2,14 +2,13 @@
 
 import { Text } from '@/components/atoms'
 import InputForm from '@/components/atoms/InputForm'
-import LabelForm from '@/components/atoms/LabelForm'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
 type FormFieldTextProps = {
-  label: string
+  label?: string
   type: string
   placeholder?: string
   classInput?: string
@@ -25,7 +24,6 @@ type FormFieldTextProps = {
 }
 
 const FormFieldText = ({
-  label,
   type,
   placeholder,
   classInput,
@@ -54,7 +52,7 @@ const FormFieldText = ({
   return (
     <div className={twMerge(className, 'flex justify-center')}>
       <label className="w-full min-h-56 h-full border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-600 cursor-pointer hover:border-gray-500 transition">
-        { imagePreview ? (
+        {imagePreview ? (
           <div className="w-full p-4 flex flex-col justify-start items-center">
             <Image
               width={400}
@@ -63,8 +61,7 @@ const FormFieldText = ({
               alt="image-preview"
             />
           </div>
-        ):
-        (
+        ) : (
           <span className="text-gray-500">Imagem</span>
         )}
         <InputForm
@@ -77,10 +74,7 @@ const FormFieldText = ({
           propsInput={props ? { ...props } : undefined}
           type={type}
           placeholder={placeholder}
-          className={twMerge(
-            'hidden',
-            classInput,
-          )}
+          className={twMerge('hidden', classInput)}
         />
       </label>
 

@@ -6,12 +6,22 @@ import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
 import { infoList } from './templates'
 import { getProfile } from '@/actions/profile'
+import ErrorState from '@/components/molecules/ErrorState'
 
 export default async function ListLeadsConsultant({
   searchParams,
 }: SearchParams) {
   const responseProfile = await getProfile()
   const profile = responseProfile?.response
+  const errorRequestProfile = responseProfile.error?.request ?? null
+  if (errorRequestProfile) {
+    return (
+      <ErrorState
+        title="Erro ao carregar perfil"
+        message={String(errorRequestProfile)}
+      />
+    )
+  }
   const response = await listLeads(searchParams?.page ?? '', {
     name: searchParams?.q ?? '',
     consultantId: profile?.id,
@@ -19,6 +29,14 @@ export default async function ListLeadsConsultant({
   const list = response?.response ?? null
   const count = response?.count ?? null
   const errorRequest = response.error?.request ?? null
+  if (errorRequest) {
+    return (
+      <ErrorState
+        title="Erro ao carregar leads"
+        message={String(errorRequest)}
+      />
+    )
+  }
 
   return (
     <ContainerDashboard>

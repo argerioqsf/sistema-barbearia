@@ -59,7 +59,7 @@ export function SelectFormWithSearch<T>({
   classNameInput,
   classNameItem,
   disabled,
-  className
+  className,
 }: Props<T>) {
   const { getItemValue } = useItemListTransform()
   const getOptionLabel = (option: OptionGeneric<T>, key: OptionKey<T>) =>
@@ -255,7 +255,7 @@ export function SelectFormWithSearch<T>({
   }, [])
 
   return (
-    <div className={twMerge(className,"w-full")}>
+    <div className={twMerge(className, 'w-full')}>
       {label && <LabelForm htmlFor={props.name} label={label} />}
       <div className={twMerge(!light && 'mt-2')}>
         {!disabled && (

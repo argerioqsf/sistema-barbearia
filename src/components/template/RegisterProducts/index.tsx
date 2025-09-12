@@ -1,8 +1,8 @@
-import { registerCourse } from '@/actions/course'
+import { registerProduct } from '@/actions/product'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import { Course, Segment } from '@/types/general'
+import type { ZProduct } from '@/features/products/schemas'
 import { templateForm } from './templateForm'
 
 export default async function RegisterProducts() {
@@ -13,10 +13,10 @@ export default async function RegisterProducts() {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6 lg:mt-8">
-          <FormDashboard<Course | Segment | { image: string }>
-            action={registerCourse}
+          <FormDashboard<ZProduct | { image: string }>
+            action={registerProduct}
             templateForm={templateForm}
-            pathSuccess="dashboard/courses"
+            pathSuccess="dashboard/products"
           />
         </div>
       </div>

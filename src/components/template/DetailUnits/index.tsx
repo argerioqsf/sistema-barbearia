@@ -27,7 +27,7 @@ export default function DetailUnits({ id }: { id: string }) {
       }
     }
     loadUnit()
-  }, [])
+  }, [id, listSegment, pushRouter])
 
   return (
     <ContainerDashboard>

@@ -15,6 +15,7 @@ import {
 } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
+import { fetchLead, fetchLeads } from '@/features/leads/api'
 
 export async function registerLead(
   prevState: InitialState<User | Lead | Unit>,
@@ -210,7 +211,6 @@ export async function updateLead(
       })
       if (!response.ok) {
         const errorMessage = await response.text()
-        console.log('errorMessage: ', errorMessage)
         return {
           errors: { request: JSON.parse(errorMessage).message },
         }
@@ -228,7 +228,6 @@ export async function updateLead(
     }
   } else if (validatedFields.error) {
     const error = validatedFields.error.flatten().fieldErrors as Errors<Lead>
-    console.log('error: ', error)
     return {
       errors: { ...error },
     }
@@ -239,23 +238,8 @@ export async function updateLead(
 
 export async function getLead(id: string): Promise<ReturnGet<Lead>> {
   try {
-    const token = getTokenFromCookieServer()
-    const response = await api(`/lead/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      next: { tags: [id], revalidate: 60 * 4 },
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const lead = await response.json()
-    return { response: lead }
+    const lead = await fetchLead(id)
+    return { response: lead as unknown as Lead }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -458,28 +442,11 @@ export async function listLeads(
   where?: Partial<Lead>,
 ): Promise<ReturnList<Lead>> {
   try {
-    const token = getTokenFromCookieServer()
-    const response = await api(
-      '/leads',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        next: { tags: ['leads'], revalidate: 60 * 4 },
-      },
+    const { leads, count } = await fetchLeads(
       page,
-      where,
+      where as Record<string, unknown>,
     )
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const { leads, count } = await response.json()
-    return { response: leads, count }
+    return { response: leads as unknown as Lead[], count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

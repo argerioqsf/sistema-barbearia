@@ -1,5 +1,4 @@
-import ListCourses from '@/components/template/ListCourses'
-import ListProducts from '@/components/template/ListProducts'
+import ListCoupons from '@/components/template/ListCoupons'
 import { ParamsProp, SearchParams } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
@@ -19,7 +18,7 @@ export async function generateMetadata({
 }
 
 const page = ({ searchParams }: SearchParams) => {
-  return <ListProducts searchParams={searchParams} />
+  return <ListCoupons searchParams={searchParams} />
 }
 
 export default page

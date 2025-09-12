@@ -8,13 +8,13 @@ import useRegisterUnit from '@/hooks/use-register-unit'
 import { Course, Segment, Unit } from '@/types/general'
 import { templateForm as templateFormInit } from './templateForm'
 import { useEffect } from 'react'
-
+// TODO: retirar dependencias antigas q nao fazem mais sentido
 export default function RegisterUnits() {
   const { templateForm, listSegment } = useRegisterUnit(templateFormInit)
 
   useEffect(() => {
     listSegment()
-  }, [])
+  }, [listSegment])
 
   return (
     <ContainerDashboard>

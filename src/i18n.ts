@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getRequestConfig } from 'next-intl/server'
-
-const locales = ['pt-BR']
+import { locales } from './locales'
 
 export default getRequestConfig(async ({ locale }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

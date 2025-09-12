@@ -7,89 +7,67 @@ import FormFieldText from '@/components/molecules/FormFieldText'
 import { formSchemaSignIn } from '@/components/template/SingIn/schema'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { usePathTranslations } from '@/hooks/use-path-translations'
-import { InitialState, ServerAction, User } from '@/types/general'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useEffect } from 'react'
-import { useFormState } from 'react-dom'
+import { signIn } from 'next-auth/react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-type FormLoginProps = {
-  action: ServerAction<User>
-}
-
 type LoginSchemaType = z.infer<typeof formSchemaSignIn>
 
-const FormLogin = ({ action }: FormLoginProps) => {
+const FormLogin = () => {
   const {
     register,
+    handleSubmit,
     formState: { errors },
   } = useForm<LoginSchemaType>({
     resolver: zodResolver(formSchemaSignIn),
   })
   const { at, sc } = usePathTranslations('')
   const { pushRouter } = useHandlerRouter()
+  const [requestError, setRequestError] = useState<string | undefined>()
 
-  const initialState: InitialState<User> = {
-    errors: undefined,
-    ok: false,
-  }
-
-  const [state, formAction] = useFormState(action, initialState)
-
-  useEffect(() => {
-    if (state.ok) {
-      const user = state.resp as User
-      let path = 'dashboard/home'
-      switch (user.profile.role) {
-        case 'indicator':
-          path = 'dashboard/indicators/monitoring'
-          break
-        case 'consultant':
-          path = 'dashboard/consultants/monitoring'
-          break
-        case 'auxiliary':
-          path = 'dashboard/leads/firstContact'
-          break
-        default:
-          path = 'dashboard/home'
-          break
-      }
-      pushRouter(path)
+  async function onSubmit(values: LoginSchemaType) {
+    setRequestError(undefined)
+    const result = await signIn('credentials', {
+      email: values.email,
+      password: values.password,
+      redirect: false,
+    })
+    if (result?.error) {
+      setRequestError('Falha no login')
+      return
     }
-  }, [pushRouter, state.ok])
+    // Decide rota por role via middleware pós-redirecionamento
+    pushRouter('dashboard/home')
+  }
 
   return (
     <div className="w-full p-6 space-y-4 md:space-y-6 sm:p-8">
-      <Form action={formAction}>
+      <Form action={undefined} onSubmit={handleSubmit(onSubmit)}>
         <FormFieldText
           classInput={`bg-transparent py-3 pl-6 text-white ${
             errors.email && 'ring-red-500 focus:ring-red-500'
           }`}
-          placeholder={at('email')}
+          placeholder={at('email') ?? ''}
           type="email"
           props={{ ...register('email') }}
           label="Email"
-          error={state?.errors?.email ? state?.errors?.email[0] : ''}
+          error={errors.email?.message}
         />
 
         <FormFieldText
           classInput={`bg-transparent py-3 pl-6 text-white ${
             errors.password && 'ring-red-500 focus:ring-red-500'
           }`}
-          placeholder={at('password')}
+          placeholder={at('password') ?? ''}
           type="password"
           props={{ ...register('password') }}
           label="Senha"
-          error={state?.errors?.password ? state?.errors?.password[0] : ''}
+          error={errors.password?.message}
         />
 
         <div className="flex items-center py-4 justify-between">
-          {/* <FormFieldCheckBox
-            className="text-white"
-            label={at("remember_me")}
-            id="remember_me"
-          /> */}
           <LinkDefault
             href="#"
             className="text-sm font-medium text-primary-600 hover:underline text-white"
@@ -98,13 +76,13 @@ const FormLogin = ({ action }: FormLoginProps) => {
           </LinkDefault>
         </div>
 
-        {state?.errors?.request && (
+        {requestError && (
           <Text
-            title={state?.errors?.request}
+            title={requestError}
             role="alert"
             className="text-red-400 font-semibold whitespace-nowrap overflow-hidden text-ellipsis pb-4"
           >
-            {state?.errors?.request}
+            {requestError}
           </Text>
         )}
 

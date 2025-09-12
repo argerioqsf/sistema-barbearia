@@ -1,5 +1,4 @@
 import { Button } from '@/components/atoms'
-import InfoUserNav from '@/components/molecules/InfoUserNav'
 import { handleIcons } from '@/utils/handleIcons'
 import React, { Dispatch, SetStateAction } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -9,18 +8,13 @@ type NavBarProps = {
   openMenu: boolean | null
 }
 
-const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
-  function openCloseMenu() {
-    setOpenMenu(!openMenu)
-  }
-  const MenuIcon = handleIcons('Menu')
+const NavBar: React.FC<NavBarProps> = ({ openMenu }) => {
+  const UserIcon = handleIcons('User')
 
   return (
     <nav
       className={twMerge(
         'w-screen z-40 h-auto items-center fixed whitespace-nowrap bg-gray-300',
-        openMenu === true && 'animate-openNavBar',
-        openMenu === false && 'animate-closeNavBar',
       )}
     >
       <div
@@ -30,24 +24,24 @@ const NavBar: React.FC<NavBarProps> = ({ setOpenMenu, openMenu }) => {
           !openMenu ? 'px-6' : 'md:px-6',
         )}
       >
-        <Button
-          className={twMerge(
-            openMenu
-              ? 'md:p-4 p-0 md:w-auto w-[var(--width-nav-bar)] flex justify-center items-center'
-              : '',
-          )}
-          onClick={openCloseMenu}
-          type="button"
-        >
-          <MenuIcon size={30} />
-        </Button>
+        {/* Botão de abrir menu removido. O toggle fica ao lado do menu lateral. */}
         <div
           className={twMerge(
-            'flex flex-row gap-4',
+            'ml-auto flex flex-row gap-2',
             openMenu && 'hidden md:flex',
           )}
         >
-          <InfoUserNav />
+          <Button
+            type="button"
+            className="h-11 w-11 md:h-12 md:w-12 rounded-full bg-secondary-50 hover:bg-secondary-100/80 transition-colors flex items-center justify-center shadow"
+            onClick={() => {
+              // simple client-side redirect to profile
+              window.location.href = '/dashboard/profile'
+            }}
+            aria-label="Perfil"
+          >
+            <UserIcon size={24} className="stroke-white" />
+          </Button>
         </div>
       </div>
     </nav>

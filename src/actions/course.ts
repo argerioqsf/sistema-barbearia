@@ -13,34 +13,22 @@ import {
 } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
+import {
+  fetchCourse,
+  fetchCourses,
+  fetchCoursesSelect,
+} from '@/features/courses/api'
 
 export async function listCourses(
   page?: string,
   where?: Partial<Course>,
 ): Promise<ReturnList<Course>> {
   try {
-    const token = getTokenFromCookieServer()
-    const response = await api(
-      '/courses',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        next: { tags: ['courses'], revalidate: 60 * 4 },
-      },
+    const { courses, count } = await fetchCourses(
       page,
-      where,
+      where as Record<string, unknown>,
     )
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const { courses, count } = await response.json()
-    return { response: courses, count }
+    return { response: courses as unknown as Course[], count }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -48,26 +36,8 @@ export async function listCourses(
 
 export async function getCourse(id: string): Promise<ReturnGet<Course>> {
   try {
-    const token = getTokenFromCookieServer()
-    const response = await api(`/course/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      next: {
-        tags: [id],
-        revalidate: 60 * 4,
-      },
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const { course } = await response.json()
-    return { response: course }
+    const course = await fetchCourse(id)
+    return { response: course as unknown as Course }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }
@@ -213,23 +183,8 @@ export async function updateCourse(
 
 export async function listSelectCourses(): Promise<ReturnList<Course>> {
   try {
-    const token = getTokenFromCookieServer()
-    const response = await api(`/course/select`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      next: { tags: ['courses'], revalidate: 60 * 4 },
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        error: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    const list = await response.json()
-    return { response: list.courses }
+    const courses = await fetchCoursesSelect()
+    return { response: courses as unknown as Course[] }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
   }

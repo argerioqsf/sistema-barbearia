@@ -11,12 +11,12 @@ const parseEnv = envSchema.safeParse({
 })
 
 if (!parseEnv.success) {
-  console.log(
-    'invalid enviroments variables',
+  // Prefer console.error in server context
+  console.error(
+    'invalid environment variables',
     parseEnv.error.flatten().fieldErrors,
   )
-
-  throw new Error('invalid enviroments variables')
+  throw new Error('invalid environment variables')
 }
 
 export const env = parseEnv.data

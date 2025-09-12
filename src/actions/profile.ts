@@ -3,8 +3,13 @@
 import { formSchemaUpdateProfileUser } from '@/components/template/ProfileDetail/schema'
 import { api } from '@/data/api'
 import { Errors, InitialState, Profile, ReturnGet, User } from '@/types/general'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import {
+  getTokenFromCookieServer,
+  clearAuthCookiesServer,
+} from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
+import { getBackendToken, getAuthHeader } from '@/utils/authServer'
+import { redirect } from 'next/navigation'
 
 export async function updateProfileUser(
   prevState: InitialState<Profile | User>,
@@ -24,7 +29,7 @@ export async function updateProfileUser(
 
   if (validatedFields.success) {
     try {
-      const TOKEN_SIM = getTokenFromCookieServer()
+      const TOKEN_SIM = (await getBackendToken()) ?? getTokenFromCookieServer()
 
       if (!TOKEN_SIM) {
         return {
@@ -79,24 +84,205 @@ export async function updateProfileUser(
 
 export async function getProfile(): Promise<ReturnGet<Profile>> {
   try {
-    const token = getTokenFromCookieServer()
+    const authorization = await getAuthHeader()
     const response = await api('/profile', {
       method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: authorization ? { Authorization: authorization } : {},
       next: { tags: ['users', 'leads'], revalidate: 60 * 4 },
     })
 
     if (!response.ok) {
+      if (response.status === 401) {
+        clearAuthCookiesServer()
+        redirect('/auth/signin')
+      }
       const errorMessage = await response.text()
       return {
         error: { request: JSON.parse(errorMessage).message },
       }
     }
-    const { profile } = await response.json()
-    return { response: profile }
+    const json = await response.json()
+    const { profile, openingHours } = json
+    return { response: { ...profile, openingHours } }
   } catch (error) {
     return { error: { request: 'Error unknown' } }
+  }
+}
+
+// Work Hours
+export async function registerWorkHour(
+  profileId: string,
+  prev: InitialState<Record<string, unknown>>,
+  formData: FormData,
+): Promise<InitialState<Record<string, unknown>>> {
+  try {
+    const token = await getBackendToken()
+    const raw = Object.fromEntries(formData.entries()) as Record<
+      string,
+      unknown
+    >
+    const payload = {
+      ...raw,
+      weekDay: Number(raw.weekDay ?? 0),
+    }
+    const response = await api(`/profile/${profileId}/work-hours`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    })
+    if (!response.ok) {
+      if (response.status === 401) {
+        clearAuthCookiesServer()
+        redirect('/auth/signin')
+      }
+      const errorMessage = await response.text()
+      return { errors: { request: JSON.parse(errorMessage).message } }
+    }
+    revalidateTag('users')
+    return { ok: true, errors: {} }
+  } catch {
+    return { errors: { request: 'Failed to create work-hour' } }
+  }
+}
+
+export async function deleteWorkHour(
+  profileId: string,
+  id: string,
+): Promise<InitialState<Record<string, unknown>>> {
+  try {
+    const token = await getBackendToken()
+    const response = await api(`/profile/${profileId}/work-hours/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    if (!response.ok) {
+      if (response.status === 401) {
+        clearAuthCookiesServer()
+        redirect('/auth/signin')
+      }
+      const errorMessage = await response.text()
+      return { errors: { request: JSON.parse(errorMessage).message } }
+    }
+    revalidateTag('users')
+    return { ok: true, errors: {} }
+  } catch {
+    return { errors: { request: 'Failed to delete work-hour' } }
+  }
+}
+
+// Blocked Hours
+export async function registerBlockedHour(
+  profileId: string,
+  prev: InitialState<Record<string, unknown>>,
+  formData: FormData,
+): Promise<InitialState<Record<string, unknown>>> {
+  try {
+    const token = await getBackendToken()
+    const body = Object.fromEntries(formData.entries()) as Record<
+      string,
+      unknown
+    >
+    // Suporte a criação em lote (intervalo de dias)
+    if (body.batch) {
+      const list = JSON.parse(String(body.batch)) as Array<{
+        startHour: string
+        endHour: string
+      }>
+      for (const item of list) {
+        const resp = await api(`/profile/${profileId}/blocked-hours`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(item),
+        })
+        if (!resp.ok) {
+          if (resp.status === 401) {
+            clearAuthCookiesServer()
+            redirect('/auth/signin')
+          }
+          const errorMessage = await resp.text()
+          return { errors: { request: JSON.parse(errorMessage).message } }
+        }
+      }
+    } else {
+      const response = await api(`/profile/${profileId}/blocked-hours`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      })
+      if (!response.ok) {
+        if (response.status === 401) {
+          clearAuthCookiesServer()
+          redirect('/auth/signin')
+        }
+        const errorMessage = await response.text()
+        return { errors: { request: JSON.parse(errorMessage).message } }
+      }
+    }
+    revalidateTag('users')
+    return { ok: true, errors: {} }
+  } catch {
+    return { errors: { request: 'Failed to create blocked-hour' } }
+  }
+}
+
+export async function deleteBlockedHour(
+  profileId: string,
+  id: string,
+): Promise<InitialState<Record<string, unknown>>> {
+  try {
+    const token = await getBackendToken()
+    const response = await api(`/profile/${profileId}/blocked-hours/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    if (!response.ok) {
+      if (response.status === 401) {
+        clearAuthCookiesServer()
+        redirect('/auth/signin')
+      }
+      const errorMessage = await response.text()
+      return { errors: { request: JSON.parse(errorMessage).message } }
+    }
+    revalidateTag('users')
+    return { ok: true, errors: {} }
+  } catch {
+    return { errors: { request: 'Failed to delete blocked-hour' } }
+  }
+}
+
+export async function updateBlockedHour(
+  profileId: string,
+  id: string,
+  _prev: InitialState<Record<string, unknown>>,
+  formData: FormData,
+): Promise<InitialState<Record<string, unknown>>> {
+  try {
+    const token = await getBackendToken()
+    const body = Object.fromEntries(formData.entries())
+    const response = await api(`/profile/${profileId}/blocked-hours/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    })
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      return { errors: { request: JSON.parse(errorMessage).message } }
+    }
+    revalidateTag('users')
+    return { ok: true, errors: {} }
+  } catch {
+    return { errors: { request: 'Failed to update blocked-hour' } }
   }
 }

@@ -1,7 +1,19 @@
 {
     "administrator": "administrator",
+    "ADMIN": "ADMIN",
     "barber": "barber",
     "receptionist": "receptionist",
     "manager": "manager",
-    "client": "client"
+    "client": "client",
+    "indicator": "indicator",
+    "consultant": "consultant",
+    "auxiliary": "auxiliary",
+    "coordinator": "coordinator",
+    "financial": "financial",
+    "secretary": "secretary",
+    "BARBER": "BARBER",
+    "CLIENT": "CLIENT",
+    "ATTENDANT": "ATTENDANT",
+    "MANAGER": "MANAGER",
+    "OWNER": "OWNER"
 }

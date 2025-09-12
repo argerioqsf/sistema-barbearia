@@ -9,6 +9,7 @@ type InputFormPros = {
   propsInput?: UseFormRegisterReturn<string>
   defaultValue?: string
   value?: string
+  name?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   onFocus?: () => void
   onBlur?: () => void

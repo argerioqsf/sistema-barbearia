@@ -2,7 +2,6 @@ import FormLogin from '@/components/organisms/FormLogin'
 import ContainerSection from '@/components/molecules/ContainerSection'
 import { Avatar } from '@/components/molecules'
 import { Text } from '@/components/atoms'
-import { loginUser } from '@/actions/auth'
 
 const SingInSection = () => {
   return (
@@ -19,7 +18,7 @@ const SingInSection = () => {
           </Text>
         </div>
         <div className="w-full md:w-2/4 flex flex-col justify-center items-start md:border-l-2 pl-0 md:pl-[10vw] h-auto md:h-[60vh]">
-          <FormLogin action={loginUser} />
+          <FormLogin />
         </div>
       </div>
     </ContainerSection>

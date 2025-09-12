@@ -4,20 +4,36 @@ const withNextIntl = createNextIntlPlugin()
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
-  async redirects() {
-    return [
+  reactStrictMode: true,
+  // Redirects are handled by middleware (auth + i18n)
+  async headers() {
+    const headers = [
       {
-        source: '/',
-        destination: '/pt-BR/auth/signin',
-        permanent: true,
+        source: '/:path*',
+        headers: [
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+        ],
       },
     ]
+
+    // Optional Content-Security-Policy. Define CSP string via env CSP_HEADER
+    // Example: default-src 'self'; img-src 'self' https://cdn.example.com; connect-src 'self' https://api.example.com
+    const csp = process.env.CSP_HEADER
+    if (csp) {
+      headers[0].headers.push({ key: 'Content-Security-Policy', value: csp })
+    }
+
+    return headers
   },
+  // Rely on i18n middleware to handle default-locale routing from '/'.
   async rewrites() {
+    // Avoid clashing with Next.js API routes and NextAuth at /api/*.
+    // Use a dedicated prefix to proxy to the backend.
     return [
       {
-        source: '/api/:path*',
+        source: '/backend/:path*',
         destination: `${process.env.API_BASE_URL}/:path*`,
       },
     ]

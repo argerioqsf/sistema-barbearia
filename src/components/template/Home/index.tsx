@@ -4,6 +4,7 @@ import Breadcrumb from '@/components/molecules/Breadcrumb'
 import { CardMonitoring } from '@/components/molecules/CardMonitoring'
 import ChartTitle from '@/components/molecules/ChartTitle'
 import ContainerDashboard from '@/components/molecules/ContainerDashboard'
+import ErrorState from '@/components/molecules/ErrorState'
 import { Graphics } from '@/types/general'
 import { PaneBackgroundOptions } from 'highcharts'
 
@@ -12,6 +13,14 @@ export default async function Home() {
   const graphics: Graphics | null = responseGraphics?.response ?? null
   const errorGraphics = responseGraphics.error?.request ?? null
 
+  if (errorGraphics) {
+    return (
+      <ErrorState
+        title="Erro ao carregar Graficos"
+        message={String(errorGraphics)}
+      />
+    )
+  }
   function gerarCorHexAleatoria(): string {
     const getRandomByte = () => Math.floor(Math.random() * 256)
     const r = getRandomByte()
@@ -389,11 +398,7 @@ export default async function Home() {
         <div className="w-full ">
           <Breadcrumb />
         </div>
-        {errorGraphics ? (
-          <div>
-            <h1>Erro ao buscar gráficos</h1>
-          </div>
-        ) : (
+        {errorGraphics && (
           <div className="w-full">
             {graphics && (
               <div className="w-full p-5 pb-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-14 lg:gap-20 items-center justify-center">

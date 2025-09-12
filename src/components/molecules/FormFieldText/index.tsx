@@ -14,7 +14,7 @@ type FormFieldTextProps = {
   placeholder?: string
   classInput?: string
   props?: UseFormRegisterReturn<string>
-  error: string
+  error?: string
   hidden?: boolean
   value?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void

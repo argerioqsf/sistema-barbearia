@@ -1,8 +1,8 @@
-import { registerCourse } from '@/actions/course'
+import { registerCoupon } from '@/actions/coupon'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import { Course, Segment } from '@/types/general'
+import type { ZCoupon } from '@/features/coupons/schemas'
 import { templateForm } from './templateForm'
 
 export default async function RegisterCoupons() {
@@ -13,10 +13,10 @@ export default async function RegisterCoupons() {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6 lg:mt-8">
-          <FormDashboard<Course | Segment | { image: string }>
-            action={registerCourse}
+          <FormDashboard<ZCoupon>
+            action={registerCoupon}
             templateForm={templateForm}
-            pathSuccess="dashboard/courses"
+            pathSuccess="dashboard/coupons"
           />
         </div>
       </div>

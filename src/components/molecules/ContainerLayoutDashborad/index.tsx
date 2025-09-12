@@ -11,14 +11,8 @@ export default function ContainerLayoutDashboard({
 }) {
   const { openMenu, setOpenMenu } = useGeneral()
   return (
-    <div
-      className={twMerge(
-        'w-full pl-0',
-        openMenu === true && 'animate-openMenuChildren',
-        openMenu === false && 'animate-closeMenuChildren',
-      )}
-    >
-      <NavBar setOpenMenu={setOpenMenu} openMenu={openMenu} />
+    <div className={twMerge('w-full pl-0')}>
+      <NavBar openMenu={openMenu} setOpenMenu={setOpenMenu} />
 
       {children}
     </div>

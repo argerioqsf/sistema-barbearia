@@ -2,16 +2,11 @@
 
 import { Button, Text } from '@/components/atoms'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { twMerge } from 'tailwind-merge'
-import {
-  getUserFromCookie,
-  removeRolesCookieClient,
-  removeTokenCookieClient,
-  removeUserCookieClient,
-} from '@/utils/cookieClient'
-import { User } from '@/types/general'
 import LinkDefault from '@/components/atoms/LinkDefault'
+import { signOut } from 'next-auth/react'
+import { useAuth } from '@/contexts/auth-context'
 
 type InfoUserNavProps = {
   className?: string
@@ -19,17 +14,15 @@ type InfoUserNavProps = {
 
 const InfoUserNav: React.FC<InfoUserNavProps> = ({ className }) => {
   const { pushRouter } = useHandlerRouter()
-  const [user, setUser] = useState<User>()
+  const { user } = useAuth()
 
-  useEffect(() => {
-    const user = getUserFromCookie()
-    setUser(user)
-  }, [])
-
-  function logOut() {
-    removeTokenCookieClient()
-    removeUserCookieClient()
-    removeRolesCookieClient()
+  async function logOut() {
+    try {
+      await fetch('/api/logout', { method: 'POST' })
+    } catch {}
+    try {
+      await signOut({ redirect: false })
+    } catch {}
     pushRouter('auth/signin')
   }
 

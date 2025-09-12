@@ -1,0 +1,26 @@
+import { z } from 'zod'
+
+export const AppointmentSchema = z
+  .object({
+    id: z.string(),
+    clientId: z.string().optional(),
+    barberId: z.string().optional(),
+    date: z.string().optional(),
+    status: z.string().optional(),
+    observation: z.string().optional(),
+    unitId: z.string().optional(),
+  })
+  .passthrough()
+
+export const AppointmentsListResponseSchema = z.object({
+  items: z.array(AppointmentSchema),
+  count: z.number().optional(),
+  page: z.number().optional(),
+  perPage: z.number().optional(),
+})
+
+export const BarbersListResponseSchema = z.object({
+  users: z.array(z.any()),
+})
+
+export type ZAppointment = z.infer<typeof AppointmentSchema>

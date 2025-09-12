@@ -22,7 +22,7 @@ const StatementComponent = ({ extract }: StatementComponentProps) => {
               <div className="w-full p-3 border border-gray-300 rounded-lg bg-white">
                 <div className="w-full flex flex-col sm:flex-row justify-between items-center text-wrap">
                   <h2 className="font-bold text-green-700 truncate">
-                    {`${item.amount_receive.toLocaleString('pt-BR', {
+                    {`${format.number(item.amount_receive, {
                       style: 'currency',
                       currency: 'BRL',
                       minimumFractionDigits: 1,

@@ -103,6 +103,24 @@ export type Profile = {
   extract_profile?: ExtractProfile[]
   contractLink?: string
   contractSent: boolean
+  // Optional availability data returned by GET /profile
+  workHours?: Array<{
+    id: string
+    weekDay: number
+    startHour: string
+    endHour: string
+  }>
+  blockedHours?: Array<{
+    id: string
+    startHour: string
+    endHour: string
+  }>
+  openingHours?: Array<{
+    id: string
+    weekDay: number
+    startHour: string
+    endHour: string
+  }>
 }
 
 export type ProfileProps = keyof Profile
@@ -322,7 +340,8 @@ export type OptionKey<T> = Path<OptionGeneric<T>>
 export type VariantOption = 'single' | 'multiple'
 
 export type FieldsTemplateForm<T> = {
-  id: Path<T>
+  // TODO: vreificar se faz sentido ter o generic T aqui   id: Path<T>
+  id: string
   required: boolean
   type:
     | 'number'
@@ -358,6 +377,8 @@ export type FieldsTemplateForm<T> = {
   }
 }
 
+export type LimitColsGrid = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+
 export type BoxTemplateForm<T> = {
   id: number
   cols?: LimitColsGrid
@@ -378,8 +399,6 @@ export type TemplateForm<T> = {
   textButton: string
   sections: SectionTemplateForm<T>[]
 }
-
-export type LimitColsGrid = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
 export type ModelsAll = Segment &
   User &

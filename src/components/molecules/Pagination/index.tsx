@@ -21,8 +21,6 @@ export function Pagintaion({
 }: PagintaionProps) {
   const pages = Math.ceil(totalCount / perPage) || 1
 
-  console.log('pages: ', pages)
-
   return (
     <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
       <span className="text-sm text-muted-foreground">

@@ -3,13 +3,12 @@
 import { Button, Text } from '@/components/atoms'
 import { ItemMenu } from '@/config/siteConfig'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
-import { Role } from '@/types/general'
-import { getRoleFromCookie } from '@/utils/cookieClient'
 import { CatalogIcons, handleIcons } from '@/utils/handleIcons'
 import { UserAction, checkUserPermissions } from '@/utils/checkUserPermissions'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Avatar } from '..'
+import { useAuth } from '@/contexts/auth-context'
 
 type ItemSideMenuProps = {
   onClick?: () => void
@@ -25,6 +24,7 @@ type ItemSideMenuProps = {
   classIconReal?: string
   classItem?: string
   classTextItem?: string
+  isSub?: boolean
 }
 
 const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
@@ -40,15 +40,11 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   classIconReal,
   classItem,
   classTextItem,
+  isSub = false,
 }) => {
   const [open, setOpen] = useState(false)
   const { pushRouter } = useHandlerRouter()
-  const [role, setRole] = useState<Role>()
-
-  useEffect(() => {
-    const roleUser = getRoleFromCookie() as Role
-    setRole(roleUser)
-  }, [])
+  const { role } = useAuth()
 
   function openSubMenu() {
     if (href) {
@@ -62,20 +58,45 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
 
   const ArrowRightIcon = handleIcons('ChevronRight')
   const ArrowDownIcon = handleIcons('ChevronDown')
+  const wrapperBase = isSub
+    ? 'flex w-full flex-col items-stretch py-1 pl-6 pr-3'
+    : 'flex w-full flex-col justify-center items-stretch pb-3 px-4'
+  const buttonWidth = 'w-full'
+  const buttonHeightClass = isSub ? 'h-10' : 'h-[56px]'
+  const paddingClass = isSub ? 'px-3 py-1.5' : 'px-4 py-4'
+  const labelBase = isSub
+    ? 'text-sm font-medium text-white'
+    : 'text-base font-bold text-primary-100'
+  const baseColors = isSub
+    ? 'bg-primary-100 hover:bg-primary-100/80 text-white border border-white/10'
+    : 'bg-secondary-50 hover:bg-secondary-100/80 text-primary-100'
+  const hoverTextClass = isSub
+    ? 'group-hover:text-white'
+    : 'group-hover:text-primary-100'
+
   return (
     !hidden && (
-      <div className="flex pb-4 w-full flex-col min-h-[var(--sidebar-height)] justify-center items-center">
+      <div className={twMerge(wrapperBase)}>
         <Button
           className={twMerge(
-            'w-[80%] bg-secondary-50 rounded-lg h-[60px] flex flex-row justify-start items-center px-4 py-4',
+            'group transition-colors rounded-xl flex flex-row justify-start items-center shadow-sm',
+            'focus-visible:ring-2 focus-visible:ring-white/30',
+            baseColors,
+            buttonHeightClass,
+            paddingClass,
+            buttonWidth,
             classItem,
           )}
           type="button"
           onClick={openSubMenu}
         >
-          <div className="w-[80%] flex flex-row justify-start items-center gap-4">
+          <div
+            className={twMerge(
+              'flex flex-row justify-start items-center gap-4 w-full',
+            )}
+          >
             <Avatar
-              classIcon={`border-transparent size-[${sizeAvatar}px]`}
+              classIcon={twMerge('border-transparent')}
               size={sizeAvatar}
               icon={icon && icon}
               image={image && image}
@@ -83,7 +104,9 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
             />
             <Text
               className={twMerge(
-                'text-base font-bold text-primary-100 whitespace-nowrap overflow-hidden text-ellipsis',
+                labelBase,
+                hoverTextClass,
+                'whitespace-nowrap overflow-hidden text-ellipsis',
                 classTextItem,
               )}
             >
@@ -105,9 +128,8 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
         {subMenuList && (
           <div
             className={twMerge(
-              'w-full mt-4 pt-4 bg-secondary-100 flex flex-col justify-between items-start overflow-y-auto overflow-x-hidden whitespace-nowrap',
-              open === false && 'hidden',
-              open === true && 'flex',
+              'w-full mt-1 space-y-1',
+              open ? 'block' : 'hidden',
             )}
           >
             {subMenuList.map((menu: ItemMenu) => {
@@ -121,9 +143,10 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
                   key={menu.id}
                   userAction={menu.userAction}
                   hidden={menu.hidden}
-                  classIconReal="fill-white"
-                  classTextItem="text-white"
-                  classItem="bg-primary-100"
+                  classIconReal="fill-white stroke-white"
+                  classTextItem="text-white group-hover:text-white"
+                  classItem="bg-primary-100 hover:bg-primary-100/80 text-white border border-white/10 rounded-lg w-full"
+                  isSub
                 />
               )
             })}

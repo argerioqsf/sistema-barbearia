@@ -19,17 +19,17 @@ const Footer: React.FC = () => {
 
         <div className="flex flex-row justify-center item-center gap-2 mb-4 mt-4">
           <Link href="http://www.instagram.com/grupomadretereza">
-            <div className="rounded-full bg-slate-100 w-8 h-8 flex items-center justify-center bg-black">
+            <div className="rounded-full  w-8 h-8 flex items-center justify-center bg-black">
               <InstagramIcon />
             </div>
           </Link>
           <Link href="http://www.facebook.com/grupomadretereza">
-            <div className="rounded-full bg-slate-100 w-8 h-8 flex items-center justify-center bg-black">
+            <div className="rounded-full  w-8 h-8 flex items-center justify-center bg-black">
               <FacebookIcon />
             </div>
           </Link>
           <Link href="http://www.linkedin.com/FaculdadeMadreTereza">
-            <div className="rounded-full bg-slate-100 w-8 h-8 flex items-center justify-center bg-black">
+            <div className="rounded-full  w-8 h-8 flex items-center justify-center bg-black">
               <YoutubeIcon />
             </div>
           </Link>
