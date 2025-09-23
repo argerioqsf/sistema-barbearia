@@ -1,16 +1,8 @@
 import { z } from 'zod'
+import { UserSchema } from '../users/schemas'
 
 export const ProfileSchema = z
   .object({ role: z.string().optional() })
-  .passthrough()
-export const UserSchema = z
-  .object({
-    id: z.string(),
-    name: z.string(),
-    email: z.string(),
-    active: z.boolean().optional(),
-    profile: ProfileSchema.optional(),
-  })
   .passthrough()
 
 export const ConsultantsListResponseSchema = z.object({

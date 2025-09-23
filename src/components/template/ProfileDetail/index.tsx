@@ -22,32 +22,10 @@ export default async function ProfileDetail() {
   const response = await getProfile()
   const profile = response?.response
   const errorRequest = response.error?.request
-  // Show a friendly error UI when the API is unavailable or request fails
-  if (errorRequest) {
-    return (
-      <ContainerDashboard>
-        <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
-          <div className="w-full ">
-            <Breadcrumb />
-          </div>
-          <div className="w-full mt-6">
-            <Text className="uppercase font-bold text-xl lg:text-2xl text-black">
-              Erro ao carregar seu perfil
-            </Text>
-            <Text className="text-red-600 mt-2">
-              {String(
-                errorRequest ||
-                  'Serviço temporariamente indisponível. Tente novamente mais tarde.',
-              )}
-            </Text>
-          </div>
-        </div>
-      </ContainerDashboard>
-    )
-  }
-  if (!profile) {
-    notFound()
-  }
+
+  // if (!profile) {
+  //   notFound()
+  // }
 
   // const organizations = profile.user?.organizations.map(
   //   (organization) => organization.organization,

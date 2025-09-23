@@ -3,6 +3,7 @@ import roles from '@/constants/roles.json'
 import { z } from 'zod'
 import { CatalogIcons } from '@/utils/handleIcons'
 import { UserAction } from '@/utils/checkUserPermissions'
+import { NormalizedError } from '@/shared/errors/types'
 
 export type LimitFieldsForm<G> = [G, ...G[]] & {
   length: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
@@ -285,7 +286,7 @@ export type ItemListType = {
 export type InitialState<T> = {
   errors?: Partial<T & { request?: string }>
   ok?: boolean
-  resp?: T | T[]
+  resp?: T
 }
 
 export type Toast = {
@@ -460,8 +461,13 @@ export type SearchType = {
 export interface ReturnList<T> {
   response?: T[]
   count?: number
-  error?: Errors<T>
+  error?: NormalizedError
 }
+
+export type ReturnRequestSuccess<T> = { ok: true; data: T }
+export type ReturnRequestFailed = { ok: false; error: NormalizedError }
+
+export type ReturnRequest<T> = ReturnRequestSuccess<T> | ReturnRequestFailed
 
 export interface ReturnGet<T> {
   response?: T

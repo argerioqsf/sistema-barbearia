@@ -23,7 +23,11 @@ export function Providers({
       refetchInterval={0}
       session={session}
     >
-      <NextIntlClientProvider messages={messages} locale={locale}>
+      <NextIntlClientProvider
+        messages={messages}
+        locale={locale}
+        timeZone={process.env.NEXT_INTL_TIMEZONE || 'UTC'}
+      >
         <LoadingProvider>{children}</LoadingProvider>
       </NextIntlClientProvider>
     </SessionProvider>

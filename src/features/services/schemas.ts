@@ -1,14 +1,18 @@
 import { z } from 'zod'
+import { UUID } from '../schemas'
 
-export const ServiceSchema = z
-  .object({
-    id: z.string(),
-    name: z.string(),
-    price: z.number().optional(),
-    active: z.boolean().optional(),
-    createdAt: z.string().optional(),
-  })
-  .passthrough()
+export const ServiceSchema = z.object({
+  id: UUID(),
+  name: z.string(),
+  description: z.string(),
+  imageUrl: z.string().url().nullable(),
+  cost: z.number(),
+  price: z.number(),
+  defaultTime: z.number().nullable(), // veio null; se for minutos, mantenha number
+  commissionPercentage: z.number(),
+  unitId: UUID(),
+  categoryId: UUID(),
+})
 
 export const ServicesListResponseSchema = z.object({
   services: z

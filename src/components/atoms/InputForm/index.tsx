@@ -8,7 +8,7 @@ type InputFormPros = {
   className?: string
   propsInput?: UseFormRegisterReturn<string>
   defaultValue?: string
-  value?: string
+  value?: string | number
   name?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   onFocus?: () => void
@@ -16,6 +16,7 @@ type InputFormPros = {
   id?: string
   inputRef?: React.RefObject<HTMLInputElement>
   disabled?: boolean
+  min?: number
 }
 
 const InputForm = ({
@@ -31,6 +32,7 @@ const InputForm = ({
   id,
   inputRef,
   disabled,
+  min,
   ...rest
 }: InputFormPros) => {
   return (
@@ -54,6 +56,7 @@ const InputForm = ({
       )}
       placeholder={placeholder}
       ref={inputRef ?? propsInput?.ref}
+      min={min}
     />
   )
 }

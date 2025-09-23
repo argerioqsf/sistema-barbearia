@@ -31,6 +31,7 @@ To build and run the project, use the following commands:
 
 ## Development Conventions
 
+-   **Component Structure:** New pages should be created inside the `src/components/template` directory. The `src/features` directory should only contain logic related to backend requests.
 -   **Linting:** The project uses ESLint for linting. Run `npm run lint` to check for linting errors.
 -   **Type Checking:** The project uses TypeScript for type checking. Run `npm run typecheck` to check for type errors.
 -   **Styling:** The project uses Tailwind CSS for styling.

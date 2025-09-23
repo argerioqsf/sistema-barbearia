@@ -1,4 +1,4 @@
-import { disableUser, listUsers } from '@/actions/user'
+import { disableUser, listUsersPaginatedAction } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
@@ -24,7 +24,7 @@ infoList.listActions = [
 ]
 
 export default async function ListUsers({ searchParams }: SearchParams) {
-  const response = await listUsers(searchParams?.page ?? '', {
+  const response = await listUsersPaginatedAction(searchParams?.page ?? '', {
     name: searchParams?.q ?? '',
     active: true,
   })

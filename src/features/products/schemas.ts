@@ -1,21 +1,24 @@
 import { z } from 'zod'
+import { UUID } from '../schemas'
 
 export const ProductSchema = z
   .object({
-    id: z.string(),
+    id: UUID(),
     name: z.string(),
-    description: z.string().optional(),
+    description: z.string(),
     imageUrl: z.string().url().nullable(),
     quantity: z.number(),
     cost: z.number(),
     commissionPercentage: z.number().nullable(),
     price: z.number(),
-    unitId: z.string(),
-    categoryId: z.string(),
+    unitId: UUID(),
+    categoryId: UUID(),
   })
   .passthrough()
 
-export const ProductsListResponseSchema = z.object({
+export const ProductsListResponseSchema = z.array(ProductSchema)
+
+export const ProductsListPaginateResponseSchema = z.object({
   items: z.array(ProductSchema),
   count: z.number(),
   page: z.number(),

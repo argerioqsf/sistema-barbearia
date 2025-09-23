@@ -55,8 +55,8 @@ export const setRolesInCookieServer = (roles: EnumLike) => {
   setCookie(cookiesName.ROLES_SIM_COOKIE, JSON.stringify(roles))
 }
 
-export function clearAuthCookiesServer() {
-  const jar = cookies()
+export async function clearAuthCookiesServer() {
+  const jar = await cookies()
   try {
     jar.delete(cookiesName.TOKEN_SIM_COOKIE)
     jar.delete(cookiesName.USER_SIM_COOKIE)
@@ -65,5 +65,8 @@ export function clearAuthCookiesServer() {
     jar.delete('next-auth.session-token')
     jar.delete('__Secure-next-auth.session-token')
     jar.delete('next-auth.csrf-token')
-  } catch {}
+    console.log('Ok clearAuthCookiesServer')
+  } catch (e) {
+    console.log('Erro clearAuthCookiesServer error: ', e)
+  }
 }
