@@ -1,4 +1,4 @@
-Backend Endpoints (Contrato + Checklist)
+# Backend Endpoints (Contrato + Checklist)
 
 Este arquivo consolida o contrato do backend e referencia a integração no frontend (pasta features/* e actions/*). Use como fonte de verdade para priorizar/migrar integrações.
 
