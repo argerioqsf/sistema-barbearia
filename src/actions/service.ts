@@ -7,16 +7,17 @@ import type { QueryParams } from '@/types/http'
 import { api } from '@/data/api'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function listServices(
   page?: string,
-  where?: Partial<Service>,
+  where?: QueryParams<Service>,
 ): Promise<ReturnList<Service>> {
   try {
-    const { services, count } = await fetchServices(page, where as QueryParams)
+    const { services, count } = await fetchServices(page, where)
     return { response: services, count }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -25,7 +26,7 @@ export async function getService(id: string): Promise<ReturnGet<Service>> {
     const service = await fetchService(id)
     return { response: service }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 

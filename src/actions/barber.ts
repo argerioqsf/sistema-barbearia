@@ -9,21 +9,22 @@ import {
 } from '@/features/barbers/api'
 import type { ZBarber as Barber } from '@/features/barbers/schemas'
 import type { InitialState, ReturnList } from '@/types/general'
+import type { JsonObject, QueryParams } from '@/types/http'
 import { revalidateTag } from 'next/cache'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function listBarbers(
   page?: string,
-  where?: Partial<Barber>,
+  where?: QueryParams<Barber>,
 ): Promise<ReturnList<Barber>> {
   try {
-    const { users, count } = await fetchBarbers(
-      page,
-      where as Record<string, unknown>,
-    )
+    const { users, count } = await fetchBarbers(page, where)
     return { response: users as Barber[], count }
   } catch (e) {
     return {
-      error: { request: e instanceof Error ? e.message : 'Error unknown' },
+      error: toNormalizedError(
+        e instanceof Error ? e.message : 'Error unknown',
+      ),
     }
   }
 }
@@ -34,7 +35,9 @@ export async function getBarber(id: string) {
     return { response: user }
   } catch (e) {
     return {
-      error: { request: e instanceof Error ? e.message : 'Error unknown' },
+      error: toNormalizedError(
+        e instanceof Error ? e.message : 'Error unknown',
+      ),
     }
   }
 }
@@ -44,7 +47,7 @@ export async function registerBarber(
   formData: FormData,
 ) {
   try {
-    const body = Object.fromEntries(formData.entries())
+    const body = Object.fromEntries(formData.entries()) as JsonObject
     await createBarber(body)
     revalidateTag('barbers')
     return { ok: true, errors: {} }
@@ -63,7 +66,7 @@ export async function patchBarber(
   formData: FormData,
 ) {
   try {
-    const body = Object.fromEntries(formData.entries())
+    const body = Object.fromEntries(formData.entries()) as JsonObject
     await updateBarber(id, body)
     revalidateTag('barbers')
     revalidateTag(id)

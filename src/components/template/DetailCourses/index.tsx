@@ -9,7 +9,7 @@ import ErrorState from '@/components/molecules/ErrorState'
 export default async function DetailCourses({ id }: { id: string }) {
   const response = await getCourse(id)
   const course = response.response
-  const errorRequest = response.error?.request ?? undefined
+  const errorRequest = response.error?.message ?? undefined
   if (errorRequest) {
     return (
       <ErrorState

@@ -17,6 +17,7 @@ import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 import { fetchLead, fetchLeads } from '@/features/leads/api'
 import type { QueryParams } from '@/types/http'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function registerLead(
   prevState: InitialState<User | Lead | Unit>,
@@ -242,7 +243,7 @@ export async function getLead(id: string): Promise<ReturnGet<Lead>> {
     const lead = await fetchLead(id)
     return { response: lead as Lead }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -440,12 +441,12 @@ export async function desarquivarLead(
 
 export async function listLeads(
   page?: string,
-  where?: Partial<Lead>,
+  where?: QueryParams<Lead>,
 ): Promise<ReturnList<Lead>> {
   try {
-    const { leads, count } = await fetchLeads(page, where as QueryParams)
+    const { leads, count } = await fetchLeads(page, where)
     return { response: leads as Lead[], count }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }

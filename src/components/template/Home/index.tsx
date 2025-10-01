@@ -11,7 +11,7 @@ import { PaneBackgroundOptions } from 'highcharts'
 export default async function Home() {
   const responseGraphics = await getGraphics()
   const graphics: Graphics | null = responseGraphics?.response ?? null
-  const errorGraphics = responseGraphics.error?.request ?? null
+  const errorGraphics = responseGraphics.error?.message ?? null
 
   if (errorGraphics) {
     return (

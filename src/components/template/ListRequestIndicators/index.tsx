@@ -31,7 +31,7 @@ export default async function ListRequestIndicators({
   })
   const list = response?.response ?? null
   const count = response?.count ?? null
-  const errorRequest = response.error?.request ?? null
+  const errorRequest = response.error?.message ?? null
 
   return (
     <ContainerDashboard>

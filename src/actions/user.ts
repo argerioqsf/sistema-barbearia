@@ -7,7 +7,6 @@ import {
 import { formSchemaUpdateUserProfile } from '@/components/template/DetailUsers/schema'
 import { formSchemaRegisterIndicatorProfile } from '@/components/template/RegisterIndicators/schema'
 import { formSchemaRegisterIndicatorPublic } from '@/components/template/RegisterIndicatorsPublic/schema'
-import { formSchemaRegisterUserProfile } from '@/components/template/RegisterUser/schema'
 import { formSchemaResetPassword } from '@/components/template/ResetPassword/schema'
 import { api } from '@/data/api'
 import {
@@ -16,118 +15,84 @@ import {
   Profile,
   ReturnGet,
   ReturnList,
-  Roles,
+  ReturnRequest,
   Unit,
   User,
 } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
-import { fetchUser, fetchUsers } from '@/features/users/api'
+import { createUser, fetchUser, fetchUsersAll } from '@/features/users/api'
 import type { QueryParams } from '@/types/http'
+import { ZUser } from '@/features/users/schemas'
+import { handleRequestError } from '@/shared/errors/handlerRequestError'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
-export async function getUser(id: string): Promise<ReturnGet<User>> {
+export async function getUser(id: string): Promise<ReturnRequest<ZUser>> {
   try {
-    const user = await fetchUser(id)
-    return { response: user as User }
+    const data = await fetchUser(id)
+    return { ok: true, data }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    const normalized = handleRequestError(error, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 
-export async function listUsers(
+export async function listUsersPaginatedAction(
   page: string,
-  where?: Partial<User>,
-): Promise<ReturnList<User>> {
+  where?: QueryParams<ZUser>,
+): Promise<ReturnRequest<ZUser[]>> {
   try {
-    const { users, count } = await fetchUsers(page, where as QueryParams)
-    return { response: users as User[], count }
+    const data = await fetchUsersAll(page, where)
+    return { ok: true, data }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    const normalized = handleRequestError(error, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
+  }
+}
+
+export async function listUsersAllAction(): Promise<ReturnRequest<ZUser[]>> {
+  try {
+    const data = await fetchUsersAll()
+    return { ok: true, data }
+  } catch (error) {
+    const normalized = handleRequestError(error, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 
 export async function registerUserProfile(
-  prevState: InitialState<Profile | User | Unit>,
+  prevState: InitialState<ZUser>,
   formData: FormData,
-): Promise<InitialState<User>> {
-  const units = JSON.parse(String(formData.get('units')) ?? '[]')
-  const validatedFields = formSchemaRegisterUserProfile.safeParse({
-    name: formData.get('name'),
-    email: formData.get('email'),
-    password: formData.get('password'),
-    active: formData.get('active'),
-    phone: formData.get('phone'),
-    cpf: formData.get('cpf'),
-    genre: formData.get('genre'),
-    birthday: formData.get('birthday'),
-    pix: formData.get('pix'),
-    role: formData.get('role'),
-    city: formData.get('city'),
-    units,
-  })
+): Promise<ReturnRequest<ZUser>> {
+  try {
+    const data = await createUser(formData)
+    return { ok: true, data }
+  } catch (e) {
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
+  }
+}
 
-  if (validatedFields.success) {
-    try {
-      const TOKEN_SIM = getTokenFromCookieServer()
-      if (!TOKEN_SIM) {
-        return {
-          errors: { request: 'Erro de credenciais' },
-        }
-      }
-      const response = await api(`/create/user`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN_SIM}`,
-        },
-        body: JSON.stringify({
-          name: formData.get('name'),
-          email: formData.get('email'),
-          password: formData.get('password'),
-          active: formData.get('active') === 'true',
-          phone: formData.get('phone'),
-          cpf: formData.get('cpf'),
-          genre: formData.get('genre'),
-          birthday: formData.get('birthday'),
-          pix: formData.get('pix'),
-          role: formData.get('role'),
-          city: formData.get('city'),
-          unitsIds: units,
-        }),
-      })
-
-      if (!response.ok) {
-        const errorMessage = await response.text()
-        return {
-          errors: { request: JSON.parse(errorMessage).message },
-        }
-      }
-
-      const role = formData.get('role') as keyof Roles
-      if (role === 'indicator') {
-        revalidateTag('indicators')
-      } else if (role === 'consultant') {
-        revalidateTag('consultants')
-      } else {
-        revalidateTag('users')
-      }
-
-      return {
-        errors: {},
-        ok: true,
-      }
-    } catch (error) {
-      return {
-        errors: { request: 'Failed to Login' },
-      }
-    }
-  } else if (validatedFields.error) {
-    const error = validatedFields.error.flatten().fieldErrors as Errors<User>
-    return {
-      errors: { ...error },
-    }
-  } else {
-    return { errors: { request: 'Error unknown' } }
+export async function createUserAction(
+  prevState: InitialState<ZUser>,
+  formData: FormData,
+): Promise<ReturnRequest<ZUser>> {
+  try {
+    const data = await createUser(formData)
+    return { ok: true, data }
+  } catch (e) {
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 
@@ -547,13 +512,16 @@ export async function getIndicator(id: string): Promise<ReturnGet<User>> {
     if (!response.ok) {
       const errorMessage = await response.text()
       return {
-        error: { request: JSON.parse(errorMessage).message },
+        error: toNormalizedError(
+          JSON.parse(errorMessage).message,
+          response.status,
+        ),
       }
     }
     const user = await response.json()
     return { response: user }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -579,13 +547,16 @@ export async function listIndicators(
     if (!response.ok) {
       const errorMessage = await response.text()
       return {
-        error: { request: JSON.parse(errorMessage).message },
+        error: toNormalizedError(
+          JSON.parse(errorMessage).message,
+          response.status,
+        ),
       }
     }
     const { users, count } = await response.json()
     return { response: users, count }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 

@@ -8,20 +8,23 @@ import {
   updateAppointment,
 } from '@/features/appointments/api'
 import type { InitialState, ReturnList } from '@/types/general'
+import type { JsonObject, QueryParams } from '@/types/http'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function listAppointments(
   page?: string,
-  where?: Partial<Appointment>,
+  where?: QueryParams<Appointment>,
 ): Promise<ReturnList<Appointment>> {
   try {
-    const { items, count } = await fetchAppointments({
-      page,
-      ...(where as Record<string, unknown>),
-    })
+    const params: QueryParams<Appointment> | undefined =
+      page || where ? { ...(where ?? {}), page } : undefined
+    const { items, count } = await fetchAppointments(params)
     return { response: items as Appointment[], count }
   } catch (e) {
     return {
-      error: { request: e instanceof Error ? e.message : 'Error unknown' },
+      error: toNormalizedError(
+        e instanceof Error ? e.message : 'Error unknown',
+      ),
     }
   }
 }
@@ -31,7 +34,7 @@ export async function registerAppointment(
   formData: FormData,
 ): Promise<InitialState<Appointment>> {
   try {
-    const body = Object.fromEntries(formData.entries())
+    const body = Object.fromEntries(formData.entries()) as JsonObject
     await createAppointment(body)
     return { ok: true, errors: {} }
   } catch (e) {
@@ -50,7 +53,7 @@ export async function patchAppointment(
   formData: FormData,
 ): Promise<InitialState<Appointment>> {
   try {
-    const body = Object.fromEntries(formData.entries())
+    const body = Object.fromEntries(formData.entries()) as JsonObject
     await updateAppointment(id, body)
     return { ok: true, errors: {} }
   } catch (e) {
@@ -69,7 +72,9 @@ export async function listAppointmentBarbers() {
     return { response: users }
   } catch (e) {
     return {
-      error: { request: e instanceof Error ? e.message : 'Error unknown' },
+      error: toNormalizedError(
+        e instanceof Error ? e.message : 'Error unknown',
+      ),
     }
   }
 }

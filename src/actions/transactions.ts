@@ -7,6 +7,7 @@ import {
   listTransactions as listTransactionsAPI,
 } from '@/features/transactions/api'
 import type { ZTransaction } from '@/features/transactions/schemas'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function listTransactions(
   page?: string,
@@ -15,7 +16,7 @@ export async function listTransactions(
     const { transactions, count } = await listTransactionsAPI(page)
     return { response: transactions, count }
   } catch {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -26,7 +27,7 @@ export async function listPendingTransactions(
     const transactions = await listPendingAPI(userId)
     return { response: transactions }
   } catch {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 

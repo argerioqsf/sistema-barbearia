@@ -15,7 +15,7 @@ export default async function ListFirstContactLeads({
 }: SearchParams) {
   const responseProfile = await getProfile()
   const profile = responseProfile?.response
-  const errorRequestProfile = responseProfile.error?.request ?? null
+  const errorRequestProfile = responseProfile.error?.message ?? null
   if (errorRequestProfile) {
     return (
       <ErrorState
@@ -57,7 +57,7 @@ export default async function ListFirstContactLeads({
   })
   const list = response?.response ?? null
   const count = response?.count ?? null
-  const errorRequest = response.error?.request ?? null
+  const errorRequest = response.error?.message ?? null
   if (errorRequest) {
     return (
       <ErrorState

@@ -3,8 +3,8 @@ import type { ZService as Service } from '@/features/services/schemas'
 import { deleteService } from '@/actions/service'
 
 export const infoList: InfoList<Service> = {
-  itemsHeader: ['N', 'NOME', 'PREÇO', 'ATIVO', 'AÇÕES'],
-  itemsList: ['name', '', 'price', 'active', ''],
+  itemsHeader: ['N', 'NOME', 'PREÇO', 'COMISSÃO', 'AÇÕES'],
+  itemsList: ['name', '', 'price', 'commissionPercentage', ''],
   listActions: [
     {
       id: 1,

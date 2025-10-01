@@ -4,14 +4,25 @@ import {
   ProductsListResponseSchema,
   ProductDetailResponseSchema,
   ProductSellersResponseSchema,
+  ZProduct,
+  ProductsListPaginateResponseSchema,
 } from './schemas'
 import { safeJson, readMessage } from '@/shared/http'
 
 import type { QueryParams } from '@/types/http'
 
-export async function fetchProducts(page?: string, where?: QueryParams) {
+export async function fetchProducts(
+  page?: string,
+  where?: QueryParams<ZProduct>,
+): Promise<{
+  items: ZProduct[]
+  count?: number
+  page?: number
+  perPage?: number
+}> {
   const token = await getBackendToken()
   console.log('token', token)
+  const withPaginate = where?.withCount ?? false
   const response = await api(
     '/products',
     {
@@ -22,13 +33,24 @@ export async function fetchProducts(page?: string, where?: QueryParams) {
     page,
     where,
   )
-  console.log('response', response)
+  // console.log('response', response)
   if (!response.ok) throw new Error(await readMessage(response))
   const json = await safeJson(response)
-  console.log('json', json)
-  const parsed = ProductsListResponseSchema.safeParse(json)
-  if (!parsed.success) throw new Error('Invalid products list response')
-  return parsed.data
+  if (withPaginate) {
+    const parsed = ProductsListPaginateResponseSchema.safeParse(json)
+    if (!parsed.success) {
+      console.error('Validation error:', parsed.error)
+      throw new Error('Invalid products paginate list response')
+    }
+    return parsed.data
+  } else {
+    const parsed = ProductsListResponseSchema.safeParse(json)
+    if (!parsed.success) {
+      console.error('Validation error:', parsed.error)
+      throw new Error('Invalid products list response')
+    }
+    return { items: parsed.data }
+  }
 }
 
 export async function fetchProduct(id: string) {

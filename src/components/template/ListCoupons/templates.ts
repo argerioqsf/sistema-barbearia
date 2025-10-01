@@ -3,8 +3,8 @@ import type { ZCoupon as Coupon } from '@/features/coupons/schemas'
 import { deleteCoupon } from '@/actions/coupon'
 
 export const infoList: InfoList<Coupon> = {
-  itemsHeader: ['N', 'CÓDIGO', 'VALOR', 'ATIVO', 'AÇÕES'],
-  itemsList: ['code', '', 'discountValue', 'active', ''],
+  itemsHeader: ['N', 'CÓDIGO', 'VALOR', 'TIPO', 'AÇÕES'],
+  itemsList: ['code', '', 'discount', 'discountType', ''],
   listActions: [
     {
       id: 1,

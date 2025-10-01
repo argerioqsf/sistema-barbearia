@@ -1,9 +1,9 @@
-import { disableUser, listUsers } from '@/actions/user'
+import { disableUser, listUsersPaginatedAction } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
-import { SearchParams } from '@/types/general'
+import { SearchParams, type User } from '@/types/general'
 import { infoList } from './templates'
 import ErrorState from '@/components/molecules/ErrorState'
 
@@ -24,21 +24,22 @@ infoList.listActions = [
 ]
 
 export default async function ListUsers({ searchParams }: SearchParams) {
-  const response = await listUsers(searchParams?.page ?? '', {
+  const result = await listUsersPaginatedAction(searchParams?.page ?? '', {
     name: searchParams?.q ?? '',
     active: true,
   })
-  const list = response?.response ?? null
-  const count = response?.count ?? null
-  const errorRequest = response.error?.request ?? null
-  if (errorRequest) {
+  if (!result.ok) {
     return (
       <ErrorState
         title="Erro ao carregar usuários"
-        message={String(errorRequest)}
+        message={String(result.error.message)}
       />
     )
   }
+
+  const list = result.data as unknown as User[]
+  const count = list.length
+  const errorRequest = null
 
   return (
     <ContainerDashboard>

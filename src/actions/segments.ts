@@ -19,6 +19,7 @@ import {
   fetchSegmentsSelect,
 } from '@/features/segments/api'
 import type { QueryParams } from '@/types/http'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function registerSegment(
   prevState: InitialState<Segment | Course>,
@@ -140,7 +141,7 @@ export async function getSegment(id: string): Promise<ReturnGet<Segment>> {
     const segment = await fetchSegment(id)
     return { response: segment as Segment }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -177,18 +178,18 @@ export async function listSelectSegments(): Promise<ReturnList<Segment>> {
     const segments = await fetchSegmentsSelect()
     return { response: segments as Segment[] }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
 export async function listSegments(
   page?: string,
-  where?: Partial<Segment>,
+  where?: QueryParams<Segment>,
 ): Promise<ReturnList<Segment>> {
   try {
-    const { segments, count } = await fetchSegments(page, where as QueryParams)
+    const { segments, count } = await fetchSegments(page, where)
     return { response: segments as Segment[], count }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }

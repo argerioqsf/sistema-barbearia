@@ -10,7 +10,7 @@ import type { JsonObject, QueryParams } from '@/types/http'
 
 export async function fetchBarbers(
   page?: string,
-  where?: QueryParams,
+  where?: QueryParams<ZBarber>,
 ): Promise<{ users: ZBarber[]; count?: number }> {
   const token = await getBackendToken()
   const response = await api(

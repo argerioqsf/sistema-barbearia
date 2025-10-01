@@ -3,7 +3,9 @@ import { getBackendToken } from '@/utils/authServer'
 import type { QueryParams } from '@/types/http'
 import { readMessage, safeJson } from '@/shared/http'
 
-async function get(path: string, params?: QueryParams) {
+async function get<
+  TParams extends Record<string, unknown> = Record<string, unknown>,
+>(path: string, params?: QueryParams<TParams>) {
   const token = await getBackendToken()
   const response = await api(
     path,
@@ -19,8 +21,9 @@ async function get(path: string, params?: QueryParams) {
   return safeJson(response)
 }
 
-export const fetchSalesReport = (params?: QueryParams) =>
-  get('/reports/sales', params)
+export const fetchSalesReport = (
+  params?: QueryParams<Record<string, unknown>>,
+) => get('/reports/sales', params)
 export const fetchBarberBalanceReport = (barberId: string) =>
   get(`/reports/barber/${barberId}/balance`)
 export const fetchOwnerBalanceReport = (ownerId: string) =>

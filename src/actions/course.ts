@@ -19,16 +19,17 @@ import {
   fetchCoursesSelect,
 } from '@/features/courses/api'
 import type { QueryParams } from '@/types/http'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function listCourses(
   page?: string,
-  where?: Partial<Course>,
+  where?: QueryParams<Course>,
 ): Promise<ReturnList<Course>> {
   try {
-    const { courses, count } = await fetchCourses(page, where as QueryParams)
+    const { courses, count } = await fetchCourses(page, where)
     return { response: courses as Course[], count }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -37,7 +38,7 @@ export async function getCourse(id: string): Promise<ReturnGet<Course>> {
     const course = await fetchCourse(id)
     return { response: course as Course }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -184,6 +185,6 @@ export async function listSelectCourses(): Promise<ReturnList<Course>> {
     const courses = await fetchCoursesSelect()
     return { response: courses as Course[] }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }

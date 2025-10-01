@@ -36,11 +36,11 @@ export default async function CashierPage() {
       status: s.status,
     }),
   )
-  if (errorOpen?.request || errorList?.request) {
+  if (errorOpen?.message || errorList?.message) {
     return (
       <ErrorState
         title="Erro ao carregar dados do caixa"
-        message={String(errorOpen?.request ?? errorList?.request)}
+        message={String(errorOpen?.message ?? errorList?.message)}
       />
     )
   }

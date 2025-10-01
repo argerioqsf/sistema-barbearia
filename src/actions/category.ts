@@ -7,19 +7,17 @@ import type { QueryParams } from '@/types/http'
 import { api } from '@/data/api'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function listCategories(
   page?: string,
-  where?: Partial<Category>,
+  where?: QueryParams<Category>,
 ): Promise<ReturnList<Category>> {
   try {
-    const { categories, count } = await fetchCategories(
-      page,
-      where as QueryParams,
-    )
+    const { categories, count } = await fetchCategories(page, where)
     return { response: categories, count }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -28,7 +26,7 @@ export async function getCategory(id: string): Promise<ReturnGet<Category>> {
     const category = await fetchCategory(id)
     return { response: category }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 

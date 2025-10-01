@@ -1,61 +1,95 @@
 'use server'
 
+import { ZSaleItems } from '@/features/saleItems/schema'
 import {
   fetchSale,
-  fetchSales,
   createSale,
   updateSale,
-  updateSaleItems,
   updateSaleCoupon,
   paySale,
   updateSaleClient,
-  updateSaleItem,
+  fetchSalesPaginated,
+  fetchSalesAll,
+  removeOrAddSaleItems,
+  updateCouponSaleItem,
+  updateQuantitySaleItem,
+  updateCustomPriceSaleItem,
+  updateBarberSaleItem,
 } from '@/features/sales/api'
-import type { ZSale as Sale } from '@/features/sales/schemas'
-import type { InitialState, ReturnList } from '@/types/general'
+import {
+  BodyPaySale,
+  BodyUpdateBarberSaleItem,
+  BodyUpdateCouponSaleItem,
+  BodyUpdateCustomPriceSaleItem,
+  BodyUpdateQuantitySaleItem,
+  BodyUpdateSaleCoupon,
+  type ZSale as Sale,
+  type ZSale,
+} from '@/features/sales/schemas'
+import { handleRequestError } from '@/shared/errors/handlerRequestError'
+import type { InitialState, ReturnRequest } from '@/types/general'
+import { ReturnListPaginated } from '@/types/http'
+
+export async function createSaleAction(
+  clientId: string,
+  observation: string,
+): Promise<ReturnRequest<Sale>> {
+  try {
+    const newSale = await createSale({ clientId, observation, method: 'CASH' })
+    return { ok: true, data: newSale }
+  } catch (e) {
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
+  }
+}
 
 export async function listSales(
   page?: string,
   where?: Partial<Sale>,
-): Promise<ReturnList<Sale>> {
+): Promise<ReturnRequest<ZSale[]>> {
   try {
-    const { items, count } = await fetchSales({
-      page,
-      ...(where as Record<string, unknown>),
+    const saleList = await fetchSalesAll(page, {
+      ...where,
     })
-    return { response: items as Sale[], count }
-  } catch (e) {
-    return {
-      error: { request: e instanceof Error ? e.message : 'Error unknown' },
-    }
+    return { ok: true, data: saleList }
+  } catch (err) {
+    const normalized = handleRequestError(err, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 
-export async function getSale(id: string) {
+export async function listSalesPaginate(
+  page?: string,
+  where?: Partial<ZSale>,
+): Promise<ReturnRequest<ReturnListPaginated<ZSale>>> {
+  try {
+    const saleList = await fetchSalesPaginated(page, {
+      withCount: true,
+      perPage: 10,
+      ...where,
+    })
+    return { ok: true, data: saleList }
+  } catch (err) {
+    const normalized = handleRequestError(err, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
+  }
+}
+
+export async function getSale(id: string): Promise<ReturnRequest<ZSale>> {
   try {
     const sale = await fetchSale(id)
-    return { response: sale }
+    return { ok: true, data: sale }
   } catch (e) {
-    return {
-      error: { request: e instanceof Error ? e.message : 'Error unknown' },
-    }
-  }
-}
-
-export async function registerSale(
-  prev: InitialState<Sale>,
-  formData: FormData,
-) {
-  try {
-    const body = Object.fromEntries(formData.entries())
-    await createSale(body)
-    return { ok: true, errors: {} }
-  } catch (e) {
-    return {
-      errors: {
-        request: e instanceof Error ? e.message : 'Failed to create sale',
-      },
-    }
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 
@@ -63,107 +97,157 @@ export async function patchSale(
   id: string,
   prev: InitialState<Sale>,
   formData: FormData,
-) {
+): Promise<ReturnRequest<ZSale>> {
   try {
-    const body = Object.fromEntries(formData.entries())
-    await updateSale(id, body)
-    return { ok: true, errors: {} }
+    const data = await updateSale(id, formData)
+    return { ok: true, data }
   } catch (e) {
-    return {
-      errors: {
-        request: e instanceof Error ? e.message : 'Failed to update sale',
-      },
-    }
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 
-export async function patchSaleItems(
+export async function addSaleItemsAction(
   id: string,
-  prev: InitialState<Sale>,
-  formData: FormData,
-) {
+  items: Partial<ZSaleItems>[],
+): Promise<ReturnRequest<ZSale>> {
   try {
-    const body = Object.fromEntries(formData.entries())
-    await updateSaleItems(id, body)
-    return { ok: true, errors: {} }
+    await removeOrAddSaleItems(id, { addItemsIds: items })
+    const data = await fetchSale(id)
+    return { ok: true, data }
   } catch (e) {
-    return {
-      errors: {
-        request: e instanceof Error ? e.message : 'Failed to update sale items',
-      },
-    }
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 
-export async function patchSaleCoupon(
+export async function removeSaleItemsAction(
   id: string,
-  prev: InitialState<Sale>,
-  formData: FormData,
-) {
+  itemIds: string[],
+): Promise<ReturnRequest<ZSale>> {
   try {
-    const body = Object.fromEntries(formData.entries())
-    await updateSaleCoupon(id, body)
-    return { ok: true, errors: {} }
+    await removeOrAddSaleItems(id, { removeItemIds: itemIds })
+    const data = await fetchSale(id)
+    return { ok: true, data }
   } catch (e) {
-    return {
-      errors: {
-        request: e instanceof Error ? e.message : 'Failed to apply coupon',
-      },
-    }
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 
-export async function patchSalePay(
+export async function updateSaleClientAction(
   id: string,
-  prev: InitialState<Sale>,
-  formData: FormData,
-) {
+  clientId: string,
+): Promise<ReturnRequest<Sale>> {
   try {
-    const body = Object.fromEntries(formData.entries())
+    await updateSaleClient(id, { clientId })
+    const data = await fetchSale(id)
+    return { ok: true, data }
+  } catch (e) {
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
+  }
+}
+
+export async function updateSaleCouponAction(
+  id: string,
+  body: BodyUpdateSaleCoupon,
+): Promise<ReturnRequest<ZSale>> {
+  try {
+    const data = await updateSaleCoupon(id, body)
+    return { ok: true, data }
+  } catch (e) {
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
+  }
+}
+
+export async function paySaleAction(
+  id: string,
+  body: BodyPaySale,
+): Promise<ReturnRequest<ZSale>> {
+  try {
     await paySale(id, body)
-    return { ok: true, errors: {} }
+    const data = await fetchSale(id)
+    return { ok: true, data }
   } catch (e) {
-    return {
-      errors: {
-        request: e instanceof Error ? e.message : 'Failed to pay sale',
-      },
-    }
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 
-export async function patchSaleClient(
-  id: string,
-  prev: InitialState<Sale>,
-  formData: FormData,
-) {
+export async function updateCouponSaleItemAction(
+  saleItemId: string,
+  body: BodyUpdateCouponSaleItem,
+): Promise<ReturnRequest<ZSaleItems[] | undefined>> {
   try {
-    const body = Object.fromEntries(formData.entries())
-    await updateSaleClient(id, body)
-    return { ok: true, errors: {} }
+    console.log('body updateCouponSaleItemAction: ', body)
+    const data = await updateCouponSaleItem(saleItemId, body)
+    return { ok: true, data: data.saleItems }
   } catch (e) {
-    return {
-      errors: {
-        request:
-          e instanceof Error ? e.message : 'Failed to update sale client',
-      },
-    }
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 
-export async function patchSaleItem(
-  id: string,
-  prev: InitialState<Sale>,
-  formData: FormData,
-) {
+export async function updateQuantitySaleItemAction(
+  saleItemId: string,
+  body: BodyUpdateQuantitySaleItem,
+): Promise<ReturnRequest<ZSaleItems[] | undefined>> {
   try {
-    const body = Object.fromEntries(formData.entries())
-    await updateSaleItem(id, body)
-    return { ok: true, errors: {} }
+    console.log('body updateQuantitySaleItemAction: ', body)
+    const data = await updateQuantitySaleItem(saleItemId, body)
+    return { ok: true, data: data.saleItems }
   } catch (e) {
-    return {
-      errors: {
-        request: e instanceof Error ? e.message : 'Failed to update sale item',
-      },
-    }
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
+  }
+}
+
+export async function updateCustomPriceSaleItemAction(
+  saleItemId: string,
+  body: BodyUpdateCustomPriceSaleItem,
+): Promise<ReturnRequest<ZSaleItems[] | undefined>> {
+  try {
+    console.log('body updateCustomPriceSaleItemAction: ', body)
+    const data = await updateCustomPriceSaleItem(saleItemId, body)
+    return { ok: true, data: data.saleItems }
+  } catch (e) {
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
+  }
+}
+
+export async function updateBarberSaleItemAction(
+  saleItemId: string,
+  body: BodyUpdateBarberSaleItem,
+): Promise<ReturnRequest<ZSaleItems[] | undefined>> {
+  try {
+    console.log('body updateBarberSaleItemAction: ', body)
+    const data = await updateBarberSaleItem(saleItemId, body)
+    return { ok: true, data: data.saleItems }
+  } catch (e) {
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }

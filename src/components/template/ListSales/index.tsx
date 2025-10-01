@@ -1,26 +1,19 @@
-import { listSales } from '@/actions/sale'
+import { listSalesPaginate } from '@/actions/sale'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import Search from '@/components/molecules/Search'
 import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
-import { infoList } from './templates'
-import ErrorState from '@/components/molecules/ErrorState'
+import { ButtonStartNewSale } from '@/modules/sales-pos/ui/components/organisms/ButtonStartNewSale'
+import { infoListSales } from '@/features/pos/constants'
+import { ErrorRequestHandler } from '@/components/organisms/ErrorRequestHandler'
 
 export default async function ListSales({ searchParams }: SearchParams) {
-  const response = await listSales(searchParams?.page ?? '', {})
-
-  const list = response?.response ?? null
-  const count = response?.count ?? null
-  const errorRequest = response.error?.request ?? null
-  if (errorRequest) {
-    return (
-      <ErrorState
-        title="Erro ao carregar vendas"
-        message={String(errorRequest)}
-      />
-    )
+  const result = await listSalesPaginate(searchParams?.page || '1')
+  if (!result.ok) {
+    return <ErrorRequestHandler result={result} />
   }
+  const sales = result.data.items
+  const count = result.data.count
 
   return (
     <ContainerDashboard>
@@ -28,16 +21,12 @@ export default async function ListSales({ searchParams }: SearchParams) {
         <div className="w-full">
           <Breadcrumb />
         </div>
-        <div className="w-full mt-6">
-          <Search errorRequest={errorRequest} />
-        </div>
+        <ButtonStartNewSale />
         <div className="w-full mt-6 lg:mt-8">
           <Listing
-            list={list}
-            infoList={infoList}
-            listActions={infoList.listActions}
-            hrefButton="dashboard/sales/register"
-            textButton="Nova venda"
+            infoList={infoListSales}
+            list={sales}
+            listActions={infoListSales.listActions}
             title="Vendas"
             count={count}
           />

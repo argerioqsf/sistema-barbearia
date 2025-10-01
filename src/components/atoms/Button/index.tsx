@@ -11,6 +11,14 @@ type ButtonProps = {
   children: ReactNode
   onClick?: React.MouseEventHandler<HTMLButtonElement>
   disabled?: boolean
+  variant?:
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | 'link'
+  size?: 'default' | 'sm' | 'lg' | 'icon'
 }
 
 const Button = ({
@@ -19,11 +27,15 @@ const Button = ({
   children,
   onClick = () => {},
   disabled,
+  variant,
+  size,
 }: ButtonProps) => {
   const { pending } = useFormStatus()
   // TODO: analisar mudanças que ia fez, se faz sentido
   return (
     <UIButton
+      size={size}
+      variant={variant}
       onClick={onClick}
       type={type}
       className={twMerge(className)}

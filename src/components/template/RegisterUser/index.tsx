@@ -4,8 +4,33 @@ import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
 import roles from '@/constants/roles.json'
-import { OptionGeneric, Profile, Roles, User } from '@/types/general'
+import {
+  type InitialState,
+  OptionGeneric,
+  Profile,
+  Roles,
+  User,
+} from '@/types/general'
 import { templateForm } from './templateForm'
+import ErrorState from '@/components/molecules/ErrorState'
+import type { ZUser } from '@/features/users/schemas'
+
+const submitRegisterUser = async (
+  prevState: InitialState<User | Profile>,
+  formData: FormData,
+): Promise<InitialState<User | Profile>> => {
+  'use server'
+  const result = await registerUserProfile(
+    prevState as InitialState<ZUser>,
+    formData,
+  )
+  if (result.ok) {
+    return { ok: true, errors: {} }
+  }
+  return {
+    errors: { request: result.error.message },
+  }
+}
 
 export default async function RegisterUser() {
   let options: OptionGeneric<User | Profile>[] = [
@@ -30,10 +55,22 @@ export default async function RegisterUser() {
   }
 
   const responseUnits = await listSelectUnits()
-  const units = responseUnits?.response ?? []
+  if (responseUnits.error) {
+    return (
+      <ErrorState
+        title="Erro ao carregar unidades"
+        message={String(responseUnits.error.message)}
+      />
+    )
+  }
+  const units = responseUnits.response ?? []
+  const unitOptions: OptionGeneric<User | Profile>[] = units.map((unit) => ({
+    label: unit.name,
+    value: unit.id,
+  }))
   templateForm.sections[1].boxes[1].fields[0].option = {
     ...templateForm.sections[1].boxes[1].fields[0].option,
-    list: [...units],
+    list: unitOptions,
   }
 
   return (
@@ -43,8 +80,8 @@ export default async function RegisterUser() {
           <Breadcrumb />
         </div>
         <div className="w-full mt-6 lg:mt-8">
-          <FormDashboard
-            action={registerUserProfile}
+          <FormDashboard<User | Profile>
+            action={submitRegisterUser}
             templateForm={templateForm}
             pathSuccess="dashboard/users"
           />

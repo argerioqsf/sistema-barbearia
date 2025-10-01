@@ -4,11 +4,15 @@ import {
   CouponsListResponseSchema,
   CouponDetailResponseSchema,
   CouponSchema,
+  type ZCoupon,
 } from './schemas'
 import { safeJson, readMessage } from '@/shared/http'
 import type { QueryParams } from '@/types/http'
 
-export async function fetchCoupons(page?: string, where?: QueryParams) {
+export async function fetchCoupons(
+  page?: string,
+  where?: QueryParams<ZCoupon>,
+) {
   const token = await getBackendToken()
   const response = await api(
     '/coupons',

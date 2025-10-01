@@ -9,7 +9,9 @@ import {
   type ZAppointment,
 } from './schemas'
 
-export async function fetchAppointments(params?: QueryParams): Promise<{
+export async function fetchAppointments(
+  params?: QueryParams<ZAppointment>,
+): Promise<{
   items: ZAppointment[]
   count?: number
   page?: number

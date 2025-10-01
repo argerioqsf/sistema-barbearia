@@ -14,6 +14,6 @@ export async function generateMetadata({
   return { title: meta('title'), description: meta('description') }
 }
 
-export default function Page({ searchParams }: SearchParams) {
+export default function ListSalesPage({ searchParams }: SearchParams) {
   return <ListSales searchParams={searchParams} />
 }

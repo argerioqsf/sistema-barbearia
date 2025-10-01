@@ -12,7 +12,7 @@ import { notFound } from 'next/navigation'
 export default async function FilesDissemination() {
   const responseProfile = await getProfile()
   const profile = responseProfile?.response
-  const errorRequestP = responseProfile.error?.request
+  const errorRequestP = responseProfile.error?.message
 
   if (!profile) {
     notFound()
@@ -20,7 +20,7 @@ export default async function FilesDissemination() {
 
   const response = await getFiles()
   const files = response?.response ?? null
-  const errorRequest = response.error?.request ?? null
+  const errorRequest = response.error?.message ?? null
   return (
     <ContainerDashboard>
       <div className="p-6 w-full h-full flex flex-col justify-start items-center gap-4">

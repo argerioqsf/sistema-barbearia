@@ -9,7 +9,7 @@ import ErrorState from '@/components/molecules/ErrorState'
 export default async function DetailCategories({ id }: { id: string }) {
   const response = await getCategory(id)
   const category = response.response
-  const errorRequest = response.error?.request ?? undefined
+  const errorRequest = response.error?.message ?? undefined
   if (errorRequest) {
     return (
       <ErrorState

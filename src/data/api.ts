@@ -1,10 +1,11 @@
 import { env } from '@/env'
-import { clearAuthCookiesServer } from '@/utils/cookieServer'
 import { updateTokenFromResponse } from '@/shared/http'
 
 type NextFetchOptions = {
-  revalidate?: number
+  revalidate?: number | false
   tags?: string[]
+  // TODO: ver se é uma boa pratica a tipagem a baixoe se faz sentido
+  [key: string]: unknown
 }
 
 type ExtendedRequestInit = RequestInit & { next?: NextFetchOptions }
@@ -33,49 +34,27 @@ export async function api<T>(
   // Avoid serving stale protected content by default.
   // If the caller specifies revalidate via Next.js fetch options (init.next.revalidate),
   // do not force cache: 'no-store' to avoid the Next.js warning about mixed caching.
-  const hasRevalidate = Boolean(init?.next?.revalidate)
+  const revalidateOption = (init?.next as NextFetchOptions | undefined)
+    ?.revalidate
+  const hasRevalidate = revalidateOption !== undefined
   const reqInit: ExtendedRequestInit = { ...init }
   if (reqInit.cache === undefined && !hasRevalidate) {
     reqInit.cache = 'no-store'
   }
 
-  let resp: Response
   try {
-    resp = await fetch(url, reqInit)
-  } catch (e) {
-    // Network error: synthesize a JSON error response for consistent handling
-    return new Response(
-      JSON.stringify({
-        message: 'Falha de conexão com o servidor. Verifique a API.',
-      }),
-      { status: 503, headers: { 'Content-Type': 'application/json' } },
-    )
-  }
-  console.log(`API ${url} - ${resp.status}`)
-  if (resp.status === 401) {
-    // Clear cookies on the server to prevent stale auth; client-side will handle redirect.
-    if (typeof window === 'undefined') {
-      try {
-        clearAuthCookiesServer()
-      } catch {}
-    } else {
-      // Client: logout immediately and redirect to signin
-      try {
-        await fetch('/api/logout', { method: 'POST' })
-      } catch {}
-      try {
-        const parts = window.location.pathname.split('/').filter(Boolean)
-        const maybeLocale = parts[0] || 'pt-BR'
-        // Avoid loop if already on signin
-        if (!window.location.pathname.includes('/auth/signin')) {
-          window.location.href = `/${maybeLocale}/auth/signin`
-        }
-      } catch {}
+    const resp = await fetch(url, reqInit)
+    console.log(`API ${reqInit?.method ?? 'GET'} ${url} - ${resp.status}`)
+
+    try {
+      await updateTokenFromResponse(resp)
+    } catch (e) {
+      console.warn('updateTokenFromResponse failed:', e)
     }
+
+    return resp
+  } catch (err) {
+    console.log('error fetching API:', err)
+    throw err // repassa para seu handler global
   }
-  // Update backend token if server sent a new one
-  try {
-    await updateTokenFromResponse(resp)
-  } catch {}
-  return resp
 }

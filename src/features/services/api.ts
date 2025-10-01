@@ -9,7 +9,7 @@ import type { QueryParams } from '@/types/http'
 
 export async function fetchServices(
   page?: string,
-  where?: QueryParams,
+  where?: QueryParams<ZService>,
 ): Promise<{ services: ZService[]; count: number }> {
   const token = await getBackendToken()
   const response = await api(

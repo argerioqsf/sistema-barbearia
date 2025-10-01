@@ -19,20 +19,16 @@ export async function safeJson(res: Response): Promise<JsonLike> {
 }
 
 export async function readMessage(res: Response): Promise<string> {
+  let message
   try {
-    const j = (await res.json()) as { message?: unknown } | unknown
-    if (
-      j &&
-      typeof j === 'object' &&
-      'message' in (j as { message?: unknown })
-    ) {
-      const m = (j as { message?: unknown }).message
-      return typeof m === 'string' ? m : 'Request failed'
-    }
-    return 'Request failed'
+    const data = await res.json()
+    message = data?.message ?? JSON.stringify(data)
   } catch {
-    return 'Request failed'
+    const text = await res.text()
+    message = text || res.statusText || `HTTP ${res.status}`
   }
+
+  return message
 }
 
 // Update backend token from response header (x-new-token), both server and client.

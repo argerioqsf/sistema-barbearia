@@ -4,7 +4,7 @@ import { DebtSchema, DebtsListResponseSchema, type ZDebt } from './schemas'
 import { safeJson, readMessage } from '@/shared/http'
 import type { JsonObject, QueryParams } from '@/types/http'
 
-export async function fetchDebts(params?: QueryParams): Promise<{
+export async function fetchDebts(params?: QueryParams<ZDebt>): Promise<{
   items: ZDebt[]
   count?: number
   page?: number

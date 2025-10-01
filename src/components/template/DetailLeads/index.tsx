@@ -19,21 +19,21 @@ import ErrorState from '@/components/molecules/ErrorState'
 export default async function DetailLeads({ id }: { id: string }) {
   const responseProfile = await getProfile()
   const profile = responseProfile?.response
-  if (responseProfile.error?.request) {
+  if (responseProfile.error?.message) {
     return (
       <ErrorState
         title="Erro ao carregar perfil"
-        message={String(responseProfile.error?.request)}
+        message={String(responseProfile.error?.message)}
       />
     )
   }
   let ownerIndicator = false
   const response = await getLead(id)
-  if (response.error?.request) {
+  if (response.error?.message) {
     return (
       <ErrorState
         title="Erro ao carregar lead"
-        message={String(response.error?.request)}
+        message={String(response.error?.message)}
       />
     )
   }
@@ -55,7 +55,7 @@ export default async function DetailLeads({ id }: { id: string }) {
     notFound()
   }
 
-  const errorRequest = response.error?.request ?? undefined
+  const errorRequest = response.error?.message ?? undefined
 
   const templates = templatesRaw as typeof templatesRaw
 
