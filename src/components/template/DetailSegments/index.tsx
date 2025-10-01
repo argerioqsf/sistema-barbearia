@@ -11,7 +11,7 @@ import { Course, Segment } from '@/types/general'
 export default async function DetailSegments({ id }: { id: string }) {
   const response = await getSegment(id)
   const segment = response.response
-  const errorRequest = response.error?.request ?? undefined
+  const errorRequest = response.error?.message ?? undefined
   if (errorRequest) {
     return (
       <ErrorState

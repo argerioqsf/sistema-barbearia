@@ -1,4 +1,4 @@
-import { listProducts } from '@/actions/product'
+import { listProductsPaginated } from '@/actions/product'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
@@ -24,7 +24,7 @@ infoList.listActions = [
 ]
 
 export default async function ListProducts({ searchParams }: SearchParams) {
-  const response = await listProducts(searchParams?.page ?? '', {
+  const response = await listProductsPaginated(searchParams?.page ?? '1', {
     name: searchParams?.q ?? '',
     withCount: true,
     perPage: 10,
@@ -32,7 +32,7 @@ export default async function ListProducts({ searchParams }: SearchParams) {
 
   const list = response?.response ?? null
   const count = response?.count ?? null
-  const errorRequest = response.error?.request ?? null
+  const errorRequest = response.error?.message ?? null
   if (errorRequest) {
     return (
       <ErrorState

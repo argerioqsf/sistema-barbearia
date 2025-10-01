@@ -10,7 +10,8 @@ import { Text } from '@/components/atoms'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import { Profile, User } from '@/types/general'
+import ErrorState from '@/components/molecules/ErrorState'
+import type { Profile, User, Unit } from '@/types/general'
 import { notFound } from 'next/navigation'
 import { templateForm } from './templateForm'
 import ColorPalette from '@/components/molecules/ColorPalette'
@@ -21,15 +22,25 @@ import BlockedHoursForm from './BlockedHoursForm'
 export default async function ProfileDetail() {
   const response = await getProfile()
   const profile = response?.response
-  const errorRequest = response.error?.request
+  const errorRequest = response.error?.message
 
-  // if (!profile) {
-  //   notFound()
-  // }
+  if (!profile) {
+    if (errorRequest) {
+      return (
+        <ErrorState
+          title="Erro ao carregar perfil"
+          message={String(errorRequest)}
+        />
+      )
+    }
+    notFound()
+  }
 
-  // const organizations = profile.user?.organizations.map(
-  //   (organization) => organization.organization,
-  // )
+  const units: Unit[] = profile.units?.map(({ unit }) => unit) ?? []
+
+  const blockedHours = profile.blockedHours ?? []
+  const workHours = profile.workHours ?? []
+  const openingHours = profile.openingHours ?? []
 
   return (
     <ContainerDashboard>
@@ -42,6 +53,11 @@ export default async function ProfileDetail() {
             Escolha o seu tema:
           </Text>
           <ColorPalette />
+          {units.length > 0 && (
+            <Text className="mt-2 text-sm text-black/70">
+              Unidade vinculada: {units.map((unit) => unit.name).join(', ')}
+            </Text>
+          )}
           <div className="mt-4">
             <LogoutButton />
           </div>
@@ -69,9 +85,9 @@ export default async function ProfileDetail() {
                   'use server'
                   return registerBlockedHour(profile.id, {}, formData)
                 }}
-                blocked={profile.blockedHours || []}
-                workHours={profile.workHours || []}
-                openingHours={profile.openingHours || []}
+                blocked={blockedHours}
+                workHours={workHours}
+                openingHours={openingHours}
                 onCreateWorkHour={async (_prev, formData) => {
                   'use server'
                   return registerWorkHour(profile.id, {}, formData)

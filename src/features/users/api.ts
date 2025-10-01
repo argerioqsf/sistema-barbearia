@@ -1,7 +1,6 @@
 import { api } from '@/data/api'
 import { getBackendToken } from '@/utils/authServer'
 import {
-  BodyRegisterUser,
   UserSchema,
   ZUser,
   bodyRegisterUserSchema,

@@ -6,13 +6,14 @@ import { Errors, FileCustom, InitialState, ReturnList } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 import { fetchFiles } from '@/features/files/api'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function getFiles(): Promise<ReturnList<FileCustom>> {
   try {
     const files = await fetchFiles()
     return { response: files as unknown as FileCustom[] }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 

@@ -13,20 +13,25 @@ export const templateForm: TemplateForm<Service> = {
           id: 1,
           fields: [
             { id: 'name', required: true, type: 'text', label: 'Nome' },
-            { id: 'price', required: false, type: 'number', label: 'Preço' },
             {
-              id: 'active',
+              id: 'description',
               required: true,
-              type: 'select',
-              label: 'Ativo',
-              option: {
-                keyLabel: 'label',
-                keyValue: 'value',
-                list: [
-                  { value: 'true', label: 'Sim' },
-                  { value: 'false', label: 'Não' },
-                ],
-              },
+              type: 'text',
+              label: 'Descrição',
+            },
+            { id: 'price', required: true, type: 'number', label: 'Preço' },
+            { id: 'cost', required: true, type: 'number', label: 'Custo' },
+            {
+              id: 'commissionPercentage',
+              required: true,
+              type: 'number',
+              label: 'Percentual de comissão',
+            },
+            {
+              id: 'defaultTime',
+              required: false,
+              type: 'number',
+              label: 'Duração padrão (min)',
             },
           ],
         },

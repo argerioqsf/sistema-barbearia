@@ -9,11 +9,11 @@ import ErrorState from '@/components/molecules/ErrorState'
 export default async function ProfileWorkHours() {
   const profileResp = await getProfile()
   const profile = profileResp.response
-  if (profileResp.error?.request) {
+  if (profileResp.error?.message) {
     return (
       <ErrorState
         title="Erro ao carregar perfil"
-        message={String(profileResp.error?.request)}
+        message={String(profileResp.error?.message)}
       />
     )
   }

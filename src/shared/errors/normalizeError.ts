@@ -3,6 +3,7 @@
 import { HttpError } from '@/shared/errors/httpError'
 import { ValidationError } from '@/shared/errors/validationError'
 import type { NormalizedError } from './types'
+import { ZodError } from 'zod'
 
 function isAbortError(err: unknown) {
   // Browser/Node DOMException para abort de fetch
@@ -19,6 +20,16 @@ export function normalizeError(err: unknown): NormalizedError {
       code: 'VALIDATION_ERROR',
       status: 422,
       // details: err,
+    }
+  }
+
+  if (err instanceof ZodError) {
+    return {
+      type: 'validation',
+      message: 'Erro de validação',
+      issues: err.flatten().fieldErrors,
+      code: 'VALIDATION_ERROR',
+      status: 422,
     }
   }
 

@@ -10,6 +10,7 @@ import {
 import { revalidateTag } from 'next/cache'
 import { getBackendToken, getAuthHeader } from '@/utils/authServer'
 import { redirect } from 'next/navigation'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function updateProfileUser(
   prevState: InitialState<Profile | User>,
@@ -98,14 +99,17 @@ export async function getProfile(): Promise<ReturnGet<Profile>> {
       }
       const errorMessage = await response.text()
       return {
-        error: { request: JSON.parse(errorMessage).message },
+        error: toNormalizedError(
+          JSON.parse(errorMessage).message,
+          response.status,
+        ),
       }
     }
     const json = await response.json()
     const { profile, openingHours } = json
     return { response: { ...profile, openingHours } }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 

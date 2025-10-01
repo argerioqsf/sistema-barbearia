@@ -8,6 +8,7 @@ import {
   updateLoanStatus as updateLoanStatusAPI,
   payLoan as payLoanAPI,
 } from '@/features/loans/api'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function listUserLoans(
   userId: string,
@@ -16,7 +17,7 @@ export async function listUserLoans(
     const loans = await listUserLoansAPI(userId)
     return { response: loans }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 

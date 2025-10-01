@@ -6,7 +6,7 @@ import type { QueryParams } from '@/types/http'
 
 export async function fetchClients(
   page?: string,
-  where?: QueryParams,
+  where?: QueryParams<ZUser>,
 ): Promise<ZUser[]> {
   const token = await getBackendToken()
   const response = await api(

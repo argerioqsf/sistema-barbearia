@@ -14,6 +14,12 @@ export const templateForm: TemplateForm<Coupon> = {
           fields: [
             { id: 'code', required: true, type: 'text', label: 'Código' },
             {
+              id: 'description',
+              required: true,
+              type: 'text',
+              label: 'Descrição',
+            },
+            {
               id: 'discountType',
               required: true,
               type: 'select',
@@ -22,30 +28,22 @@ export const templateForm: TemplateForm<Coupon> = {
                 keyLabel: 'label',
                 keyValue: 'value',
                 list: [
-                  { value: 'percent', label: 'Percentual' },
-                  { value: 'value', label: 'Valor' },
+                  { value: 'PERCENTAGE', label: 'Percentual' },
+                  { value: 'VALUE', label: 'Valor' },
                 ],
               },
             },
             {
-              id: 'discountValue',
+              id: 'discount',
               required: true,
               type: 'number',
               label: 'Valor do desconto',
             },
             {
-              id: 'active',
+              id: 'quantity',
               required: true,
-              type: 'select',
-              label: 'Ativo',
-              option: {
-                keyLabel: 'label',
-                keyValue: 'value',
-                list: [
-                  { value: 'true', label: 'Sim' },
-                  { value: 'false', label: 'Não' },
-                ],
-              },
+              type: 'number',
+              label: 'Quantidade disponível',
             },
           ],
         },

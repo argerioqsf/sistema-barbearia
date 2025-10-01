@@ -13,7 +13,7 @@ import { checkUserPermissions } from '@/utils/checkUserPermissions'
 export default async function ListNewLeads({ searchParams }: SearchParams) {
   const responseProfile = await getProfile()
   const profile = responseProfile?.response
-  const errorRequestProfile = responseProfile.error?.request ?? null
+  const errorRequestProfile = responseProfile.error?.message ?? null
   if (!profile) {
     notFound()
   }
@@ -49,7 +49,7 @@ export default async function ListNewLeads({ searchParams }: SearchParams) {
 
   const list = response?.response ?? null
   const count = response?.count ?? null
-  const errorRequest = response.error?.request ?? null
+  const errorRequest = response.error?.message ?? null
   if (errorRequest) {
     return (
       <ErrorState

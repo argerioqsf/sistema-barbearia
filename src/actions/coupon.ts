@@ -7,19 +7,20 @@ import type { ZCoupon as Coupon } from '@/features/coupons/schemas'
 import { api } from '@/data/api'
 import { getBackendToken } from '@/utils/authServer'
 import { revalidateTag } from 'next/cache'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function listCoupons(
   page?: string,
-  where?: Partial<Coupon>,
+  where?: QueryParams<Coupon>,
 ): Promise<ReturnList<Coupon>> {
   try {
-    const { coupons, count } = await fetchCoupons(page, where as QueryParams)
+    const { coupons, count } = await fetchCoupons(page, where)
     return { response: coupons, count }
   } catch (error) {
     return {
-      error: {
-        request: error instanceof Error ? error.message : 'Error unknown',
-      },
+      error: toNormalizedError(
+        error instanceof Error ? error.message : 'Error unknown',
+      ),
     }
   }
 }
@@ -30,9 +31,9 @@ export async function getCoupon(id: string): Promise<ReturnGet<Coupon>> {
     return { response: coupon }
   } catch (error) {
     return {
-      error: {
-        request: error instanceof Error ? error.message : 'Error unknown',
-      },
+      error: toNormalizedError(
+        error instanceof Error ? error.message : 'Error unknown',
+      ),
     }
   }
 }

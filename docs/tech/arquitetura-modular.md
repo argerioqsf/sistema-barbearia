@@ -7,7 +7,10 @@ Este documento explica a arquitetura-alvo adotada para todo o projeto, usando o 
 src/modules/<domínio>/
   domain/          # Modelos, value objects, serviços puros (sem React/HTTP)
   application/     # Casos de uso (commands/queries) que orquestram domínio + infra
+    dto/           # DTOs (Zod) para validar entrada/saída
+    ports/         # Interfaces que casos de uso consomem
   infrastructure/  # Adaptadores concretos (HTTP/cache) e gateways externos
+    mappers/       # Conversão API ↔ domínio
   ui/              # Componentes e hooks específicos do domínio (RSC/Client)
   tests/           # Testes unitários/integrados do módulo
 ```
@@ -20,7 +23,8 @@ src/modules/<domínio>/
 
 ## Convenções de nomeação
 - Casos de uso: `application/commands/<verbo>.ts` e `application/queries/<consulta>.ts`.
-- Exports por camada via `index.ts` da pasta; exports do módulo via `src/modules/<domínio>/index.ts`.
+- DTOs e Ports ficam agrupados em `application/dto` e `application/ports`; exports por camada via `index.ts` da pasta.
+- Value Objects ficam em `domain/value-objects/*`.
 - Client Components devem conter `use client` no topo; Server Components não.
 
 ## Erros e resultados

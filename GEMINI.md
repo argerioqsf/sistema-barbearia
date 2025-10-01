@@ -13,7 +13,8 @@ The project is structured as follows:
 -   `src/constants`: Contains application-wide constants.
 -   `src/contexts`: Contains React contexts.
 -   `src/data`: Contains the API client for communicating with the backend.
--   `src/features`: Contains code related to specific features of the application.
+-   `src/features`: Legacy layer with feature-specific API logic (in migration).
+-   `src/modules`: New modular architecture by domain (domain, application, infrastructure, ui, tests).
 -   `src/hooks`: Contains custom React hooks.
 -   `src/lib`: Contains utility functions.
 -   `src/messages`: Contains the internationalization messages.
@@ -31,10 +32,12 @@ To build and run the project, use the following commands:
 
 ## Development Conventions
 
--   **Component Structure:** New pages should be created inside the `src/components/template` directory. The `src/features` directory should only contain logic related to backend requests.
+-   **Architecture:** Prefer implementing new flows as modules under `src/modules/<domain>` using domain/application/infrastructure/ui layers. The legacy `src/features` is being migrated.
+-   **Component Structure:** UI lives under each module's `ui` or in `src/components/template` for shared templates.
 -   **Linting:** The project uses ESLint for linting. Run `npm run lint` to check for linting errors.
 -   **Type Checking:** The project uses TypeScript for type checking. Run `npm run typecheck` to check for type errors.
 -   **Styling:** The project uses Tailwind CSS for styling.
 -   **Authentication:** The project uses `next-auth` for authentication. The authentication configuration is in `src/auth/options.ts`.
 -   **API Communication:** The project uses a custom API client in `src/data/api.ts` to communicate with the backend API.
+-   **Docs:** See `docs/README.md` for index. Key docs: `docs/plan/plano-melhoria-pos.md`, `docs/plan/planejamento-diagnostico.md`, `docs/tech/arquitetura-modular.md`, `docs/plan/tasks-modernizacao-pos.md`, and ADRs in `docs/adr/`.
 -   **Internationalization:** The project uses `next-intl` for internationalization. The messages are in the `src/messages` directory.

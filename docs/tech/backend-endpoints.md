@@ -24,6 +24,7 @@ Autenticação
   - Body: `{ name, email, password, phone, cpf, genre, birthday, pix, unitId, roleId, permissions?[] }`
 - POST `/sessions` (login) [público]
   - Body: `{ email, password }`
+  - Exemplo: `{ "email": "user@exemplo.com", "password": "senha123" }`
   - Resposta: `{ user, roles, token }`
 - POST `/forgot-password` [público]
   - Body: `{ email }`
@@ -38,6 +39,7 @@ Sessão
 Uploads
 - POST `/upload` (arquivo único) [sem JWT]
   - multipart/form-data campo `file`: `avatar`
+  - Exemplo (form-data): `avatar: <arquivo.jpg>`
 - GET `/uploads` [sem JWT]
 - GET `/uploads/:filename` [sem JWT]
 - DELETE `/uploads/:filename` [sem JWT]
@@ -54,9 +56,11 @@ Perfil (do logado e administrativo)
 Perfil – Horários de trabalho/bloqueio
 - POST `/profile/:profileId/work-hours` [protegido]
   - Body: `{ weekDay(0–6), startHour, endHour }`
+  - Exemplo: `{ "weekDay": 1, "startHour": "09:00", "endHour": "18:00" }`
 - DELETE `/profile/:profileId/work-hours/:id` [protegido] → 204
 - POST `/profile/:profileId/blocked-hours` [protegido]
   - Body: `{ startHour(date), endHour(date) }`
+  - Exemplo: `{ "startHour": "2025-01-01T10:00:00.000Z", "endHour": "2025-01-01T12:00:00.000Z" }`
 - DELETE `/profile/:profileId/blocked-hours/:id` [protegido] → 204
 
 Usuários da barbearia (gestão)
@@ -73,6 +77,7 @@ Serviços (barbearia)
 - POST `/create/service` [protegido]
   - multipart/form-data (arquivo: `image`)
   - Campos de form: `{ name, description?, cost, price, categoryId, defaultTime?, commissionPercentage? }`
+  - Exemplo (form-data): `image: <arquivo.png>`, `name: "Corte"`, `price: 35`, `cost: 10`, `categoryId: "cat_id"`
 - GET `/services` [protegido]
   - Query: `{ withCount?, page?, perPage?, name?, categoryId? }`
   - Resposta: `items` ou `{ items, count, page, perPage }`
@@ -80,16 +85,19 @@ Serviços (barbearia)
 Agendamentos
 - POST `/create/appointment` [protegido]
   - Body: `{ clientId, barberId, serviceIds:[string]+, date(date), unitId? }`
+  - Exemplo: `{ "clientId": "client_id", "barberId": "user_id", "serviceIds": ["service_id"], "date": "2025-01-01T13:00:00.000Z", "unitId": "unit_id" }`
 - GET `/appointments` [protegido]
   - Query: `{ withCount?, page?, perPage? }`
 - GET `/appointment-barbers` [protegido] → `users`
 - PATCH `/appointments/:id` [protegido]
   - Body: `{ status?, observation? }`
+  - Exemplo: `{ "status": "CANCELED", "observation": "Cliente desmarcou" }`
 
 Produtos
 - POST `/products` [protegido]
   - multipart/form-data (arquivo: `image`)
   - Form: `{ name, description?, quantity?, cost, price, commissionPercentage?, categoryId }`
+  - Exemplo (form-data): `image: <arquivo.png>`, `name: "Pente"`, `price: 15`, `cost: 5`, `categoryId: "cat_id"`
 - GET `/products` [protegido]
   - Query: `{ withCount?, page?, perPage?, name? }`
   - Resposta: `items` ou `{ items, count, page, perPage }`
@@ -107,6 +115,7 @@ Categorias
 Cupons
 - POST `/coupons` [protegido]
   - Body: `{ code, description?, discount(number), discountType: 'PERCENTAGE'|'VALUE', imageUrl?, quantity? }`
+  - Exemplo: `{ "code": "PROMO10", "discount": 10, "discountType": "PERCENTAGE" }`
 - GET `/coupons` [protegido]
   - Query: `{ withCount?, page?, perPage?, code? }`
   - Resposta: `items` ou `{ items, count, page, perPage }`
@@ -117,22 +126,27 @@ Cupons
 Caixa (Cash Register)
 - POST `/cash-session/open` [protegido]
   - Body: `{ initialAmount(number) }`
+  - Exemplo: `{ "initialAmount": 200 }`
 - PUT `/cash-session/close` [protegido]
 - GET `/cash-session` [protegido]
 
 Empréstimos
 - POST `/loans` [protegido]
   - Body: `{ amount(number) }`
+  - Exemplo: `{ "amount": 300 }`
 - GET `/users/:userId/loans` [protegido]
 - PATCH `/loans/:id/status` [protegido] (ADMIN/MANAGER/OWNER)
   - Body: `{ status: 'PENDING'|'APPROVED'|'PAID'|... }`
+  - Exemplo: `{ "status": "APPROVED" }`
 - PATCH `/loans/:id/pay` [protegido]
   - Body: `{ amount(number) }`
+  - Exemplo: `{ "amount": 150 }`
 
 Transações/Comissões
 - POST `/pay/transactions` [protegido]
   - multipart/form-data (arquivo: `receipt`)
   - Body: `{ description?, amount? (>0), saleItemIds? (string[]|JSON), appointmentServiceIds? (string[]|JSON), affectedUserId, discountLoans? (boolean) }`
+  - Exemplo (form-data): `receipt: <comprovante.png>`, `amount: 120`, `saleItemIds: ["saleItemId1","saleItemId2"]`, `affectedUserId: "user_id"`
 - GET `/pay/pending/:userId` [protegido]
   - Exige permissão MANAGE_OTHER_USER_TRANSACTION
 - GET `/transactions` [protegido]
@@ -149,6 +163,7 @@ Unidades
 
 Horários de funcionamento da unidade
 - POST `/units/:unitId/opening-hours`, DELETE `/units/:unitId/opening-hours/:id`, GET `/units/opening-hours` [protegido]
+  - Exemplo (POST): `{ "weekDay": 1, "startHour": "09:00", "endHour": "18:00" }`
 
 Planos
 - POST `/plans`, GET `/plans`, GET `/plans/:id`, PATCH `/plans/:id`, DELETE `/plans/:id` [protegido]
@@ -167,7 +182,8 @@ Relatórios
 
 Vendas
 - POST `/sales`, GET `/sales`, GET `/sales/:id`,
-  PATCH `/sales/:id`, `/sales/:id/saleItems`, `/sales/:id/coupon`, `/sales/:id/pay`, `/sales/:id/client`, `/sales/saleItem/:id` [protegido]
+  PATCH `/sales/:id`, `/sales/:id/saleItems`, `/sales/:id/coupon`, `/sales/:id/pay`, `/sales/:id/client`,
+  `/sales/saleItem/:id`, `/sales/saleItem/:id/coupon`, `/sales/saleItem/:id/barber`, `/sales/saleItem/:id/quantity`, `/sales/saleItem/:id/custom-price` [protegido]
 
 Config
 - GET `/config/export/users` [protegido]
@@ -201,6 +217,10 @@ Frontend: a implementar (features/appointments/*, features/work-hours/*).
 - PATCH /sales/:id/pay
 - PATCH /sales/:id/client
 - PATCH /sales/saleItem/:id
+- PATCH /sales/saleItem/:id/coupon
+- PATCH /sales/saleItem/:id/barber
+- PATCH /sales/saleItem/:id/quantity
+- PATCH /sales/saleItem/:id/custom-price
 Frontend: a implementar (features/sales/*).
 
 4) Planos, Recorrências e Benefícios
@@ -211,8 +231,9 @@ Frontend: a implementar (features/plans/*, features/recurrences/*, features/bene
 
 5) Assinaturas (PlanProfiles)
 - Criação/renovação via vendas: POST /sales e PATCH /sales/:id/pay
+- Ações diretas: PATCH `/plan-profiles/:id/cancel`, PATCH `/plan-profiles/:id/renew`
 - Débitos: GET /debts, GET /debts/:id, PATCH /debts/:id/pay
-Frontend: a implementar (features/subscriptions/*) — consumir via sales/debts.
+Frontend: a implementar (features/subscriptions/*) — consumir via sales/debts/plan-profiles.
 
 6) Débitos de Plano
 - POST /debts
@@ -282,6 +303,8 @@ Frontend: a implementar (features/loans/*).
 - POST /create/profile
 - PUT /profile/:id
 - PUT /profile
+- GET /clients
+  - Exemplo: listagem com filtros via query string (ex.: `GET /clients?q=jo`)
 Frontend: parte existente (users/profile), precisa migrar para novo contrato quando disponível (features/profiles/*).
 
 13) Usuários/Barbeiros

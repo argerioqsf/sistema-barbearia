@@ -471,7 +471,7 @@ export type ReturnRequest<T> = ReturnRequestSuccess<T> | ReturnRequestFailed
 
 export interface ReturnGet<T> {
   response?: T
-  error?: Errors<T>
+  error?: NormalizedError
 }
 
 export type SearchParams = {

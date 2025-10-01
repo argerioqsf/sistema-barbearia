@@ -12,7 +12,7 @@ export default async function ListDebts({ searchParams }: SearchParams) {
 
   const list = response?.response ?? null
   const count = response?.count ?? null
-  const errorRequest = response.error?.request ?? null
+  const errorRequest = response.error?.message ?? null
   if (errorRequest) {
     return (
       <ErrorState

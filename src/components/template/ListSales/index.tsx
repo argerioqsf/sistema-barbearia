@@ -3,7 +3,7 @@ import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Listing from '@/components/organisms/Listing'
 import { SearchParams } from '@/types/general'
-import { ButtonStartNewSale } from '@/components/molecules/ButtonStartNewSale'
+import { ButtonStartNewSale } from '@/modules/sales-pos/ui/components/organisms/ButtonStartNewSale'
 import { infoListSales } from '@/features/pos/constants'
 import { ErrorRequestHandler } from '@/components/organisms/ErrorRequestHandler'
 

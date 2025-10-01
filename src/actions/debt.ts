@@ -10,20 +10,23 @@ import {
   deleteDebt,
 } from '@/features/debts/api'
 import type { InitialState, ReturnList } from '@/types/general'
+import type { JsonObject, QueryParams } from '@/types/http'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function listDebts(
   page?: string,
-  where?: Partial<Debt>,
+  where?: QueryParams<Debt>,
 ): Promise<ReturnList<Debt>> {
   try {
-    const { items, count } = await fetchDebts({
-      page,
-      ...(where as Record<string, unknown>),
-    })
+    const params: QueryParams<Debt> | undefined =
+      page || where ? { ...(where ?? {}), page } : undefined
+    const { items, count } = await fetchDebts(params)
     return { response: items as Debt[], count }
   } catch (e) {
     return {
-      error: { request: e instanceof Error ? e.message : 'Error unknown' },
+      error: toNormalizedError(
+        e instanceof Error ? e.message : 'Error unknown',
+      ),
     }
   }
 }
@@ -34,7 +37,9 @@ export async function getDebt(id: string) {
     return { response: debt }
   } catch (e) {
     return {
-      error: { request: e instanceof Error ? e.message : 'Error unknown' },
+      error: toNormalizedError(
+        e instanceof Error ? e.message : 'Error unknown',
+      ),
     }
   }
 }
@@ -44,7 +49,7 @@ export async function registerDebt(
   formData: FormData,
 ) {
   try {
-    const body = Object.fromEntries(formData.entries())
+    const body = Object.fromEntries(formData.entries()) as JsonObject
     await createDebt(body)
     return { ok: true, errors: {} }
   } catch (e) {
@@ -62,7 +67,7 @@ export async function patchDebt(
   formData: FormData,
 ) {
   try {
-    const body = Object.fromEntries(formData.entries())
+    const body = Object.fromEntries(formData.entries()) as JsonObject
     await updateDebt(id, body)
     return { ok: true, errors: {} }
   } catch (e) {
@@ -80,7 +85,7 @@ export async function patchDebtPay(
   formData: FormData,
 ) {
   try {
-    const body = Object.fromEntries(formData.entries())
+    const body = Object.fromEntries(formData.entries()) as JsonObject
     await payDebt(id, body)
     return { ok: true, errors: {} }
   } catch (e) {

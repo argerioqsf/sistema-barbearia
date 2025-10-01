@@ -17,8 +17,6 @@ import {
   bodyUpdateQuantitySaleItemSchema,
   BodyUpdateSaleCoupon,
   bodyUpdateSaleCouponSchema,
-  BodyUpdateSaleItem,
-  bodyUpdateSaleItemSchema,
   formSchemaRegisterSale,
   SaleGetResponseSchema,
   SaleSchema,
@@ -340,56 +338,6 @@ export async function updateSaleClient(
   return parsed.data
 }
 
-export async function updateSaleItem(
-  id: string,
-  body: BodyUpdateSaleItem,
-): Promise<ZUpdateSaleItemResponseSchema> {
-  const validatedFields = bodyUpdateSaleItemSchema.safeParse({
-    serviceId: body.serviceId,
-    productId: body.productId,
-    appointmentId: body.appointmentId,
-    planId: body.planId,
-    quantity: body.quantity,
-    barberId: body.barberId,
-    couponId: body.couponId,
-    couponCode: body.couponCode,
-    customPrice: body.customPrice,
-  })
-  if (!validatedFields.success) {
-    throw ValidationError.fromZod(
-      validatedFields.error,
-      'Invalid body request update client sale',
-    )
-  }
-
-  const token = await getBackendToken()
-  const bodyParsed = JSON.stringify(body)
-  console.log('bodyParsed updateSaleItem: ', bodyParsed)
-  const response = await api(`/sales/saleItem/${id}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: bodyParsed,
-  })
-  if (!response.ok) {
-    const message = await readMessage(response)
-    throw new HttpError(response.status, message)
-  }
-  const json = await safeJson(response)
-  const parsed = UpdateSaleItemResponseSchema.safeParse(json)
-  if (!parsed.success) {
-    throw ValidationError.fromZod(
-      parsed.error,
-      'Invalid response update saleItem',
-    )
-  }
-  revalidateTag('sales')
-  revalidateTag(id)
-  return parsed.data
-}
-
 export async function updateCouponSaleItem(
   id: string,
   body: BodyUpdateCouponSaleItem,
@@ -407,7 +355,7 @@ export async function updateCouponSaleItem(
 
   const token = await getBackendToken()
   const bodyParsed = JSON.stringify(body)
-  console.log('bodyParsed updateSaleItem: ', bodyParsed)
+  console.log('bodyParsed updateCouponSaleItem: ', bodyParsed)
   const response = await api(`/sales/saleItem/${id}/coupon`, {
     method: 'PATCH',
     headers: {

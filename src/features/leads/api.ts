@@ -1,9 +1,9 @@
 import { api } from '@/data/api'
 import { getBackendToken } from '@/utils/authServer'
-import { LeadsListResponseSchema, LeadSchema } from './schemas'
+import { LeadsListResponseSchema, LeadSchema, type ZLead } from './schemas'
 import type { QueryParams } from '@/types/http'
 // TODO: Remover leads do projeto
-export async function fetchLeads(page?: string, where?: QueryParams) {
+export async function fetchLeads(page?: string, where?: QueryParams<ZLead>) {
   const token = await getBackendToken()
   const response = await api(
     '/leads',

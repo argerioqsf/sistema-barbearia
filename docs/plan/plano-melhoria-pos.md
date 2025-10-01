@@ -9,6 +9,7 @@ Documento de visão e objetivos do esforço de modernização. Os detalhes foram
 
 ## Navegação
 - Planejamento e diagnóstico (Etapa 1): `./planejamento-diagnostico.md`
+- Inventário POS: `./pos-endpoints.md`
 - Arquitetura modular (camadas e convenções): `../tech/arquitetura-modular.md`
 - Tasks e roadmap executável: `./tasks-modernizacao-pos.md`
 - Diretrizes App Router: `../tech/app-router-guidelines.md`

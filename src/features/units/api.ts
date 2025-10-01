@@ -4,10 +4,11 @@ import {
   UnitsListResponseSchema,
   UnitDetailWrappedSchema,
   UnitSchema,
+  type ZUnit,
 } from './schemas'
 import type { QueryParams } from '@/types/http'
 
-export async function fetchUnits(page: string, where?: QueryParams) {
+export async function fetchUnits(page: string, where?: QueryParams<ZUnit>) {
   const token = await getBackendToken()
   const response = await api(
     '/units',

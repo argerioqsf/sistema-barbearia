@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ZodError, ZodIssue } from 'zod'
-import { AppError } from '../../utils/error/appError'
+import { AppError } from './appError'
 
 export class ValidationError extends AppError {
   issues: ZodIssue[]

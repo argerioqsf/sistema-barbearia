@@ -7,6 +7,7 @@ import { InitialState, ReturnGet, ReturnList, Unit } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 import { fetchUnit, fetchUnits, fetchUnitsSelect } from '@/features/units/api'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function registerUnit(
   prevState: InitialState<Unit>,
@@ -134,7 +135,7 @@ export async function getUnit(id: string): Promise<ReturnGet<Unit>> {
     const unit = await fetchUnit(id)
     return { response: unit as unknown as Unit }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -174,7 +175,7 @@ export async function listUnits(
     )
     return { response: units as unknown as Unit[], count }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -183,6 +184,6 @@ export async function listSelectUnits(): Promise<ReturnList<Unit>> {
     const units = await fetchUnitsSelect()
     return { response: units as unknown as Unit[] }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }

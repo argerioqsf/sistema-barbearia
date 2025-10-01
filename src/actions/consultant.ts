@@ -1,6 +1,7 @@
 import { api } from '@/data/api'
 import { Profile, ReturnList, User } from '@/types/general'
 import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function listSelectConsultants(): Promise<ReturnList<User>> {
   try {
@@ -15,14 +16,15 @@ export async function listSelectConsultants(): Promise<ReturnList<User>> {
 
     if (!response.ok) {
       const errorMessage = await response.text()
+      const { message } = JSON.parse(errorMessage) as { message: string }
       return {
-        error: { request: JSON.parse(errorMessage).message },
+        error: toNormalizedError(message, response.status),
       }
     }
     const { user } = await response.json()
     return { response: user }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -47,13 +49,14 @@ export async function listcConsultant(
 
     if (!response.ok) {
       const errorMessage = await response.text()
+      const { message } = JSON.parse(errorMessage) as { message: string }
       return {
-        error: { request: JSON.parse(errorMessage).message },
+        error: toNormalizedError(message, response.status),
       }
     }
     const { users, count } = await response.json()
     return { response: users, count }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }

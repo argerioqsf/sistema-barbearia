@@ -7,7 +7,6 @@ import {
 import { formSchemaUpdateUserProfile } from '@/components/template/DetailUsers/schema'
 import { formSchemaRegisterIndicatorProfile } from '@/components/template/RegisterIndicators/schema'
 import { formSchemaRegisterIndicatorPublic } from '@/components/template/RegisterIndicatorsPublic/schema'
-import { formSchemaRegisterUserProfile } from '@/components/template/RegisterUser/schema'
 import { formSchemaResetPassword } from '@/components/template/ResetPassword/schema'
 import { api } from '@/data/api'
 import {
@@ -26,6 +25,7 @@ import { createUser, fetchUser, fetchUsersAll } from '@/features/users/api'
 import type { QueryParams } from '@/types/http'
 import { ZUser } from '@/features/users/schemas'
 import { handleRequestError } from '@/shared/errors/handlerRequestError'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function getUser(id: string): Promise<ReturnRequest<ZUser>> {
   try {
@@ -512,13 +512,16 @@ export async function getIndicator(id: string): Promise<ReturnGet<User>> {
     if (!response.ok) {
       const errorMessage = await response.text()
       return {
-        error: { request: JSON.parse(errorMessage).message },
+        error: toNormalizedError(
+          JSON.parse(errorMessage).message,
+          response.status,
+        ),
       }
     }
     const user = await response.json()
     return { response: user }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -544,13 +547,16 @@ export async function listIndicators(
     if (!response.ok) {
       const errorMessage = await response.text()
       return {
-        error: { request: JSON.parse(errorMessage).message },
+        error: toNormalizedError(
+          JSON.parse(errorMessage).message,
+          response.status,
+        ),
       }
     }
     const { users, count } = await response.json()
     return { response: users, count }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 

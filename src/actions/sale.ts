@@ -8,7 +8,6 @@ import {
   updateSaleCoupon,
   paySale,
   updateSaleClient,
-  updateSaleItem,
   fetchSalesPaginated,
   fetchSalesAll,
   removeOrAddSaleItems,
@@ -24,7 +23,6 @@ import {
   BodyUpdateCustomPriceSaleItem,
   BodyUpdateQuantitySaleItem,
   BodyUpdateSaleCoupon,
-  BodyUpdateSaleItem,
   type ZSale as Sale,
   type ZSale,
 } from '@/features/sales/schemas'
@@ -182,22 +180,6 @@ export async function paySaleAction(
     await paySale(id, body)
     const data = await fetchSale(id)
     return { ok: true, data }
-  } catch (e) {
-    const normalized = handleRequestError(e, {
-      rethrow: false,
-    })
-    return { ok: false, error: normalized }
-  }
-}
-
-export async function updateSaleItemAction(
-  saleItemId: string,
-  body: BodyUpdateSaleItem,
-): Promise<ReturnRequest<ZSaleItems[] | undefined>> {
-  try {
-    console.log('body updateSaleItemAction: ', body)
-    const data = await updateSaleItem(saleItemId, body)
-    return { ok: true, data: data.saleItems }
   } catch (e) {
     const normalized = handleRequestError(e, {
       rethrow: false,

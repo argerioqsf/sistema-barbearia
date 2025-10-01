@@ -4,6 +4,7 @@ import { ReturnList } from '@/types/general'
 import { fetchClients } from '@/features/clients/api'
 import type { QueryParams } from '@/types/http'
 import { ZUser } from '@/features/users/schemas'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function listClients(
   page?: string,
@@ -13,6 +14,6 @@ export async function listClients(
     const clients = await fetchClients(page, where)
     return { response: clients }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }

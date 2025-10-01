@@ -16,7 +16,7 @@ import ErrorState from '@/components/molecules/ErrorState'
 export default async function ListLeads({ searchParams }: SearchParams) {
   const responseProfile = await getProfile()
   const profile = responseProfile?.response
-  const errorRequestProfile = responseProfile.error?.request ?? null
+  const errorRequestProfile = responseProfile.error?.message ?? null
   if (errorRequestProfile) {
     return (
       <ErrorState
@@ -31,7 +31,7 @@ export default async function ListLeads({ searchParams }: SearchParams) {
 
   const responseSegments = await listSelectSegments()
   const segments = responseSegments?.response ?? []
-  const errorRequestSegment = responseSegments.error?.request ?? null
+  const errorRequestSegment = responseSegments.error?.message ?? null
   const optionsSegment: Option[] = segments.map((option) => {
     return {
       label: option.name,
@@ -41,7 +41,7 @@ export default async function ListLeads({ searchParams }: SearchParams) {
 
   const responseCourses = await listSelectCourses()
   const courses = responseCourses?.response ?? []
-  const errorRequestCourse = responseSegments.error?.request ?? null
+  const errorRequestCourse = responseSegments.error?.message ?? null
   const optionsCourse: Option[] = courses.map((option) => {
     return {
       label: option.name,
@@ -80,7 +80,7 @@ export default async function ListLeads({ searchParams }: SearchParams) {
   })
   const list = response?.response ?? null
   const count = response?.count ?? null
-  const errorRequest = response.error?.request ?? null
+  const errorRequest = response.error?.message ?? null
   const anyError =
     errorRequest ||
     errorRequestProfile ||

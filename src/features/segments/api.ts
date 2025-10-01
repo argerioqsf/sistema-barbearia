@@ -4,10 +4,14 @@ import {
   SegmentsListResponseSchema,
   SegmentDetailResponseSchema,
   SegmentsSelectResponseSchema,
+  type ZSegment,
 } from './schemas'
 // TODO: Remover segments do projeto
 import type { QueryParams } from '@/types/http'
-export async function fetchSegments(page?: string, where?: QueryParams) {
+export async function fetchSegments(
+  page?: string,
+  where?: QueryParams<ZSegment>,
+) {
   const token = await getBackendToken()
   const response = await api(
     '/segments',

@@ -9,7 +9,7 @@ import type { QueryParams } from '@/types/http'
 
 export async function fetchCategories(
   page?: string,
-  where?: QueryParams,
+  where?: QueryParams<ZCategory>,
 ): Promise<{ categories: ZCategory[]; count: number }> {
   const token = await getBackendToken()
   const response = await api(

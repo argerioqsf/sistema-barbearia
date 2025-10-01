@@ -1,6 +1,6 @@
-import { Profile, TemplateForm, Unit, User } from '@/types/general'
+import { Profile, TemplateForm, User } from '@/types/general'
 
-export const templateForm: TemplateForm<User | Profile | Unit> = {
+export const templateForm: TemplateForm<User | Profile> = {
   title: 'Cadastrar Usuário',
   textButton: 'Cadastrar',
   sections: [

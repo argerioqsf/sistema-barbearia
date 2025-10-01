@@ -6,6 +6,8 @@ import type { ZProduct as Product } from '@/features/products/schemas'
 import { api } from '@/data/api'
 import { getBackendToken } from '@/utils/authServer'
 import { revalidateTag } from 'next/cache'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
+import type { QueryParams } from '@/types/http'
 
 export async function listProducts(): Promise<ReturnList<Product>> {
   try {
@@ -13,25 +15,25 @@ export async function listProducts(): Promise<ReturnList<Product>> {
     return { response: items }
   } catch (error) {
     return {
-      error: {
-        request: error instanceof Error ? error.message : 'Error unknown',
-      },
+      error: toNormalizedError(
+        error instanceof Error ? error.message : 'Error unknown',
+      ),
     }
   }
 }
 
 export async function listProductsPaginated(
   page?: string,
-  where?: Partial<Product>,
+  where?: QueryParams<Product>,
 ): Promise<ReturnList<Product>> {
   try {
     const { items, count } = await fetchProducts(page, where)
     return { response: items, count }
   } catch (error) {
     return {
-      error: {
-        request: error instanceof Error ? error.message : 'Error unknown',
-      },
+      error: toNormalizedError(
+        error instanceof Error ? error.message : 'Error unknown',
+      ),
     }
   }
 }
@@ -42,9 +44,9 @@ export async function getProduct(id: string): Promise<ReturnGet<Product>> {
     return { response: product }
   } catch (error) {
     return {
-      error: {
-        request: error instanceof Error ? error.message : 'Error unknown',
-      },
+      error: toNormalizedError(
+        error instanceof Error ? error.message : 'Error unknown',
+      ),
     }
   }
 }

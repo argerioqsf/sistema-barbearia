@@ -10,17 +10,16 @@ import ErrorState from '@/components/molecules/ErrorState'
 import * as templates from './templates'
 
 export default async function DetailUsers({ id }: { id: string }) {
-  const response = await getUser(id)
-  const user = response.response
-  const errorRequest = response.error?.request ?? undefined
-  if (errorRequest) {
+  const result = await getUser(id)
+  if (!result.ok) {
     return (
       <ErrorState
         title="Erro ao carregar usuário"
-        message={String(errorRequest)}
+        message={String(result.error.message)}
       />
     )
   }
+  const user = result.data as unknown as User
   if (!user) {
     notFound()
   }
@@ -45,13 +44,21 @@ export default async function DetailUsers({ id }: { id: string }) {
     ...templates.templateForm.sections[1].boxes[0].fields[0].option,
     list: options,
   }
-  const responseUnits = await listSelectUnits()
-  const units = responseUnits?.response ?? []
+  const unitsResult = await listSelectUnits()
+  if (unitsResult.error) {
+    return (
+      <ErrorState
+        title="Erro ao carregar unidades"
+        message={String(unitsResult.error.message)}
+      />
+    )
+  }
+  const units = unitsResult.response ?? []
 
   templates.templateForm.sections[1].boxes[1].fields[0].option = {
     ...templates.templateForm.sections[1].boxes[1].fields[0].option,
     list: [...units],
-    values: user?.profile?.units?.map((unit) => unit.unit.id),
+    values: user.profile?.units?.map((association) => association.unit.id),
   }
 
   return (
@@ -67,7 +74,7 @@ export default async function DetailUsers({ id }: { id: string }) {
             defaultValues={user}
             actionWithId={updateUserProfile}
             pathSuccess="/dashboard/users"
-            errorRequest={errorRequest}
+            errorRequest={undefined}
             id={id}
           />
         </div>

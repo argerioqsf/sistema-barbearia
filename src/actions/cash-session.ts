@@ -8,6 +8,7 @@ import {
   closeCashSession as closeCashSessionAPI,
 } from '@/features/cash-session/api'
 import { ZCashSession } from '@/features/cash-session/schemas'
+import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 
 export async function getOpenCashSession(): Promise<ReturnGet<ZCashSession>> {
   try {
@@ -15,7 +16,7 @@ export async function getOpenCashSession(): Promise<ReturnGet<ZCashSession>> {
     const sessionOpen = sessions.find((s: ZCashSession) => !s.closedAt)
     return { response: sessionOpen }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 
@@ -24,7 +25,7 @@ export async function getCashSessions(): Promise<ReturnList<ZCashSession>> {
     const sessions = await getCashSessionAPI()
     return { response: sessions }
   } catch (error) {
-    return { error: { request: 'Error unknown' } }
+    return { error: toNormalizedError('Error unknown') }
   }
 }
 

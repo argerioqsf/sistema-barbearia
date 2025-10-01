@@ -10,7 +10,7 @@ export function showApiErrorToast(message: string) {
 
 export function showApiSuccessToast(message: string) {
   toast({
-    title: 'Erro na API',
+    title: '',
     description: message,
     variant: 'success',
   })

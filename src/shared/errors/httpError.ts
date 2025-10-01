@@ -1,4 +1,4 @@
-import { AppError } from '../../utils/error/appError'
+import { AppError } from './appError'
 
 export class HttpError extends AppError {
   constructor(status: number, message: string, details?: unknown) {

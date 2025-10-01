@@ -16,7 +16,7 @@ export default async function DetailIndicator({ id }: { id: string }) {
   if (!indicator) {
     notFound()
   }
-  const errorRequest = response.error?.request ?? undefined
+  const errorRequest = response.error?.message ?? undefined
 
   return (
     <ContainerDashboard>

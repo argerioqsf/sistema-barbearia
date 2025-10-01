@@ -4,10 +4,14 @@ import {
   CoursesListResponseSchema,
   CourseDetailResponseSchema,
   CoursesSelectResponseSchema,
+  type ZCourse,
 } from './schemas'
 import type { QueryParams } from '@/types/http'
 // TODO: Remover courses do projeto
-export async function fetchCourses(page?: string, where?: QueryParams) {
+export async function fetchCourses(
+  page?: string,
+  where?: QueryParams<ZCourse>,
+) {
   const token = await getBackendToken()
   const response = await api(
     '/courses',
