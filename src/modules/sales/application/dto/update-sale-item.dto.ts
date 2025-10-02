@@ -19,7 +19,7 @@ export const UpdateSaleItemCustomPriceDTO = base.extend({
 })
 
 export const UpdateSaleItemBarberDTO = base.extend({
-  barberId: UUID(),
+  barberId: UUID().nullable(),
 })
 
 export type UpdateSaleItemQuantityDTO = z.infer<

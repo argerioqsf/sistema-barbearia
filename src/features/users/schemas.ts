@@ -50,7 +50,7 @@ export type ZUser = z.infer<typeof UserSchema>
 
 export const bodyRegisterUserSchema = z.object({
   observation: z.string().optional(),
-  method: z.string().optional(),
+  method: z.enum(['CASH', 'PIX', 'CREDIT_CARD', 'DEBIT_CARD']).optional(),
   clientId: UUID().optional(),
 })
 export type BodyRegisterUser = z.infer<typeof bodyRegisterUserSchema>

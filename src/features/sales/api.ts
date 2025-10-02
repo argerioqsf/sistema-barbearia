@@ -9,6 +9,7 @@ import {
   BodyUpdateBarberSaleItem,
   bodyUpdateBarberSaleItemSchema,
   BodyUpdateClientSale,
+  bodyUpdateClientSaleSchema,
   BodyUpdateCouponSaleItem,
   bodyUpdateCouponSaleItemSchema,
   BodyUpdateCustomPriceSaleItem,
@@ -208,8 +209,10 @@ export async function removeOrAddSaleItems(
     throw new HttpError(response.status, message)
   }
   const json = await safeJson(response)
+  console.log('json', json)
   const parsed = SaleSchema.safeParse(json)
   if (!parsed.success) {
+    console.log('parsed.error', parsed.error)
     throw ValidationError.fromZod(
       parsed.error,
       'Invalid response remove or add saleItem',
@@ -264,7 +267,7 @@ export async function updateSaleCoupon(
 
 export async function paySale(id: string, body: BodyPaySale): Promise<ZSale> {
   const validatedFields = bodyPaySaleSchema.safeParse({
-    paymentMethod: body.paymentMethod,
+    method: body.method,
   })
   if (!validatedFields.success) {
     throw ValidationError.fromZod(
@@ -301,7 +304,7 @@ export async function updateSaleClient(
   id: string,
   body: BodyUpdateClientSale,
 ): Promise<ZSale> {
-  const validatedFields = bodyPaySaleSchema.safeParse({
+  const validatedFields = bodyUpdateClientSaleSchema.safeParse({
     clientId: body.clientId,
   })
   if (!validatedFields.success) {
@@ -495,6 +498,39 @@ export async function updateBarberSaleItem(
     throw ValidationError.fromZod(
       parsed.error,
       'Invalid response update custom barber item',
+    )
+  }
+  revalidateTag('sales')
+  revalidateTag(id)
+  return parsed.data
+}
+
+export async function updatePaymentMethod(
+  id: string,
+  method: string,
+): Promise<ZSale> {
+  const token = await getBackendToken()
+  const response = await api(`/sales/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ method }),
+  })
+
+  if (!response.ok) {
+    const message = await readMessage(response)
+    throw new HttpError(response.status, message)
+  }
+
+  const json = await safeJson(response)
+  const parsed = SaleSchema.safeParse(json)
+
+  if (!parsed.success) {
+    throw ValidationError.fromZod(
+      parsed.error,
+      'Invalid response update payment method',
     )
   }
   revalidateTag('sales')

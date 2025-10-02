@@ -14,8 +14,8 @@ export async function listServices(
   where?: QueryParams<Service>,
 ): Promise<ReturnList<Service>> {
   try {
-    const { services, count } = await fetchServices(page, where)
-    return { response: services, count }
+    const services = await fetchServices(page, where)
+    return { response: services, count: 0 }
   } catch (error) {
     return { error: toNormalizedError('Error unknown') }
   }

@@ -40,6 +40,7 @@ describe('createSale use case', () => {
       updateSaleItemQuantity: vi.fn(),
       updateSaleItemCustomPrice: vi.fn(),
       updateSaleItemBarber: vi.fn(),
+      updatePaymentMethod: vi.fn(),
     }
 
     const payload = {

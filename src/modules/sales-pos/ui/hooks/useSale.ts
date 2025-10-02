@@ -20,8 +20,10 @@ import {
   updateSaleItemQuantity as updateSaleItemQuantityAction,
   updateSaleItemCustomPrice as updateSaleItemCustomPriceAction,
   updateSaleItemBarber as updateSaleItemBarberAction,
+  updatePaymentMethod as updatePaymentMethodAction,
 } from '@/modules/sales/application'
 import { handleUnauthorized } from '@/shared/auth/handleUnauthorized'
+import { PaymentMethod } from '@/features/sales/schemas'
 
 interface AddItemPayload {
   saleId: string
@@ -32,6 +34,10 @@ interface UpdateItemActionPayload {
   saleId: string
   itemId: string
   payload: Record<string, unknown>
+}
+
+interface UpdateQuantityContext {
+  previousSale?: GetSaleOutput
 }
 
 export function useSale(saleId: string) {
@@ -58,11 +64,6 @@ export function useSale(saleId: string) {
   const invalidateSale = () =>
     queryClient.invalidateQueries({ queryKey: qk.sales.byId(saleId) })
 
-  // TODO: Implementar Optimistic Updates para melhorar a responsividade da UI.
-  // A ideia é atualizar a UI localmente (via `queryClient.setQueryData`) antes da confirmação do servidor.
-  // 1. `onMutate`: Cancela queries, salva o estado anterior e atualiza o cache otimistamente.
-  // 2. `onError`: Reverte para o estado anterior em caso de falha na mutação.
-  // 3. `onSettled`: Garante a invalidação (`invalidateQueries`) para sincronia final com o backend.
   const getMutationOptions = (successMessage: string) => ({
     onSuccess: () => {
       invalidateSale()
@@ -135,12 +136,23 @@ export function useSale(saleId: string) {
   const paySaleMutation = useMutation<
     GetSaleOutput['sale'],
     NormalizedError,
-    { saleId: string; paymentMethod: string }
+    { saleId: string; method: PaymentMethod }
   >({
-    mutationFn: makeMutationFn(({ saleId, paymentMethod }) =>
-      paySaleAction({ saleId, paymentMethod }),
+    mutationFn: makeMutationFn(({ saleId, method }) =>
+      paySaleAction({ saleId, method }),
     ),
     ...getMutationOptions('Pagamento registrado com sucesso'),
+  })
+
+  const updatePaymentMethodMutation = useMutation<
+    GetSaleOutput['sale'],
+    NormalizedError,
+    { saleId: string; method: PaymentMethod }
+  >({
+    mutationFn: makeMutationFn(({ saleId, method }) =>
+      updatePaymentMethodAction({ saleId, method }),
+    ),
+    ...getMutationOptions('Método de pagamento atualizado com sucesso'),
   })
 
   const updateItemCouponMutation = useMutation<
@@ -157,12 +169,13 @@ export function useSale(saleId: string) {
   const updateItemQuantityMutation = useMutation<
     GetSaleOutput['sale'],
     NormalizedError,
-    UpdateItemActionPayload
+    { itemId: string; quantity: number },
+    UpdateQuantityContext
   >({
-    mutationFn: makeMutationFn(({ itemId, payload }) =>
-      updateSaleItemQuantityAction({ saleItemId: itemId, ...payload }),
+    mutationFn: makeMutationFn(({ itemId, quantity }) =>
+      updateSaleItemQuantityAction({ saleItemId: itemId, quantity }),
     ),
-    ...getMutationOptions('Quantidade atualizada'),
+    ...getMutationOptions('Quantidade atualizada com sucesso'),
   })
 
   const updateItemCustomPriceMutation = useMutation<
@@ -197,17 +210,19 @@ export function useSale(saleId: string) {
   const applyCoupon = (couponCode: string) =>
     applyCouponMutation.mutateAsync({ saleId, couponCode })
   const removeCoupon = () => removeCouponMutation.mutateAsync({ saleId })
-  const paySale = (paymentMethod: string) =>
-    paySaleMutation.mutateAsync({ saleId, paymentMethod })
+  const paySale = (method: PaymentMethod) =>
+    paySaleMutation.mutateAsync({ saleId, method })
+  const setPaymentMethod = (method: PaymentMethod) =>
+    updatePaymentMethodMutation.mutateAsync({ saleId, method })
+
   const updateSaleItemCoupon = (
     itemId: string,
     payload: Record<string, unknown>,
   ) => updateItemCouponMutation.mutateAsync({ saleId, itemId, payload })
   const updateSaleItemQuantity = (itemId: string, quantity: number) =>
     updateItemQuantityMutation.mutateAsync({
-      saleId,
       itemId,
-      payload: { quantity },
+      quantity,
     })
   const updateSaleItemCustomPrice = (
     itemId: string,
@@ -237,6 +252,7 @@ export function useSale(saleId: string) {
     applyCoupon,
     removeCoupon,
     paySale,
+    setPaymentMethod,
     updateSaleItemCoupon,
     updateSaleItemQuantity,
     updateSaleItemCustomPrice,

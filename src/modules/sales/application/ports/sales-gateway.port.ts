@@ -11,6 +11,7 @@ import type {
   PaySaleDTO,
   CreateSaleDTO,
 } from '@/modules/sales/application/dto'
+import { UpdatePaymentMethodDTO } from '../dto/update-payment-method.dto'
 
 export interface SalesGatewayPort {
   getSale(id: string): Promise<Sale>
@@ -21,6 +22,7 @@ export interface SalesGatewayPort {
   applyCoupon(input: ApplyCouponDTO): Promise<Sale>
   removeCoupon(input: RemoveCouponDTO): Promise<Sale>
   paySale(input: PaySaleDTO): Promise<Sale>
+  updatePaymentMethod(input: UpdatePaymentMethodDTO): Promise<Sale>
   updateSaleItemCoupon(input: UpdateSaleItemCouponDTO): Promise<Sale>
   updateSaleItemQuantity(input: UpdateSaleItemQuantityDTO): Promise<Sale>
   updateSaleItemCustomPrice(input: UpdateSaleItemCustomPriceDTO): Promise<Sale>

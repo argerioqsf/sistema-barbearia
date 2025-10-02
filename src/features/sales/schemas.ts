@@ -3,8 +3,16 @@ import { ISODateTime, UUID } from '../schemas'
 import { SaleItemSchema } from '../saleItems/schema'
 import { CouponSchema } from '../coupons/schemas'
 import { UserSchema } from '../users/schemas'
+import { UnitSchema } from '../units/schemas'
 
-export const methodSchema = z.enum(['CASH'])
+export const paymentMethodSchema = z.enum([
+  'CASH',
+  'PIX',
+  'CREDIT_CARD',
+  'DEBIT_CARD',
+])
+
+export type PaymentMethod = z.infer<typeof paymentMethodSchema>
 
 export const SaleSchema = z.object({
   id: UUID(),
@@ -15,7 +23,7 @@ export const SaleSchema = z.object({
   couponId: UUID().nullable(), // no topo veio preenchido
   total: z.number(),
   gross_value: z.number(),
-  method: methodSchema, // adaptar se existirem outros métodos
+  method: paymentMethodSchema, // adaptar se existirem outros métodos
   paymentStatus: z.enum(['PENDING', 'PAID']), // adaptar se houver outros status
   createdAt: ISODateTime(),
   observation: z.string().nullable(),
@@ -25,6 +33,7 @@ export const SaleSchema = z.object({
   coupon: CouponSchema.nullable(),
   session: z.unknown().nullable(),
   transactions: z.array(z.unknown()),
+  unit: UnitSchema.optional().nullable(),
 })
 
 export const SalesListResponseSchema = z.array(SaleSchema)
@@ -37,7 +46,7 @@ export type ZUpdateSaleItemResponseSchema = z.infer<
 >
 export const formSchemaRegisterSale = z.object({
   observation: SaleSchema.shape.observation.optional(),
-  method: methodSchema,
+  method: paymentMethodSchema,
   clientId: SaleSchema.shape.clientId.optional(),
 })
 export type BodyRegisterSale = z.infer<typeof formSchemaRegisterSale>
@@ -90,7 +99,7 @@ export type BodyUpdateCustomPriceSaleItem = z.infer<
 >
 
 export const bodyUpdateBarberSaleItemSchema = z.object({
-  barberId: UUID(),
+  barberId: UUID().nullable(),
 })
 
 export type BodyUpdateBarberSaleItem = z.infer<
@@ -106,7 +115,7 @@ export type BodyUpdateQuantitySaleItem = z.infer<
 >
 
 export const bodyPaySaleSchema = z.object({
-  paymentMethod: z.string(),
+  method: paymentMethodSchema,
 })
 export type BodyPaySale = z.infer<typeof bodyPaySaleSchema>
 

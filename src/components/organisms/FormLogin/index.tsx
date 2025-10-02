@@ -46,6 +46,7 @@ const FormLogin = () => {
     <div className="w-full p-6 space-y-4 md:space-y-6 sm:p-8">
       <Form action={undefined} onSubmit={handleSubmit(onSubmit)}>
         <FormFieldText
+          classLabel="pl-6 text-slate-300"
           classInput={`bg-transparent py-3 pl-6 text-white ${
             errors.email && 'ring-red-500 focus:ring-red-500'
           }`}
@@ -57,6 +58,7 @@ const FormLogin = () => {
         />
 
         <FormFieldText
+          classLabel="pl-6 text-slate-300"
           classInput={`bg-transparent py-3 pl-6 text-white ${
             errors.password && 'ring-red-500 focus:ring-red-500'
           }`}
@@ -67,10 +69,10 @@ const FormLogin = () => {
           error={errors.password?.message}
         />
 
-        <div className="flex items-center py-4 justify-between">
+        <div className="flex items-center mt-4 md:mt-6 justify-between">
           <LinkDefault
             href="#"
-            className="text-sm font-medium text-primary-600 hover:underline text-white"
+            className="text-sm font-medium text-slate-300 hover:underline"
           >
             {sc('form_login.forgot_password')}
           </LinkDefault>
@@ -87,7 +89,8 @@ const FormLogin = () => {
         )}
 
         <Button
-          className="w-full bg-secondary-100 text-primary-100 py-3 font-bold"
+          variant="secondary"
+          className="w-full bg-secondary-100 text-secondary-foreground py-3 font-bold"
           type="submit"
         >
           {at('login')}

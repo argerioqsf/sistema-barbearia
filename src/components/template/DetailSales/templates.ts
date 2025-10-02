@@ -28,7 +28,8 @@ export const templateForm: TemplateForm<ZSale> = {
                 keyValue: 'value',
                 list: [
                   { value: 'CASH', label: 'Dinheiro' },
-                  { value: 'CARD', label: 'Cartão' },
+                  { value: 'CREDIT_CARD', label: 'Cartão de credito' },
+                  { value: 'DEBIT_CARD', label: 'Cartão de debito' },
                   { value: 'PIX', label: 'Pix' },
                 ],
               },
