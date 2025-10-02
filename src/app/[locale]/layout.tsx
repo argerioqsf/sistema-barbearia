@@ -3,7 +3,10 @@ import './global.css'
 import { Inter } from 'next/font/google'
 import ColorInitializer from '@/components/molecules/ColorInitialize'
 import { initColorScript } from '@/utils/colorScript'
-import { getMessages } from 'next-intl/server'
+import {
+  getMessages,
+  unstable_setRequestLocale as unstableSetRequestLocale,
+} from 'next-intl/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/auth/options'
 import NextTopLoader from 'nextjs-toploader'
@@ -17,6 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode
   params: { locale: string }
 }) {
+  unstableSetRequestLocale(locale)
   const messages = await getMessages()
   const session = await getServerSession(authOptions)
   return (
