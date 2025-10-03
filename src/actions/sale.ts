@@ -1,6 +1,6 @@
 'use server'
 
-import { ZSaleItems } from '@/features/saleItems/schema'
+import { ZSaleItem } from '@/features/saleItems/schema'
 import {
   fetchSale,
   createSale,
@@ -111,10 +111,10 @@ export async function patchSale(
 
 export async function addSaleItemsAction(
   id: string,
-  items: Partial<ZSaleItems>[],
+  items: Partial<ZSaleItem>[],
 ): Promise<ReturnRequest<ZSale>> {
   try {
-    await removeOrAddSaleItems(id, { addItemsIds: items })
+    await removeOrAddSaleItems(id, { addItems: items })
     const data = await fetchSale(id)
     return { ok: true, data }
   } catch (e) {
@@ -191,7 +191,7 @@ export async function paySaleAction(
 export async function updateCouponSaleItemAction(
   saleItemId: string,
   body: BodyUpdateCouponSaleItem,
-): Promise<ReturnRequest<ZSaleItems[] | undefined>> {
+): Promise<ReturnRequest<ZSaleItem[] | undefined>> {
   try {
     console.log('body updateCouponSaleItemAction: ', body)
     const data = await updateCouponSaleItem(saleItemId, body)
@@ -207,7 +207,7 @@ export async function updateCouponSaleItemAction(
 export async function updateQuantitySaleItemAction(
   saleItemId: string,
   body: BodyUpdateQuantitySaleItem,
-): Promise<ReturnRequest<ZSaleItems[] | undefined>> {
+): Promise<ReturnRequest<ZSaleItem[] | undefined>> {
   try {
     console.log('body updateQuantitySaleItemAction: ', body)
     const data = await updateQuantitySaleItem(saleItemId, body)
@@ -223,7 +223,7 @@ export async function updateQuantitySaleItemAction(
 export async function updateCustomPriceSaleItemAction(
   saleItemId: string,
   body: BodyUpdateCustomPriceSaleItem,
-): Promise<ReturnRequest<ZSaleItems[] | undefined>> {
+): Promise<ReturnRequest<ZSaleItem[] | undefined>> {
   try {
     console.log('body updateCustomPriceSaleItemAction: ', body)
     const data = await updateCustomPriceSaleItem(saleItemId, body)
@@ -239,7 +239,7 @@ export async function updateCustomPriceSaleItemAction(
 export async function updateBarberSaleItemAction(
   saleItemId: string,
   body: BodyUpdateBarberSaleItem,
-): Promise<ReturnRequest<ZSaleItems[] | undefined>> {
+): Promise<ReturnRequest<ZSaleItem[] | undefined>> {
   try {
     console.log('body updateBarberSaleItemAction: ', body)
     const data = await updateBarberSaleItem(saleItemId, body)

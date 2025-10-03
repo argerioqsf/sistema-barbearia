@@ -1,8 +1,9 @@
+import { paymentMethodSchema } from '@/features/sales/schemas'
 import { z } from 'zod'
 
 export const PaySaleDTO = z.object({
   saleId: z.string().uuid('saleId inválido'),
-  paymentMethod: z.string().min(1, 'Informe a forma de pagamento'),
+  method: paymentMethodSchema,
 })
 
 export type PaySaleDTO = z.infer<typeof PaySaleDTO>

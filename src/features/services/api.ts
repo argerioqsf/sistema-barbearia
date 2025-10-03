@@ -6,11 +6,12 @@ import {
   type ZService,
 } from './schemas'
 import type { QueryParams } from '@/types/http'
+import { ValidationError } from '@/shared/errors/validationError'
 
 export async function fetchServices(
   page?: string,
   where?: QueryParams<ZService>,
-): Promise<{ services: ZService[]; count: number }> {
+): Promise<ZService[]> {
   const token = await getBackendToken()
   const response = await api(
     '/services',
@@ -22,15 +23,15 @@ export async function fetchServices(
     page,
     where,
   )
+  console.log('response', response)
   if (!response.ok) throw new Error((await response.json()).message)
   const json = await response.json()
-  // Some backends may return an array directly
-  const arr = Array.isArray(json) ? json : json.services
-  const parsed = ServicesListResponseSchema.safeParse({
-    services: arr,
-    count: json?.count ?? 0,
-  })
-  if (!parsed.success) throw new Error('Invalid services list response')
+  console.log('json', json)
+  const parsed = ServicesListResponseSchema.safeParse(json)
+  if (!parsed.success) {
+    console.log('parsed.error', parsed.error)
+    throw ValidationError.fromZod(parsed.error, 'Invalid response list sales')
+  }
   return parsed.data
 }
 

@@ -1,6 +1,6 @@
-import type { ZSaleItems } from '@/features/saleItems/schema'
+import { ZSaleItem } from '@/features/saleItems/schema'
 import { SaleItem } from '@/modules/sales/domain'
 
-export function mapSaleItemsFromApi(payload?: ZSaleItems[]) {
+export function mapSaleItemsFromApi(payload?: ZSaleItem[]) {
   return (payload ?? []).map((item) => SaleItem.fromDTO(item))
 }

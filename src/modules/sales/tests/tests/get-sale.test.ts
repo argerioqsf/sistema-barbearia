@@ -4,6 +4,7 @@ import { getSale } from '@/modules/sales/application/queries/get-sale'
 import type { SalesGatewayPort } from '@/modules/sales/application/ports/sales-gateway.port'
 import { Sale } from '@/modules/sales/domain'
 import type { SaleDTO } from '@/modules/sales/domain'
+import { UpdatePaymentMethodDTO } from '../../application/dto/update-payment-method.dto'
 
 const sampleSaleDto: SaleDTO = {
   id: 'sale-1',
@@ -121,6 +122,10 @@ class FakeGateway implements SalesGatewayPort {
   }
 
   async updateSaleItemBarber(..._args: unknown[]): Promise<Sale> {
+    throw new Error('not implemented')
+  }
+
+  async updatePaymentMethod(input: UpdatePaymentMethodDTO): Promise<Sale> {
     throw new Error('not implemented')
   }
 }

@@ -8,15 +8,12 @@ import {
   BarbersListResponseSchema,
   type ZAppointment,
 } from './schemas'
+import { HttpError } from '@/shared/errors/httpError'
+import { ValidationError } from '@/shared/errors/validationError'
 
 export async function fetchAppointments(
   params?: QueryParams<ZAppointment>,
-): Promise<{
-  items: ZAppointment[]
-  count?: number
-  page?: number
-  perPage?: number
-}> {
+): Promise<ZAppointment[]> {
   const token = await getBackendToken()
   const response = await api(
     '/appointments',
@@ -28,11 +25,19 @@ export async function fetchAppointments(
     String(params?.page ?? ''),
     params,
   )
-  if (!response.ok) throw new Error(await readMessage(response))
+  if (!response.ok) {
+    const message = await readMessage(response)
+    throw new HttpError(response.status, message)
+  }
   const json = await safeJson(response)
-  if (Array.isArray(json))
-    return { items: json.map((i) => AppointmentSchema.parse(i)) }
-  return AppointmentsListResponseSchema.parse(json)
+  const parsed = AppointmentsListResponseSchema.safeParse(json)
+  if (!parsed.success) {
+    throw ValidationError.fromZod(
+      parsed.error,
+      'Invalid response list appointments',
+    )
+  }
+  return parsed.data
 }
 
 export async function createAppointment(body: JsonObject) {

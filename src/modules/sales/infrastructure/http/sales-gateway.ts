@@ -9,13 +9,13 @@ import {
   updateQuantitySaleItem,
   updateCustomPriceSaleItem,
   updateBarberSaleItem,
+  updatePaymentMethod as updatePaymentMethodApi,
 } from '@/features/sales/api'
 import type {
   BodyRemoveOrAddSaleItem,
   BodyUpdateSaleCoupon,
   ZUpdateSaleItemResponseSchema,
 } from '@/features/sales/schemas'
-import type { ZSaleItems } from '@/features/saleItems/schema'
 import type { SalesGatewayPort } from '@/modules/sales/application/ports/sales-gateway.port'
 import type {
   CreateSaleDTO,
@@ -31,16 +31,10 @@ import type {
 } from '@/modules/sales/application/dto'
 import { mapSaleFromApi } from '@/modules/sales/infrastructure/mappers/sale.mapper'
 import type { Sale } from '@/modules/sales/domain'
+import { UpdatePaymentMethodDTO } from '../../application/dto/update-payment-method.dto'
+import { ZSaleItem } from '@/features/saleItems/schema'
 
 export class SalesGateway implements SalesGatewayPort {
-  // TODO: Otimização futura
-  // - Alinhar com o backend para que TODAS as rotas de mutação (POST/PATCH/DELETE)
-  //   retornem a Sale atualizada no corpo da resposta.
-  // - Com isso, o gateway poderá sempre mapear diretamente a Sale do retorno,
-  //   eliminando quaisquer chamadas extras de GET.
-  // - Em paralelo, os hooks do React Query poderão adotar optimistic updates,
-  //   usando o valor retornado para atualizar o cache local antes da invalidação.
-  // - Por ora, confiamos nos revalidates do Next e na invalidação do React Query.
   async getSale(id: string): Promise<Sale> {
     const sale = await fetchSale(id)
     return mapSaleFromApi(sale)
@@ -57,7 +51,7 @@ export class SalesGateway implements SalesGatewayPort {
 
   async addItem(input: AddItemDTO): Promise<Sale> {
     const { saleId, ...rest } = input
-    const item: Partial<ZSaleItems> = {
+    const item: Partial<ZSaleItem> = {
       quantity: rest.quantity,
       price: rest.price ?? undefined,
       productId: rest.productId ?? undefined,
@@ -67,7 +61,7 @@ export class SalesGateway implements SalesGatewayPort {
       customPrice: rest.customPrice ?? undefined,
       barberId: rest.barberId ?? undefined,
     }
-    const payload: BodyRemoveOrAddSaleItem = { addItemsIds: [item] }
+    const payload: BodyRemoveOrAddSaleItem = { addItems: [item] }
     const saleUpdated = await removeOrAddSaleItems(saleId, payload)
     return mapSaleFromApi(saleUpdated)
   }
@@ -100,8 +94,13 @@ export class SalesGateway implements SalesGatewayPort {
 
   async paySale(input: PaySaleDTO): Promise<Sale> {
     const saleUpdated = await paySale(input.saleId, {
-      paymentMethod: input.paymentMethod,
+      method: input.method,
     })
+    return mapSaleFromApi(saleUpdated)
+  }
+
+  async updatePaymentMethod(input: UpdatePaymentMethodDTO): Promise<Sale> {
+    const saleUpdated = await updatePaymentMethodApi(input.saleId, input.method)
     return mapSaleFromApi(saleUpdated)
   }
 
@@ -136,7 +135,6 @@ export class SalesGateway implements SalesGatewayPort {
   private async refreshFromSaleItems(
     response: ZUpdateSaleItemResponseSchema,
   ): Promise<Sale> {
-    // Se a API já retornar a sale atualizada, aproveitamos para evitar GET extra.
     if (response.sale) {
       return mapSaleFromApi(response.sale)
     }
@@ -144,7 +142,6 @@ export class SalesGateway implements SalesGatewayPort {
     if (!saleId) {
       throw new Error('Unable to resolve sale id after item mutation')
     }
-    // Ainda precisamos buscar a sale quando a API retornar apenas itens.
     const updated = await fetchSale(saleId)
     return mapSaleFromApi(updated)
   }

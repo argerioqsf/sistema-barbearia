@@ -10,6 +10,7 @@ import {
 import { safeJson, readMessage } from '@/shared/http'
 
 import type { QueryParams } from '@/types/http'
+import { HttpError } from '@/shared/errors/httpError'
 
 export async function fetchProducts(
   page?: string,
@@ -21,7 +22,6 @@ export async function fetchProducts(
   perPage?: number
 }> {
   const token = await getBackendToken()
-  console.log('token', token)
   const withPaginate = where?.withCount ?? false
   const response = await api(
     '/products',
@@ -33,8 +33,10 @@ export async function fetchProducts(
     page,
     where,
   )
-  // console.log('response', response)
-  if (!response.ok) throw new Error(await readMessage(response))
+  if (!response.ok) {
+    const message = await readMessage(response)
+    throw new HttpError(response.status, message)
+  }
   const json = await safeJson(response)
   if (withPaginate) {
     const parsed = ProductsListPaginateResponseSchema.safeParse(json)

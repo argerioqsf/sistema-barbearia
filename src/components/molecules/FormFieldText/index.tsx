@@ -13,6 +13,7 @@ type FormFieldTextProps = {
   type: string
   placeholder?: string
   classInput?: string
+  classLabel?: string
   props?: UseFormRegisterReturn<string>
   error?: string
   hidden?: boolean
@@ -29,6 +30,7 @@ const FormFieldText = ({
   type,
   placeholder,
   classInput,
+  classLabel,
   props,
   error,
   value,
@@ -53,7 +55,9 @@ const FormFieldText = ({
 
   return (
     <div className={className}>
-      {label && <LabelForm htmlFor={props?.name} label={label} />}
+      {label && (
+        <LabelForm htmlFor={props?.name} label={label} className={classLabel} />
+      )}
       <div className="mt-2 flex flex-col justify-start items-center">
         <InputForm
           disabled={disabled}

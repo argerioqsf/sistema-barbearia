@@ -5,8 +5,55 @@ import { UserSchema } from '../users/schemas'
 import { DiscountSchema } from '../discounts/schema'
 import { ServiceSchema } from '../services/schemas'
 import { CouponSchema } from '../coupons/schemas'
-import { AppointmentSchema } from '../appointments/schemas'
+import { Appointment, AppointmentSchema } from '../appointments/schemas'
 import { PlanSchema } from '../plans/schema'
+
+// export type SaleItem = {
+//   id: ZodString
+//   saleId: ZodString
+//   serviceId: ZodNullable<ZodString>
+//   productId: ZodNullable<ZodString>
+//   quantity: ZodNumber
+//   barberId: ZodNullable<ZodString>
+//   appointmentId: ZodNullable<ZodString>
+//   couponId: ZodNullable<ZodString>
+//   planId: ZodNullable<ZodString>
+//   price: ZodNumber
+//   customPrice: ZodOptional<ZodNullable<ZodNumber>>
+//   porcentagemBarbeiro: ZodNullable<ZodNumber>
+//   commissionPaid: ZodBoolean
+//   service: ZodOptional<ZodNullable<typeof ServiceSchema>>
+//   product: ZodOptional<ZodNullable<typeof ProductSchema>>
+//   plan: ZodOptional<ZodNullable<typeof PlanSchema>>
+//   barber: ZodOptional<ZodNullable<typeof UserSchema>>
+//   coupon: ZodOptional<ZodNullable<typeof CouponSchema>>
+//   appointment: ZodOptional<ZodNullable<ZodObject<Appointment>>>
+//   discounts: ZodOptional<ZodArray<typeof DiscountSchema>>
+//   couponCode: ZodOptional<ZodNullable<ZodString>>
+// }
+export interface SaleItem {
+  id: string
+  saleId: string
+  serviceId: string | null
+  productId: string | null
+  quantity: number
+  barberId: string | null
+  appointmentId: string | null
+  couponId: string | null
+  planId: string | null
+  price: number
+  customPrice?: number | null
+  porcentagemBarbeiro: number | null
+  commissionPaid: boolean
+  service?: z.infer<typeof ServiceSchema> | null
+  product?: z.infer<typeof ProductSchema> | null
+  plan?: z.infer<typeof PlanSchema> | null
+  barber?: z.infer<typeof UserSchema> | null
+  coupon?: z.infer<typeof CouponSchema> | null
+  appointment?: Appointment | null // referencia que volta para Appointment
+  discounts?: Array<z.infer<typeof DiscountSchema>>
+  couponCode?: string | null
+}
 
 export const SaleItemSchema = z.object({
   id: UUID(),
@@ -22,14 +69,14 @@ export const SaleItemSchema = z.object({
   customPrice: z.number().nullable().optional(),
   porcentagemBarbeiro: z.number().nullable(),
   commissionPaid: z.boolean(),
-  service: ServiceSchema.nullable().optional(), // não há estrutura no exemplo
+  service: ServiceSchema.nullable().optional(),
   product: ProductSchema.nullable().optional(),
-  plan: PlanSchema.nullable().optional(), // não há estrutura no exemplo
+  plan: PlanSchema.nullable().optional(),
   barber: UserSchema.nullable().optional(),
-  coupon: CouponSchema.nullable().optional(), // não há estrutura no exemplo
-  appointment: AppointmentSchema.nullable().optional(), // não há estrutura no exemplo
+  coupon: CouponSchema.nullable().optional(),
+  appointment: AppointmentSchema.nullable().optional(),
   discounts: z.array(DiscountSchema).optional(),
   couponCode: z.string().nullable().optional(),
 })
 
-export type ZSaleItems = z.infer<typeof SaleItemSchema>
+export type ZSaleItem = z.infer<typeof SaleItemSchema>

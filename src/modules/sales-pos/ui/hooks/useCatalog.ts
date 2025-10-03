@@ -45,31 +45,47 @@ function useAuthQuery<
   return query
 }
 
-export function useProductsCatalog(search: string) {
+export function useProductsCatalog(
+  search: string,
+  options?: { enabled?: boolean },
+) {
   return useAuthQuery<ProductsCatalog>({
     queryKey: qk.products.list({ q: search }),
     queryFn: makeQueryFn(() => getProductsCatalog({ search })),
+    ...options,
   })
 }
 
-export function useServicesCatalog(search: string) {
+export function useServicesCatalog(
+  search: string,
+  options?: { enabled?: boolean },
+) {
   return useAuthQuery<ServicesCatalog>({
     queryKey: qk.services.list({ q: search }),
     queryFn: makeQueryFn(() => getServicesCatalog({ search })),
+    ...options,
   })
 }
 
-export function usePlansCatalog(search: string) {
+export function usePlansCatalog(
+  search: string,
+  options?: { enabled?: boolean },
+) {
   return useAuthQuery<PlansCatalog>({
     queryKey: ['plans', { q: search }],
     queryFn: makeQueryFn(() => getPlansCatalog({ search })),
+    ...options,
   })
 }
 
-export function useAppointmentsCatalog(date: string) {
+export function useAppointmentsCatalog(
+  date: string,
+  options?: { enabled?: boolean },
+) {
   return useAuthQuery<AppointmentsCatalog>({
     queryKey: qk.appointments.list({ date }),
     queryFn: makeQueryFn(() => getAppointmentsCatalog({ date })),
+    ...options,
   })
 }
 
