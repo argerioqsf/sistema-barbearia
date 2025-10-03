@@ -5,32 +5,9 @@ import { UserSchema } from '../users/schemas'
 import { DiscountSchema } from '../discounts/schema'
 import { ServiceSchema } from '../services/schemas'
 import { CouponSchema } from '../coupons/schemas'
-import { Appointment, AppointmentSchema } from '../appointments/schemas'
+import { AppointmentSchema, type Appointment } from '../appointments/schemas'
 import { PlanSchema } from '../plans/schema'
 
-// export type SaleItem = {
-//   id: ZodString
-//   saleId: ZodString
-//   serviceId: ZodNullable<ZodString>
-//   productId: ZodNullable<ZodString>
-//   quantity: ZodNumber
-//   barberId: ZodNullable<ZodString>
-//   appointmentId: ZodNullable<ZodString>
-//   couponId: ZodNullable<ZodString>
-//   planId: ZodNullable<ZodString>
-//   price: ZodNumber
-//   customPrice: ZodOptional<ZodNullable<ZodNumber>>
-//   porcentagemBarbeiro: ZodNullable<ZodNumber>
-//   commissionPaid: ZodBoolean
-//   service: ZodOptional<ZodNullable<typeof ServiceSchema>>
-//   product: ZodOptional<ZodNullable<typeof ProductSchema>>
-//   plan: ZodOptional<ZodNullable<typeof PlanSchema>>
-//   barber: ZodOptional<ZodNullable<typeof UserSchema>>
-//   coupon: ZodOptional<ZodNullable<typeof CouponSchema>>
-//   appointment: ZodOptional<ZodNullable<ZodObject<Appointment>>>
-//   discounts: ZodOptional<ZodArray<typeof DiscountSchema>>
-//   couponCode: ZodOptional<ZodNullable<ZodString>>
-// }
 export interface SaleItem {
   id: string
   saleId: string
@@ -74,7 +51,10 @@ export const SaleItemSchema = z.object({
   plan: PlanSchema.nullable().optional(),
   barber: UserSchema.nullable().optional(),
   coupon: CouponSchema.nullable().optional(),
-  appointment: AppointmentSchema.nullable().optional(),
+  appointment: z
+    .lazy(() => AppointmentSchema)
+    .nullable()
+    .optional(),
   discounts: z.array(DiscountSchema).optional(),
   couponCode: z.string().nullable().optional(),
 })
