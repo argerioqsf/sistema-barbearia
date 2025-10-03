@@ -4,7 +4,6 @@ import * as React from 'react'
 import { Plus, Minus } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 
 interface QuantityInputProps {
@@ -36,11 +35,11 @@ const QuantityInput = React.forwardRef<HTMLDivElement, QuantityInputProps>(
         >
           <Minus className="h-4 w-4" />
         </Button>
-        <Input
+        <input
           type="number"
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
-          className="h-8 w-12 rounded-md border text-center"
+          className="h-8 w-14 pl-2 rounded-md border text-center"
           disabled={disabled}
         />
         <Button

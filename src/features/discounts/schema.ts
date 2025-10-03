@@ -18,3 +18,5 @@ export const DiscountSchema = z.object({
   order: z.number(),
   saleItemId: UUID(),
 })
+
+export type ZDiscount = z.infer<typeof DiscountSchema>

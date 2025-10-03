@@ -1,8 +1,8 @@
-import type { ZSaleItems } from '@/features/saleItems/schema'
+import type { ZSaleItem } from '@/features/saleItems/schema'
 import type { OriginsDiscount } from '@/features/discounts/schema'
 import { Money } from '@/shared/domain/value-objects/money'
 
-export type SaleItemDTO = ZSaleItems
+export type SaleItemDTO = ZSaleItem
 
 function cloneSaleItem(dto: SaleItemDTO): SaleItemDTO {
   // structuredClone está disponível em runtimes modernos; mantemos fallback para testes

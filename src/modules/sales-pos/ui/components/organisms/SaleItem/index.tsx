@@ -5,7 +5,6 @@ import { Check, Trash2, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { CouponCard } from '@/components/molecules/CouponCard'
-import type { ZSaleItems } from '@/features/saleItems/schema'
 import type { ZUser } from '@/features/users/schemas'
 import { SaleItem as SaleItemEntity } from '@/modules/sales/domain'
 import { useSale } from '@/modules/sales-pos/ui/hooks/useSale'
@@ -14,9 +13,10 @@ import { useDebounce } from '@/hooks/use-debounce'
 import { QuantityInput } from '@/components/ui/quantity-input'
 import { CurrencyInput } from '@/components/ui/currency-input'
 import SelectForm from '@/components/atoms/SelectForm'
+import { ZSaleItem } from '@/features/saleItems/schema'
 
 interface SaleItemProps {
-  saleItem: ZSaleItems
+  saleItem: ZSaleItem
   barbers: ZUser[]
   saleId: string
 }
@@ -172,11 +172,6 @@ export function SaleItem({ saleItem, barbers, saleId }: SaleItemProps) {
             <p className="text-slate-500">
               Valor de tabela: {formatCurrency(pricingSnapshot.catalogUnit)}
             </p>
-            {pricingSnapshot.discountTotal > 0 && (
-              <p className="text-xs font-medium text-emerald-600">
-                (Desconto: -{formatCurrency(pricingSnapshot.discountTotal)})
-              </p>
-            )}
           </div>
         </div>
         <div className="flex w-full items-center justify-between gap-4 sm:w-auto sm:flex-col sm:items-end">
@@ -195,6 +190,11 @@ export function SaleItem({ saleItem, barbers, saleId }: SaleItemProps) {
             <p className="text-xl font-bold text-slate-900 sm:text-2xl">
               {formatCurrency(pricingSnapshot.netTotal)}
             </p>
+            {pricingSnapshot.discountTotal > 0 && (
+              <p className="text-xs font-medium text-emerald-600">
+                (Desconto: -{formatCurrency(pricingSnapshot.discountTotal)})
+              </p>
+            )}
           </div>
         </div>
       </div>

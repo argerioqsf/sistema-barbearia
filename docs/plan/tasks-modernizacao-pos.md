@@ -81,7 +81,7 @@ Este arquivo concentra o backlog executável. As explicações de arquitetura e 
     - [x] Métodos: `totals()` e `canPay()` prontos; `addItem`, `removeItem`, `updateItemQuantity`, `updateItemCustomPrice`, `applyCouponToItem` implementados com validações leves (regras complexas seguem no backend)
 - Serviços/mapeamento
   - [x] Mover totalização para o domínio (serviço agora delega para `Sale.totals()`)
-  - [x] Atualizar mapeadores `infrastructure/mappers/*` para converter `ZSale`/`ZSaleItems` → entidades + VOs
+  - [x] Atualizar mapeadores `infrastructure/mappers/*` para converter `ZSale`/`ZSaleItem` → entidades + VOs
   - [x] (Opcional) Mapeamento de volta domínio → API exposto via `Sale.toDTO()`
 - Gateway e casos de uso
   - [x] Atualizar `SalesPosGateway` para retornar entidades mapeadas (removido pass-through)

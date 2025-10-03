@@ -11,15 +11,10 @@ export async function getAppointmentsCatalog({
   date,
 }: {
   date?: string
-}): Promise<
-  Result<
-    { items: ZAppointment[]; count?: number; page?: number; perPage?: number },
-    NormalizedError
-  >
-> {
+}): Promise<Result<ZAppointment[], NormalizedError>> {
   try {
-    const { items, count, page, perPage } = await fetchAppointments({ date })
-    return ok({ items, count, page, perPage })
+    const appointments = await fetchAppointments({ date })
+    return ok(appointments)
   } catch (error) {
     return err(normalizeError(error))
   }

@@ -185,7 +185,7 @@ export async function removeOrAddSaleItems(
   body: BodyRemoveOrAddSaleItem,
 ): Promise<ZSale> {
   const validatedFields = bodyRemoveOrAddSaleItemSchema.safeParse({
-    addItemsIds: body.addItemsIds,
+    addItems: body.addItems,
     removeItemIds: body.removeItemIds,
   })
   if (!validatedFields.success) {
@@ -209,10 +209,8 @@ export async function removeOrAddSaleItems(
     throw new HttpError(response.status, message)
   }
   const json = await safeJson(response)
-  console.log('json', json)
   const parsed = SaleSchema.safeParse(json)
   if (!parsed.success) {
-    console.log('parsed.error', parsed.error)
     throw ValidationError.fromZod(
       parsed.error,
       'Invalid response remove or add saleItem',

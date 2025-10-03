@@ -16,7 +16,6 @@ import type {
   BodyUpdateSaleCoupon,
   ZUpdateSaleItemResponseSchema,
 } from '@/features/sales/schemas'
-import type { ZSaleItems } from '@/features/saleItems/schema'
 import type { SalesGatewayPort } from '@/modules/sales/application/ports/sales-gateway.port'
 import type {
   CreateSaleDTO,
@@ -33,6 +32,7 @@ import type {
 import { mapSaleFromApi } from '@/modules/sales/infrastructure/mappers/sale.mapper'
 import type { Sale } from '@/modules/sales/domain'
 import { UpdatePaymentMethodDTO } from '../../application/dto/update-payment-method.dto'
+import { ZSaleItem } from '@/features/saleItems/schema'
 
 export class SalesGateway implements SalesGatewayPort {
   async getSale(id: string): Promise<Sale> {
@@ -51,7 +51,7 @@ export class SalesGateway implements SalesGatewayPort {
 
   async addItem(input: AddItemDTO): Promise<Sale> {
     const { saleId, ...rest } = input
-    const item: Partial<ZSaleItems> = {
+    const item: Partial<ZSaleItem> = {
       quantity: rest.quantity,
       price: rest.price ?? undefined,
       productId: rest.productId ?? undefined,
@@ -61,7 +61,7 @@ export class SalesGateway implements SalesGatewayPort {
       customPrice: rest.customPrice ?? undefined,
       barberId: rest.barberId ?? undefined,
     }
-    const payload: BodyRemoveOrAddSaleItem = { addItemsIds: [item] }
+    const payload: BodyRemoveOrAddSaleItem = { addItems: [item] }
     const saleUpdated = await removeOrAddSaleItems(saleId, payload)
     return mapSaleFromApi(saleUpdated)
   }

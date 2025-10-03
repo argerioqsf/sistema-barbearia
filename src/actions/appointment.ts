@@ -18,8 +18,8 @@ export async function listAppointments(
   try {
     const params: QueryParams<Appointment> | undefined =
       page || where ? { ...(where ?? {}), page } : undefined
-    const { items, count } = await fetchAppointments(params)
-    return { response: items as Appointment[], count }
+    const appointments = await fetchAppointments(params)
+    return { response: appointments, count: 0 }
   } catch (e) {
     return {
       error: toNormalizedError(

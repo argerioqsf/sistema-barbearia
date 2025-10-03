@@ -52,7 +52,7 @@ export const formSchemaRegisterSale = z.object({
 export type BodyRegisterSale = z.infer<typeof formSchemaRegisterSale>
 
 export const bodyRemoveOrAddSaleItemSchema = z.object({
-  addItemsIds: z.array(SaleItemSchema.partial()).optional(),
+  addItems: z.array(SaleItemSchema.partial()).optional(),
   removeItemIds: z.array(UUID()).optional(),
 })
 

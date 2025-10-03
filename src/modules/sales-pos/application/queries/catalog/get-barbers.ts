@@ -3,8 +3,8 @@
 import type { NormalizedError } from '@/shared/errors/types'
 import { ok, err, type Result } from '@/shared/result'
 import { normalizeError } from '@/shared/errors/normalizeError'
-import { BarberSchema } from '@/features/appointments/schemas'
 import { fetchAppointmentBarbers } from '@/features/appointments/api'
+import { BarberSchema } from '@/features/barbers/schemas'
 
 // TODO: Migrar para módulo de domínio `barbers` (ex.: src/modules/barbers/application/queries/list-barbers.ts)
 export async function getBarbersCatalog(): Promise<

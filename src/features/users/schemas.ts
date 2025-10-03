@@ -29,7 +29,7 @@ export const UserSchema = z
     versionToken: z.number(),
     versionTokenInvalidate: z.number().nullable(),
     createdAt: ISODateTime(),
-    profile: ProfileSchema,
+    profile: ProfileSchema.optional(),
   })
   .passthrough()
 

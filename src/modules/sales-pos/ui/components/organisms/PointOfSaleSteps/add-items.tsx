@@ -54,7 +54,7 @@ export function AddItems({ saleId, prevStep, nextStep }: AddItemsProps) {
     products: productsQuery.data?.items ?? [],
     services: servicesQuery.data?.items ?? [],
     plans: plansQuery.data?.items ?? [],
-    appointments: appointmentsQuery.data?.items ?? [],
+    appointments: appointmentsQuery.data ?? [],
   }
 
   const isLoading =
