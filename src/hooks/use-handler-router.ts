@@ -5,11 +5,11 @@ export const useHandlerRouter = () => {
   const paths = usePathname()
   const pushRouter = (path?: string) => {
     const pathNames = paths.split('/').filter((path) => path)
-    return router.push(`/${pathNames[0]}/${path}`)
+    return router.push(`/${pathNames[0]}${path}`)
   }
   const generatePath = (path?: string) => {
     const pathNames = paths.split('/').filter((path) => path)
-    const newPath = `/${pathNames[0]}/${path}`
+    const newPath = `/${pathNames[0]}${path}`
     return newPath
   }
 
