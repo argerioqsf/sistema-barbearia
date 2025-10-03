@@ -148,7 +148,7 @@ export async function registerWorkHour(
     revalidateTag('users')
     return { ok: true, errors: {} }
   } catch {
-    return { errors: { request: 'Failed to create work-hour' } }
+    return { errors: { request: 'Failed to create work-hourr' } }
   }
 }
 
