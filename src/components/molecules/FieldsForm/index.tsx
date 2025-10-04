@@ -2,13 +2,14 @@ import { InputForm } from '@/components/atoms'
 import { FormFieldText } from '@/components/molecules'
 import FormFieldSelect from '@/components/molecules/FormFieldSelect'
 import SelectFormWithSearch from '@/components/molecules/SelectFormWithSearch'
-import { FieldsTemplateForm, InitialState, Roles } from '@/types/general'
+import { FieldsTemplateForm, InitialState } from '@/types/general'
 import { checkUserPermissions } from '@/utils/checkUserPermissions'
 import { Dispatch, SetStateAction } from 'react'
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 import FormFieldImage from '../FormFieldImage'
 import grid from '../../../constants/grid.json'
+import { RoleName } from '@/features/roles/schemas'
 
 type PropsFieldsForm<T> = {
   field: FieldsTemplateForm<T>
@@ -16,7 +17,7 @@ type PropsFieldsForm<T> = {
   setFormDataExtra: Dispatch<SetStateAction<FormData>>
   register: UseFormRegister<T & FieldValues>
   formDataExtra: FormData
-  roleUser?: keyof Roles
+  roleUser?: RoleName
 }
 
 export default function FieldsForm<T>({

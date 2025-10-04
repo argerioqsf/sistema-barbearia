@@ -1,7 +1,7 @@
 import { ItemMenu } from '@/config/siteConfig'
-import { Role } from '@/types/general'
 import { NextRequest } from 'next/server'
 import { checkUserPermissions } from './checkUserPermissions'
+import { RoleName } from '@/features/roles/schemas'
 
 function getCurrentPage(
   items: ItemMenu[],
@@ -39,7 +39,7 @@ function getCurrentPage(
 
 export const verifyPageRole = (
   items: ItemMenu[],
-  roleUser: Role,
+  roleUser: RoleName,
   request: NextRequest,
 ): boolean | null => {
   const currentPage = getCurrentPage(items, request)

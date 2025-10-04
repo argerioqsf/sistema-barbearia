@@ -1,4 +1,5 @@
-import { Organization, Profile, TemplateForm, User } from '@/types/general'
+import { Profile } from '@/features/profile/schemas'
+import { Organization, TemplateForm, User } from '@/types/general'
 
 export const templateForm: TemplateForm<Profile | User> = {
   title: 'Perfil',

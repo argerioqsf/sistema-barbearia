@@ -85,6 +85,13 @@ export type ExtractProfile = {
   createdAt: string
 }
 
+export type OpeningHours = {
+  id: string
+  weekDay: number
+  startHour: string
+  endHour: string
+}
+
 export type Profile = {
   id: string
   phone: string
@@ -101,7 +108,6 @@ export type Profile = {
   units?: { unit: Unit }[] | []
   amountToReceive?: number | string
   totalAmount?: number
-  extract_profile?: ExtractProfile[]
   contractLink?: string
   contractSent: boolean
   // Optional availability data returned by GET /profile
@@ -116,12 +122,7 @@ export type Profile = {
     startHour: string
     endHour: string
   }>
-  openingHours?: Array<{
-    id: string
-    weekDay: number
-    startHour: string
-    endHour: string
-  }>
+  openingHours?: OpeningHours[]
 }
 
 export type ProfileProps = keyof Profile

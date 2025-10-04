@@ -237,9 +237,11 @@ function getCatalogKey(item: ZProduct | ZService | ZPlan | ZAppointment) {
   return item.id
 }
 
-function getCatalogTitle(item: ZProduct | ZService | ZPlan | ZAppointment) {
+function getCatalogTitle(
+  item: ZProduct | ZService | ZPlan | ZAppointment,
+): string {
   if ('name' in item && item.name) {
-    return item.name
+    return item.name as string
   }
   if ('date' in item && item.date) {
     return `Agendamento ${item.date}`

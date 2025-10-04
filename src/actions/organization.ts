@@ -3,7 +3,7 @@
 import { formSchemaUpdateOrganization } from '@/components/template/ProfileDetail/schema'
 import { api } from '@/data/api'
 import { Errors, InitialState, Organization } from '@/types/general'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
+import { getBackendToken } from '@/utils/authServer'
 import { revalidateTag } from 'next/cache'
 
 export async function updateOrganization(
@@ -21,8 +21,8 @@ export async function updateOrganization(
 
   if (validatedFields.success) {
     try {
-      const TOKEN_SIM = getTokenFromCookieServer()
-      if (!TOKEN_SIM) {
+      const token = await getBackendToken()
+      if (!token) {
         return {
           errors: { request: 'Erro de credenciais' },
         }
@@ -31,7 +31,7 @@ export async function updateOrganization(
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN_SIM}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           name: formData.get('name'),

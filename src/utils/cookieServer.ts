@@ -1,72 +1,19 @@
 import { cookies } from 'next/headers'
 import cookiesName from '@/constants/cookies_name.json'
-import { User } from '@/types/general'
-import { EnumLike } from 'zod'
+import { logger } from '@/shared/logger'
 
-const getCookie = (
-  name: string,
-  json?: boolean,
-): string | EnumLike | User | undefined => {
-  let value = cookies().get(name)?.value
-  if (value && json) {
-    value = JSON.parse(value)
-    return value
-  }
-  return value
-}
-
-const setCookie = (name: string, value: string) => {
-  cookies().set({
-    name,
-    value,
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-  })
-}
-
-export const getTokenFromCookieServer = () => {
-  return getCookie(cookiesName.TOKEN_SIM_COOKIE)
-}
-
-export const getUserCookieServer = (): User => {
-  return getCookie(cookiesName.USER_SIM_COOKIE, true) as User
-}
-
-export const getRoleUserFromCookieServer = () => {
-  const user = getUserCookieServer()
-  return user?.profile?.role
-}
-
-export const setTokenInCookieServer = (token: string) => {
-  setCookie(cookiesName.TOKEN_SIM_COOKIE, token)
-}
-
-export const setUserInCookieServer = (user: User) => {
-  setCookie(cookiesName.USER_SIM_COOKIE, JSON.stringify(user))
-}
-
-export const getRolesFromCookieServer = (): EnumLike => {
-  return getCookie(cookiesName.ROLES_SIM_COOKIE, true) as EnumLike
-}
-
-export const setRolesInCookieServer = (roles: EnumLike) => {
-  setCookie(cookiesName.ROLES_SIM_COOKIE, JSON.stringify(roles))
-}
-
+// TODO: atualizar next-auth para nao precisar mais limpar
+// os cookie manualmente no logout
 export async function clearAuthCookiesServer() {
   const jar = await cookies()
   try {
     jar.delete(cookiesName.TOKEN_SIM_COOKIE)
     jar.delete(cookiesName.USER_SIM_COOKIE)
     jar.delete(cookiesName.ROLES_SIM_COOKIE)
-    // Best-effort: clear common NextAuth cookies (names vary by env)
     jar.delete('next-auth.session-token')
     jar.delete('__Secure-next-auth.session-token')
     jar.delete('next-auth.csrf-token')
-    console.log('Ok clearAuthCookiesServer')
   } catch (e) {
-    console.log('Erro clearAuthCookiesServer error: ', e)
+    logger.debug(e, 'Erro clearAuthCookiesServer')
   }
 }

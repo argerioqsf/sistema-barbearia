@@ -1,64 +1,32 @@
-import { Role } from '@/types/general'
+import { RoleName } from '@/features/roles/schemas'
 
 const verifyPermissionGeneral = {
-  all: (roleUser: string) =>
-    [
-      'coordinator',
-      'administrator',
-      'indicator',
-      'consultant',
-      'financial',
-    ].includes(roleUser),
+  all: (roleUser: RoleName) => ['OWNER', 'ADMIN'].includes(roleUser),
 }
 
 const verifyPermissionUser = {
-  'user.edit.role': (roleUser: string) => ['administrator'].includes(roleUser),
-  'user.edit.own.active': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
-  'user.view': (roleUser: string) => ['administrator'].includes(roleUser),
-  'user.detail': (roleUser: string) => ['administrator'].includes(roleUser),
-  'user.register': (roleUser: string) => ['administrator'].includes(roleUser),
-  'user.list': (roleUser: string) => ['administrator'].includes(roleUser),
-  'user.list.disabled': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
-  'user.resetPassword': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
+  'user.edit.role': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'user.edit.own.active': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'user.view': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'user.detail': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'user.register': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'user.list': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'user.list.disabled': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'user.resetPassword': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
 }
 
 const verifyPermissionUnit = {
-  'unit.view': (roleUser: string) => ['administrator'].includes(roleUser),
-  'unit.detail': (roleUser: string) => ['administrator'].includes(roleUser),
-  'unit.register': (roleUser: string) => ['administrator'].includes(roleUser),
-  'unit.list': (roleUser: string) => ['administrator'].includes(roleUser),
-}
-
-const verifyPermissionCourse = {
-  'course.view': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-  'course.detail': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-  'course.register': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-  'course.list': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-}
-
-const verifyPermissionSegment = {
-  'segment.view': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-  'segment.detail': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-  'segment.register': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-  'segment.list': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
+  'unit.view': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'unit.detail': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'unit.register': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'unit.list': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
 }
 
 const verifyPermissionProfile = {
-  'profile.view': (roleUser: string) =>
+  'profile.view': (roleUser: RoleName) =>
     [
-      'coordinator',
-      'administrator',
+      'OWNER',
+      'ADMIN',
       'indicator',
       'consultant',
       'financial',
@@ -67,221 +35,82 @@ const verifyPermissionProfile = {
 }
 
 const verifyPermissionFile = {
-  'file.create': (roleUser: string) => ['administrator'].includes(roleUser),
-  'file.delete': (roleUser: string) => ['administrator'].includes(roleUser),
-}
-
-const verifyPermissionAuxiliary = {
-  'auxiliary.view': (roleUser: string) => ['auxiliary'].includes(roleUser),
-}
-
-const verifyPermissionIndicator = {
-  'indicator.view': (roleUser: string) =>
-    ['administrator', 'coordinator', 'indicator'].includes(roleUser),
-  'indicator.list': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-  'indicator.register': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-  'indicator.detail': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-  'indicator.monitoring.view': (roleUser: string) =>
-    ['indicator'].includes(roleUser),
-  'indicator.files.view': (roleUser: string) =>
-    ['indicator', 'administrator'].includes(roleUser),
-  'indicator.leads.list': (roleUser: string) =>
-    ['indicator'].includes(roleUser),
-  'indicator.pendingPayment.list': (roleUser: string) =>
-    ['administrator', 'financial'].includes(roleUser),
-}
-
-const verifyPermissionConsultant = {
-  'consultant.view': (roleUser: string) =>
-    ['consultant', 'administrator', 'financial'].includes(roleUser),
-  'consultant.monitoring.view': (roleUser: string) =>
-    ['consultant'].includes(roleUser),
-  'consultant.leads.list': (roleUser: string) =>
-    ['consultant'].includes(roleUser),
-  'consultant.pendingPayment.list': (roleUser: string) =>
-    ['administrator', 'financial'].includes(roleUser),
-}
-
-const verifyPermissionIndicatorRequest = {
-  'indicator_request.list': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-}
-
-const verifyPermissionLead = {
-  'lead.view': (roleUser: string) =>
-    [
-      'administrator',
-      'coordinator',
-      'consultant',
-      'secretary',
-      'auxiliary',
-    ].includes(roleUser),
-  'lead.list': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-  'lead.register': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
-  'lead.update': (roleUser: string) =>
-    ['administrator', 'coordinator', 'indicator', 'auxiliary'].includes(
-      roleUser,
-    ),
-  'lead.detail': (roleUser: string) =>
-    [
-      'administrator',
-      'coordinator',
-      'indicator',
-      'consultant',
-      'auxiliary',
-    ].includes(roleUser),
-  'lead.archived.list': (roleUser: string) =>
-    ['administrator', 'coordinator', 'auxiliary'].includes(roleUser),
-  'lead.firstContact.list': (roleUser: string) =>
-    ['administrator', 'auxiliary'].includes(roleUser),
-  'lead.pegar.set': (roleUser: string) => ['consultant'].includes(roleUser),
-  'lead.documents.set': (roleUser: string) =>
-    ['administrator', 'secretary'].includes(roleUser),
-  // Form
-  'lead.form.name': (roleUser: string) =>
-    ['administrator', 'auxiliary', 'consultant'].includes(roleUser),
-  'lead.form.phone': (roleUser: string) =>
-    ['administrator', 'consultant', 'auxiliary'].includes(roleUser),
-  'lead.form.document': (roleUser: string) =>
-    ['administrator', 'consultant'].includes(roleUser),
-  'lead.form.email': (roleUser: string) =>
-    ['administrator', 'consultant'].includes(roleUser),
-  'lead.form.city': (roleUser: string) =>
-    ['administrator', 'auxiliary'].includes(roleUser),
-  'lead.form.indicator': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
-  'lead.form.consultant': (roleUser: string) =>
-    ['auxiliary', 'administrator'].includes(roleUser),
-  'lead.form.timeline': (roleUser: string) =>
-    ['administrator', 'auxiliary', 'consultant'].includes(roleUser),
-  'lead.form.segment': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
-  'lead.form.course': (roleUser: string) =>
-    ['administrator', 'auxiliary', 'consultant'].includes(roleUser),
-  'lead.form.unit': (roleUser: string) => ['administrator'].includes(roleUser),
-  'lead.form.archived': (roleUser: string) =>
-    ['administrator', 'coordinator', 'auxiliary'].includes(roleUser),
-  'lead.form.matriculation': (roleUser: string) =>
-    ['consultant', 'administrator'].includes(roleUser),
-  'lead.form.released': (roleUser: string) =>
-    ['administrator', 'auxiliary'].includes(roleUser),
-  'lead.form.shift': (roleUser: string) =>
-    ['administrator', 'auxiliary', 'consultant'].includes(roleUser),
-  'lead.form.course_modality': (roleUser: string) =>
-    ['administrator', 'consultant'].includes(roleUser),
-  'lead.form.education': (roleUser: string) =>
-    ['administrator', 'auxiliary', 'consultant'].includes(roleUser),
-  'lead.form.personalityTraits': (roleUser: string) =>
-    ['administrator', 'consultant'].includes(roleUser),
-  'lead.form.class': (roleUser: string) =>
-    ['administrator', 'consultant'].includes(roleUser),
-  'lead.form.birthday': (roleUser: string) =>
-    ['administrator', 'consultant'].includes(roleUser),
-}
-
-const verifyPermissionNewLead = {
-  'new_lead.list': (roleUser: string) =>
-    ['administrator', 'coordinator', 'consultant'].includes(roleUser),
-}
-
-const verifyPermissionConfirmedLead = {
-  'confirmed_lead.list': (roleUser: string) =>
-    ['administrator', 'coordinator', 'secretary'].includes(roleUser),
-}
-
-const verifyPermissionWaitingConfirmedLead = {
-  'waiting_confirmation_lead.list': (roleUser: string) =>
-    ['administrator', 'coordinator'].includes(roleUser),
+  'file.create': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'file.delete': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
 }
 
 const verifyPermissionDashboard = {
-  'dashboard.view': (roleUser: string) =>
-    [
-      'coordinator',
-      'administrator',
-      'financial',
-      'secretary',
-      'indicator',
-      // New roles supported in the system
-      'barber',
-      'manager',
-      'receptionist',
-      'ADMIN',
-    ].includes(roleUser),
+  'dashboard.view': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['OWNER', 'BARBER', 'MANAGER', 'ADMIN']
+    return roles.includes(roleUser)
+  },
 }
 
 const verifyPermissionOrganization = {
-  'organization.detail': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
-  'organization.update': (roleUser: string) =>
-    ['administrator'].includes(roleUser),
+  'organization.detail': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['ADMIN']
+    return roles.includes(roleUser)
+  },
+  'organization.update': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['ADMIN']
+    return roles.includes(roleUser)
+  },
 }
 
 const verifyPermissionProducts = {
-  'products.view': (roleUser: Role) => {
-    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+  'products.view': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['ADMIN', 'BARBER', 'MANAGER']
     return roles.includes(roleUser)
   },
-  'products.list': (roleUser: Role) => {
-    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+  'products.list': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['ADMIN', 'BARBER', 'MANAGER']
     return roles.includes(roleUser)
   },
-  'products.register': (roleUser: Role) => {
-    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+  'products.register': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['ADMIN', 'BARBER', 'MANAGER']
     return roles.includes(roleUser)
   },
 }
 
 const verifyPermissionCoupons = {
-  'coupons.view': (roleUser: Role) => {
-    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+  'coupons.view': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['ADMIN', 'BARBER', 'MANAGER']
     return roles.includes(roleUser)
   },
-  'coupons.list': (roleUser: Role) => {
-    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+  'coupons.list': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['ADMIN', 'BARBER', 'MANAGER']
     return roles.includes(roleUser)
   },
-  'coupons.register': (roleUser: Role) => {
-    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+  'coupons.register': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['ADMIN', 'BARBER', 'MANAGER']
     return roles.includes(roleUser)
   },
 }
 
 const verifyPermissionAppointments = {
-  'appointments.view': (roleUser: Role) => {
-    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+  'appointments.view': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['ADMIN', 'BARBER', 'MANAGER']
     return roles.includes(roleUser)
   },
 }
 
 const verifyPermissionCashier = {
-  'cashier.view': (roleUser: Role) => {
-    const roles: Role[] = [
-      'ADMIN',
-      'administrator',
-      'barber',
-      'manager',
-      'receptionist',
-    ]
+  'cashier.view': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['ADMIN', 'ADMIN', 'BARBER', 'MANAGER']
     return roles.includes(roleUser)
   },
 }
 
 const verifyPermissionSales = {
-  'sales.view': (roleUser: Role) => {
-    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+  'sales.view': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['ADMIN', 'BARBER', 'MANAGER']
     return roles.includes(roleUser)
   },
 }
 
 const verifyPermissionSettings = {
-  'settings.view': (roleUser: Role) => {
-    const roles: Role[] = ['administrator', 'barber', 'manager', 'receptionist']
+  'settings.view': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['ADMIN', 'BARBER', 'MANAGER']
     return roles.includes(roleUser)
   },
 }
@@ -290,20 +119,10 @@ const verifyPermission = {
   ...verifyPermissionGeneral,
   ...verifyPermissionUser,
   ...verifyPermissionUnit,
-  ...verifyPermissionCourse,
-  ...verifyPermissionSegment,
   ...verifyPermissionProfile,
-  ...verifyPermissionIndicator,
-  ...verifyPermissionIndicatorRequest,
-  ...verifyPermissionLead,
-  ...verifyPermissionNewLead,
-  ...verifyPermissionConfirmedLead,
-  ...verifyPermissionWaitingConfirmedLead,
   ...verifyPermissionDashboard,
-  ...verifyPermissionConsultant,
   ...verifyPermissionOrganization,
   ...verifyPermissionFile,
-  ...verifyPermissionAuxiliary,
   ...verifyPermissionProducts,
   ...verifyPermissionCoupons,
   ...verifyPermissionAppointments,
@@ -316,7 +135,8 @@ export type UserAction = keyof typeof verifyPermission
 
 export function checkUserPermissions(
   userAction: UserAction,
-  roleUser: Role,
+  roleUser?: RoleName,
 ): boolean {
+  if (!roleUser) return false
   return verifyPermission[userAction](roleUser)
 }

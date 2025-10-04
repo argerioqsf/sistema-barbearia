@@ -168,10 +168,6 @@ export async function updateSale(id: string, body: FormData): Promise<ZSale> {
     const message = await readMessage(response)
     throw new HttpError(response.status, message)
   }
-  if (!response.ok) {
-    const message = await readMessage(response)
-    throw new HttpError(response.status, message)
-  }
   const json = await safeJson(response)
   const parsed = SaleSchema.safeParse(json)
   if (!parsed.success) {

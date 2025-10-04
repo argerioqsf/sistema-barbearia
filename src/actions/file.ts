@@ -3,10 +3,10 @@
 import { formSchemaRegisterFile } from '@/components/template/RegisterFiles/schema'
 import { api } from '@/data/api'
 import { Errors, FileCustom, InitialState, ReturnList } from '@/types/general'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 import { fetchFiles } from '@/features/files/api'
 import { toNormalizedError } from '@/shared/errors/to-normalized-error'
+import { getBackendToken } from '@/utils/authServer'
 
 export async function getFiles(): Promise<ReturnList<FileCustom>> {
   try {
@@ -27,8 +27,8 @@ export async function registerFile(
 
   if (validatedFields.success) {
     try {
-      const TOKEN_SIM = getTokenFromCookieServer()
-      if (!TOKEN_SIM) {
+      const token = await getBackendToken()
+      if (!token) {
         return {
           errors: { request: 'Erro de credenciais' },
         }
@@ -36,7 +36,7 @@ export async function registerFile(
       const response = await api(`/upload`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${TOKEN_SIM}`,
+          Authorization: `Bearer ${token}`,
         },
         body: formData,
       })
@@ -73,7 +73,7 @@ export async function deleteFile(
 ): Promise<InitialState<FileCustom>> {
   try {
     if (!id) return { errors: { request: 'Id undefined' } }
-    const token = getTokenFromCookieServer()
+    const token = await getBackendToken()
     const response = await api(`/uploads/${id}`, {
       method: 'DELETE',
       headers: {

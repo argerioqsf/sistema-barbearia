@@ -1,13 +1,13 @@
 'use client'
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import type { User, Role } from '@/types/general'
-import { normalizeRole } from '@/utils/normalizeRole'
 import { useSession } from 'next-auth/react'
+import { RoleName } from '@/features/roles/schemas'
+import { AuthUser } from '@/types/next-auth'
 
 type AuthContextType = {
-  user?: User
-  role?: Role
+  user?: AuthUser
+  role?: RoleName
 }
 
 const AuthContext = createContext<AuthContextType>({})
@@ -17,19 +17,19 @@ export function AuthProvider({
   initialUser,
 }: {
   children: React.ReactNode
-  initialUser?: User
+  initialUser?: AuthUser
 }) {
-  const [user, setUser] = useState<User | undefined>(initialUser)
-  const [role, setRole] = useState<Role | undefined>(
-    normalizeRole(initialUser?.profile?.role),
+  const [user, setUser] = useState<AuthUser | undefined>(initialUser)
+  const [role, setRole] = useState<RoleName | undefined>(
+    initialUser?.profile?.role?.name,
   )
   const { data } = useSession()
   useEffect(() => {
     if (data?.user) {
-      setUser(data.user as User)
-      const sessionUser = data.user as Partial<User>
-      const roleRaw = sessionUser?.profile?.role
-      setRole(normalizeRole(roleRaw))
+      setUser(data.user)
+      const sessionUser = data.user
+      const roleRaw = sessionUser?.profile?.role?.name
+      setRole(roleRaw)
     }
   }, [data?.user])
 

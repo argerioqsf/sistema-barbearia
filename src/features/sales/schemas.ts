@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { ISODateTime, UUID } from '../schemas'
-import { SaleItemSchema } from '../saleItems/schema'
+import { SaleItemBaseSchema, SaleItemSchema } from '../saleItems/schema'
 import { CouponSchema } from '../coupons/schemas'
 import { UserSchema } from '../users/schemas'
 import { UnitSchema } from '../units/schemas'
@@ -52,7 +52,7 @@ export const formSchemaRegisterSale = z.object({
 export type BodyRegisterSale = z.infer<typeof formSchemaRegisterSale>
 
 export const bodyRemoveOrAddSaleItemSchema = z.object({
-  addItems: z.array(SaleItemSchema.partial()).optional(),
+  addItems: z.array(SaleItemBaseSchema.partial()).optional(),
   removeItemIds: z.array(UUID()).optional(),
 })
 
@@ -68,22 +68,22 @@ export const SalesListPaginateResponseSchema = z.object({
 })
 
 export const bodyUpdateSaleItemSchema = z.object({
-  serviceId: SaleItemSchema.shape.serviceId.optional(),
-  productId: SaleItemSchema.shape.productId.optional(),
-  appointmentId: SaleItemSchema.shape.appointmentId.optional(),
-  planId: SaleItemSchema.shape.planId.optional(),
-  quantity: SaleItemSchema.shape.quantity.optional(),
-  barberId: SaleItemSchema.shape.barberId.optional(),
-  couponId: SaleItemSchema.shape.couponId.optional(),
-  couponCode: SaleItemSchema.shape.couponCode.optional(),
-  customPrice: SaleItemSchema.shape.customPrice.optional(),
+  serviceId: SaleItemBaseSchema.shape.serviceId.optional(),
+  productId: SaleItemBaseSchema.shape.productId.optional(),
+  appointmentId: SaleItemBaseSchema.shape.appointmentId.optional(),
+  planId: SaleItemBaseSchema.shape.planId.optional(),
+  quantity: SaleItemBaseSchema.shape.quantity.optional(),
+  barberId: SaleItemBaseSchema.shape.barberId.optional(),
+  couponId: SaleItemBaseSchema.shape.couponId.optional(),
+  couponCode: SaleItemBaseSchema.shape.couponCode.optional(),
+  customPrice: SaleItemBaseSchema.shape.customPrice.optional(),
 })
 
 export type BodyUpdateSaleItem = z.infer<typeof bodyUpdateSaleItemSchema>
 
 export const bodyUpdateCouponSaleItemSchema = z.object({
-  couponId: SaleItemSchema.shape.couponId.optional(),
-  couponCode: SaleItemSchema.shape.couponCode.optional(),
+  couponId: SaleItemBaseSchema.shape.couponId.optional(),
+  couponCode: SaleItemBaseSchema.shape.couponCode.optional(),
 })
 
 export type BodyUpdateCouponSaleItem = z.infer<
@@ -91,7 +91,7 @@ export type BodyUpdateCouponSaleItem = z.infer<
 >
 
 export const bodyUpdateCustomPriceSaleItemSchema = z.object({
-  customPrice: SaleItemSchema.shape.customPrice,
+  customPrice: SaleItemBaseSchema.shape.customPrice,
 })
 
 export type BodyUpdateCustomPriceSaleItem = z.infer<
@@ -107,7 +107,7 @@ export type BodyUpdateBarberSaleItem = z.infer<
 >
 
 export const bodyUpdateQuantitySaleItemSchema = z.object({
-  quantity: SaleItemSchema.shape.quantity,
+  quantity: SaleItemBaseSchema.shape.quantity,
 })
 
 export type BodyUpdateQuantitySaleItem = z.infer<

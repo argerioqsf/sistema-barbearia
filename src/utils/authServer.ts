@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest } from 'next/server'
-import cookiesName from '@/constants/cookies_name.json'
+import { HttpError } from '@/shared/errors/httpError'
 
 function createRequestFromCookies(): NextRequest | undefined {
   const all = cookies().getAll()
@@ -10,19 +10,25 @@ function createRequestFromCookies(): NextRequest | undefined {
   const req = new Request('http://local', { headers: { cookie: cookieHeader } })
   return new NextRequest(req)
 }
-
+// TODO: atualizar o next-auth para a v5 para nao precisar mais da funcao a baixo
 export async function getBackendToken(): Promise<string | undefined> {
   const secret = process.env.NEXTAUTH_SECRET
-  if (!secret) return undefined
-  // Prefer cookie set by updateTokenFromResponse (fresh token), fallback to NextAuth JWT
-  const tokenCookie = cookies().get(cookiesName.TOKEN_SIM_COOKIE)?.value as
-    | string
-    | undefined
-  if (tokenCookie) return tokenCookie
+  if (!secret) {
+    throw new HttpError(500, 'NEXTAUTH_SECRET não está configurado.')
+  }
   const req = createRequestFromCookies()
-  if (!req) return undefined
-  const jwt = await getToken({ req, secret })
-  return jwt?.accessToken
+  if (!req) {
+    throw new HttpError(500, 'Request não encontrada.')
+  }
+  const token = await getToken({
+    req,
+    secret,
+    raw: false,
+  })
+  if (!token?.accessToken) {
+    throw new HttpError(500, 'Token não encontrado.')
+  }
+  return token.accessToken
 }
 
 export async function buildAuthHeaders(

@@ -11,8 +11,10 @@ import { notFound } from 'next/navigation'
 
 export default async function FilesDissemination() {
   const responseProfile = await getProfile()
-  const profile = responseProfile?.response
-  const errorRequestP = responseProfile.error?.message
+  if (!responseProfile.ok) {
+    return <div>Erro ao carregar perfil</div>
+  }
+  const profile = responseProfile.data.profile
 
   if (!profile) {
     notFound()
@@ -29,7 +31,7 @@ export default async function FilesDissemination() {
         </div>
         <ButtonRegisterFile profile={profile} />
         <div className="w-full">
-          {errorRequest || errorRequestP ? (
+          {errorRequest ? (
             <div>Erro ao carregar arquivos</div>
           ) : (
             files &&
@@ -52,7 +54,10 @@ export default async function FilesDissemination() {
                         name={file.filename}
                         href={`${process.env.API_BASE_URL}${file.url}`}
                       />
-                      {checkUserPermissions('file.delete', profile.role) && (
+                      {checkUserPermissions(
+                        'file.delete',
+                        profile.role?.name,
+                      ) && (
                         <IconAction
                           colorIcon="red"
                           icon="Trash"

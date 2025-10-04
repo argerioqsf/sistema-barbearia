@@ -4,10 +4,10 @@ import { formSchemaUpdateUnit } from '@/components/template/DetailUnits/schema'
 import { formSchemaRegisterUnit } from '@/components/template/RegisterUnits/schema'
 import { api } from '@/data/api'
 import { InitialState, ReturnGet, ReturnList, Unit } from '@/types/general'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 import { fetchUnit, fetchUnits, fetchUnitsSelect } from '@/features/units/api'
 import { toNormalizedError } from '@/shared/errors/to-normalized-error'
+import { getBackendToken } from '@/utils/authServer'
 
 export async function registerUnit(
   prevState: InitialState<Unit>,
@@ -23,8 +23,8 @@ export async function registerUnit(
 
   if (validatedFields.success) {
     try {
-      const TOKEN_SIM = getTokenFromCookieServer()
-      if (!TOKEN_SIM) {
+      const token = await getBackendToken()
+      if (!token) {
         return {
           errors: { request: 'Erro de credenciais' },
         }
@@ -33,7 +33,7 @@ export async function registerUnit(
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN_SIM}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           name: formData.get('name'),
@@ -84,8 +84,8 @@ export async function updateUnit(
 
   if (validatedFields.success) {
     try {
-      const TOKEN_SIM = getTokenFromCookieServer()
-      if (!TOKEN_SIM) {
+      const token = await getBackendToken()
+      if (!token) {
         return {
           errors: { request: 'Erro de credenciais' },
         }
@@ -94,7 +94,7 @@ export async function updateUnit(
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN_SIM}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           name: formData.get('name'),
@@ -142,7 +142,7 @@ export async function getUnit(id: string): Promise<ReturnGet<Unit>> {
 export async function deleteUnit(id?: string): Promise<InitialState<Unit>> {
   try {
     if (!id) return { errors: { request: 'Id undefined' } }
-    const token = getTokenFromCookieServer()
+    const token = await getBackendToken()
     const response = await api(`/unit/${id}`, {
       method: 'DELETE',
       headers: {

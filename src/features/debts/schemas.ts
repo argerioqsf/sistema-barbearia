@@ -1,11 +1,14 @@
 import { z } from 'zod'
+import { ISODateTime } from '../schemas'
+
+export const PaymentStatusSchema = z.enum(['PAID', 'PENDING'])
 
 export const DebtSchema = z
   .object({
     id: z.string(),
     status: z.string().optional(),
-    paymentDate: z.string().optional(),
-    amount: z.number().optional(),
+    paymentDate: ISODateTime().optional(),
+    amount: PaymentStatusSchema,
   })
   .passthrough()
 

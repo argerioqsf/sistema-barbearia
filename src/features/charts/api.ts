@@ -1,9 +1,9 @@
 import { api } from '@/data/api'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { ConsultantsListResponseSchema } from './schemas'
+import { getBackendToken } from '@/utils/authServer'
 
 export async function fetchCharts() {
-  const token = getTokenFromCookieServer()
+  const token = await getBackendToken()
   const response = await api(
     '/consultants',
     {

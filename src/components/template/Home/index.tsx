@@ -1,7 +1,6 @@
 import { getGraphics } from '@/actions/graphics'
 import Chart from '@/components/atoms/Chart'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import { CardMonitoring } from '@/components/molecules/CardMonitoring'
 import ChartTitle from '@/components/molecules/ChartTitle'
 import ContainerDashboard from '@/components/molecules/ContainerDashboard'
 import ErrorState from '@/components/molecules/ErrorState'
@@ -401,85 +400,7 @@ export default async function Home() {
         {errorGraphics && (
           <div className="w-full">
             {graphics && (
-              <div className="w-full p-5 pb-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-14 lg:gap-20 items-center justify-center">
-                {graphics.leads_per_day !== undefined && (
-                  <CardMonitoring
-                    last={false}
-                    card={{
-                      subinfo: {
-                        value: `${graphics.leads_per_day.diff > 0 ? '+' + graphics.leads_per_day.diff : graphics.leads_per_day.diff}`,
-                        label: 'Diferença para ontem',
-                      },
-                      icon:
-                        graphics.leads_per_day.diff > 0
-                          ? 'ChevronUp'
-                          : 'ChevronDown',
-                      label: 'Leads por dia',
-                      value: graphics.leads_per_day.value,
-                    }}
-                    classSubinfoValue="text-2xl font-bold"
-                    classSubinfoLabel="text-base font-bold"
-                    classSubinfo={
-                      graphics.leads_per_day.diff === 0
-                        ? 'bg-primary-100'
-                        : graphics.leads_per_day.diff > 0
-                          ? 'bg-lime-800'
-                          : 'bg-red-800'
-                    }
-                  />
-                )}
-                {graphics.leads_per_cycle !== undefined && (
-                  <CardMonitoring
-                    last={false}
-                    card={{
-                      subinfo: {
-                        value: `${graphics.leads_per_cycle.diff > 0 ? '+' + graphics.leads_per_cycle.diff : graphics.leads_per_cycle.diff}`,
-                        label: 'Diferença para o ultimo ciclo',
-                      },
-                      icon:
-                        graphics.leads_per_cycle.diff > 0
-                          ? 'ChevronUp'
-                          : 'ChevronDown',
-                      label: 'Leads por ciclo',
-                      value: graphics.leads_per_cycle.value,
-                    }}
-                    classSubinfoValue="text-2xl font-bold"
-                    classSubinfoLabel="text-base font-bold"
-                    classSubinfo={
-                      graphics.leads_per_cycle.diff === 0
-                        ? 'bg-primary-100'
-                        : graphics.leads_per_cycle.diff > 0
-                          ? 'bg-lime-800'
-                          : 'bg-red-800'
-                    }
-                  />
-                )}
-                {graphics.bonus?.bonus_awaiting_confirmation !== undefined && (
-                  <CardMonitoring
-                    last={true}
-                    card={{
-                      icon: 'CircleDollarSign',
-                      label: 'Bonus aguardando confirmação',
-                      value: `R$${graphics.bonus?.bonus_awaiting_confirmation.total}`,
-                    }}
-                    classSubinfoValue="text-2xl font-bold"
-                    classSubinfoLabel="text-base font-bold"
-                  />
-                )}
-                {graphics.bonus?.bonus_awaiting_confirmation !== undefined && (
-                  <CardMonitoring
-                    last={true}
-                    card={{
-                      icon: 'CircleDollarSign',
-                      label: 'Bonus confirmados',
-                      value: `R$${graphics.bonus?.bonus_confirmed.total}`,
-                    }}
-                    key={1}
-                    classSubinfoValue="text-2xl font-bold"
-                    classSubinfoLabel="text-base font-bold"
-                  />
-                )}
-              </div>
+              <div className="w-full p-5 pb-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-14 lg:gap-20 items-center justify-center"></div>
             )}
             <div className="p-5 w-full grid grid-cols-12 gap-6">
               {graphics?.leads_by_steps && (

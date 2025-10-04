@@ -8,8 +8,7 @@ import ErrorState from '@/components/molecules/ErrorState'
 // TODO: talvez essa pagina nao seja mais necessaria pois ja é feite es gerenciamento no profile
 export default async function ProfileBlockedHours() {
   const profileResp = await getProfile()
-  const profile = profileResp.response
-  if (profileResp.error?.message) {
+  if (!profileResp.ok) {
     return (
       <ErrorState
         title="Erro ao carregar perfil"
@@ -17,6 +16,7 @@ export default async function ProfileBlockedHours() {
       />
     )
   }
+  const profile = profileResp.data.profile
   if (!profile) notFound()
   return (
     <ContainerDashboard>

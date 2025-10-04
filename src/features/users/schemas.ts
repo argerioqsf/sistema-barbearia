@@ -1,24 +1,45 @@
 import { z } from 'zod'
-import { ISODate, ISODateTime, UUID } from '../schemas'
+import { ISODateTime, UUID } from '../schemas'
 
-export const ProfileSchema = z
+export const CommissionCalcTypeSchema = z.enum([
+  'PERCENTAGE_OF_ITEM',
+  'PERCENTAGE_OF_USER',
+  'PERCENTAGE_OF_USER_ITEM',
+])
+
+export type CommissionCalcType = z.infer<typeof CommissionCalcTypeSchema>
+
+export const UserServiceSchema = z
   .object({
     id: UUID(),
-    phone: z.string(),
-    cpf: z.string(),
-    genre: z.string(), // valores variam ("M", "F", "man"...)
-    birthday: ISODate(),
-    pix: z.string(),
-    roleId: UUID(),
-    commissionPercentage: z.number(),
-    totalBalance: z.number(),
-    userId: UUID(),
-    createdAt: ISODateTime(),
-    role: z.string().optional(),
+    profileId: UUID(),
+    serviceId: UUID(),
+    time: z
+      .number()
+      .int()
+      .positive()
+      .max(24 * 60, 'tempo máximo de 1440 min (24h)')
+      .optional(), // tempo em minutos (opcional no seu modelo)
+    commissionPercentage: z
+      .number()
+      .nonnegative('comissão não pode ser negativa')
+      .max(100, 'comissão percentual não pode exceder 100%')
+      .optional(),
+    commissionType: CommissionCalcTypeSchema,
   })
   .passthrough()
 
-export const UserSchema = z
+export const UserProductBaseSchema = z
+  .object({
+    id: UUID(),
+    profileId: UUID(),
+    productId: UUID(),
+    commissionPercentage: z.number().nonnegative().max(100).optional(),
+    commissionType: CommissionCalcTypeSchema,
+  })
+  .passthrough()
+
+export const UserBaseSchema = z
   .object({
     id: UUID(),
     name: z.string(),
@@ -29,9 +50,16 @@ export const UserSchema = z
     versionToken: z.number(),
     versionTokenInvalidate: z.number().nullable(),
     createdAt: ISODateTime(),
-    profile: ProfileSchema.optional(),
   })
   .passthrough()
+
+export const UserSchema = z.lazy(() => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const profileSchemas = require('../profile/schemas')
+  return UserBaseSchema.extend({
+    profile: profileSchemas.ProfileBaseSchema.optional(),
+  })
+})
 
 export const userListAllResponseSchema = z.object({
   users: z.array(UserSchema),

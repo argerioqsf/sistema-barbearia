@@ -1,9 +1,9 @@
 import type { DefaultSession } from 'next-auth'
 import type { JWT as DefaultJWT } from 'next-auth/jwt'
-import type { User as AppUser } from '@/types/general'
+import { ZUser } from '@/features/users/schemas'
 
-type AuthUser = Pick<AppUser, 'id' | 'name' | 'email'> & {
-  profile?: { role?: string | { name?: string } }
+export type AuthUser = Pick<ZUser, 'id' | 'name' | 'email'> & {
+  profile?: { role?: { name?: RoleName } }
 }
 
 type RolesPayload = Record<string, boolean> | string[] | undefined

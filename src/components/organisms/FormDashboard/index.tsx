@@ -11,7 +11,6 @@ import {
   GetDefaultValues,
   InitialState,
   LimitColsGrid,
-  Roles,
   SectionTemplateForm,
   ServerAction,
   ServerActionId,
@@ -24,6 +23,7 @@ import { useFormState } from 'react-dom'
 import { FieldValues, Path, useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 import grid from '../../../constants/grid.json'
+import { RoleName } from '@/features/roles/schemas'
 
 type FormDashboardProps<T> = {
   templateForm?: TemplateForm<T>
@@ -38,7 +38,7 @@ type FormDashboardProps<T> = {
   errorRequest?: string
   id?: string
   toastInfo?: Toast
-  roleUser?: keyof Roles
+  roleUser?: RoleName
 }
 
 export default function FormDashboard<T>({

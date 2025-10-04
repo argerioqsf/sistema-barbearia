@@ -2,15 +2,15 @@
 
 import { formSchemaUpdateProfileUser } from '@/components/template/ProfileDetail/schema'
 import { api } from '@/data/api'
-import { Errors, InitialState, Profile, ReturnGet, User } from '@/types/general'
-import {
-  getTokenFromCookieServer,
-  clearAuthCookiesServer,
-} from '@/utils/cookieServer'
+import { Errors, InitialState, ReturnRequest, User } from '@/types/general'
+import { clearAuthCookiesServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
-import { getBackendToken, getAuthHeader } from '@/utils/authServer'
+import { getBackendToken } from '@/utils/authServer'
 import { redirect } from 'next/navigation'
-import { toNormalizedError } from '@/shared/errors/to-normalized-error'
+import { handleRequestError } from '@/shared/errors/handlerRequestError'
+import { Profile } from '@/features/profile/schemas'
+import { fetchProfile } from '@/features/profile/api'
+import { UnitOpeningHours } from '@/features/units/schemas'
 
 export async function updateProfileUser(
   prevState: InitialState<Profile | User>,
@@ -30,9 +30,8 @@ export async function updateProfileUser(
 
   if (validatedFields.success) {
     try {
-      const TOKEN_SIM = (await getBackendToken()) ?? getTokenFromCookieServer()
-
-      if (!TOKEN_SIM) {
+      const token = await getBackendToken()
+      if (!token) {
         return {
           errors: { request: 'Erro de credenciais' },
         }
@@ -41,7 +40,7 @@ export async function updateProfileUser(
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN_SIM}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           name: formData.get('user.name'),
@@ -83,35 +82,56 @@ export async function updateProfileUser(
   }
 }
 
-export async function getProfile(): Promise<ReturnGet<Profile>> {
+export async function getProfile(): Promise<
+  ReturnRequest<{
+    profile: Profile
+    openingHours: UnitOpeningHours[]
+  }>
+> {
   try {
-    const authorization = await getAuthHeader()
-    const response = await api('/profile', {
-      method: 'GET',
-      headers: authorization ? { Authorization: authorization } : {},
-      next: { tags: ['users', 'leads'], revalidate: 60 * 4 },
+    const response = await fetchProfile()
+    return { ok: true, data: response }
+  } catch (e) {
+    const normalized = handleRequestError(e, {
+      rethrow: false,
     })
-
-    if (!response.ok) {
-      if (response.status === 401) {
-        clearAuthCookiesServer()
-        redirect('/auth/signin')
-      }
-      const errorMessage = await response.text()
-      return {
-        error: toNormalizedError(
-          JSON.parse(errorMessage).message,
-          response.status,
-        ),
-      }
-    }
-    const json = await response.json()
-    const { profile, openingHours } = json
-    return { response: { ...profile, openingHours } }
-  } catch (error) {
-    return { error: toNormalizedError('Error unknown') }
+    return { ok: false, error: normalized }
   }
 }
+
+// export async function getProfileOld(): Promise<
+//   ReturnRequest<{
+//     profile: Profile
+//     openingHours: OpeningHours[]
+//   }>
+// > {
+//   try {
+//     const authorization = await getAuthHeader()
+//     const response = await api('/profile', {
+//       method: 'GET',
+//       headers: authorization ? { Authorization: authorization } : {},
+//       next: { tags: ['users', 'leads'], revalidate: 60 * 4 },
+//     })
+
+//     if (!response.ok) {
+//       const errorMessage = await response.text()
+//       return {
+//         error: toNormalizedError(
+//           JSON.parse(errorMessage).message,
+//           response.status,
+//         ),
+//       }
+//     }
+//     const json = await response.json()
+//     const { profile, openingHours } = json
+//     return { ok: true, data: { profile, openingHours } }
+//   } catch (error) {
+//     const normalized = handleRequestError(error, {
+//       rethrow: false,
+//     })
+//     return { ok: false, error: normalized }
+//   }
+// }
 
 // Work Hours
 export async function registerWorkHour(

@@ -1,5 +1,5 @@
 import CashierPage from '@/components/template/Cashier'
-import { ParamsProp, Role } from '@/types/general'
+import { ParamsProp } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/auth/options'
@@ -23,7 +23,7 @@ export async function generateMetadata({
 
 export default async function Page() {
   const session = await getServerSession(authOptions)
-  const role = session?.user?.profile?.role as Role
+  const role = session?.user?.profile?.role?.name
   const allowed = checkUserPermissions('cashier.view', role)
   if (!allowed) notFound()
   return <CashierPage />

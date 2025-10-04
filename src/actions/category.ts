@@ -5,9 +5,9 @@ import type { ZCategory as Category } from '@/features/categories/schemas'
 import { fetchCategory, fetchCategories } from '@/features/categories/api'
 import type { QueryParams } from '@/types/http'
 import { api } from '@/data/api'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 import { toNormalizedError } from '@/shared/errors/to-normalized-error'
+import { getBackendToken } from '@/utils/authServer'
 
 export async function listCategories(
   page?: string,
@@ -35,7 +35,7 @@ export async function registerCategory(
   formData: FormData,
 ): Promise<InitialState<Category>> {
   try {
-    const token = getTokenFromCookieServer()
+    const token = await getBackendToken()
     const json = Object.fromEntries(formData.entries())
     const response = await api('/categories', {
       method: 'POST',
@@ -62,7 +62,7 @@ export async function updateCategory(
   formData: FormData,
 ): Promise<InitialState<Category>> {
   try {
-    const token = getTokenFromCookieServer()
+    const token = await getBackendToken()
     const json = Object.fromEntries(formData.entries())
     const response = await api(`/categories/${id}`, {
       method: 'PATCH',
@@ -88,7 +88,7 @@ export async function deleteCategory(
   id: string,
 ): Promise<InitialState<Category>> {
   try {
-    const token = getTokenFromCookieServer()
+    const token = await getBackendToken()
     const response = await api(`/categories/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },

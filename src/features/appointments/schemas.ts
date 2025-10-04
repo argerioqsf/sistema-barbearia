@@ -1,24 +1,12 @@
-import { z, type ZodType } from 'zod'
-import { ServiceSchema, type ZService } from '../services/schemas'
-import { UserSchema, type ZUser } from '../users/schemas'
+import { z } from 'zod'
+import { ServiceSchema } from '../services/schemas'
+import { UserSchema } from '../users/schemas'
 import { ISODateTime, UUID } from '../schemas'
-import { UnitSchema, type ZUnit } from '../units/schemas'
-import { TransactionSchema, type ZTransaction } from '../transactions/schemas'
-import { SaleItemSchema, type SaleItem } from '../saleItems/schema'
-import { BarberSchema } from '../barbers/schemas'
+import { UnitSchema } from '../units/schemas'
+import { TransactionSchema } from '../transactions/schemas'
+import { SaleItemBaseSchema } from '../saleItems/schema'
 
-// --- AppointmentService ---
-export interface AppointmentService {
-  id?: string | null
-  appointmentId?: string | null
-  serviceId?: string | null
-  commissionPercentage?: number | null
-  commissionPaid?: boolean
-  transactions?: ZTransaction[] | null
-  service?: ZService | null
-}
-
-export const AppointmentServiceSchema: ZodType<AppointmentService> = z.object({
+export const AppointmentServiceSchema = z.object({
   id: UUID().nullable().optional(),
   appointmentId: UUID().nullable().optional(),
   serviceId: UUID().nullable().optional(),
@@ -28,24 +16,7 @@ export const AppointmentServiceSchema: ZodType<AppointmentService> = z.object({
   service: ServiceSchema.optional().nullable(),
 })
 
-// --- Appointment ---
-export interface Appointment {
-  id: string
-  clientId: string
-  barberId: string
-  unitId: string
-  date: string
-  status: string
-  durationService?: number | null
-  observation?: string | null
-  client?: ZUser
-  barber?: ZUser
-  services?: AppointmentService[]
-  unit?: ZUnit
-  saleItem?: SaleItem
-}
-
-export const AppointmentSchema: ZodType<Appointment> = z.object({
+export const AppointmentBaseSchema = z.object({
   id: UUID(),
   clientId: UUID(),
   barberId: UUID(),
@@ -58,8 +29,13 @@ export const AppointmentSchema: ZodType<Appointment> = z.object({
   barber: UserSchema.optional(),
   services: z.array(AppointmentServiceSchema).optional(),
   unit: UnitSchema.optional(),
-  saleItem: z.lazy(() => SaleItemSchema).optional(),
 })
+
+export const AppointmentSchema = z.lazy(() =>
+  AppointmentBaseSchema.extend({
+    saleItem: SaleItemBaseSchema.optional(),
+  }).passthrough(),
+)
 
 export type ZAppointment = z.infer<typeof AppointmentSchema>
 
@@ -74,5 +50,5 @@ export const AppointmentsListPaginatedResponseSchema = z.object({
 })
 
 export const BarbersListResponseSchema = z.object({
-  users: z.array(BarberSchema),
+  users: z.array(UserSchema),
 })

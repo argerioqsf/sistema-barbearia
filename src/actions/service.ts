@@ -5,9 +5,9 @@ import type { ZService as Service } from '@/features/services/schemas'
 import { fetchService, fetchServices } from '@/features/services/api'
 import type { QueryParams } from '@/types/http'
 import { api } from '@/data/api'
-import { getTokenFromCookieServer } from '@/utils/cookieServer'
 import { revalidateTag } from 'next/cache'
 import { toNormalizedError } from '@/shared/errors/to-normalized-error'
+import { getBackendToken } from '@/utils/authServer'
 
 export async function listServices(
   page?: string,
@@ -35,7 +35,7 @@ export async function registerService(
   formData: FormData,
 ): Promise<InitialState<Service>> {
   try {
-    const token = getTokenFromCookieServer()
+    const token = await getBackendToken()
     const json = Object.fromEntries(formData.entries())
     const response = await api('/create/service', {
       method: 'POST',
@@ -62,7 +62,7 @@ export async function updateService(
   formData: FormData,
 ): Promise<InitialState<Service>> {
   try {
-    const token = getTokenFromCookieServer()
+    const token = await getBackendToken()
     const json = Object.fromEntries(formData.entries())
     const response = await api(`/services/${id}`, {
       method: 'PATCH',
@@ -88,7 +88,7 @@ export async function deleteService(
   id: string,
 ): Promise<InitialState<Service>> {
   try {
-    const token = getTokenFromCookieServer()
+    const token = await getBackendToken()
     const response = await api(`/services/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },

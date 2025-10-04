@@ -5,7 +5,6 @@ import Button from '@/components/atoms/Button'
 import LinkDefault from '@/components/atoms/LinkDefault'
 import FormFieldText from '@/components/molecules/FormFieldText'
 import { formSchemaSignIn } from '@/components/template/SingIn/schema'
-import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { usePathTranslations } from '@/hooks/use-path-translations'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
@@ -24,7 +23,6 @@ const FormLogin = () => {
     resolver: zodResolver(formSchemaSignIn),
   })
   const { at, sc } = usePathTranslations('')
-  const { pushRouter } = useHandlerRouter()
   const [requestError, setRequestError] = useState<string | undefined>()
 
   async function onSubmit(values: LoginSchemaType) {
@@ -32,14 +30,10 @@ const FormLogin = () => {
     const result = await signIn('credentials', {
       email: values.email,
       password: values.password,
-      redirect: false,
     })
     if (result?.error) {
       setRequestError('Falha no login')
-      return
     }
-    // Decide rota por role via middleware pós-redirecionamento
-    pushRouter('dashboard/home')
   }
 
   return (

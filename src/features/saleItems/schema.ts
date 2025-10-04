@@ -5,34 +5,10 @@ import { UserSchema } from '../users/schemas'
 import { DiscountSchema } from '../discounts/schema'
 import { ServiceSchema } from '../services/schemas'
 import { CouponSchema } from '../coupons/schemas'
-import { AppointmentSchema, type Appointment } from '../appointments/schemas'
+import { AppointmentBaseSchema } from '../appointments/schemas'
 import { PlanSchema } from '../plans/schema'
 
-export interface SaleItem {
-  id: string
-  saleId: string
-  serviceId: string | null
-  productId: string | null
-  quantity: number
-  barberId: string | null
-  appointmentId: string | null
-  couponId: string | null
-  planId: string | null
-  price: number
-  customPrice?: number | null
-  porcentagemBarbeiro: number | null
-  commissionPaid: boolean
-  service?: z.infer<typeof ServiceSchema> | null
-  product?: z.infer<typeof ProductSchema> | null
-  plan?: z.infer<typeof PlanSchema> | null
-  barber?: z.infer<typeof UserSchema> | null
-  coupon?: z.infer<typeof CouponSchema> | null
-  appointment?: Appointment | null // referencia que volta para Appointment
-  discounts?: Array<z.infer<typeof DiscountSchema>>
-  couponCode?: string | null
-}
-
-export const SaleItemSchema = z.object({
+export const SaleItemBaseSchema = z.object({
   id: UUID(),
   saleId: UUID(),
   serviceId: UUID().nullable(),
@@ -51,12 +27,14 @@ export const SaleItemSchema = z.object({
   plan: PlanSchema.nullable().optional(),
   barber: UserSchema.nullable().optional(),
   coupon: CouponSchema.nullable().optional(),
-  appointment: z
-    .lazy(() => AppointmentSchema)
-    .nullable()
-    .optional(),
   discounts: z.array(DiscountSchema).optional(),
   couponCode: z.string().nullable().optional(),
 })
+
+export const SaleItemSchema = z.lazy(() =>
+  SaleItemBaseSchema.extend({
+    appointment: AppointmentBaseSchema.optional().nullable(),
+  }),
+)
 
 export type ZSaleItem = z.infer<typeof SaleItemSchema>

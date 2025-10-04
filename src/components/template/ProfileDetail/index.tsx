@@ -10,37 +10,26 @@ import { Text } from '@/components/atoms'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
-import ErrorState from '@/components/molecules/ErrorState'
-import type { Profile, User, Unit } from '@/types/general'
-import { notFound } from 'next/navigation'
+import type { User } from '@/types/general'
 import { templateForm } from './templateForm'
 import ColorPalette from '@/components/molecules/ColorPalette'
 import LogoutButton from '@/components/molecules/LogoutButton'
-// import WorkHoursForm from './WorkHoursForm'
 import BlockedHoursForm from './BlockedHoursForm'
+import { Profile } from '@/features/profile/schemas'
+import { ErrorRequestHandler } from '@/components/organisms/ErrorRequestHandler'
 
 export default async function ProfileDetail() {
   const response = await getProfile()
-  const profile = response?.response
-  const errorRequest = response.error?.message
 
-  if (!profile) {
-    if (errorRequest) {
-      return (
-        <ErrorState
-          title="Erro ao carregar perfil"
-          message={String(errorRequest)}
-        />
-      )
-    }
-    notFound()
+  if (!response.ok) {
+    return <ErrorRequestHandler result={{ ok: false, error: response.error }} />
   }
 
-  const units: Unit[] = profile.units?.map(({ unit }) => unit) ?? []
+  const profile = response.data.profile
+  const workHours = profile.workHours ?? []
 
   const blockedHours = profile.blockedHours ?? []
-  const workHours = profile.workHours ?? []
-  const openingHours = profile.openingHours ?? []
+  const openingHours = response.data.openingHours
 
   return (
     <ContainerDashboard>
@@ -53,11 +42,6 @@ export default async function ProfileDetail() {
             Escolha o seu tema:
           </Text>
           <ColorPalette />
-          {units.length > 0 && (
-            <Text className="mt-2 text-sm text-black/70">
-              Unidade vinculada: {units.map((unit) => unit.name).join(', ')}
-            </Text>
-          )}
           <div className="mt-4">
             <LogoutButton />
           </div>
@@ -68,11 +52,10 @@ export default async function ProfileDetail() {
             templateForm={templateForm}
             defaultValues={profile}
             pathSuccess="/dashboard/profile"
-            errorRequest={errorRequest}
             toastInfo={{
               title: 'Perfil atualizado com sucesso!',
             }}
-            roleUser={profile.role}
+            roleUser={profile.role?.name}
           />
           {/* Calendar Management */}
           <div className="w-full mt-10">
@@ -117,51 +100,6 @@ export default async function ProfileDetail() {
               />
             </div>
           </div>
-          {/* {checkUserPermissions('organization.update', profile.role) && (
-            <>
-              {organizations?.map((organization, idx) => {
-                templateFormOrganization.title = `Organização ${organization.name}`
-                const activeCycle = organization.cycles.find(
-                  (cycle) => cycle.end_cycle === null,
-                )
-                return (
-                  <Fragment key={idx}>
-                    <FormDashboard<Organization>
-                      key={organization.id}
-                      actionWithId={updateOrganization}
-                      templateForm={templateFormOrganization}
-                      defaultValues={organization}
-                      pathSuccess="/dashboard/profile"
-                      errorRequest={errorRequest}
-                      toastInfo={{
-                        title: 'Organização atualizada com sucesso!',
-                      }}
-                      id={organization.id}
-                    />
-                    <div className="w-full">
-                      <div className="w-[90vw] md:w-full flex flex-row justify-between items-center">
-                        <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
-                          Ciclos de pagamentos
-                        </Text>
-                        <ButtonCycle
-                          idOrganization={organization.id}
-                          activeCycle={activeCycle}
-                        />
-                      </div>
-
-                      <div className="w-[90vw] md:w-full mt-10 lg:mt-8">
-                        <div className="w-[90vw] grid-cols-12 min-h-40 md:w-full border-2 flex flex-col gap-4 bg-gray-200 p-6 rounded-xl lg:shadow-md shadow-slate-400">
-                          {organization.cycles.length > 0 && (
-                            <CycleComponent cycles={organization.cycles} />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </Fragment>
-                )
-              })}
-            </>
-          )} */}
         </div>
       </div>
     </ContainerDashboard>

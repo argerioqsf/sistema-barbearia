@@ -1,10 +1,8 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import { env } from '@/env'
-import type { User as AppUser } from '@/types/general'
-
-type RolesPayload = Record<string, boolean> | string[] | undefined
-type AuthResponse = { token: string; user: AppUser; roles?: RolesPayload }
+import { ZUser } from '@/features/users/schemas'
+type AuthResponse = { token: string; user: ZUser }
 
 function isAuthResponse(u: unknown): u is AuthResponse {
   return (
@@ -51,32 +49,22 @@ export const authOptions: NextAuthOptions = {
       // Persist backend token and user payload
       if (isAuthResponse(user)) {
         const u = user
+        const userApp = u.user as ZUser
         token.accessToken = u.token
         // Extract role from various shapes
-        const roleRaw = (u.user as AppUser)?.profile?.role as
-          | string
-          | { name?: string }
-          | undefined
-        const roleName =
-          typeof roleRaw === 'string'
-            ? roleRaw
-            : roleRaw && typeof roleRaw === 'object' && 'name' in roleRaw
-              ? (roleRaw as { name?: string }).name
-              : undefined
+        const roleRaw = userApp?.profile?.role
+        const roleName = roleRaw?.name
         token.user = {
           id: u.user.id,
           name: u.user.name,
           email: u.user.email,
-          profile: { role: roleName },
+          profile: { role: { name: roleName } },
         }
-        token.roles = u.roles
       }
       return token
     },
     async session({ session, token }) {
-      // Do NOT expose access token on the client
       session.user = token.user
-      session.roles = token.roles as RolesPayload | undefined
       return session
     },
   },

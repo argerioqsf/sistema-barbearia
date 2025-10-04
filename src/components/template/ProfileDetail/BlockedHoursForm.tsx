@@ -9,6 +9,7 @@ import {
   BlockedItem,
   WorkHourItem,
 } from './BlockedHoursForm/hooks'
+import { UnitOpeningHours } from '@/features/units/schemas'
 
 type Props = {
   onSubmit: (
@@ -31,12 +32,7 @@ type Props = {
     startHour: string
     endHour: string
   }>
-  openingHours?: Array<{
-    id?: string
-    weekDay: number
-    startHour: string
-    endHour: string
-  }>
+  openingHours?: UnitOpeningHours[]
   onCreateWorkHour?: (
     prev: InitialState<Record<string, unknown>>,
     fd: FormData,

@@ -3,9 +3,8 @@ import { NextResponse, NextRequest } from 'next/server'
 import { withAuth, type NextRequestWithAuth } from 'next-auth/middleware'
 import { siteConfig } from './config/siteConfig'
 import { verifyPageRole } from './utils/verifyPageRole'
-import { Role } from './types/general'
-import { normalizeRole } from './utils/normalizeRole'
 import { defaultLocale, locales } from './locales'
+import { RoleName } from './features/roles/schemas'
 
 const middlewareIntl = createMiddleware({
   locales: [...locales],
@@ -27,18 +26,14 @@ const appMiddleware = async (request: NextRequestWithAuth) => {
   const publicPages = ['/auth/signin', 'sim/indicator']
   const isPublicPages = verifyPublicPage(request, publicPages)
   const isLoginPage = request.nextUrl.pathname.includes('/auth/signin')
-  const roleUser: Role | undefined = normalizeRole(token?.user?.profile?.role)
+  const roleUser: RoleName | undefined = token?.user?.profile?.role?.name
   const locale = getLocale(request)
   const pathname = request.nextUrl.pathname
-  const mapRoleToInitialPath = (role?: Role): string => {
+  const mapRoleToInitialPath = (role?: RoleName): string => {
     switch (role) {
-      case 'indicator':
-        return `/${locale}/dashboard/indicators/monitoring`
-      case 'consultant':
+      case 'OWNER':
         return `/${locale}/dashboard/consultants/monitoring`
-      case 'auxiliary':
-        return `/${locale}/dashboard/leads/firstContact`
-      case 'barber':
+      case 'BARBER':
         return `/${locale}/dashboard/appointments`
       default:
         return `/${locale}/dashboard/home`
