@@ -3,6 +3,7 @@
 import { Text } from '@/components/atoms'
 import LinkDefault from '@/components/atoms/LinkDefault'
 import { Avatar, ContainerSection } from '@/components/molecules'
+import logoBarbearia from '../../../../public/logo_barbearia.png'
 
 export default function NotFoundPage({
   href,
@@ -18,7 +19,7 @@ export default function NotFoundPage({
           <Avatar
             classIcon={`size-[${100}px] bg-black`}
             size={100}
-            image="https://www.grupomadretereza.com.br/sim/themes/simadm/assets/images/logo.png"
+            image={logoBarbearia}
           />
           <Text className="text-4xl font-bold text-white mt-8 text-center">
             Página não encontrada

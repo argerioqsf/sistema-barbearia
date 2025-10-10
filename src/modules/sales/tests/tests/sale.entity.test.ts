@@ -23,6 +23,8 @@ const makeSale = (overrides: Partial<SaleDTO> = {}) => {
     transactions: [],
     user: null,
     session: null,
+    status: 'CREATED',
+    completionDate: null,
   }
   return Sale.fromDTO({ ...base, ...overrides })
 }

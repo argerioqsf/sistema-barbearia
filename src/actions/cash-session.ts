@@ -1,31 +1,41 @@
 'use server'
 
-import { InitialState, ReturnGet, ReturnList } from '@/types/general'
+import { InitialState, ReturnRequest } from '@/types/general'
 import { revalidateTag } from 'next/cache'
 import {
-  getCashSession as getCashSessionAPI,
+  getCashSessionApi,
   openCashSession as openCashSessionAPI,
   closeCashSession as closeCashSessionAPI,
+  getOpenCashSessionApi,
 } from '@/features/cash-session/api'
 import { ZCashSession } from '@/features/cash-session/schemas'
-import { toNormalizedError } from '@/shared/errors/to-normalized-error'
+import { handleRequestError } from '@/shared/errors/handlerRequestError'
 
-export async function getOpenCashSession(): Promise<ReturnGet<ZCashSession>> {
+export async function getOpenCashSession(): Promise<
+  ReturnRequest<ZCashSession | null>
+> {
   try {
-    const sessions = await getCashSessionAPI()
-    const sessionOpen = sessions.find((s: ZCashSession) => !s.closedAt)
-    return { response: sessionOpen }
+    const session = await getOpenCashSessionApi()
+    return { ok: true, data: session }
   } catch (error) {
-    return { error: toNormalizedError('Error unknown') }
+    const normalized = handleRequestError(error, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 
-export async function getCashSessions(): Promise<ReturnList<ZCashSession>> {
+export async function getCashSessions(): Promise<
+  ReturnRequest<ZCashSession[]>
+> {
   try {
-    const sessions = await getCashSessionAPI()
-    return { response: sessions }
+    const session = await getCashSessionApi()
+    return { ok: true, data: session }
   } catch (error) {
-    return { error: toNormalizedError('Error unknown') }
+    const normalized = handleRequestError(error, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 

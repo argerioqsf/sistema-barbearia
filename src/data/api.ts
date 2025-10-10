@@ -1,5 +1,5 @@
 import { env } from '@/env'
-import { updateTokenFromResponse } from '@/shared/http'
+import { extractNewToken } from '@/shared/http'
 
 type NextFetchOptions = {
   revalidate?: number | false
@@ -45,12 +45,16 @@ export async function api<T>(
   try {
     const resp = await fetch(url, reqInit)
     console.log(`API ${reqInit?.method ?? 'GET'} ${url} - ${resp.status}`)
-
-    try {
-      await updateTokenFromResponse(resp)
-    } catch (e) {
-      console.warn('updateTokenFromResponse failed:', e)
-    }
+    // TODO: criar uma logica mais global para esse tratamento de novo token
+    // pois em alguns casos um admin pode alterar a permissao de um user
+    // e quando esse user acessar qualquer rota depois q a sua permissao for mudada
+    // ele recebera um token novo e depois disso nem uma requisicao dele vai aceitar
+    // o token antigo, entao nao tem como eu saber que rota ira retornar esse token
+    // e tratar individualmente, pode ser qualquer rota da aplicacao, entao preciso
+    // que esse tratamento seja padrao em todas as rotas mas que de preferencia
+    // eu consiga centralizar em um lugar apenas para nao ter que chamar esse tramento
+    // em todas as chamadas na api
+    extractNewToken(resp)
 
     return resp
   } catch (err) {

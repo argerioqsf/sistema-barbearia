@@ -1,5 +1,5 @@
-import ListUsers from '@/components/template/ListUsers'
-import { ParamsProp, SearchParams } from '@/types/general'
+import ListUsersPage from '@/components/template/ListUsers/ListUsersPage'
+import type { ParamsProp, SearchParams } from '@/types/general'
 import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata({
@@ -9,16 +9,19 @@ export async function generateMetadata({
 }) {
   const meta = await getTranslations({
     locale,
-    namespace: 'metadata.dashboard.profile',
-  })
+    namespace: 'metadata.dashboard.users',
+  }).catch(async () =>
+    getTranslations({
+      locale,
+      namespace: 'metadata.dashboard.profile',
+    }),
+  )
   return {
     title: meta('title'),
     description: meta('description'),
   }
 }
 
-const page = ({ searchParams }: SearchParams) => {
-  return <ListUsers searchParams={searchParams} />
+export default async function UsersListPage({ searchParams }: SearchParams) {
+  return <ListUsersPage searchParams={searchParams} />
 }
-
-export default page

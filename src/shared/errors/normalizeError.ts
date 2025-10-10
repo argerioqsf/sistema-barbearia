@@ -16,7 +16,7 @@ export function normalizeError(err: unknown): NormalizedError {
     return {
       type: 'validation',
       message: err.message || 'Erro de validação',
-      issues: err.details ?? err.issues,
+      issues: { issues: err.issues },
       code: 'VALIDATION_ERROR',
       status: 422,
       // details: err,
@@ -27,7 +27,7 @@ export function normalizeError(err: unknown): NormalizedError {
     return {
       type: 'validation',
       message: 'Erro de validação',
-      issues: err.flatten().fieldErrors,
+      issues: { issues: err.issues },
       code: 'VALIDATION_ERROR',
       status: 422,
     }

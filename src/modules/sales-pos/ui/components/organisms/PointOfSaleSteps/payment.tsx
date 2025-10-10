@@ -6,8 +6,6 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { useRouter } from 'next/navigation'
-import { useLocale } from 'next-intl'
 import { Button, TitleForm } from '@/components/atoms'
 import { CreditCard, DollarSign, LucideProps, QrCode } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -27,6 +25,7 @@ interface PaymentProps {
   paySale: (method: PaymentMethod) => Promise<unknown> | unknown
   prevStep: () => void
   setPaymentMethod: (method: PaymentMethod) => Promise<unknown> | unknown
+  onPaymentSuccess?: () => void
 }
 
 const paymentMethodsList: paymentMethodsList[] = [
@@ -61,13 +60,12 @@ export function Payment({
   paySale,
   prevStep,
   setPaymentMethod,
+  onPaymentSuccess,
 }: PaymentProps) {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
     sale?.method,
   )
   const [isPaying, setIsPaying] = useState(false)
-  const router = useRouter()
-  const locale = useLocale()
 
   useEffect(() => {
     if (sale?.method) {
@@ -85,7 +83,7 @@ export function Payment({
     try {
       setIsPaying(true)
       await Promise.resolve(paySale(selectedPaymentMethod))
-      router.push(`/${locale}/dashboard/sales`)
+      onPaymentSuccess?.()
     } finally {
       setIsPaying(false)
     }

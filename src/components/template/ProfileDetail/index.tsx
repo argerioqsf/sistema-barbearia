@@ -4,19 +4,16 @@ import {
   getProfile,
   registerBlockedHour,
   registerWorkHour,
-  updateProfileUser,
 } from '@/actions/profile'
-import { Text } from '@/components/atoms'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
-import FormDashboard from '@/components/organisms/FormDashboard'
-import type { User } from '@/types/general'
-import { templateForm } from './templateForm'
-import ColorPalette from '@/components/molecules/ColorPalette'
-import LogoutButton from '@/components/molecules/LogoutButton'
-import BlockedHoursForm from './BlockedHoursForm'
-import { Profile } from '@/features/profile/schemas'
 import { ErrorRequestHandler } from '@/components/organisms/ErrorRequestHandler'
+import ProfileHeaderCard from './components/ProfileHeaderCard'
+import ProfileFormCard from './components/ProfileFormCard'
+import ThemeCard from './components/ThemeCard'
+import SecurityActionsCard from './components/SecurityActionsCard'
+import CalendarCard from './components/CalendarCard'
+import SummaryCard from './components/SummaryCard'
 
 export default async function ProfileDetail() {
   const response = await getProfile()
@@ -33,44 +30,26 @@ export default async function ProfileDetail() {
 
   return (
     <ContainerDashboard>
-      <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
-        <div className="w-full ">
-          <Breadcrumb />
-        </div>
-        <div className="w-full mt-4">
-          <Text className="text-black font-normal text-sm text-left uppercase mb-2 whitespace-nowrap overflow-hidden text-ellipsis">
-            Escolha o seu tema:
-          </Text>
-          <ColorPalette />
-          <div className="mt-4">
-            <LogoutButton />
+      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-100 via-white to-slate-100 text-foreground">
+        <div className="mx-auto flex w-full max-w-[1400px] flex-1 flex-col gap-6 px-4 pb-12 pt-10 sm:px-6 lg:px-10">
+          <div className="w-full">
+            <Breadcrumb />
           </div>
-        </div>
-        <div className="w-full mt-6 lg:mt-8">
-          <FormDashboard<Profile | User>
-            action={updateProfileUser}
-            templateForm={templateForm}
-            defaultValues={profile}
-            pathSuccess="/dashboard/profile"
-            toastInfo={{
-              title: 'Perfil atualizado com sucesso!',
-            }}
-            roleUser={profile.role?.name}
-          />
-          {/* Calendar Management */}
-          <div className="w-full mt-10">
-            <Text className="uppercase font-bold text-xl lg:text-2xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
-              Calendário
-            </Text>
-            <div className="mt-6">
-              <BlockedHoursForm
-                onSubmit={async (_prev, formData) => {
-                  'use server'
-                  return registerBlockedHour(profile.id, {}, formData)
-                }}
+
+          <ProfileHeaderCard profile={profile} />
+
+          <div className="grid min-h-0 flex-1 gap-6 lg:grid-cols-[minmax(0,1.65fr)_minmax(340px,1fr)] xl:grid-cols-[minmax(0,1.8fr)_minmax(360px,1fr)]">
+            <div className="grid min-w-0 gap-6">
+              <ProfileFormCard profile={profile} />
+              <CalendarCard
+                profileId={profile.id}
                 blocked={blockedHours}
                 workHours={workHours}
                 openingHours={openingHours}
+                onCreate={async (_prev, formData) => {
+                  'use server'
+                  return registerBlockedHour(profile.id, {}, formData)
+                }}
                 onCreateWorkHour={async (_prev, formData) => {
                   'use server'
                   return registerWorkHour(profile.id, {}, formData)
@@ -99,6 +78,11 @@ export default async function ProfileDetail() {
                 }}
               />
             </div>
+            <aside className="grid min-w-0 gap-6 h-fit lg:sticky lg:top-[calc(var(--navbar-height)+3rem)]">
+              <ThemeCard />
+              <SecurityActionsCard />
+              <SummaryCard profile={profile} />
+            </aside>
           </div>
         </div>
       </div>

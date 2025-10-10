@@ -19,10 +19,12 @@ export const UnitSchema = z
   })
   .passthrough()
 
-export const UnitsListResponseSchema = z.object({
+export const UnitsListPaginatedResponseSchema = z.object({
   units: z.array(UnitSchema),
   count: z.number(),
 })
+
+export const UnitsListResponseSchema = z.array(UnitSchema)
 
 // Some APIs may return unit directly or wrapped
 export const UnitDetailWrappedSchema = z.object({

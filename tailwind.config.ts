@@ -147,6 +147,63 @@ module.exports = {
             display: 'none',
           },
         },
+        confettiLeft: {
+          '0%': {
+            opacity: '0',
+            transform: 'translate3d(0, -18vh, 0) rotate(0deg) scale(0.9)',
+            filter: 'brightness(1)',
+          },
+          '15%': {
+            opacity: '1',
+          },
+          '55%': {
+            opacity: '1',
+            filter: 'brightness(1.05)',
+          },
+          '100%': {
+            opacity: '0',
+            transform: 'translate3d(-14vw, 68vh, 0) rotate(-360deg) scale(1.1)',
+            filter: 'brightness(1.1)',
+          },
+        },
+        confettiRight: {
+          '0%': {
+            opacity: '0',
+            transform: 'translate3d(0, -20vh, 0) rotate(0deg) scale(0.9)',
+            filter: 'brightness(1)',
+          },
+          '15%': {
+            opacity: '1',
+          },
+          '55%': {
+            opacity: '1',
+            filter: 'brightness(1.05)',
+          },
+          '100%': {
+            opacity: '0',
+            transform: 'translate3d(15vw, 70vh, 0) rotate(360deg) scale(1.1)',
+            filter: 'brightness(1.1)',
+          },
+        },
+        confettiCenter: {
+          '0%': {
+            opacity: '0',
+            transform: 'translate3d(0, -16vh, 0) rotate(0deg) scale(0.95)',
+            filter: 'brightness(1)',
+          },
+          '20%': {
+            opacity: '1',
+          },
+          '60%': {
+            opacity: '1',
+            filter: 'brightness(1.05)',
+          },
+          '100%': {
+            opacity: '0',
+            transform: 'translate3d(0, 66vh, 0) rotate(360deg) scale(1.12)',
+            filter: 'brightness(1.1)',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -159,6 +216,9 @@ module.exports = {
         closeNavBar: 'closeNavBar 0.4s ease forwards',
         opacityUp: 'opacityUp 0.4s ease-out',
         opacityDown: 'opacityDown 5s ease forwards',
+        'confetti-left': 'confettiLeft 2.8s ease-out forwards',
+        'confetti-right': 'confettiRight 2.8s ease-out forwards',
+        'confetti-center': 'confettiCenter 2.8s ease-out forwards',
       },
     },
   },

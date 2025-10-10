@@ -1,6 +1,10 @@
-import RegisterUser from '@/components/template/RegisterUser'
-import { ParamsProp } from '@/types/general'
+import RegisterUserPage from '@/components/template/RegisterUser/RegisterUserPage'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/auth/options'
+import { checkUserPermissions } from '@/utils/checkUserPermissions'
+import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
+import { ParamsProp } from '@/types/general'
 
 export async function generateMetadata({
   params: { locale },
@@ -9,7 +13,7 @@ export async function generateMetadata({
 }) {
   const meta = await getTranslations({
     locale,
-    namespace: 'metadata.dashboard.profile',
+    namespace: 'metadata.dashboard.users.register',
   })
   return {
     title: meta('title'),
@@ -17,8 +21,13 @@ export async function generateMetadata({
   }
 }
 
-const page = () => {
-  return <RegisterUser />
-}
+export default async function RegisterPage() {
+  const session = await getServerSession(authOptions)
+  const userRole = session?.user?.profile?.role?.name
 
-export default page
+  if (!checkUserPermissions('user.register', userRole)) {
+    redirect('/dashboard')
+  }
+
+  return <RegisterUserPage />
+}

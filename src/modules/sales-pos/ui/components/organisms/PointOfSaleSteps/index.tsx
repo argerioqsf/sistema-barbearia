@@ -1,15 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Check } from 'lucide-react'
 import { AddItems } from './add-items'
 import { CustomerInfo } from './customer-info'
 import { Payment } from './payment'
 import { useSale } from '@/modules/sales-pos/ui/hooks/useSale'
 import { cn } from '@/lib/utils'
+import { SaleCompleted } from './sale-completed'
 
 interface StepsProps {
   saleId: string
+  isPaid: boolean
 }
 type StepsMeta = {
   id: number
@@ -35,12 +37,38 @@ const stepsMeta: StepsMeta[] = [
   },
 ] as const
 
-export function Steps({ saleId }: StepsProps) {
-  const { sale, setCustomer, paySale, setPaymentMethod } = useSale(saleId)
+export function Steps({ saleId, isPaid }: StepsProps) {
+  const { sale, totals, setCustomer, paySale, setPaymentMethod } =
+    useSale(saleId)
   const [step, setStep] = useState(1)
+  const [showSuccess, setShowSuccess] = useState(isPaid)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    if (sale?.paymentStatus === 'PAID' && !isTransitioning) {
+      setShowSuccess(true)
+    }
+  }, [sale?.paymentStatus, isTransitioning])
+
+  useEffect(() => {
+    return () => {
+      if (transitionTimer.current) {
+        clearTimeout(transitionTimer.current)
+      }
+    }
+  }, [])
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, stepsMeta.length))
   const prevStep = () => setStep((prev) => Math.max(1, prev - 1))
+
+  if (showSuccess) {
+    return (
+      <section className="col-span-full flex min-h-0 flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 shadow-xl shadow-slate-900/10 backdrop-blur animate-in fade-in-90 zoom-in-95 duration-500">
+        <SaleCompleted sale={sale} totals={totals} />
+      </section>
+    )
+  }
 
   function handlerStepIsCompleted(isPaid: boolean, meta: StepsMeta) {
     if (isPaid) return true
@@ -50,7 +78,6 @@ export function Steps({ saleId }: StepsProps) {
         return !!sale?.clientId
 
       case 'Itens':
-        console.log('saleItems: ', sale?.items)
         return sale && sale?.items?.length > 0
 
       case 'Pagamento':
@@ -72,9 +99,6 @@ export function Steps({ saleId }: StepsProps) {
       cardStepStyles: '',
       circleStepStyles: '',
     }
-    console.log('isActive: ', isActive)
-    console.log('isCompleted: ', isCompleted)
-    console.log('isPaid: ', isPaid)
     if (isActive) {
       if (isCompleted) {
         styles = {
@@ -109,8 +133,21 @@ export function Steps({ saleId }: StepsProps) {
   }
 
   return (
-    <section className="flex min-h-0 flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 shadow-xl shadow-slate-900/10 backdrop-blur">
-      <header className="border-b border-slate-200/70 bg-white/70 px-6 py-5 sm:px-8">
+    <section className="relative flex min-h-0 flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 shadow-xl shadow-slate-900/10 backdrop-blur">
+      {isTransitioning && (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/70 backdrop-blur">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-emerald-200 border-t-emerald-500" />
+          <p className="mt-4 text-sm font-medium text-emerald-700">
+            Finalizando pagamento...
+          </p>
+        </div>
+      )}
+      <header
+        className={cn(
+          'border-b border-slate-200/70 bg-white/70 px-6 py-5 sm:px-8',
+          isTransitioning && 'pointer-events-none opacity-40',
+        )}
+      >
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">
@@ -141,22 +178,12 @@ export function Steps({ saleId }: StepsProps) {
                     'group flex h-full flex-col rounded-2xl border px-4 py-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2',
                     canNavigateTo ? 'cursor-pointer' : 'cursor-default',
                     cardStepStyles,
-                    // isActive
-                    //   ? 'border-primary/80 bg-primary/10 shadow-sm shadow-primary/20'
-                    //   : isCompleted
-                    //     ? 'border-emerald- bg-emerald-50/60 text-emerald-900 shadow-sm shadow-emerald-200/50'
-                    //     : 'border-slate-200/80 bg-white/60 text-slate-500 hover:border-slate-300 hover:bg-white/70',
                   )}
                 >
                   <span
                     className={cn(
                       'flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold transition',
                       circleStepStyles,
-                      // isActive
-                      //   ? 'bg-primary text-primary-foreground'
-                      //   : isCompleted
-                      //     ? 'bg-emerald-500 text-white'
-                      //     : 'bg-slate-200 text-slate-600 group-hover:bg-slate-300 group-hover:text-slate-700',
                     )}
                   >
                     {isCompleted ? <Check className="h-4 w-4" /> : meta.id}
@@ -173,7 +200,12 @@ export function Steps({ saleId }: StepsProps) {
           </div>
         </div>
       </header>
-      <div className="flex-1 overflow-y-auto px-6 py-6 sm:px-8 sm:py-8">
+      <div
+        className={cn(
+          'flex-1 overflow-y-auto px-6 py-6 sm:px-8 sm:py-8',
+          isTransitioning && 'pointer-events-none opacity-40',
+        )}
+      >
         {step === 1 && (
           <CustomerInfo
             setCustomer={(customerId) => setCustomer(customerId)}
@@ -191,6 +223,16 @@ export function Steps({ saleId }: StepsProps) {
             paySale={(method) => paySale(method)}
             prevStep={prevStep}
             setPaymentMethod={(method) => setPaymentMethod(method)}
+            onPaymentSuccess={() => {
+              if (transitionTimer.current) {
+                clearTimeout(transitionTimer.current)
+              }
+              setIsTransitioning(true)
+              transitionTimer.current = setTimeout(() => {
+                setIsTransitioning(false)
+                setShowSuccess(true)
+              }, 2000)
+            }}
           />
         )}
       </div>

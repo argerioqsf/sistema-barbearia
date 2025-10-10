@@ -52,3 +52,5 @@ export const AppointmentsListPaginatedResponseSchema = z.object({
 export const BarbersListResponseSchema = z.object({
   users: z.array(UserSchema),
 })
+
+export const ListUnpaidAppointmentsResponseSchema = z.array(AppointmentSchema)

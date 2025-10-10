@@ -169,11 +169,8 @@ export async function listUnits(
   where?: Partial<Unit>,
 ): Promise<ReturnList<Unit>> {
   try {
-    const { units, count } = await fetchUnits(
-      page,
-      where as Record<string, unknown>,
-    )
-    return { response: units as unknown as Unit[], count }
+    const units = await fetchUnits(page, where)
+    return { response: units, count: 0 }
   } catch (error) {
     return { error: toNormalizedError('Error unknown') }
   }

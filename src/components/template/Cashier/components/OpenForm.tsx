@@ -33,8 +33,11 @@ export default function OpenForm({ visible = true }: Props) {
         <Text className="font-semibold text-gray-800">Abrir caixa</Text>
       </div>
       <div className="p-6">
-        <form action={action} className="flex flex-wrap gap-4 items-end">
-          <div className="min-w-[12rem]">
+        <form
+          action={action}
+          className="flex flex-col sm:flex-row gap-4 sm:items-end"
+        >
+          <div>
             <Text className="mb-1">Valor inicial</Text>
             <InputForm
               type="number"

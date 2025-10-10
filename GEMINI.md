@@ -40,4 +40,15 @@ To build and run the project, use the following commands:
 -   **Authentication:** The project uses `next-auth` for authentication. The authentication configuration is in `src/auth/options.ts`.
 -   **API Communication:** The project uses a custom API client in `src/data/api.ts` to communicate with the backend API.
 -   **Docs:** See `docs/README.md` for index. Key docs: `docs/plan/plano-melhoria-pos.md`, `docs/plan/planejamento-diagnostico.md`, `docs/tech/arquitetura-modular.md`, `docs/plan/tasks-modernizacao-pos.md`, and ADRs in `docs/adr/`.
--   **Internationalization:** The project uses `next-intl` for internationalization. The messages are in the `src/messages` directory.
+- **Internationalization:** The project uses `next-intl` for internationalization. The messages are in the `src/messages` directory.
+
+## User-Provided Guidelines
+
+- **Project Patterns**: Always follow established project patterns. For example, page components in `src/app` should be simple, with the main logic and data fetching abstracted into a template component inside `src/components/template`.
+- **Schema Location**: All data schemas (e.g., Zod schemas) must be located in the corresponding `src/features/*/schemas.ts` file. Do not create new schema files in other locations.
+- **Toast Notifications**: Use the project's standardized `useToast` hook from `@/components/ui/use-toast.ts` for all user notifications. Do not use other libraries like `sonner` directly.
+- **Verification**: After any implementation or modification, always run `npm run lint` and `npm run typecheck` to ensure the code is clean, correct, and free of errors.
+
+## Nomenclature
+
+-   **barber -> collaborator**: The term `barber` is being replaced with `collaborator` throughout the project to reflect a more general and inclusive scope, as the system is not limited to barbershops.

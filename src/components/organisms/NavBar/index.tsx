@@ -1,43 +1,60 @@
+'use client'
+
 import { Button } from '@/components/atoms'
 import { handleIcons } from '@/utils/handleIcons'
-import React, { Dispatch, SetStateAction } from 'react'
+import { RoleName } from '@/features/roles/schemas'
+import type { ZUnit } from '@/features/units/schemas'
+import { useRouter } from 'next/navigation'
+import React from 'react'
 import { twMerge } from 'tailwind-merge'
+import { UnitSwitcher } from './UnitSwitcher'
 
 type NavBarProps = {
-  setOpenMenu: Dispatch<SetStateAction<boolean | null>>
   openMenu: boolean | null
+  role?: RoleName
+  units?: ZUnit[]
+  currentUnitId?: string
 }
 
-const NavBar: React.FC<NavBarProps> = ({ openMenu }) => {
+const NavBar: React.FC<NavBarProps> = ({
+  openMenu,
+  role,
+  units,
+  currentUnitId,
+}) => {
+  const router = useRouter()
   const UserIcon = handleIcons('User')
 
   return (
     <nav
       className={twMerge(
-        'w-screen z-40 h-auto items-center fixed whitespace-nowrap bg-gray-300',
+        'fixed z-40 w-screen bg-white/85 shadow-sm backdrop-blur-md transition-colors',
       )}
     >
       <div
         className={twMerge(
-          'h-[var(--navbar-height)]',
-          'flex w-full flex-row relative flex-nowrap items-center justify-between',
-          !openMenu ? 'px-6' : 'md:px-6',
+          'flex h-[var(--navbar-height)] w-full items-center justify-between gap-4 px-4 py-3',
+          'sm:px-6 sm:py-4 ',
         )}
       >
-        {/* Botão de abrir menu removido. O toggle fica ao lado do menu lateral. */}
+        <div className="flex-1 min-w-0 md:max-w-xl pl-12">
+          <UnitSwitcher
+            role={role}
+            units={units}
+            currentUnitId={currentUnitId}
+          />
+        </div>
+
         <div
           className={twMerge(
-            'ml-auto flex flex-row gap-2',
-            openMenu && 'hidden md:flex',
+            'flex shrink-0 items-center justify-end gap-2',
+            openMenu && 'md:justify-end',
           )}
         >
           <Button
             type="button"
-            className="h-11 w-11 md:h-12 md:w-12 rounded-full bg-secondary-50 hover:bg-secondary-100/80 transition-colors flex items-center justify-center shadow"
-            onClick={() => {
-              // simple client-side redirect to profile
-              window.location.href = '/dashboard/profile'
-            }}
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-secondary-50 shadow transition-colors hover:bg-secondary-100/80 md:h-12 md:w-12"
+            onClick={() => router.push('/dashboard/profile')}
             aria-label="Perfil"
           >
             <UserIcon size={24} className="stroke-white" />

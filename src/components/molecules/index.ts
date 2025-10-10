@@ -7,6 +7,7 @@ import ContainerDashboard from './ContainerDashboard'
 import ItemSideMenu from './ItemSideMenu'
 import HeaderList from './HeaderList'
 import IconAction from './IconAction'
+import { TransactionTimeline } from './TransactionTimeline'
 
 export {
   ContainerSection,
@@ -18,4 +19,5 @@ export {
   ItemSideMenu,
   HeaderList,
   IconAction,
+  TransactionTimeline,
 }

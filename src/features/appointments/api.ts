@@ -6,10 +6,12 @@ import {
   AppointmentSchema,
   AppointmentsListResponseSchema,
   BarbersListResponseSchema,
+  ListUnpaidAppointmentsResponseSchema,
   type ZAppointment,
 } from './schemas'
 import { HttpError } from '@/shared/errors/httpError'
 import { ValidationError } from '@/shared/errors/validationError'
+import { logger } from '@/shared/logger'
 
 export async function fetchAppointments(
   params?: QueryParams<ZAppointment>,
@@ -78,4 +80,39 @@ export async function fetchAppointmentBarbers() {
   const json = await safeJson(response)
   if (Array.isArray(json)) return json
   return BarbersListResponseSchema.parse(json).users
+}
+
+export async function fetchUnpaidAppointments(id: string) {
+  const token = await getBackendToken()
+  const response = await api(
+    `/collaborators/${id}/pending-commission-appointments`,
+    {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+      next: {
+        tags: [`pending-commission-sale-items-${id}`],
+        revalidate: 60 * 2,
+      },
+    },
+  )
+
+  if (!response.ok) {
+    const message = await readMessage(response)
+    throw new HttpError(response.status, message)
+  }
+
+  const json = await safeJson(response)
+  const parsed = ListUnpaidAppointmentsResponseSchema.safeParse(json)
+
+  if (!parsed.success) {
+    logger.debug(
+      { errors: parsed.error },
+      'errors parsed fetchUnpaidAppointments',
+    )
+    throw ValidationError.fromZod(
+      parsed.error,
+      `Invalid response when list unpaid appointments for collaborator ${id}`,
+    )
+  }
+  return parsed.data
 }

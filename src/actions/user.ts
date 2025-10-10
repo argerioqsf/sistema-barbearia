@@ -1,6 +1,6 @@
 'use server'
 
-import { formSchemaUpdateUserProfile } from '@/components/template/DetailUsers/schema'
+import { formSchemaUpdateUser } from '@/components/template/DetailUsers/schema'
 import { formSchemaResetPassword } from '@/components/template/ResetPassword/schema'
 import { api } from '@/data/api'
 import {
@@ -12,11 +12,24 @@ import {
   User,
 } from '@/types/general'
 import { revalidateTag } from 'next/cache'
-import { createUser, fetchUser, fetchUsersAll } from '@/features/users/api'
-import type { QueryParams } from '@/types/http'
-import { ZUser } from '@/features/users/schemas'
+import {
+  createCollaborator,
+  fetchUser,
+  fetchUsersAll,
+  fetchUsersPaginated,
+  updateCollaboratorStatus,
+  updateUser,
+} from '@/features/users/api'
+import type { QueryParams, ReturnListPaginated } from '@/types/http'
+import {
+  UserRegisterBody,
+  UserUpdateBody,
+  ZUser,
+} from '@/features/users/schemas'
 import { handleRequestError } from '@/shared/errors/handlerRequestError'
 import { getBackendToken } from '@/utils/authServer'
+import { logger } from '@/shared/logger'
+import { ItemData } from '@/components/organisms/Form/FormItemAssociation'
 
 export async function getUser(id: string): Promise<ReturnRequest<ZUser>> {
   try {
@@ -33,9 +46,13 @@ export async function getUser(id: string): Promise<ReturnRequest<ZUser>> {
 export async function listUsersPaginatedAction(
   page: string,
   where?: QueryParams<ZUser>,
-): Promise<ReturnRequest<ZUser[]>> {
+): Promise<ReturnRequest<ReturnListPaginated<ZUser>>> {
   try {
-    const data = await fetchUsersAll(page, where)
+    const data = await fetchUsersPaginated(page, {
+      withCount: true,
+      perPage: 10,
+      ...where,
+    })
     return { ok: true, data }
   } catch (error) {
     const normalized = handleRequestError(error, {
@@ -57,12 +74,63 @@ export async function listUsersAllAction(): Promise<ReturnRequest<ZUser[]>> {
   }
 }
 
-export async function registerUserProfile(
+function mapperServicesUser(
+  services: ItemData[],
+): UserRegisterBody['services'] {
+  return services.map((service) => ({
+    serviceId: service.id,
+    commissionPercentage: service.commissionPercentage,
+    commissionType: service.commissionType,
+    time: service.time,
+  }))
+}
+
+function mapperProductsUser(
+  products: ItemData[],
+): UserRegisterBody['products'] {
+  return products.map((product) => ({
+    productId: product.id,
+    commissionPercentage: product.commissionPercentage,
+    commissionType: product.commissionType,
+    time: product.time,
+  }))
+}
+
+export async function createUserAction(
   prevState: InitialState<ZUser>,
   formData: FormData,
 ): Promise<ReturnRequest<ZUser>> {
   try {
-    const data = await createUser(formData)
+    const products = formData.get('products')
+      ? JSON.parse(formData.get('products') as string)
+      : undefined
+    const services = formData.get('services')
+      ? JSON.parse(formData.get('services') as string)
+      : undefined
+    const rawData: UserRegisterBody = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      password: formData.get('password') as string,
+      roleId: formData.get('roleId') as string,
+      phone: (formData.get('phone') as string) || undefined,
+      cpf: (formData.get('cpf') as string) || undefined,
+      birthday: (formData.get('birthday') as string) || undefined,
+      genre: (formData.get('genre') as string) || undefined,
+      pix: (formData.get('pix') as string) || undefined,
+      commissionPercentage: formData.get('commissionPercentage')
+        ? Number(formData.get('commissionPercentage'))
+        : undefined,
+      permissions: formData.get('permissions')
+        ? JSON.parse(formData.get('permissions') as string)
+        : undefined,
+      services: mapperServicesUser(services),
+      products: mapperProductsUser(products),
+    }
+
+    logger.debug({ rawData }, 'rawData')
+    logger.debug({ products: rawData.products }, 'products')
+    const data = await createCollaborator(rawData)
+    revalidateTag('users')
     return { ok: true, data }
   } catch (e) {
     const normalized = handleRequestError(e, {
@@ -72,12 +140,58 @@ export async function registerUserProfile(
   }
 }
 
-export async function createUserAction(
+export async function updateUserAction(
+  userId: string,
   prevState: InitialState<ZUser>,
   formData: FormData,
 ): Promise<ReturnRequest<ZUser>> {
   try {
-    const data = await createUser(formData)
+    const products = formData.get('products')
+      ? JSON.parse(formData.get('products') as string)
+      : undefined
+    const services = formData.get('services')
+      ? JSON.parse(formData.get('services') as string)
+      : undefined
+    const removeServiceIds = formData.get('removeServiceIds')
+      ? JSON.parse(formData.get('removeServiceIds') as string)
+      : undefined
+    const removeProductIds = formData.get('removeProductIds')
+      ? JSON.parse(formData.get('removeProductIds') as string)
+      : undefined
+    const commissionPercentage = Number(formData.get('commissionPercentage'))
+
+    logger.debug({ commissionPercentage }, 'commissionPercentage')
+
+    const rawData: UserUpdateBody = {
+      name: formData.get('name') as string,
+      roleId: formData.get('roleId') as string,
+      phone: (formData.get('phone') as string) || undefined,
+      cpf: (formData.get('cpf') as string) || undefined,
+      birthday: (formData.get('birthday') as string) || undefined,
+      genre: (formData.get('genre') as string) || undefined,
+      pix: (formData.get('pix') as string) || undefined,
+      commissionPercentage: commissionPercentage ?? undefined,
+      permissions: formData.get('permissions')
+        ? JSON.parse(formData.get('permissions') as string)
+        : undefined,
+      services: services ? mapperServicesUser(services) : undefined,
+      products: products ? mapperProductsUser(products) : undefined,
+      removeServiceIds,
+      removeProductIds,
+    }
+
+    logger.debug({ rawData }, 'rawData updateUserAction')
+    logger.debug(
+      { services: rawData.services },
+      'rawData.services updateUserAction',
+    )
+    logger.debug(
+      { services: rawData.products },
+      'rawData.products updateUserAction',
+    )
+    const data = await updateUser(userId, rawData)
+    revalidateTag('users')
+    revalidateTag(userId)
     return { ok: true, data }
   } catch (e) {
     const normalized = handleRequestError(e, {
@@ -94,7 +208,7 @@ export async function updateUserProfile(
 ): Promise<InitialState<Profile | User>> {
   const role = formData.get('profile.role')
   const units = JSON.parse(String(formData.get('profile.units')) ?? '[]')
-  const validatedFields = formSchemaUpdateUserProfile.safeParse({
+  const validatedFields = formSchemaUpdateUser.safeParse({
     id,
     name: formData.get('name'),
     email: formData.get('email'),
@@ -192,8 +306,8 @@ export async function resetPasswordUser(
           errors: { request: 'Erro de credenciais' },
         }
       }
-      const response = await api(`/resetPassword/user`, {
-        method: 'PUT',
+      const response = await api(`/reset-password`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -263,7 +377,7 @@ export async function confirmPayment(
 
 export async function activeUserEmail(
   id?: string,
-): Promise<InitialState<Profile>> {
+): Promise<InitialState<User>> {
   try {
     const token = await getBackendToken()
     const response = await api(`/indicator/active/${id}`, {
@@ -286,66 +400,25 @@ export async function activeUserEmail(
     }
     revalidateTag('indicators')
     revalidateTag('users')
-    return { ok: true }
+    return { ok: true } as InitialState<User>
   } catch (error) {
     return { errors: { request: 'Error unknown' } }
   }
 }
-
-export async function disableUser(id?: string): Promise<InitialState<User>> {
+// TODO: veirifcar no backend se ele esta respeitando a logica de usuario desativado,
+// nao deixando usuarios desativados executarem nem uma açao no backend e invalidar o seu token
+export async function toggleCollaboratorStatusAction(
+  userId: string,
+  currentStatus: boolean,
+): Promise<ReturnRequest<ZUser>> {
   try {
-    const token = await getBackendToken()
-    const response = await api(`/indicator/active/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        active: false,
-        sendEmail: false,
-      }),
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        errors: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    revalidateTag('indicators')
+    const data = await updateCollaboratorStatus(userId, !currentStatus)
     revalidateTag('users')
-    return { ok: true }
+    return { ok: true, data }
   } catch (error) {
-    return { errors: { request: 'Error unknown' } }
-  }
-}
-
-export async function activeUser(id?: string): Promise<InitialState<User>> {
-  try {
-    const token = await getBackendToken()
-    const response = await api(`/indicator/active/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        active: true,
-        sendEmail: false,
-      }),
+    const normalized = handleRequestError(error, {
+      rethrow: false,
     })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return {
-        errors: { request: JSON.parse(errorMessage).message },
-      }
-    }
-    revalidateTag('indicators')
-    revalidateTag('users')
-    return { ok: true }
-  } catch (error) {
-    return { errors: { request: 'Error unknown' } }
+    return { ok: false, error: normalized }
   }
 }

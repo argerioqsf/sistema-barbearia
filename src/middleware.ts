@@ -10,85 +10,96 @@ const middlewareIntl = createMiddleware({
   locales: [...locales],
   defaultLocale,
 })
-function verifyPublicPage(request: NextRequest, publicPages: string[]) {
-  const { pathname } = request.nextUrl
-  return publicPages.some((segment) => pathname.includes(segment))
-}
+
+const PUBLIC_PATHS = ['/auth/signin', '/sim/indicator'] as const
 
 function getLocale(request: NextRequestWithAuth): string {
   const seg = request.nextUrl.pathname.split('/').filter(Boolean)[0]
   return seg || defaultLocale
 }
 
+function isPublicPath(pathname: string, locale: string): boolean {
+  const normalizedPath = pathname.startsWith('/') ? pathname : `/${pathname}`
+  return PUBLIC_PATHS.some((segment) => {
+    const normalizedSegment = segment.startsWith('/') ? segment : `/${segment}`
+    return (
+      normalizedPath === normalizedSegment ||
+      normalizedPath === `/${locale}${normalizedSegment}`
+    )
+  })
+}
+
+function mapRoleToInitialPath(locale: string, role?: RoleName): string {
+  switch (role) {
+    case 'OWNER':
+      return `/${locale}/dashboard/consultants/monitoring`
+    case 'BARBER':
+      return `/${locale}/dashboard/appointments`
+    default:
+      return `/${locale}/dashboard/home`
+  }
+}
+
+function redirectTo(request: NextRequest, targetPath: string) {
+  const currentUrl = request.nextUrl
+  const destination = new URL(targetPath, request.url)
+
+  if (currentUrl.href === destination.href) {
+    return middlewareIntl(request)
+  }
+
+  return NextResponse.redirect(destination)
+}
+
 const appMiddleware = async (request: NextRequestWithAuth) => {
   const token = request.nextauth?.token
   const isLogged = !!token
-  const publicPages = ['/auth/signin', 'sim/indicator']
-  const isPublicPages = verifyPublicPage(request, publicPages)
-  const isLoginPage = request.nextUrl.pathname.includes('/auth/signin')
-  const roleUser: RoleName | undefined = token?.user?.profile?.role?.name
   const locale = getLocale(request)
   const pathname = request.nextUrl.pathname
-  const mapRoleToInitialPath = (role?: RoleName): string => {
-    switch (role) {
-      case 'OWNER':
-        return `/${locale}/dashboard/consultants/monitoring`
-      case 'BARBER':
-        return `/${locale}/dashboard/appointments`
-      default:
-        return `/${locale}/dashboard/home`
+  const roleUser: RoleName | undefined = token?.user?.profile?.role?.name
+
+  const isRoot = pathname === '/' || pathname === `/${locale}`
+  const isLoginPage =
+    pathname === '/auth/signin' || pathname === `/${locale}/auth/signin`
+  const isPublic = isPublicPath(pathname, locale)
+
+  if (isRoot) {
+    if (isLogged) {
+      return redirectTo(request, mapRoleToInitialPath(locale, roleUser))
     }
+    return redirectTo(request, `/${locale}/auth/signin`)
   }
 
-  // If accessing root or only locale segment, route appropriately
-  if (pathname === '/' || pathname === `/${locale}`) {
-    if (isLogged) {
-      const path = mapRoleToInitialPath(roleUser)
-      return NextResponse.redirect(new URL(path, request.url))
-    } else {
-      return NextResponse.redirect(
-        new URL(`/${locale}/auth/signin`, request.url),
-      )
-    }
-  }
   if (!isLogged) {
-    if (isPublicPages) {
+    if (isPublic) {
       return middlewareIntl(request)
-    } else {
-      return NextResponse.redirect(
-        new URL(`/${locale}/auth/signin`, request.url),
-      )
     }
+    return redirectTo(request, `/${locale}/auth/signin`)
   }
 
   if (isLoginPage) {
-    const path = mapRoleToInitialPath(roleUser)
-    return NextResponse.redirect(new URL(path, request.url))
-  } else {
-    if (isPublicPages) {
-      return middlewareIntl(request)
-    }
-
-    if (roleUser) {
-      const havePermission = verifyPageRole(siteConfig, roleUser, request)
-      if (havePermission === false) {
-        return NextResponse.redirect(new URL(`/${locale}/404`, request.url))
-      } else if (havePermission === true) {
-        return middlewareIntl(request)
-      } else if (havePermission === null) {
-        return middlewareIntl(request)
-      }
-    } else {
-      return NextResponse.redirect(
-        new URL(`/${locale}/auth/signin`, request.url),
-      )
-    }
+    return redirectTo(request, mapRoleToInitialPath(locale, roleUser))
   }
+
+  if (isPublic) {
+    return middlewareIntl(request)
+  }
+
+  if (!roleUser) {
+    return middlewareIntl(request)
+  }
+
+  const havePermission = verifyPageRole(siteConfig, roleUser, request)
+  if (havePermission === false) {
+    return redirectTo(request, `/${locale}/404`)
+  }
+
+  return middlewareIntl(request)
 }
 
 export default withAuth(appMiddleware, {
   callbacks: {
-    authorized: () => true, // Use our own logic inside appMiddleware
+    authorized: () => true,
   },
 })
 

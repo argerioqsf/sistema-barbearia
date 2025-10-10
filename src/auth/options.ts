@@ -14,6 +14,9 @@ function isAuthResponse(u: unknown): u is AuthResponse {
 }
 
 export const authOptions: NextAuthOptions = {
+  pages: {
+    signIn: '/',
+  },
   session: { strategy: 'jwt' },
   providers: [
     Credentials({
@@ -38,14 +41,15 @@ export const authOptions: NextAuthOptions = {
           // Expected: { token, user, roles }
           if (!data?.token || !data?.user) return null
           return { id: data.user.id, ...data }
-        } catch {
+        } catch (err) {
+          console.log(err)
           return null
         }
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       // Persist backend token and user payload
       if (isAuthResponse(user)) {
         const u = user
@@ -59,11 +63,30 @@ export const authOptions: NextAuthOptions = {
           name: u.user.name,
           email: u.user.email,
           profile: { role: { name: roleName } },
+          unitId: u.user.unitId,
+        }
+      }
+      if (trigger === 'update') {
+        const sessionUpdate = session as
+          | (Record<string, unknown> & { accessToken?: string; user?: unknown })
+          | undefined
+        const nextAccessToken = sessionUpdate?.accessToken
+        if (typeof nextAccessToken === 'string') {
+          token.accessToken = nextAccessToken
+        }
+        if (sessionUpdate?.user && typeof sessionUpdate.user === 'object') {
+          token.user = {
+            ...(token.user ?? {}),
+            ...(sessionUpdate.user as Record<string, unknown>),
+          } as typeof token.user
         }
       }
       return token
     },
     async session({ session, token }) {
+      if (typeof token.accessToken === 'string') {
+        session.accessToken = token.accessToken
+      }
       session.user = token.user
       return session
     },

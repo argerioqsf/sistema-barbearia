@@ -7,6 +7,10 @@ import {
   type ZUnit,
 } from './schemas'
 import type { QueryParams } from '@/types/http'
+import { logger } from '@/shared/logger'
+import { readMessage } from '@/shared/http'
+import { HttpError } from '@/shared/errors/httpError'
+import { ValidationError } from '@/shared/errors/validationError'
 
 export async function fetchUnits(page: string, where?: QueryParams<ZUnit>) {
   const token = await getBackendToken()
@@ -42,17 +46,23 @@ export async function fetchUnit(id: string) {
   throw new Error('Invalid unit response')
 }
 
-export async function fetchUnitsSelect() {
+export async function fetchUnitsSelect(): Promise<ZUnit[]> {
   const token = await getBackendToken()
-  const response = await api(`/units/select`, {
+  const response = await api(`/units`, {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}` },
     next: { tags: ['units'], revalidate: 60 * 4 },
   })
-  if (!response.ok) throw new Error((await response.json()).message)
+  logger.debug({ response }, 'response')
+
+  if (!response.ok) {
+    const message = await readMessage(response)
+    throw new HttpError(response.status, message)
+  }
   const json = await response.json()
-  // Accept either { units } or direct array
-  if (Array.isArray(json)) return json
-  if (Array.isArray(json.units)) return json.units
-  throw new Error('Invalid units select response')
+  const parsed = UnitsListResponseSchema.safeParse(json)
+  if (!parsed.success) {
+    throw ValidationError.fromZod(parsed.error, 'Invalid response get sale')
+  }
+  return parsed.data
 }

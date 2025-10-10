@@ -1,8 +1,10 @@
+import { ZodIssue } from 'zod'
+
 export type NormalizedError =
   | {
       type: 'validation'
       message: string
-      issues?: unknown
+      issues?: { issues: ZodIssue[] }
       code?: string
       status?: 422
       details?: unknown

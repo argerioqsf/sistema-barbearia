@@ -1,7 +1,10 @@
 import React, { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-type FormProps = {
+type FormProps = Omit<
+  React.FormHTMLAttributes<HTMLFormElement>,
+  'action' | 'onSubmit'
+> & {
   children: ReactNode
   className?: string
   onSubmit?: () => void
@@ -13,9 +16,15 @@ const Form = ({
   className,
   action,
   onSubmit = () => {},
+  ...rest
 }: FormProps) => {
   return (
-    <form onSubmit={onSubmit} className={twMerge(className)} action={action}>
+    <form
+      onSubmit={onSubmit}
+      className={twMerge(className)}
+      action={action}
+      {...rest}
+    >
       {children}
     </form>
   )

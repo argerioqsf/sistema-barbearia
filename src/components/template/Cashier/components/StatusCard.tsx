@@ -1,8 +1,11 @@
 import { Text } from '@/components/atoms'
 import type { ZCashSession } from '@/features/cash-session/schemas'
 import CloseButton from './CloseButton'
+import { TransactionTimeline } from '@/components/molecules'
 
-type Props = { session?: ZCashSession | null }
+type Props = {
+  session?: ZCashSession | null
+}
 
 export default function StatusCard({ session }: Props) {
   const isOpen = session?.closedAt === null
@@ -71,6 +74,15 @@ export default function StatusCard({ session }: Props) {
           <Text className="text-gray-600">
             Nenhuma sessão de caixa encontrada.
           </Text>
+        )}
+      </div>
+      <div className="px-6 pb-6">
+        {isOpen && (
+          <TransactionTimeline
+            transactions={session?.transactions ?? []}
+            emptyMessage="Nenhuma transação registrada nesta sessão."
+            className="mt-4"
+          />
         )}
       </div>
     </div>
