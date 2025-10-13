@@ -41,6 +41,28 @@ export const siteConfig: SiteConfig = [
   },
   {
     id: '2',
+    label: 'Categorias',
+    icon: 'ShoppingBag',
+    userAction: 'categories.view',
+    subMenuList: [
+      {
+        id: '1',
+        label: 'Listagem',
+        href: '/dashboard/categories',
+        icon: 'Circle',
+        userAction: 'categories.list',
+      },
+      {
+        id: '2',
+        label: 'Cadastrar categorias',
+        href: '/dashboard/categories/register',
+        icon: 'Circle',
+        userAction: 'categories.register',
+      },
+    ],
+  },
+  {
+    id: '2',
     label: 'Produtos',
     icon: 'ShoppingBag',
     userAction: 'products.view',
@@ -80,6 +102,13 @@ export const siteConfig: SiteConfig = [
         href: '/dashboard/financial/pay-commission',
         icon: 'Circle',
         userAction: 'financial.transactions.list',
+      },
+      {
+        id: '3',
+        label: 'Retiradas',
+        href: '/dashboard/financial/withdrawals',
+        icon: 'Circle',
+        userAction: 'financial.withdrawals',
       },
     ],
   },

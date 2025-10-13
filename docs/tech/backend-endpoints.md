@@ -216,6 +216,13 @@ Transações/Comissões
   - Exemplo (form-data): `receipt: <comprovante.png>`, `amount: 120`, `saleItemIds: ["saleItemId1","saleItemId2"]`, `affectedUserId: "user_id"`
   - Permissões: `MANAGE_USER_TRANSACTION_WITHDRAWAL` e `MANAGE_OTHER_USER_TRANSACTION`
   - Resposta: `{ transactions: Transaction[] }`
+- POST `/withdrawal/transactions` [protegido]
+  - multipart/form-data (arquivo: `receipt`)
+  - Body: `{ description, amount (>0), affectedUserId?, discountLoans? (boolean) }`
+  - Exemplo (form-data): `receipt: <comprovante.png>`, `description: "Retirada de caixa"`, `amount: 120`, `affectedUserId: "user_id"`
+  - Permissões: `MANAGE_USER_TRANSACTION_WITHDRAWAL`. Requer `MANAGE_OTHER_USER_TRANSACTION` se `affectedUserId` for informado.
+  - Observação: Se o `affectedUserId` não for passado, a retirada será feita da unidade em que o usuário que está registrando está definido.
+  - Resposta: `{ transactions: Transaction[] }`
 - GET `/pay/pending/:userId` [protegido]
   - Exige permissão MANAGE_OTHER_USER_TRANSACTION
   - Resposta: `{ saleItemsRecords, totalCommission, loans, outstanding }`

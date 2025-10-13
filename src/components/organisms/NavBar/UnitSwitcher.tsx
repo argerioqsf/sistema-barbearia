@@ -13,6 +13,7 @@ import React, {
   useState,
   useTransition,
 } from 'react'
+import { Combobox } from '@/components/ui/combo-box'
 
 type UnitSwitcherProps = {
   role?: RoleName
@@ -90,8 +91,9 @@ export function UnitSwitcher({
     })
   }, [canSelectUnit, currentUnitId, runUnitChange, toast, units])
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const nextUnitId = event.target.value
+  const handleChange = (unitId: string) => {
+    if (unitId.length <= 0) return
+    const nextUnitId = unitId
     const previousUnitId = lastSuccessfulUnitRef.current
     setSelectedUnit(nextUnitId)
     startTransition(async () => {
@@ -118,28 +120,21 @@ export function UnitSwitcher({
   return (
     <div className="w-full min-w-[150px] max-w-[220px]">
       <label className="flex w-full flex-col gap-1 text-xs font-medium text-muted-foreground">
-        <span className="uppercase tracking-[0.18em] text-muted-foreground/80">
-          Unidade ativa
-        </span>
         <div className="relative flex items-center">
-          <select
+          <Combobox
+            options={units.map((user) => ({
+              value: user.id,
+              label: user.name,
+            }))}
+            onValueChange={handleChange}
             value={selectedUnit}
-            onChange={handleChange}
+            placeholder="Selecione uma unidade..."
+            searchPlaceholder="Buscar unidade..."
+            emptyPlaceholder={
+              isPending ? 'Carregando...' : 'Nenhuma unidade encontrada.'
+            }
             disabled={isPending}
-            className="w-full appearance-none rounded-xl border border-secondary-200 bg-white px-3 py-2.5 text-sm font-semibold text-secondary-900 shadow-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-80"
-          >
-            <option value="" disabled>
-              Selecione uma unidade
-            </option>
-            {units.map((unit) => (
-              <option key={unit.id} value={unit.id}>
-                {unit.name}
-              </option>
-            ))}
-          </select>
-          <span className="pointer-events-none absolute right-3 inline-flex h-5 w-5 items-center justify-center rounded-full bg-secondary-100 text-secondary-foreground">
-            ▼
-          </span>
+          />
         </div>
       </label>
     </div>

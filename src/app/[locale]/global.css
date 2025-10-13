@@ -7,7 +7,8 @@
     --navbar-height: 80px;
     --sidebar-height: 60px;
     --max-width-page: 100%;
-    --width-side-menu: 22vw;
+    --width-side-menu: clamp(240px, 22vw, 320px);
+    --width-side-menu-collapsed: 0rem;
     --width-nav-bar: calc((100vw - var(--width-side-menu)));
     --height-section: calc((100vh - var(--navbar-height)));
 
@@ -92,18 +93,14 @@
 
 @media screen and (max-width: 768px) {
   :root {
-    --width-side-menu: 80vw;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  :root {
-    --width-side-menu: 30vw;
+    --width-side-menu: clamp(240px, 80vw, 320px);
+    --width-side-menu-collapsed: 0rem;
   }
 }
 
 @media screen and (min-width: 1024px) {
   :root {
-    --width-side-menu: 22vw;
+    --width-side-menu:  clamp(240px, 10vw, 320px);
+    --width-side-menu-collapsed: 5rem;
   }
 }

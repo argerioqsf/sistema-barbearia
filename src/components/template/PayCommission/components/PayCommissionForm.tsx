@@ -7,13 +7,6 @@ import { useToast } from '@/components/ui/use-toast'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { FormField } from '@/components/organisms/Form/FormField'
 import { FormSection } from '@/components/organisms/Form/FormSection'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -31,6 +24,7 @@ import { ZSaleItemWithRemainingValue } from '@/features/saleItems/schema'
 import { logger } from '@/shared/logger'
 import { DataListEmptyState } from '@/components/organisms/DataList'
 import { formatDateCustom } from '@/shared/date'
+import { Combobox } from '@/components/ui/combo-box'
 
 type PayCommissionFormProps = {
   users: ZUser[]
@@ -178,24 +172,16 @@ export function PayCommissionForm({
 
       {!userIdFromQuery && (
         <FormSection title="Selecione o Colaborador">
-          <FormField
-            label="Colaborador"
-            htmlFor="affectedUserId"
-            errors={issues}
-          >
-            <Select onValueChange={setAffectedUserId} value={affectedUserId}>
-              <SelectTrigger>
-                <SelectValue placeholder="Selecione um colaborador para pagar" />
-              </SelectTrigger>
-              <SelectContent>
-                {users.map((user) => (
-                  <SelectItem key={user.id} value={user.id}>
-                    {user.name} ({user.email})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </FormField>
+          <Combobox
+            options={users.map((user) => ({
+              value: user.id,
+              label: user.name,
+            }))}
+            onValueChange={setAffectedUserId}
+            value={affectedUserId}
+            placeholder="Selecione um colaborador..."
+            searchPlaceholder="Buscar colaborador..."
+          />
         </FormSection>
       )}
 

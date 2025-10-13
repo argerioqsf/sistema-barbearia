@@ -10,6 +10,7 @@ import { PayCommissionBody, PayCommissionFormSchema } from './schemas'
 import { ValidationError } from '@/shared/errors/validationError'
 import { HttpError } from '@/shared/errors/httpError'
 import { logger } from '@/shared/logger'
+import { revalidateTag } from 'next/cache'
 
 export async function createTransaction(form: FormData): Promise<ZTransaction> {
   const token = await getBackendToken()
@@ -112,6 +113,7 @@ export async function createCommissionPayment(body: PayCommissionBody) {
     },
     body: formData,
   })
+  revalidateTag('sales')
 
   if (!response.ok) {
     const message = await readMessage(response)

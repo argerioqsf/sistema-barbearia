@@ -20,8 +20,18 @@ export default function ContainerLayoutDashboard({
   navBarProps,
 }: ContainerLayoutDashboardProps) {
   const { openMenu } = useGeneral()
+  const expandedPaddingClass =
+    'md:pl-[clamp(240px,var(--width-side-menu),320px)]'
+  const collapsedPaddingClass = 'md:pl-[var(--width-side-menu-collapsed)]'
+
   return (
-    <div className={twMerge('w-full pl-0')}>
+    <div
+      className={twMerge(
+        'w-full pl-0 transition-all duration-300 ease-out',
+        collapsedPaddingClass,
+        openMenu && expandedPaddingClass,
+      )}
+    >
       <NavBar
         openMenu={openMenu}
         role={navBarProps?.role}

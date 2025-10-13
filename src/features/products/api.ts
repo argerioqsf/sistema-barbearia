@@ -18,6 +18,7 @@ import { HttpError } from '@/shared/errors/httpError'
 
 import { logger } from '@/shared/logger'
 import { ValidationError } from '@/shared/errors/validationError'
+import { revalidateTag } from 'next/cache'
 
 export async function updateProduct(
   id: string,
@@ -175,6 +176,8 @@ export async function createProduct(
       'Invalid response when creating product',
     )
   }
+
+  revalidateTag('products')
 
   return parsed.data
 }

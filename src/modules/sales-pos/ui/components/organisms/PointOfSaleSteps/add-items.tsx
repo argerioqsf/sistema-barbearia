@@ -20,11 +20,17 @@ interface AddItemsProps {
   saleId: string
   prevStep?: () => void
   nextStep: () => void
+  isPaid: boolean
 }
 
 type CatalogType = 'products' | 'services' | 'appointments' | 'plans'
 
-export function AddItems({ saleId, prevStep, nextStep }: AddItemsProps) {
+export function AddItems({
+  saleId,
+  prevStep,
+  nextStep,
+  isPaid,
+}: AddItemsProps) {
   const [selectedItemType, setSelectedItemType] =
     useState<CatalogType>('products')
   const [searchTerm, setSearchTerm] = useState('')
@@ -120,90 +126,94 @@ export function AddItems({ saleId, prevStep, nextStep }: AddItemsProps) {
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <TitleForm
-          title="Adicionar Itens"
-          className="text-2xl font-semibold text-slate-900"
-        />
-        <p className="mt-2 text-sm text-slate-500">
-          Combine produtos, serviços, planos ou agendamentos para montar a
-          venda.
-        </p>
-      </div>
-
-      <div className="rounded-3xl border border-slate-200 bg-white/70 px-6 py-6 shadow-inner shadow-slate-900/5">
-        <div className="grid gap-4 lg:grid-cols-[220px_minmax(0,1fr)]">
-          <div className="flex flex-col gap-2">
-            <LabelForm
-              label="Tipo de item"
-              htmlFor="itemType"
-              className="text-xs font-semibold uppercase tracking-wide text-slate-500"
+      {!isPaid && (
+        <>
+          <div>
+            <TitleForm
+              title="Adicionar Itens"
+              className="text-2xl font-semibold text-slate-900"
             />
-            <div className="relative">
-              <SelectForm
-                id="itemType"
-                options={selectOptions}
-                value={selectedItemType}
-                onChange={(e) =>
-                  setSelectedItemType(e.target.value as CatalogType)
-                }
-                className="h-12 w-full rounded-xl border border-slate-200 bg-white px-3 text-base text-slate-900 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-              />
-              <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-400">
-                ▾
-              </span>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <LabelForm
-              label="Buscar catálogo"
-              htmlFor="itemSearch"
-              className="text-xs font-semibold uppercase tracking-wide text-slate-500"
-            />
-            <InputForm
-              id="itemSearch"
-              placeholder="Digite para buscar"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900 placeholder:text-slate-400 focus:border-primary focus:ring-primary/40"
-            />
-          </div>
-        </div>
-
-        <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white/80 p-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-sm font-semibold text-slate-900">
-                {catalogHeader}
-              </p>
-              <p className="text-xs text-slate-500">
-                {isLoading
-                  ? 'Carregando sugestões...'
-                  : currentCatalogLength > 0
-                    ? 'Clique para adicionar rapidamente ao carrinho.'
-                    : 'Nenhum item encontrado. Ajuste sua busca.'}
-              </p>
-            </div>
-            <span className="rounded-full bg-slate-900/5 px-3 py-1 text-xs font-medium text-slate-500">
-              {currentCatalogLength} itens
-            </span>
+            <p className="mt-2 text-sm text-slate-500">
+              Combine produtos, serviços, planos ou agendamentos para montar a
+              venda.
+            </p>
           </div>
 
-          <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {isLoading && <LoadingSkeleton />}
-            {!isLoading && currentCatalogLength === 0 && <EmptyState />}
-            {!isLoading &&
-              currentCatalog.map((item) => (
-                <CatalogCard
-                  key={getCatalogKey(item)}
-                  title={getCatalogTitle(item)}
-                  subtitle={getCatalogSubtitle(item)}
-                  onAdd={() => handleAddItem(item)}
+          <div className="rounded-3xl border border-slate-200 bg-white/70 px-6 py-6 shadow-inner shadow-slate-900/5">
+            <div className="grid gap-4 lg:grid-cols-[220px_minmax(0,1fr)]">
+              <div className="flex flex-col gap-2">
+                <LabelForm
+                  label="Tipo de item"
+                  htmlFor="itemType"
+                  className="text-xs font-semibold uppercase tracking-wide text-slate-500"
                 />
-              ))}
+                <div className="relative">
+                  <SelectForm
+                    id="itemType"
+                    options={selectOptions}
+                    value={selectedItemType}
+                    onChange={(e) =>
+                      setSelectedItemType(e.target.value as CatalogType)
+                    }
+                    className="h-12 w-full rounded-xl border border-slate-200 bg-white px-3 text-base text-slate-900 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  />
+                  <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-400">
+                    ▾
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <LabelForm
+                  label="Buscar catálogo"
+                  htmlFor="itemSearch"
+                  className="text-xs font-semibold uppercase tracking-wide text-slate-500"
+                />
+                <InputForm
+                  id="itemSearch"
+                  placeholder="Digite para buscar"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900 placeholder:text-slate-400 focus:border-primary focus:ring-primary/40"
+                />
+              </div>
+            </div>
+
+            <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white/80 p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">
+                    {catalogHeader}
+                  </p>
+                  <p className="text-xs text-slate-500">
+                    {isLoading
+                      ? 'Carregando sugestões...'
+                      : currentCatalogLength > 0
+                        ? 'Clique para adicionar rapidamente ao carrinho.'
+                        : 'Nenhum item encontrado. Ajuste sua busca.'}
+                  </p>
+                </div>
+                <span className="rounded-full bg-slate-900/5 px-3 py-1 text-xs font-medium text-slate-500">
+                  {currentCatalogLength} itens
+                </span>
+              </div>
+
+              <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {isLoading && <LoadingSkeleton />}
+                {!isLoading && currentCatalogLength === 0 && <EmptyState />}
+                {!isLoading &&
+                  currentCatalog.map((item) => (
+                    <CatalogCard
+                      key={getCatalogKey(item)}
+                      title={getCatalogTitle(item)}
+                      subtitle={getCatalogSubtitle(item)}
+                      onAdd={() => handleAddItem(item)}
+                    />
+                  ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
 
       <SaleItemsList saleId={saleId} />
 

@@ -16,6 +16,7 @@ export const UnitSchema = z
     id: z.string(),
     name: z.string(),
     createdAt: z.string().optional(),
+    totalBalance: z.number(),
   })
   .passthrough()
 

@@ -19,7 +19,7 @@ export async function fetchUnpaidSaleItems(
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
       next: {
-        tags: [`pending-commission-sale-items-${id}`],
+        tags: [`pending-commission-sale-items-${id}`, 'sales'],
         revalidate: 60 * 2,
       },
     },

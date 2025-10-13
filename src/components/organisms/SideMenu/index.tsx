@@ -1,116 +1,124 @@
 'use client'
 
+import { useEffect, useMemo } from 'react'
+import Image from 'next/image'
+import { twMerge } from 'tailwind-merge'
 import { siteConfig } from '@/config/siteConfig'
 import ItemSideMenu from '@/components/molecules/ItemSideMenu'
 import { useGeneral } from '@/contexts/general-context'
-import React, { useEffect } from 'react'
-import { twMerge } from 'tailwind-merge'
-import { Avatar } from '@/components/molecules'
 import { handleIcons } from '@/utils/handleIcons'
 import logoBarbearia from '../../../../public/logo_barbearia.png'
 
-function SideMenu() {
+export default function SideMenu() {
   const { openMenu, setOpenMenu } = useGeneral()
+  const ToggleIcon = useMemo(
+    () => handleIcons(openMenu ? 'ChevronLeft' : 'ChevronRight'),
+    [openMenu],
+  )
 
   useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') setOpenMenu(false)
+    if (typeof window === 'undefined') return
+    if (!openMenu) return
+    if (window.innerWidth >= 768) return
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') setOpenMenu(false)
     }
-    if (openMenu) {
-      window.addEventListener('keydown', onKeyDown)
-    }
+
+    window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [openMenu, setOpenMenu])
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none">
-      {/* Fullscreen overlay for mobile to capture scroll/taps */}
+    <>
       <div
         onClick={() => setOpenMenu(false)}
         className={twMerge(
-          'absolute inset-0 bg-black/40 transition-opacity md:hidden z-40',
+          'fixed inset-0 z-40 bg-slate-900/60 transition-opacity md:hidden',
           openMenu
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none',
         )}
-        // Prevent horizontal gestures from scrolling the page beneath
         style={{ touchAction: 'none' }}
       />
-      {/* Drawer */}
+
       <aside
         className={twMerge(
-          'absolute left-0 top-0 bottom-0 bg-primary-100/95 backdrop-blur-sm shadow-xl z-50',
-          'h-full pointer-events-auto w-[var(--width-side-menu)]',
-          'flex flex-row items-start justify-start',
-          // Permite rolagem vertical no aside em telas pequenas; evita horizontal
-          'whitespace-nowrap overflow-y-auto overflow-x-hidden overscroll-contain',
-          'transform transition-transform duration-300 ease-out',
-          openMenu ? 'translate-x-0' : '-translate-x-full',
+          'fixed inset-y-0 left-0 z-50 flex h-full flex-col border-r border-slate-200/70 bg-white/95 backdrop-blur-xl shadow-xl transition-all duration-300 ease-out',
+          openMenu ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
+          openMenu
+            ? 'w-[var(--width-side-menu)]'
+            : 'w-0 hidden lg:flex lg:w-[var(--width-side-menu-collapsed)]',
         )}
-        aria-hidden={!openMenu}
-        role="dialog"
-        aria-modal="true"
-        id="sidebar-drawer"
         style={{
-          touchAction: 'pan-y',
-          willChange: 'transform',
+          maxWidth: '320px',
+          willChange: 'width, transform',
         }}
       >
-        <div className="relative w-full gap-4 pt-4 h-full flex flex-col justify-start items-center">
-          <Avatar
-            router={'/dashboard/profile'}
-            size={140}
-            image={logoBarbearia}
-            classAvatar="mb-2"
-          />
-          <div className="w-full">
-            {siteConfig.map((config) => (
-              <ItemSideMenu
-                setOpenMenu={setOpenMenu}
-                image={config.image}
-                sizeAvatar={config.size}
-                icon={config.icon}
-                subMenuList={config.subMenuList}
-                key={config.id}
-                label={config.label}
-                href={config.href}
-                userAction={config.userAction}
-                hidden={config.hidden}
-              />
-            ))}
-          </div>
-        </div>
-      </aside>
+        <header className="flex h-[calc(var(--navbar-height)+1px)] items-center gap-3 border-b border-slate-200/70 px-4 py-4">
+          {openMenu && (
+            <>
+              <div className="h-10 w-10 overflow-hidden rounded-2xl border border-slate-200 bg-black shadow-inner shadow-slate-900/5">
+                <Image
+                  src={logoBarbearia}
+                  alt="Barbearia"
+                  className="h-full w-full object-cover"
+                  priority
+                />
+              </div>
+              <div className="flex min-w-0 flex-1 flex-col">
+                <span className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">
+                  Sistema
+                </span>
+                <span className="truncate text-lg font-semibold text-slate-900">
+                  Barbearia
+                </span>
+              </div>
+            </>
+          )}
+          <button
+            type="button"
+            aria-label={
+              openMenu ? 'Recolher menu lateral' : 'Expandir menu lateral'
+            }
+            onClick={() => setOpenMenu(!openMenu)}
+            className="ml-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:bg-slate-100"
+          >
+            {ToggleIcon && <ToggleIcon size={20} />}
+          </button>
+        </header>
 
-      {/* Toggle button fixo ao lado do menu */}
-      <button
-        type="button"
-        aria-label={openMenu ? 'Fechar menu' : 'Abrir menu'}
-        onClick={() => setOpenMenu(!openMenu)}
-        className={twMerge(
-          'pointer-events-auto fixed top-10 -translate-y-1/2 z-[70]',
-          'h-11 w-11 md:h-12 md:w-12 rounded-r-xl shadow flex items-center justify-center',
-          // Usa cores do tema (primária) para manter padrão e acompanhar o menu
-          'bg-primary-100 hover:bg-primary-100/90',
-          // Transição unificada (transform + cores) padronizada pelo Tailwind
-          'transition ease-out duration-300',
+        <nav className="flex-1 space-y-1 h-full overflow-y-auto px-2 py-4">
+          {siteConfig.map((config) => (
+            <ItemSideMenu
+              key={config.id}
+              setOpenMenu={setOpenMenu}
+              image={config.image}
+              icon={config.icon}
+              sizeAvatar={config.size}
+              subMenuList={config.subMenuList}
+              label={config.label}
+              href={config.href}
+              userAction={config.userAction}
+              hidden={config.hidden}
+              isExpanded={openMenu}
+            />
+          ))}
+        </nav>
+        {openMenu && (
+          <div className="px-4 pb-6">
+            <p
+              className={twMerge(
+                'text-xs text-slate-400 transition-opacity duration-300',
+                openMenu ? 'opacity-100' : 'opacity-0 md:opacity-0',
+              )}
+            >
+              © {new Date().getFullYear()} komtrole. Todos os direitos
+              reservados.
+            </p>
+          </div>
         )}
-        style={{
-          left: '0px',
-          willChange: 'transform',
-          // Gruda no bordo do drawer (remove espaço)
-          transform: openMenu
-            ? 'translate(calc(var(--width-side-menu) - 1px), -50%)'
-            : 'translate(0, -50%)',
-        }}
-      >
-        {(() => {
-          const Icon = handleIcons(openMenu ? 'X' : 'ChevronRight')
-          return <Icon size={22} className="stroke-white" />
-        })()}
-      </button>
-    </div>
+      </aside>
+    </>
   )
 }
-
-export default SideMenu

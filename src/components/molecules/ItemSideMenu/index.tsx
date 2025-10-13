@@ -1,11 +1,11 @@
 'use client'
 
-import { Button, Text } from '@/components/atoms'
+import { Button } from '@/components/atoms'
 import { ItemMenu } from '@/config/siteConfig'
 import { useHandlerRouter } from '@/hooks/use-handler-router'
 import { CatalogIcons, handleIcons } from '@/utils/handleIcons'
 import { UserAction, checkUserPermissions } from '@/utils/checkUserPermissions'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Avatar } from '..'
 import { useAuth } from '@/contexts/auth-context'
@@ -18,16 +18,20 @@ type ItemSideMenuProps = {
   subMenuList?: ItemMenu[] | undefined
   href?: string
   sizeAvatar?: number
-  setOpenMenu: Dispatch<SetStateAction<boolean | null>>
+  setOpenMenu: Dispatch<SetStateAction<boolean>>
   userAction: UserAction
   hidden?: boolean
-  classIconReal?: string
-  classItem?: string
+  isExpanded?: boolean
   classTextItem?: string
   isSub?: boolean
 }
 
-const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
+const SUB_ICON_SIZE = 16
+const ROOT_ICON_SIZE = 26
+const ChevronRightIcon = handleIcons('ChevronRight')
+const ChevronDownIcon = handleIcons('ChevronDown')
+
+export default function ItemSideMenu({
   label,
   icon,
   image,
@@ -37,124 +41,129 @@ const ItemSideMenu: React.FC<ItemSideMenuProps> = ({
   setOpenMenu,
   userAction,
   hidden,
-  classIconReal,
-  classItem,
   classTextItem,
+  isExpanded = true,
   isSub = false,
-}) => {
+}: ItemSideMenuProps) {
   const [open, setOpen] = useState(false)
   const { pushRouter } = useHandlerRouter()
   const { role } = useAuth()
 
-  function openSubMenu() {
-    if (href) {
-      setOpenMenu(false)
-      return pushRouter(href)
+  const hasChildren = Boolean(subMenuList?.length)
+
+  const iconSize = isSub ? SUB_ICON_SIZE : ROOT_ICON_SIZE
+  const labelVisible = isExpanded
+  const showCaret = labelVisible && hasChildren
+
+  useEffect(() => {
+    if (!labelVisible) {
+      setOpen(false)
     }
-    setOpen(!open)
+  }, [labelVisible])
+
+  const canRender = useMemo(() => {
+    if (hidden) return false
+    if (!role) return false
+    return checkUserPermissions(userAction, role)
+  }, [hidden, role, userAction])
+
+  if (!canRender) return null
+
+  const closeMenuOnMobile = () => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setOpenMenu(false)
+    }
   }
 
-  if (role && !checkUserPermissions(userAction, role)) return null
+  const handleNavigation = async () => {
+    if (!href) return
+    closeMenuOnMobile()
+    await pushRouter(href)
+  }
 
-  const ArrowRightIcon = handleIcons('ChevronRight')
-  const ArrowDownIcon = handleIcons('ChevronDown')
-  const wrapperBase = isSub
-    ? 'flex w-full flex-col items-stretch py-1 pl-6 pr-3'
-    : 'flex w-full flex-col justify-center items-stretch pb-3 px-4'
-  const buttonWidth = 'w-full'
-  const buttonHeightClass = isSub ? 'h-10' : 'h-[56px]'
-  const paddingClass = isSub ? 'px-3 py-1.5' : 'px-4 py-4'
-  const labelBase = isSub
-    ? 'text-sm font-medium text-white'
-    : 'text-base font-bold text-primary-100'
-  const baseColors = isSub
-    ? 'bg-primary-100 hover:bg-primary-100/80 text-white border border-white/10'
-    : 'bg-secondary-50 hover:bg-secondary-100/80 text-primary-100'
-  const hoverTextClass = isSub
-    ? 'group-hover:text-white'
-    : 'group-hover:text-primary-100'
+  const handleClick = () => {
+    if (href) {
+      handleNavigation()
+      return
+    }
+    if (!labelVisible && hasChildren) {
+      setOpenMenu(true)
+      setOpen(true)
+      return
+    }
+    setOpen((prev) => !prev)
+  }
+
+  const iconNode = (
+    <Avatar
+      size={iconSize}
+      icon={icon}
+      image={image}
+      classAvatar={twMerge(
+        'flex items-center justify-center rounded-2xl shadow-inner',
+        isSub
+          ? 'bg-transparent shadow-none border border-white/20'
+          : 'bg-transparent',
+        !labelVisible && !isSub && 'mx-auto',
+      )}
+      classIcon={twMerge('border-transparent p-0', isSub && 'p-0')}
+      classIconReal={twMerge(isSub ? 'stroke-secondary' : 'stroke-primary-100')}
+    />
+  )
+
+  const baseButtonClasses = twMerge(
+    'group flex w-full items-center rounded-2xl border border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2',
+    labelVisible ? 'gap-3 px-3 py-2.5' : 'justify-center px-0 py-2.5',
+    isSub
+      ? 'text-white hover:bg-white/10'
+      : 'text-sm font-medium text-slate-600 hover:bg-primary/5 hover:text-primary-700',
+    open && !isSub && 'border-primary/30 bg-primary/10 text-primary-700',
+  )
 
   return (
-    !hidden && (
-      <div className={twMerge(wrapperBase)}>
-        <Button
-          className={twMerge(
-            'group transition-colors rounded-xl flex flex-row justify-start items-center shadow-sm',
-            'focus-visible:ring-2 focus-visible:ring-white/30',
-            baseColors,
-            buttonHeightClass,
-            paddingClass,
-            buttonWidth,
-            classItem,
-          )}
-          type="button"
-          onClick={openSubMenu}
-        >
-          <div
-            className={twMerge(
-              'flex flex-row justify-start items-center gap-4 w-full',
-            )}
-          >
-            <Avatar
-              classIcon={twMerge('border-transparent')}
-              size={sizeAvatar}
-              icon={icon && icon}
-              image={image && image}
-              classIconReal={twMerge('stroke-primary-100', classIconReal)}
-            />
-            <Text
-              className={twMerge(
-                labelBase,
-                hoverTextClass,
-                'whitespace-nowrap overflow-hidden text-ellipsis',
-                classTextItem,
-              )}
-            >
-              {label}
-            </Text>
-          </div>
-
-          <div className="w-[20%] flex flex-row justify-end pr-1">
-            {href.length > 0 ||
-              (subMenuList &&
-                (open ? (
-                  <ArrowDownIcon size={20} className="stroke-primary-100" />
-                ) : (
-                  <ArrowRightIcon size={20} className="stroke-primary-100" />
-                )))}
-          </div>
-        </Button>
-
-        {subMenuList && (
-          <div
-            className={twMerge(
-              'w-full mt-1 space-y-1',
-              open ? 'block' : 'hidden',
-            )}
-          >
-            {subMenuList.map((menu: ItemMenu) => {
-              return (
-                <ItemSideMenu
-                  setOpenMenu={setOpenMenu}
-                  sizeAvatar={15}
-                  icon={menu.icon}
-                  href={menu.href}
-                  label={menu.label}
-                  key={menu.id}
-                  userAction={menu.userAction}
-                  hidden={menu.hidden}
-                  classIconReal="fill-white stroke-white"
-                  classTextItem="text-white group-hover:text-white"
-                  classItem="bg-primary-100 hover:bg-primary-100/80 text-white border border-white/10 rounded-lg w-full"
-                  isSub
-                />
-              )
-            })}
-          </div>
+    <div>
+      <Button
+        variant="ghost"
+        type="button"
+        onClick={handleClick}
+        className={twMerge(baseButtonClasses, classTextItem)}
+      >
+        {iconNode}
+        {labelVisible && (
+          <span className="flex-1 truncate text-left text-sm font-semibold text-slate-700">
+            {label}
+          </span>
         )}
-      </div>
-    )
+        {showCaret && (
+          <span className="ml-auto inline-flex h-6 w-6 items-center justify-center text-slate-400 transition-transform group-hover:text-primary-600">
+            {open ? (
+              <ChevronDownIcon size={18} />
+            ) : (
+              <ChevronRightIcon size={18} />
+            )}
+          </span>
+        )}
+      </Button>
+
+      {labelVisible && hasChildren && open && (
+        <div className="mt-1 space-y-1 pl-6">
+          {subMenuList!.map((menu) => (
+            <ItemSideMenu
+              key={menu.id}
+              setOpenMenu={setOpenMenu}
+              sizeAvatar={sizeAvatar}
+              icon={menu.icon}
+              subMenuList={menu.subMenuList}
+              label={menu.label}
+              href={menu.href}
+              userAction={menu.userAction}
+              hidden={menu.hidden}
+              isExpanded={isExpanded}
+              isSub
+            />
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
-
-export default ItemSideMenu

@@ -26,7 +26,7 @@ export default async function RegisterPage() {
   const userRole = session?.user?.profile?.role?.name
 
   if (!checkUserPermissions('user.register', userRole)) {
-    redirect('/dashboard')
+    redirect('/dashboard/home')
   }
 
   return <RegisterUserPage />

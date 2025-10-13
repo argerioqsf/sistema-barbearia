@@ -4,6 +4,7 @@ import { CheckCircle2, Receipt } from 'lucide-react'
 import { InfoTile } from './info-tile'
 import { SummaryTile } from './summary-tile'
 import { CelebrationOverlay } from './celebration-overlay'
+import { Button } from '@/components/atoms'
 
 const currencyFormatter = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -23,9 +24,16 @@ const paymentMethodLabel: Record<
 type SaleCompletedProps = {
   sale?: GetSaleOutput['sale']
   totals?: GetSaleOutput['totals']
+  redirectBasePath: string
+  goToDetails: () => void
 }
 
-export function SaleCompleted({ sale, totals }: SaleCompletedProps) {
+export function SaleCompleted({
+  sale,
+  totals,
+  redirectBasePath,
+  goToDetails,
+}: SaleCompletedProps) {
   const total = currencyFormatter.format(sale?.total ?? totals?.net ?? 0)
   const discount = currencyFormatter.format(totals?.discount ?? 0)
   const gross = currencyFormatter.format(
@@ -97,7 +105,17 @@ export function SaleCompleted({ sale, totals }: SaleCompletedProps) {
               ID da venda: <strong>{sale?.id ?? '--'}</strong>
             </span>
           </div>
-          <ButtonStartNewSale className="mb-0 w-full max-w-xs py-3 text-base sm:text-lg" />
+          <ButtonStartNewSale
+            redirectBasePath={redirectBasePath}
+            className="mb-0 w-full max-w-xs py-3 text-base sm:text-lg"
+          />
+          <Button
+            className="mb-0 w-full max-w-xs py-3 text-base sm:text-lg"
+            onClick={goToDetails}
+            variant="ghost"
+          >
+            ver detalhes
+          </Button>
         </div>
       </div>
     </section>

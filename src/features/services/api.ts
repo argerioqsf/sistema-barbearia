@@ -15,6 +15,7 @@ import { ValidationError } from '@/shared/errors/validationError'
 import { readMessage, safeJson } from '@/shared/http'
 import { HttpError } from '@/shared/errors/httpError'
 import { logger } from '@/shared/logger'
+import { revalidateTag } from 'next/cache'
 
 export async function createService(
   body: RegisterServiceBody,
@@ -54,6 +55,7 @@ export async function createService(
       'Invalid response when creating service',
     )
   }
+  revalidateTag('services')
 
   return parsed.data
 }
@@ -147,7 +149,7 @@ export async function fetchServicesPaginated(
     {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
-      next: { tags: ['sales'], revalidate: 60 * 4 },
+      next: { tags: ['services'], revalidate: 60 * 4 },
     },
     page,
     where,

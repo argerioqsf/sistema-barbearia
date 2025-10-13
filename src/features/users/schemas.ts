@@ -76,7 +76,6 @@ export const UserSchema = z.lazy(() => {
   const profileSchemas = require('../profile/schemas')
   return UserBaseSchema.extend({
     profile: profileSchemas.ProfileBaseSchema.optional(),
-    balance: z.number().optional(),
     loans: LoansUserSchema.optional(),
   })
 })

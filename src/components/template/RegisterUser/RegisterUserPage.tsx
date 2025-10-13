@@ -4,23 +4,40 @@ import { listServicesAll } from '@/actions/service'
 import { listProducts } from '@/actions/product'
 import { RegisterUserForm } from './components/RegisterUserForm'
 import { FormLayout } from '@/components/organisms/Form/FormLayout'
+import { logger } from '@/shared/logger'
+import { cn } from '@/lib/utils'
 
 export default async function RegisterUserPage() {
-  const { roles } = await listRoles()
+  const roles = await listRoles()
   const permissionsResult = await listPermissionsAction()
   const servicesResult = await listServicesAll()
   const productsResult = await listProducts()
 
   if (!permissionsResult.ok) {
-    console.error('Erro ao buscar permissões:', permissionsResult.error)
+    logger.debug(
+      {
+        error: permissionsResult.error,
+      },
+      'Erro ao buscar permissões:',
+    )
   }
 
   if (!servicesResult.ok) {
-    console.error('Erro ao buscar serviços:', servicesResult.error)
+    logger.debug(
+      {
+        error: servicesResult.error,
+      },
+      'Erro ao buscar serviços:',
+    )
   }
 
   if (!productsResult.response) {
-    console.error('Erro ao buscar produtos:', productsResult.error)
+    logger.debug(
+      {
+        error: productsResult.error,
+      },
+      'Erro ao buscar produtos:',
+    )
   }
 
   const permissions = permissionsResult.ok ? permissionsResult.data : []
@@ -28,17 +45,19 @@ export default async function RegisterUserPage() {
   const products = productsResult.response ? productsResult.response : []
 
   return (
-    <FormLayout
-      label="Cadastro"
-      title="Novo Usuário"
-      description="Preencha os dados para criar um novo usuário."
-    >
-      <RegisterUserForm
-        roles={roles}
-        permissions={permissions}
-        services={services}
-        products={products}
-      />
-    </FormLayout>
+    <div className={cn('px-6 py-6 pb-16', 'sm:px-8 sm:py-8 sm:pb-20')}>
+      <FormLayout
+        label="Cadastro"
+        title="Novo Usuário"
+        description="Preencha os dados para criar um novo usuário."
+      >
+        <RegisterUserForm
+          roles={roles}
+          permissions={permissions}
+          services={services}
+          products={products}
+        />
+      </FormLayout>
+    </div>
   )
 }

@@ -8,7 +8,7 @@ import { handleRequestError } from '@/shared/errors/handlerRequestError'
 export async function listRolesAction(): Promise<ReturnRequest<ZRole[]>> {
   try {
     const data = await listRoles()
-    return { ok: true, data: data.roles }
+    return { ok: true, data }
   } catch (error) {
     const normalized = handleRequestError(error, {
       rethrow: false,

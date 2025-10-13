@@ -20,8 +20,10 @@ export const CashSessionSchema = z
     initialAmount: z.number().optional(),
     finalAmount: z.number().nullable().optional(),
     transactions: z.array(TransactionSchema).nullable().optional(),
-    commissionCheckpoints:
-      CheckpointCommissionProfileSchema.optional().nullable(),
+    commissionCheckpoints: z
+      .array(CheckpointCommissionProfileSchema)
+      .optional()
+      .nullable(),
   })
   .passthrough()
 

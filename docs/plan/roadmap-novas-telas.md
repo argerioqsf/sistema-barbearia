@@ -58,3 +58,30 @@ Critérios gerais de aceite
 - [x] Categorias — rotas de listagem/registro/detalhe conectadas às templates existentes.
 - [x] Produtos — listagem no novo padrão DataList/DataTable.
 - [x] Serviços — listagem refatorada (DataList + ações).
+
+---
+### 11. Tela de Retirada de Valores
+
+- **Status:** A fazer
+- **Módulo:** `withdrawals` (novo)
+- **Permissões:** `OWNER`, `MANAGER` (requer `MANAGE_USER_TRANSACTION_WITHDRAWAL`)
+
+**Descrição do Fluxo:**
+Tela para registrar saídas de dinheiro do caixa da unidade ou de um colaborador específico. O layout seguirá o padrão de duas colunas (`ui-layout-guidelines.md`).
+
+- **Coluna Esquerda (Formulário):**
+  - **Tipo de Retirada:** `RadioGroup` para selecionar "Da Unidade" ou "De Colaborador".
+  - **Seleção:** Se "Colaborador", um `ComboBox` buscará e listará os usuários da unidade.
+  - **Valores:** `Input` para o valor da retirada, `Textarea` para a descrição e um `Input type="file"` para o comprovante (`receipt`).
+  - **Ação:** O `SectionHeader` conterá o botão "Confirmar Retirada", que submeterá o formulário via Server Action.
+
+- **Coluna Direita (Resumo):**
+  - Um `PageCard` exibirá o saldo atual (da unidade ou do colaborador selecionado).
+  - Mostrará o impacto da retirada, calculando o "Saldo Final".
+
+**Padrões Técnicos:**
+- **Endpoint:** `POST /withdrawal/transactions` (via `multipart/form-data`).
+- **UI:** `PageCard`, `SectionHeader`, `RadioGroup`, `ComboBox`.
+- **Lógica:** Server Action para a mutação, processando `FormData`. Validação via Zod. React Query (`useQuery`) para buscar a lista de colaboradores e saldos.
+- **Feedback:** `useToast` para notificações de sucesso/erro e invalidação de queries de saldo.
+

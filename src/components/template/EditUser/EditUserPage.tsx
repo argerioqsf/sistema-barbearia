@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { FormLayout } from '@/components/organisms/Form/FormLayout'
 import { EditUserForm } from './components/EditUserForm'
 import { ToggleUserButton } from '../ListUsers/components/ToggleUserButton'
+import { cn } from '@/lib/utils'
 
 interface UserEditPageProps {
   params: {
@@ -37,7 +38,7 @@ async function fetchData(userId: string) {
 
   return {
     user,
-    roles: rolesResult.roles || [],
+    roles: rolesResult || [],
     permissions: permissionsResult || [],
     services: servicesResult.ok ? servicesResult.data : [],
     products: productsResult.response || [],
@@ -51,29 +52,31 @@ export default async function EditUserPage({ params }: UserEditPageProps) {
   const formId = 'user-edit-form'
 
   return (
-    <FormLayout
-      label="Editar"
-      title="Editar Usuário"
-      description={`Editando o perfil de ${user.name}`}
-      cta={
-        <div className="flex flex-row items-center gap-4">
-          <div id="user-status" className="pt-2">
-            <ToggleUserButton userId={user.id} active={user.active} />
+    <div className={cn('px-6 py-6 pb-16', 'sm:px-8 sm:py-8 sm:pb-20')}>
+      <FormLayout
+        label="Editar"
+        title="Editar Usuário"
+        description={`Editando o perfil de ${user.name}`}
+        cta={
+          <div className="flex flex-row items-center gap-4">
+            <div id="user-status" className="pt-2">
+              <ToggleUserButton userId={user.id} active={user.active} />
+            </div>
+            <Button type="submit" form={formId}>
+              Salvar Alterações
+            </Button>
           </div>
-          <Button type="submit" form={formId}>
-            Salvar Alterações
-          </Button>
-        </div>
-      }
-    >
-      <EditUserForm
-        formId={formId}
-        user={user}
-        roles={roles}
-        permissions={permissions}
-        services={services}
-        products={products}
-      />
-    </FormLayout>
+        }
+      >
+        <EditUserForm
+          formId={formId}
+          user={user}
+          roles={roles}
+          permissions={permissions}
+          services={services}
+          products={products}
+        />
+      </FormLayout>
+    </div>
   )
 }

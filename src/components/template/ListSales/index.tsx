@@ -1,37 +1,121 @@
 import { listSalesPaginate } from '@/actions/sale'
-import { ContainerDashboard } from '@/components/molecules'
-import Breadcrumb from '@/components/molecules/Breadcrumb'
-import Listing from '@/components/organisms/Listing'
-import { SearchParams } from '@/types/general'
+import {
+  DataListLayout,
+  DataListSearchForm,
+  DataListPagination,
+  DataListEmptyState,
+} from '@/components/organisms/DataList'
+import { cn } from '@/lib/utils'
+import type { SearchParams as SearchParamsType } from '@/types/general'
 import { ButtonStartNewSale } from '@/modules/sales-pos/ui/components/organisms/ButtonStartNewSale'
-import { infoListSales } from '@/features/pos/constants'
-import { ErrorRequestHandler } from '@/components/organisms/ErrorRequestHandler'
+import { SalesTable } from './components/SalesTable'
 
-export default async function ListSales({ searchParams }: SearchParams) {
-  const result = await listSalesPaginate(searchParams?.page || '1')
-  if (!result.ok) {
-    return <ErrorRequestHandler result={result} />
+const PER_PAGE = 10
+
+type ListSalesProps = {
+  searchParams?: SearchParamsType['searchParams']
+}
+
+export default async function ListSales({ searchParams }: ListSalesProps) {
+  const currentPage = Number(searchParams?.page ?? '1') || 1
+  const searchTerm = (searchParams?.q ?? '').toString().trim()
+
+  const response = await listSalesPaginate(
+    String(searchTerm ? 1 : currentPage),
+    searchTerm ? { id: searchTerm } : undefined,
+  )
+
+  if (!response.ok) {
+    return (
+      <div
+        className={cn('px-4 pb-8 pt-4', 'sm:pt-6 sm:px-6', 'lg:pt-10 lg:px-10')}
+      >
+        <DataListLayout
+          label="Vendas"
+          title="Vendas"
+          description="Acompanhe, retome e finalize vendas da unidade."
+          action={
+            <ButtonStartNewSale className="mb-0 h-10 rounded-full px-4 text-sm font-semibold" />
+          }
+        >
+          <DataListEmptyState
+            title="Não foi possível carregar as vendas."
+            description={
+              response.error?.message ?? 'Tente novamente mais tarde.'
+            }
+          />
+        </DataListLayout>
+      </div>
+    )
   }
-  const sales = result.data.items
-  const count = result.data.count
+
+  const {
+    items: sales = [],
+    count = sales.length,
+    page,
+    perPage,
+  } = response.data
+
+  const normalizedSearch = searchTerm.toLowerCase()
+  const filteredSales = searchTerm
+    ? sales.filter((sale) => {
+        const clientName = sale.client?.name?.toLowerCase() ?? ''
+        const saleId = sale.id.toLowerCase()
+        const paymentStatus = sale.paymentStatus.toLowerCase()
+        const status = sale.status.toLowerCase()
+        return (
+          clientName.includes(normalizedSearch) ||
+          saleId.includes(normalizedSearch) ||
+          paymentStatus.includes(normalizedSearch) ||
+          status.includes(normalizedSearch)
+        )
+      })
+    : sales
+
+  const totalCount = searchTerm
+    ? filteredSales.length
+    : count ?? filteredSales.length
+  const totalPages = Math.max(
+    1,
+    Math.ceil((totalCount ?? 0) / (perPage ?? PER_PAGE)),
+  )
+
+  const params = new URLSearchParams()
+  if (searchTerm) params.set('q', searchTerm)
+
+  const makeHref = (pageTarget: number) => {
+    const nextParams = new URLSearchParams(params)
+    nextParams.set('page', pageTarget.toString())
+    return `?${nextParams.toString()}`
+  }
 
   return (
-    <ContainerDashboard>
-      <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
-        <div className="w-full">
-          <Breadcrumb />
-        </div>
-        <ButtonStartNewSale />
-        <div className="w-full mt-6 lg:mt-8">
-          <Listing
-            infoList={infoListSales}
-            list={sales}
-            listActions={infoListSales.listActions}
-            title="Vendas"
-            count={count}
-          />
-        </div>
-      </div>
-    </ContainerDashboard>
+    <div
+      className={cn('px-4 pb-8 pt-4', 'sm:pt-6 sm:px-6', 'lg:pt-10 lg:px-10')}
+    >
+      <DataListLayout
+        label="Vendas"
+        title="Vendas"
+        description="Acompanhe, retome e finalize vendas da unidade."
+        action={
+          <ButtonStartNewSale className="mb-0 h-10 rounded-full px-4 text-sm font-semibold" />
+        }
+      >
+        <DataListSearchForm
+          defaultValue={searchTerm}
+          placeholder="Buscar por ID, cliente ou status"
+          clearHref="?"
+        />
+
+        <SalesTable sales={filteredSales} searchTerm={searchTerm} />
+
+        <DataListPagination
+          currentPage={searchTerm ? 1 : page ?? currentPage}
+          totalPages={searchTerm ? 1 : totalPages}
+          totalCount={totalCount}
+          makeHref={makeHref}
+        />
+      </DataListLayout>
+    </div>
   )
 }

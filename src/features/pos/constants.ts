@@ -8,7 +8,7 @@ export const infoListSales: InfoList<ZSale> = {
     {
       id: 2,
       icon: 'Eye',
-      href: '/dashboard/sales/point-of-sale/',
+      href: '/point-of-sale/',
       name: 'Continuar',
     },
   ],

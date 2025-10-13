@@ -182,6 +182,14 @@ export function RegisterUserForm({
             </SelectContent>
           </Select>
         </FormField>
+        <FormField label="Permissões" htmlFor="permissions" errors={issues}>
+          <FormMultiSelect
+            options={permissionOptions}
+            selected={selectedPermissions}
+            onChange={setSelectedPermissions}
+            placeholder="Selecione as permissões"
+          />
+        </FormField>
       </FormSection>
 
       {userIsBarber && (
@@ -192,14 +200,6 @@ export function RegisterUserForm({
             errors={issues}
           >
             <Input name="commissionPercentage" type="number" />
-          </FormField>
-          <FormField label="Permissões" htmlFor="permissions" errors={issues}>
-            <FormMultiSelect
-              options={permissionOptions}
-              selected={selectedPermissions}
-              onChange={setSelectedPermissions}
-              placeholder="Selecione as permissões"
-            />
           </FormField>
           <FormField label="Serviços" htmlFor="services" errors={issues}>
             <FormItemAssociation

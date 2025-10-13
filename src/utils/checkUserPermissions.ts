@@ -7,9 +7,10 @@ const verifyPermissionGeneral = {
 const verifyPermissionUser = {
   'user.edit.role': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
   'user.edit.own.active': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
-  'user.view': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'user.view': (roleUser: RoleName) => ['ADMIN', 'OWNER'].includes(roleUser),
   'user.detail': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
-  'user.register': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
+  'user.register': (roleUser: RoleName) =>
+    ['ADMIN', 'OWNER'].includes(roleUser),
   'user.list': (roleUser: RoleName) => ['ADMIN', 'OWNER'].includes(roleUser),
   'user.list.disabled': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
   'user.resetPassword': (roleUser: RoleName) => ['ADMIN'].includes(roleUser),
@@ -96,7 +97,7 @@ const verifyPermissionCashier = {
 
 const verifyPermissionSales = {
   'sales.view': (roleUser: RoleName) => {
-    const roles: RoleName[] = ['ADMIN', 'BARBER', 'MANAGER']
+    const roles: RoleName[] = ['ADMIN', 'BARBER', 'MANAGER', 'OWNER']
     return roles.includes(roleUser)
   },
 }
@@ -143,6 +144,25 @@ const verifyPermissionFinancial = {
     const roles: RoleName[] = ['OWNER', 'ADMIN']
     return roles.includes(roleUser)
   },
+  'financial.withdrawals': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['OWNER', 'ADMIN']
+    return roles.includes(roleUser)
+  },
+}
+
+const verifyPermissionCategories = {
+  'categories.view': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['OWNER', 'ADMIN', 'MANAGER']
+    return roles.includes(roleUser)
+  },
+  'categories.register': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['OWNER', 'ADMIN', 'MANAGER']
+    return roles.includes(roleUser)
+  },
+  'categories.list': (roleUser: RoleName) => {
+    const roles: RoleName[] = ['OWNER', 'ADMIN', 'MANAGER']
+    return roles.includes(roleUser)
+  },
 }
 
 const verifyPermission = {
@@ -162,6 +182,7 @@ const verifyPermission = {
   ...verifyPermissionMonitoring,
   ...verifyPermissionServices,
   ...verifyPermissionFinancial,
+  ...verifyPermissionCategories,
 }
 
 export type UserAction = keyof typeof verifyPermission

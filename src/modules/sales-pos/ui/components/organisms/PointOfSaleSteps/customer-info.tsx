@@ -14,6 +14,7 @@ interface CustomerInfoProps {
   prevStep?: () => void
   initialClientId?: string | null
   initialClient?: ZUser | null | undefined
+  isPaid: boolean
 }
 
 export function CustomerInfo({
@@ -22,6 +23,7 @@ export function CustomerInfo({
   prevStep,
   initialClientId,
   initialClient,
+  isPaid,
 }: CustomerInfoProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedUser, setSelectedUser] = useState<ZUser | null>(
@@ -86,30 +88,38 @@ export function CustomerInfo({
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
               Cliente Selecionado
             </p>
-            <div className="flex items-center gap-4 rounded-2xl border border-primary/40 bg-primary/10 p-3">
-              <Avatar className="h-12 w-12 border-2 border-white shadow-sm">
-                <AvatarImage src={(selectedUser.image as string) ?? ''} />
-                <AvatarFallback>{selectedUser.name[0]}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <p className="font-semibold text-slate-900">
-                  {selectedUser.name}
-                </p>
-                <p className="text-sm text-slate-600">{selectedUser.email}</p>
+            <div className="flex flex-col gap-4 rounded-2xl border border-emerald-300 bg-emerald-50/70 p-4 shadow-sm shadow-emerald-200/40">
+              <div className="flex items-center gap-4">
+                <Avatar className="h-12 w-12 border-2 border-white shadow-sm">
+                  <AvatarImage src={(selectedUser.image as string) ?? ''} />
+                  <AvatarFallback>
+                    {(selectedUser.name ?? '?').charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <p className="font-semibold text-emerald-900">
+                    {selectedUser.name}
+                  </p>
+                  <p className="text-sm text-emerald-700">
+                    {selectedUser.email}
+                  </p>
+                </div>
+                <CheckCircle className="h-6 w-6 text-emerald-500" />
               </div>
-              <CheckCircle className="h-6 w-6 text-primary" />
+              {!isPaid && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setSelectedUser(null)
+                    setSelectedClientId('')
+                    setSearchTerm('')
+                  }}
+                  className="h-11 w-full rounded-xl border-emerald-300 text-sm font-medium text-emerald-700 hover:border-emerald-400 hover:bg-emerald-100/60"
+                >
+                  Trocar cliente
+                </Button>
+              )}
             </div>
-            <Button
-              variant="ghost"
-              onClick={() => {
-                setSelectedUser(null)
-                setSelectedClientId('')
-                setSearchTerm('')
-              }}
-              className="h-11 w-full rounded-xl text-sm font-medium text-primary hover:bg-primary/10"
-            >
-              Limpar seleção
-            </Button>
           </div>
         ) : (
           <div className="flex flex-col gap-3">
@@ -153,8 +163,9 @@ export function CustomerInfo({
                   setSelectedClientId(user.id)
                 }}
                 className={cn(
-                  'w-full rounded-xl px-4 py-3 text-left transition hover:bg-slate-100',
-                  selectedClientId === user.id && 'bg-slate-100',
+                  'w-full rounded-xl border border-transparent px-4 py-3 text-left transition hover:border-emerald-300 hover:bg-emerald-50/60',
+                  selectedClientId === user.id &&
+                    'border-emerald-400 bg-emerald-50/80',
                 )}
               >
                 <p className="text-sm font-semibold">{user.name}</p>

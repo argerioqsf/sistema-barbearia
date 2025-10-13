@@ -232,22 +232,22 @@ export function EditUserForm({
         </FormField>
       </FormSection>
 
+      <FormSection
+        title="Permissões"
+        description="Defina permissões específicas para este colaborador."
+      >
+        <FormField label="Permissões" htmlFor="permissions" errors={issues}>
+          <FormMultiSelect
+            options={permissionOptions}
+            selected={selectedPermissions}
+            onChange={setSelectedPermissions}
+            placeholder="Selecione as permissões..."
+          />
+        </FormField>
+      </FormSection>
+
       {isBarber && (
         <>
-          <FormSection
-            title="Permissões"
-            description="Defina permissões específicas para este colaborador."
-          >
-            <FormField label="Permissões" htmlFor="permissions" errors={issues}>
-              <FormMultiSelect
-                options={permissionOptions}
-                selected={selectedPermissions}
-                onChange={setSelectedPermissions}
-                placeholder="Selecione as permissões..."
-              />
-            </FormField>
-          </FormSection>
-
           <FormSection
             title="Configurações de Colaborador"
             description="Defina comissões e serviços associados."

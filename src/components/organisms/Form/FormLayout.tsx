@@ -8,6 +8,7 @@ type FormLayoutProps = {
   label?: string
   children: ReactNode
   cta?: ReactNode
+  className?: string
 }
 
 export function FormLayout({
@@ -16,20 +17,19 @@ export function FormLayout({
   label,
   children,
   cta,
+  className,
 }: FormLayoutProps) {
   return (
-    <div className="min-w-0 px-6 py-6 sm:px-8 sm:py-8">
-      <PageCard>
-        <PageCardContent className="space-y-6">
-          <SectionHeader
-            label={label}
-            title={title}
-            description={description}
-            cta={cta}
-          />
-          {children}
-        </PageCardContent>
-      </PageCard>
-    </div>
+    <PageCard className={className}>
+      <PageCardContent className="space-y-6">
+        <SectionHeader
+          label={label}
+          title={title}
+          description={description}
+          cta={cta}
+        />
+        {children}
+      </PageCardContent>
+    </PageCard>
   )
 }
