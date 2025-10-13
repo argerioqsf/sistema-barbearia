@@ -6,11 +6,62 @@ import {
   ProductSellersResponseSchema,
   ZProduct,
   ProductsListPaginateResponseSchema,
+  RegisterProductBody,
+  RegisterProductFormSchema,
+  registerProductResponseSchema,
+  UpdateProductFormSchema,
 } from './schemas'
 import { safeJson, readMessage } from '@/shared/http'
 
 import type { QueryParams } from '@/types/http'
 import { HttpError } from '@/shared/errors/httpError'
+
+import { logger } from '@/shared/logger'
+import { ValidationError } from '@/shared/errors/validationError'
+import { revalidateTag } from 'next/cache'
+
+export async function updateProduct(
+  id: string,
+  body: Partial<RegisterProductBody>,
+): Promise<ZProduct> {
+  const validatedFields = UpdateProductFormSchema.safeParse(body)
+
+  if (!validatedFields.success) {
+    logger.debug({ errors: validatedFields.error }, 'errors updateProduct')
+    throw ValidationError.fromZod(
+      validatedFields.error,
+      'Invalid body for updating product',
+    )
+  }
+
+  const token = await getBackendToken()
+  const response = await api(`/products/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(validatedFields.data),
+  })
+
+  if (!response.ok) {
+    const message = await readMessage(response)
+    throw new HttpError(response.status, message)
+  }
+
+  const json = await safeJson(response)
+  const parsed = registerProductResponseSchema.safeParse(json)
+
+  if (!parsed.success) {
+    logger.debug({ errors: parsed.error }, 'errors parsed updateProduct')
+    throw ValidationError.fromZod(
+      parsed.error,
+      'Invalid response when updating product',
+    )
+  }
+
+  return parsed.data
+}
 
 export async function fetchProducts(
   page?: string,
@@ -39,6 +90,7 @@ export async function fetchProducts(
   }
   const json = await safeJson(response)
   if (withPaginate) {
+    logger.debug({ json }, 'json fetchProducts')
     const parsed = ProductsListPaginateResponseSchema.safeParse(json)
     if (!parsed.success) {
       console.error('Validation error:', parsed.error)
@@ -84,4 +136,48 @@ export async function fetchProductSellers() {
   )
   if (!parsed.success) throw new Error('Invalid product sellers response')
   return parsed.data.sellers
+}
+
+export async function createProduct(
+  body: RegisterProductBody,
+): Promise<ZProduct> {
+  const validatedFields = RegisterProductFormSchema.safeParse(body)
+
+  if (!validatedFields.success) {
+    logger.debug({ errors: validatedFields.error }, 'errors createProduct')
+    throw ValidationError.fromZod(
+      validatedFields.error,
+      'Invalid body for creating product',
+    )
+  }
+
+  const token = await getBackendToken()
+  const response = await api('/products', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(validatedFields.data),
+  })
+
+  if (!response.ok) {
+    const message = await readMessage(response)
+    throw new HttpError(response.status, message)
+  }
+
+  const json = await safeJson(response)
+  const parsed = registerProductResponseSchema.safeParse(json)
+
+  if (!parsed.success) {
+    logger.debug({ errors: parsed.error }, 'errors parsed createProduct')
+    throw ValidationError.fromZod(
+      parsed.error,
+      'Invalid response when creating product',
+    )
+  }
+
+  revalidateTag('products')
+
+  return parsed.data
 }

@@ -7,19 +7,19 @@ import {
   updateBarber,
   deleteBarber,
 } from '@/features/barbers/api'
-import type { ZBarber as Barber } from '@/features/barbers/schemas'
 import type { InitialState, ReturnList } from '@/types/general'
 import type { JsonObject, QueryParams } from '@/types/http'
 import { revalidateTag } from 'next/cache'
 import { toNormalizedError } from '@/shared/errors/to-normalized-error'
+import { ZUser } from '@/features/users/schemas'
 
 export async function listBarbers(
   page?: string,
-  where?: QueryParams<Barber>,
-): Promise<ReturnList<Barber>> {
+  where?: QueryParams<ZUser>,
+): Promise<ReturnList<ZUser>> {
   try {
     const { users, count } = await fetchBarbers(page, where)
-    return { response: users as Barber[], count }
+    return { response: users as ZUser[], count }
   } catch (e) {
     return {
       error: toNormalizedError(
@@ -43,7 +43,7 @@ export async function getBarber(id: string) {
 }
 
 export async function registerBarber(
-  prev: InitialState<Barber>,
+  prev: InitialState<ZUser>,
   formData: FormData,
 ) {
   try {
@@ -62,7 +62,7 @@ export async function registerBarber(
 
 export async function patchBarber(
   id: string,
-  prev: InitialState<Barber>,
+  prev: InitialState<ZUser>,
   formData: FormData,
 ) {
   try {

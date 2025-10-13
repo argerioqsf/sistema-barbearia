@@ -1,13 +1,28 @@
 'use server'
 
-import { ReturnGet, ReturnList, InitialState } from '@/types/general'
-import { fetchProduct, fetchProducts } from '@/features/products/api'
-import type { ZProduct as Product } from '@/features/products/schemas'
+import {
+  ReturnGet,
+  ReturnList,
+  InitialState,
+  ReturnRequest,
+} from '@/types/general'
+import {
+  createProduct,
+  fetchProduct,
+  fetchProducts,
+  updateProduct as apiUpdateProduct,
+} from '@/features/products/api'
+import type {
+  ZProduct as Product,
+  RegisterProductBody,
+} from '@/features/products/schemas'
 import { api } from '@/data/api'
 import { getBackendToken } from '@/utils/authServer'
 import { revalidateTag } from 'next/cache'
 import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 import type { QueryParams } from '@/types/http'
+import { logger } from '@/shared/logger'
+import { handleRequestError } from '@/shared/errors/handlerRequestError'
 
 export async function listProducts(): Promise<ReturnList<Product>> {
   try {
@@ -52,26 +67,31 @@ export async function getProduct(id: string): Promise<ReturnGet<Product>> {
 }
 
 export async function registerProduct(
-  prevState: InitialState<Product | { image: string }>,
+  prevState: InitialState<Product>,
   formData: FormData,
-): Promise<InitialState<Product>> {
+): Promise<ReturnRequest<Product>> {
   try {
-    const token = await getBackendToken()
-    const response = await api('/products', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    })
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return { errors: { request: JSON.parse(errorMessage).message } }
+    const rawData: RegisterProductBody = {
+      name: formData.get('name') as string,
+      description: (formData.get('description') as string) || '',
+      categoryId: formData.get('categoryId') as string,
+      quantity: Number(formData.get('quantity')) || undefined,
+      cost: Number(formData.get('cost')),
+      price: Number(formData.get('price')),
+      commissionPercentage:
+        Number(formData.get('commissionPercentage')) || undefined,
+      image: formData.get('image'),
     }
-    revalidateTag('products')
-    return { ok: true, errors: {} }
-  } catch {
-    return { errors: { request: 'Failed to register product' } }
+
+    logger.debug({ rawData }, 'rawData registerProduct')
+    const data = await createProduct(rawData)
+    revalidateTag('users')
+    return { ok: true, data }
+  } catch (e) {
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 
@@ -79,27 +99,28 @@ export async function updateProduct(
   id: string,
   prevState: InitialState<Product>,
   formData: FormData,
-): Promise<InitialState<Product>> {
+): Promise<ReturnRequest<Product>> {
   try {
-    const token = await getBackendToken()
-    const json = Object.fromEntries(formData.entries())
-    const response = await api(`/products/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(json),
-    })
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      return { errors: { request: JSON.parse(errorMessage).message } }
+    const rawData = {
+      name: formData.get('name') as string,
+      description: (formData.get('description') as string) || '',
+      categoryId: formData.get('categoryId') as string,
+      quantity: Number(formData.get('quantity')) || undefined,
+      cost: Number(formData.get('cost')),
+      price: Number(formData.get('price')),
+      commissionPercentage:
+        Number(formData.get('commissionPercentage')) || undefined,
     }
+
+    const data = await apiUpdateProduct(id, rawData)
     revalidateTag('products')
     revalidateTag(id)
-    return { ok: true, errors: {} }
-  } catch {
-    return { errors: { request: 'Failed to update product' } }
+    return { ok: true, data }
+  } catch (e) {
+    const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }
 

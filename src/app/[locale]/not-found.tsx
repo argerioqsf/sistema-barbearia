@@ -1,9 +1,5 @@
 import NotFoundPage from '@/components/template/NotFoundPage/page'
 
-export default async function NotFound() {
-  return (
-    <body>
-      <NotFoundPage href="/auth/signin" />
-    </body>
-  )
+export default function NotFound() {
+  return <NotFoundPage href="/auth/signin" />
 }

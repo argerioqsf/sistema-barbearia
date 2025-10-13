@@ -11,20 +11,43 @@ import {
 } from 'react'
 
 interface GeneralContentType {
-  openMenu: boolean | null
-  setOpenMenu: Dispatch<SetStateAction<boolean | null>>
+  openMenu: boolean
+  setOpenMenu: Dispatch<SetStateAction<boolean>>
 }
 
 const GeneralContext = createContext({} as GeneralContentType)
 
 export function GeneralProvider({ children }: { children: ReactNode }) {
-  const [openMenu, setOpenMenu] = useState<boolean | null>(null)
   // TODO: entender melhor essa logica do useEffect
   // Prevent background scroll when the mobile menu is open
+
+  const [openMenu, setOpenMenu] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const initialize = () => {
+      const width = window.innerWidth
+      setOpenMenu(width >= 1024)
+    }
+
+    const handleResize = () => {
+      const width = window.innerWidth
+      setOpenMenu(width >= 1024)
+    }
+
+    initialize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Prevent background scroll on mobile when the menu overlays the content
   useEffect(() => {
     if (typeof document === 'undefined') return
+    if (typeof window === 'undefined') return
     const root = document.documentElement
-    if (openMenu) {
+    const shouldLock = openMenu && window.innerWidth < 768
+    if (shouldLock) {
       root.classList.add('overflow-hidden')
       root.classList.add('overscroll-none')
     } else {

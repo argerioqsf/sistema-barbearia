@@ -1,54 +1,47 @@
 import { api } from '@/data/api'
 import { getBackendToken } from '@/utils/authServer'
-import {
-  PermissionsListSchema,
-  PermissionSchema,
-  type ZPermission,
-} from './schemas'
 import { readMessage, safeJson } from '@/shared/http'
-import type { JsonObject } from '@/types/http'
+import { HttpError } from '@/shared/errors/httpError'
+import { ValidationError } from '@/shared/errors/validationError'
+import { z } from 'zod'
 
-export async function listPermissions() {
+export const ZPermissionSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  category: z.string(),
+})
+
+export type ZPermission = z.infer<typeof ZPermissionSchema>
+
+export const ZPermissionsListSchema = z.array(ZPermissionSchema)
+
+export async function listPermissions(): Promise<ZPermission[]> {
   const token = await getBackendToken()
   const response = await api('/permissions', {
     method: 'GET',
-    headers: { Authorization: `Bearer ${token}` },
-    next: { tags: ['permissions'], revalidate: 60 * 10 },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    next: {
+      tags: ['permissions'],
+      revalidate: 60 * 4,
+    },
   })
-  if (!response.ok) throw new Error(await readMessage(response))
+
+  if (!response.ok) {
+    const message = await readMessage(response)
+    throw new HttpError(response.status, message)
+  }
+
   const json = await safeJson(response)
-  if (Array.isArray(json))
-    return { permissions: json.map((i) => PermissionSchema.parse(i)) }
-  return PermissionsListSchema.parse(json)
-}
+  const parsed = ZPermissionsListSchema.safeParse(json)
 
-export async function createPermission(body: JsonObject): Promise<ZPermission> {
-  const token = await getBackendToken()
-  const response = await api('/permissions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(body),
-  })
-  if (!response.ok) throw new Error(await readMessage(response))
-  return PermissionSchema.parse(await safeJson(response))
-}
+  if (!parsed.success) {
+    throw ValidationError.fromZod(
+      parsed.error,
+      'Invalid response list permissions',
+    )
+  }
 
-export async function updatePermission(
-  id: string,
-  body: JsonObject,
-): Promise<ZPermission> {
-  const token = await getBackendToken()
-  const response = await api(`/permissions/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(body),
-  })
-  if (!response.ok) throw new Error(await readMessage(response))
-  return PermissionSchema.parse(await safeJson(response))
+  return parsed.data
 }

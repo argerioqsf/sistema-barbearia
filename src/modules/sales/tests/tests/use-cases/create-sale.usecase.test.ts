@@ -22,6 +22,9 @@ const sampleSaleDto: SaleDTO = {
   client: null,
   transactions: [],
   user: null,
+  status: 'CREATED',
+  completionDate: null,
+  session: null,
 }
 const sampleSale = Sale.fromDTO(sampleSaleDto)
 

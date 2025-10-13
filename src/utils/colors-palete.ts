@@ -39,6 +39,15 @@ export function lighten(hsl: string, amount = 20): string {
   return `${h} ${s}% ${newL}%`
 }
 
+function pickForeground(hsl: string): string {
+  const parts = hsl.split(/\s+/)
+  const lightnessPart = parts[2] ?? '50%'
+  const lightness = parseFloat(lightnessPart.replace('%', ''))
+  const isDark = Number.isFinite(lightness) && lightness < 55
+  // Valores baseados nos tokens padrão definidos em global.css
+  return isDark ? '210 40% 98%' : '222.2 47.4% 11.2%'
+}
+
 export function applyPalette(primary: string, secondary: string) {
   const primaryHsl = hexToHsl(primary)
   const secondaryHsl = hexToHsl(secondary)
@@ -47,7 +56,15 @@ export function applyPalette(primary: string, secondary: string) {
   document.documentElement.style.setProperty('--primary', primaryHsl)
   document.documentElement.style.setProperty('--primary-50', primary50)
   document.documentElement.style.setProperty('--primary-100', primaryHsl)
+  document.documentElement.style.setProperty(
+    '--primary-foreground',
+    pickForeground(primaryHsl),
+  )
   document.documentElement.style.setProperty('--secondary', secondaryHsl)
   document.documentElement.style.setProperty('--secondary-50', secondary50)
   document.documentElement.style.setProperty('--secondary-100', secondaryHsl)
+  document.documentElement.style.setProperty(
+    '--secondary-foreground',
+    pickForeground(secondaryHsl),
+  )
 }

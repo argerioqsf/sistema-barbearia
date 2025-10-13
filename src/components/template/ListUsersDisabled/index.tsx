@@ -1,4 +1,4 @@
-import { activeUser, listUsersPaginatedAction } from '@/actions/user'
+import { activeUserEmail, listUsersPaginatedAction } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import Search from '@/components/molecules/Search'
@@ -11,7 +11,7 @@ infoList.listActions = [
   {
     id: 3,
     icon: 'Unlock',
-    onclick: activeUser,
+    onclick: activeUserEmail,
     name: 'Ativar',
     alert: {
       title: 'Você deseja realmente ativar este usuário?',

@@ -1,5 +1,11 @@
-import DetailServices from '@/components/template/DetailServices'
+import EditServicePage from '@/components/template/EditService'
 
-export default function Page({ params }: { params: { id: string } }) {
-  return <DetailServices id={params.id} />
+interface ServiceEditPageProps {
+  params: {
+    id: string
+  }
+}
+
+export default function EditServiceRoute({ params }: ServiceEditPageProps) {
+  return <EditServicePage params={params} />
 }

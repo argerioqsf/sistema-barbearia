@@ -19,6 +19,7 @@ type ButtonProps = {
     | 'ghost'
     | 'link'
   size?: 'default' | 'sm' | 'lg' | 'icon'
+  form?: string
 }
 
 const Button = ({
@@ -29,11 +30,13 @@ const Button = ({
   disabled,
   variant,
   size,
+  form,
 }: ButtonProps) => {
   const { pending } = useFormStatus()
   // TODO: analisar mudanças que ia fez, se faz sentido
   return (
     <UIButton
+      form={form}
       size={size}
       variant={variant}
       onClick={onClick}

@@ -4,21 +4,9 @@ import { InitialState, ReturnList } from '@/types/general'
 import {
   createTransaction as createTransactionAPI,
   listPending as listPendingAPI,
-  listTransactions as listTransactionsAPI,
 } from '@/features/transactions/api'
 import type { ZTransaction } from '@/features/transactions/schemas'
 import { toNormalizedError } from '@/shared/errors/to-normalized-error'
-
-export async function listTransactions(
-  page?: string,
-): Promise<ReturnList<ZTransaction>> {
-  try {
-    const { transactions, count } = await listTransactionsAPI(page)
-    return { response: transactions, count }
-  } catch {
-    return { error: toNormalizedError('Error unknown') }
-  }
-}
 
 export async function listPendingTransactions(
   userId: string,

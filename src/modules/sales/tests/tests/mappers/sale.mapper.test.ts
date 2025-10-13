@@ -21,6 +21,9 @@ const apiSale: SaleDTO = {
   client: null,
   transactions: [],
   user: null,
+  status: 'CREATED',
+  completionDate: null,
+  session: null,
 }
 
 describe('sale mapper', () => {

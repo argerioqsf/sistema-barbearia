@@ -1,5 +1,5 @@
-import RegisterServices from '@/components/template/RegisterServices'
+import RegisterServicePage from '@/components/template/RegisterService'
 
-export default function Page() {
-  return <RegisterServices />
+export default function RegisterServiceRoute() {
+  return <RegisterServicePage />
 }

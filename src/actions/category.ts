@@ -85,7 +85,7 @@ export async function updateCategory(
 }
 
 export async function deleteCategory(
-  id: string,
+  id?: string,
 ): Promise<InitialState<Category>> {
   try {
     const token = await getBackendToken()

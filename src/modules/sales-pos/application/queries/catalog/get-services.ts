@@ -19,7 +19,6 @@ export async function getServicesCatalog({
 > {
   try {
     const services = await fetchServices(undefined, { name: search })
-    console.log('services', services)
     return ok({ items: services, count: 0 })
   } catch (error) {
     return err(normalizeError(error))

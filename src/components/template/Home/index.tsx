@@ -1,460 +1,110 @@
-import { getGraphics } from '@/actions/graphics'
-import Chart from '@/components/atoms/Chart'
-import Breadcrumb from '@/components/molecules/Breadcrumb'
-import ChartTitle from '@/components/molecules/ChartTitle'
 import ContainerDashboard from '@/components/molecules/ContainerDashboard'
-import ErrorState from '@/components/molecules/ErrorState'
-import { Graphics } from '@/types/general'
-import { PaneBackgroundOptions } from 'highcharts'
+import { PageCard, PageCardContent } from '@/components/ui/page-card'
+import { SectionHeader } from '@/components/ui/section-header'
+import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
-export default async function Home() {
-  const responseGraphics = await getGraphics()
-  const graphics: Graphics | null = responseGraphics?.response ?? null
-  const errorGraphics = responseGraphics.error?.message ?? null
+const roadmapHighlights = [
+  {
+    title: 'Relatórios inteligentes',
+    description:
+      'Uma visão consolidada das vendas, produtividade e finanças da barbearia em um só lugar.',
+  },
+  {
+    title: 'Gráficos em tempo real',
+    description:
+      'Painéis atualizados automaticamente para acompanhar o desempenho da equipe e metas diárias.',
+  },
+  {
+    title: 'Alertas personalizados',
+    description:
+      'Notificações para receber insights sobre oportunidades, clientes inativos e metas de receita.',
+  },
+]
 
-  if (errorGraphics) {
-    return (
-      <ErrorState
-        title="Erro ao carregar Graficos"
-        message={String(errorGraphics)}
-      />
-    )
-  }
-  function gerarCorHexAleatoria(): string {
-    const getRandomByte = () => Math.floor(Math.random() * 256)
-    const r = getRandomByte()
-    const g = getRandomByte()
-    const b = getRandomByte()
-    const hex = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`
+const quickLinks = [
+  {
+    label: 'Abrir vendas',
+    href: '/dashboard/sales',
+    description: 'Gerencie e acompanhe todas as vendas realizadas na unidade.',
+  },
+  {
+    label: 'Finanças',
+    href: '/dashboard/financial/transactions',
+    description: 'Monitore transações, comissões e retiradas em andamento.',
+  },
+  {
+    label: 'Equipe',
+    href: '/dashboard/users',
+    description: 'Administre usuários, permissões e indicadores da equipe.',
+  },
+]
 
-    return hex
-  }
-
-  const item: PaneBackgroundOptions[] = [
-    {
-      innerRadius: 0,
-      backgroundColor: 'transparent',
-      borderWidth: 0,
-    },
-  ]
-
-  const optionsServiceTime: Highcharts.Options = {
-    chart: {
-      type: 'gauge',
-      plotBorderWidth: 0,
-      plotShadow: false,
-      height: '80%',
-    },
-
-    title: {
-      text: '',
-    },
-
-    pane: {
-      startAngle: -90,
-      endAngle: 89.9,
-      background: item,
-      center: ['50%', '75%'],
-      size: '110%',
-    },
-    yAxis: {
-      min: 0,
-      max: 9,
-      tickPixelInterval: 50,
-      tickPosition: 'inside',
-      tickColor: '#FFFFFF',
-      tickLength: 10,
-      tickWidth: 2,
-      minorTickInterval: 0,
-      labels: {
-        distance: 20,
-        style: {
-          fontSize: '14px',
-        },
-      },
-      lineWidth: 0,
-      plotBands: [
-        {
-          from: 0,
-          to: 2,
-          color: '#55BF3B', // green
-          thickness: 20,
-          borderRadius: '30%',
-        },
-        {
-          from: 2.1,
-          to: 5,
-          color: '#DDDF0D', // yellow
-          thickness: 20,
-          borderRadius: '30%',
-        },
-        {
-          from: 5.1,
-          to: 9,
-          color: '#DF5353', // red
-          thickness: 20,
-          borderRadius: '30%',
-        },
-      ],
-    },
-
-    series: [
-      {
-        type: 'gauge',
-        name: '',
-        data: [Math.floor(graphics?.average_service_time?.media_em_dias ?? 0)],
-        tooltip: {
-          valueSuffix: ' dias',
-        },
-        dataLabels: {
-          format: `${graphics?.average_service_time?.dias ?? 0} dias - ( ${graphics?.average_service_time?.horas ?? 0}h ${graphics?.average_service_time?.minutos ?? 0}m ${graphics?.average_service_time?.segundos ?? 0}s )`,
-          borderWidth: 0,
-          color: '#333333',
-          style: {
-            fontSize: '16px',
-          },
-        },
-        dial: {
-          radius: '80%',
-          backgroundColor: 'gray',
-          baseWidth: 12,
-          baseLength: '0%',
-          rearLength: '0%',
-        },
-        pivot: {
-          backgroundColor: 'gray',
-          radius: 6,
-        },
-      },
-    ],
-  }
-
-  const optionsLeadsStep: Highcharts.Options = {
-    title: {
-      text: '',
-    },
-    chart: {
-      plotShadow: false,
-      type: 'pie',
-    },
-    tooltip: {
-      pointFormat: '<b>{point.y} leads</b>',
-    },
-    plotOptions: {
-      series: {
-        allowPointSelect: true,
-        cursor: 'pointer',
-        dataLabels: [
-          {
-            enabled: true,
-            x: 16,
-            y: 25,
-            format: '{point.name}',
-          },
-          {
-            enabled: true,
-            x: -10,
-            y: 10,
-            format: '{point.y}',
-            style: {
-              fontSize: '0.9em',
-            },
-          },
-        ],
-        showInLegend: true,
-      },
-      pie: {
-        showInLegend: false,
-        cursor: 'pointer',
-        allowPointSelect: true,
-        borderRadius: 8,
-      },
-    },
-    series: [
-      {
-        name: 'leads',
-        type: 'pie',
-        innerSize: '50%',
-        data: [
-          {
-            y: graphics?.leads_by_steps?.countStepNewLeads,
-            name: 'Novos Leads',
-          },
-          {
-            y: graphics?.leads_by_steps?.countStepPreService,
-            name: 'Pré atendimento',
-          },
-          {
-            y: graphics?.leads_by_steps?.countStepPresentationOportunity,
-            name: 'Apresentação de oportunidade',
-          },
-          {
-            y: graphics?.leads_by_steps?.countStepNegotiation,
-            name: 'Negociação',
-          },
-          {
-            y: graphics?.leads_by_steps?.countStepClosing,
-            name: 'Fechamento',
-          },
-        ],
-      },
-    ],
-  }
-
-  const optionsLeadsRankingConsultant: Highcharts.Options = {
-    title: {
-      text: '',
-    },
-    chart: {
-      type: 'bar',
-    },
-    series: [
-      {
-        type: 'bar',
-        name: 'Leads',
-        data: graphics?.rankingConsultantsCloseSales?.map((item) => {
-          return {
-            y: item.quant,
-            color: gerarCorHexAleatoria(),
-          }
-        }),
-      },
-    ],
-    tooltip: {
-      pointFormat: '<b>{point.y} leads</b>',
-    },
-    xAxis: {
-      categories: graphics?.rankingConsultantsCloseSales?.map(
-        (item) => item.name ?? '',
-      ),
-    },
-    yAxis: {
-      min: 0,
-      title: {
-        text: 'Quant. leads convertidos',
-      },
-    },
-    legend: {
-      enabled: false,
-      reversed: true,
-    },
-    plotOptions: {
-      series: {
-        stacking: 'normal',
-        cursor: 'pointer',
-        dataLabels: [
-          {
-            enabled: true,
-            format: '{point.name}',
-          },
-          {
-            enabled: true,
-            format: '{point.y}',
-            style: {
-              fontSize: '0.9em',
-            },
-          },
-        ],
-      },
-      column: {
-        showInLegend: false,
-        cursor: 'pointer',
-        allowPointSelect: true,
-        borderRadius: 8,
-      },
-    },
-  }
-
-  const optionsLeadsRankingIndicators: Highcharts.Options = {
-    title: {
-      text: '',
-    },
-    chart: {
-      type: 'bar',
-    },
-    series: [
-      {
-        type: 'bar',
-        name: 'Leads',
-        data: graphics?.leadsRankingIndicator?.map((item) => {
-          return {
-            y: item.quant,
-            color: gerarCorHexAleatoria(),
-          }
-        }),
-      },
-    ],
-    tooltip: {
-      pointFormat: '<b>{point.y} leads</b>',
-    },
-    xAxis: {
-      categories: graphics?.leadsRankingIndicator?.map(
-        (item) => item.name ?? '',
-      ),
-    },
-    yAxis: {
-      min: 0,
-      title: {
-        text: 'Quant. leads indicados',
-      },
-    },
-    legend: {
-      enabled: false,
-      reversed: true,
-    },
-    plotOptions: {
-      series: {
-        stacking: 'normal',
-        cursor: 'pointer',
-        dataLabels: [
-          {
-            enabled: true,
-            format: '{point.name}',
-          },
-          {
-            enabled: true,
-            format: '{point.y}',
-            style: {
-              fontSize: '0.9em',
-            },
-          },
-        ],
-      },
-      column: {
-        showInLegend: false,
-        cursor: 'pointer',
-        allowPointSelect: true,
-        borderRadius: 8,
-      },
-    },
-  }
-
-  const optionsRankingCourses: Highcharts.Options = {
-    title: {
-      text: '',
-    },
-    chart: {
-      type: 'bar',
-    },
-    series: [
-      {
-        type: 'bar',
-        name: 'Leads',
-        data: graphics?.coursesRanking?.map((item) => {
-          return {
-            y: item.quant,
-            color: gerarCorHexAleatoria(),
-          }
-        }),
-      },
-    ],
-    tooltip: {
-      pointFormat: '<b>{point.y} leads</b>',
-    },
-    xAxis: {
-      categories: graphics?.coursesRanking?.map((item) => item.name ?? ''),
-    },
-    yAxis: {
-      min: 0,
-      title: {
-        text: 'Quant. leads convertidos',
-      },
-    },
-    legend: {
-      enabled: false,
-      reversed: true,
-    },
-    plotOptions: {
-      series: {
-        stacking: 'normal',
-        cursor: 'pointer',
-        dataLabels: [
-          {
-            enabled: true,
-            format: '{point.name}',
-          },
-          {
-            enabled: true,
-            format: '{point.y}',
-            style: {
-              fontSize: '0.9em',
-            },
-          },
-        ],
-      },
-      column: {
-        showInLegend: false,
-        cursor: 'pointer',
-        allowPointSelect: true,
-        borderRadius: 8,
-      },
-    },
-  }
-
+export default function Home() {
   return (
     <ContainerDashboard>
-      <div className="p-6 w-full h-full flex flex-col justify-start items-center gap-4">
-        <div className="w-full ">
-          <Breadcrumb />
-        </div>
-        {errorGraphics && (
-          <div className="w-full">
-            {graphics && (
-              <div className="w-full p-5 pb-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-14 lg:gap-20 items-center justify-center"></div>
-            )}
-            <div className="p-5 w-full grid grid-cols-12 gap-6">
-              {graphics?.leads_by_steps && (
-                <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
-                  <ChartTitle title="Leads por etapas" description="" />
-                  <div className="p-4 min-h-[440px] border rounded-b-lg border-black border-t-0">
-                    <Chart options={optionsLeadsStep} />
-                  </div>
-                </div>
-              )}
-              {graphics?.average_service_time && (
-                <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
-                  <ChartTitle
-                    title="Média de tempo de atendimento ( em dias )"
-                    description=""
-                  />
-                  <div className="p-4 min-h-[440px] border rounded-b-lg border-black border-t-0">
-                    <Chart options={optionsServiceTime} />
-                  </div>
-                </div>
-              )}
-              {graphics?.rankingConsultantsCloseSales && (
-                <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
-                  <ChartTitle
-                    title="Consultores que mais convertem"
-                    description=""
-                  />
-                  <div className="p-4 min-h-[440px] border rounded-b-lg border-black border-t-0">
-                    <Chart options={optionsLeadsRankingConsultant} />
-                  </div>
-                </div>
-              )}
-              {graphics?.leadsRankingIndicator && (
-                <div className="w-full col-span-12 md:col-span-6 lg:col-span-6">
-                  <ChartTitle title="Top 10 indicadores" description="" />
-                  <div className="p-4 min-h-[440px] border rounded-b-lg border-black border-t-0">
-                    <Chart options={optionsLeadsRankingIndicators} />
-                  </div>
-                </div>
-              )}
-              {graphics?.coursesRanking && (
-                <div className="w-full col-span-12 md:col-span-12 lg:col-span-6">
-                  <ChartTitle
-                    title="Cursos que mais convertem"
-                    description=""
-                  />
-                  <div className="p-4 min-h-[440px] border rounded-b-lg border-black border-t-0">
-                    <Chart options={optionsRankingCourses} />
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+      <div
+        className={cn(
+          'relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-100 via-white to-slate-100 text-foreground',
         )}
+      >
+        <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 pb-12 pt-8 sm:px-6 lg:px-10">
+          <PageCard>
+            <PageCardContent className="space-y-6">
+              <SectionHeader
+                label="Bem-vindo"
+                title="Central de insights em construção"
+                description="Em breve você terá aqui gráficos, tendências e relatórios que ajudam a tomar decisões rápidas sobre o negócio."
+              />
+
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {roadmapHighlights.map((item) => (
+                  <div
+                    key={item.title}
+                    className="rounded-2xl border border-slate-200/80 bg-white/80 px-5 py-5 shadow-sm shadow-slate-200/60"
+                  >
+                    <span className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                      Em breve
+                    </span>
+                    <h3 className="mt-2 text-lg font-semibold text-slate-900">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-slate-500 truncate">
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </PageCardContent>
+          </PageCard>
+
+          <PageCard>
+            <PageCardContent className="space-y-6">
+              <SectionHeader
+                label="Enquanto isso"
+                title="Continue acompanhando as principais áreas"
+                description="Acesse as seções existentes para monitorar vendas, finanças e equipe enquanto a nova experiência é preparada."
+              />
+
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {quickLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="group flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white/80 px-5 py-5 shadow-sm shadow-slate-200/60 transition hover:border-primary/40 hover:bg-primary/5"
+                  >
+                    <span className="text-sm font-semibold text-slate-900 group-hover:text-primary-700">
+                      {link.label}
+                    </span>
+                    <p className="text-xs text-slate-500 truncate">
+                      {link.description}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </PageCardContent>
+          </PageCard>
+        </div>
       </div>
     </ContainerDashboard>
   )

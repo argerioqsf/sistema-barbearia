@@ -290,6 +290,7 @@ export async function paySale(id: string, body: BodyPaySale): Promise<ZSale> {
     throw ValidationError.fromZod(parsed.error, 'Invalid response pay sale')
   }
   revalidateTag('sales')
+  revalidateTag('cash-session')
   revalidateTag(id)
   return parsed.data
 }

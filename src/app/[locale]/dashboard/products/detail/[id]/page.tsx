@@ -1,5 +1,11 @@
-import DetailProducts from '@/components/template/DetailProducts'
+import EditProductPage from '@/components/template/EditProduct'
 
-export default function Page({ params }: { params: { id: string } }) {
-  return <DetailProducts id={params.id} />
+interface ProductEditPageProps {
+  params: {
+    id: string
+  }
+}
+
+export default function EditProductRoute({ params }: ProductEditPageProps) {
+  return <EditProductPage params={params} />
 }

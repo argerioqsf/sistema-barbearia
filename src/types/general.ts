@@ -457,6 +457,7 @@ export type SearchType = {
   courseId?: string
   phone?: string
   page?: string
+  u?: string
 }
 
 export interface ReturnList<T> {

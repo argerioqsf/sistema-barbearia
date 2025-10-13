@@ -1,6 +1,10 @@
 'use server'
 
-import { ZSaleItem } from '@/features/saleItems/schema'
+import { fetchUnpaidSaleItems } from '@/features/saleItems/api'
+import {
+  ZSaleItem,
+  ZSaleItemWithRemainingValue,
+} from '@/features/saleItems/schema'
 import {
   fetchSale,
   createSale,
@@ -39,6 +43,20 @@ export async function createSaleAction(
     return { ok: true, data: newSale }
   } catch (e) {
     const normalized = handleRequestError(e, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
+  }
+}
+
+export async function getUnpaidSaleItems(
+  userId: string,
+): Promise<ReturnRequest<ZSaleItemWithRemainingValue[]>> {
+  try {
+    const saleList = await fetchUnpaidSaleItems(userId)
+    return { ok: true, data: saleList }
+  } catch (err) {
+    const normalized = handleRequestError(err, {
       rethrow: false,
     })
     return { ok: false, error: normalized }
@@ -114,9 +132,8 @@ export async function addSaleItemsAction(
   items: Partial<ZSaleItem>[],
 ): Promise<ReturnRequest<ZSale>> {
   try {
-    await removeOrAddSaleItems(id, { addItems: items })
-    const data = await fetchSale(id)
-    return { ok: true, data }
+    const sale = await removeOrAddSaleItems(id, { addItems: items })
+    return { ok: true, data: sale }
   } catch (e) {
     const normalized = handleRequestError(e, {
       rethrow: false,
@@ -130,9 +147,8 @@ export async function removeSaleItemsAction(
   itemIds: string[],
 ): Promise<ReturnRequest<ZSale>> {
   try {
-    await removeOrAddSaleItems(id, { removeItemIds: itemIds })
-    const data = await fetchSale(id)
-    return { ok: true, data }
+    const sale = await removeOrAddSaleItems(id, { removeItemIds: itemIds })
+    return { ok: true, data: sale }
   } catch (e) {
     const normalized = handleRequestError(e, {
       rethrow: false,
@@ -146,9 +162,8 @@ export async function updateSaleClientAction(
   clientId: string,
 ): Promise<ReturnRequest<Sale>> {
   try {
-    await updateSaleClient(id, { clientId })
-    const data = await fetchSale(id)
-    return { ok: true, data }
+    const sale = await updateSaleClient(id, { clientId })
+    return { ok: true, data: sale }
   } catch (e) {
     const normalized = handleRequestError(e, {
       rethrow: false,
@@ -177,9 +192,8 @@ export async function paySaleAction(
   body: BodyPaySale,
 ): Promise<ReturnRequest<ZSale>> {
   try {
-    await paySale(id, body)
-    const data = await fetchSale(id)
-    return { ok: true, data }
+    const sale = await paySale(id, body)
+    return { ok: true, data: sale }
   } catch (e) {
     const normalized = handleRequestError(e, {
       rethrow: false,

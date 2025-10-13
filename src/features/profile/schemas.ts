@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { HHmmRegex, ISODateTime, isValidCPF, toMinutes, UUID } from '../schemas'
+import { HHmmRegex, ISODateTime, toMinutes, UUID } from '../schemas'
 import { RoleSchema } from '../roles/schemas'
 import { UserProductBaseSchema, UserServiceSchema } from '../users/schemas'
 import { PermissionSchema } from '../permissions/schemas'
@@ -53,11 +53,11 @@ export const ProfileBlockedHourSchema = z
 export const ProfileBaseSchema = z
   .object({
     id: UUID(),
-    phone: z.string().min(1, 'phone é obrigatório'),
-    cpf: z.string().min(11, 'cpf inválido').refine(isValidCPF, 'cpf inválido'),
-    genre: z.string().min(1),
-    birthday: z.string().min(1),
-    pix: z.string().min(1),
+    phone: z.string().optional().nullable(),
+    cpf: z.string().min(11, 'cpf inválido').optional().nullable(),
+    genre: z.string().min(1).optional().nullable(),
+    birthday: z.string().min(1).optional().nullable(),
+    pix: z.string().min(1).optional().nullable(),
     roleId: z.string().uuid().or(z.string().min(1)),
     commissionPercentage: z.number().default(0),
     totalBalance: z.number().default(0),

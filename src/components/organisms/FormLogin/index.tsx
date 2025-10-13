@@ -11,10 +11,12 @@ import { signIn } from 'next-auth/react'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { useRouter } from 'next/navigation'
 
 type LoginSchemaType = z.infer<typeof formSchemaSignIn>
 
 const FormLogin = () => {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -30,10 +32,15 @@ const FormLogin = () => {
     const result = await signIn('credentials', {
       email: values.email,
       password: values.password,
+      redirect: false,
     })
-    if (result?.error) {
-      setRequestError('Falha no login')
+
+    if (!result?.ok) {
+      setRequestError('E-mail ou senha inválidos.')
+      return
     }
+
+    router.replace('/dashboard/home')
   }
 
   return (

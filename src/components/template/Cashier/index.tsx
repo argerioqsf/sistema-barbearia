@@ -7,11 +7,20 @@ import { infoListCashSessions, type CashSessionListItem } from './templates'
 import type { ZCashSession } from '@/features/cash-session/schemas'
 import StatusCard from './components/StatusCard'
 import OpenForm from './components/OpenForm'
-import ErrorState from '@/components/molecules/ErrorState'
+import { ErrorRequestHandler } from '@/components/organisms/ErrorRequestHandler'
 
 export default async function CashierPage() {
-  const { response: session, error: errorOpen } = await getOpenCashSession()
-  const { response: sessions, error: errorList } = await getCashSessions()
+  const responseSessionOpen = await getOpenCashSession()
+  const responseSessions = await getCashSessions()
+
+  if (!responseSessionOpen.ok) {
+    return <ErrorRequestHandler result={responseSessionOpen} />
+  }
+
+  if (!responseSessions.ok) {
+    return <ErrorRequestHandler result={responseSessions} />
+  }
+
   const currency = (v?: number | null) =>
     typeof v === 'number'
       ? new Intl.NumberFormat('pt-BR', {
@@ -26,28 +35,23 @@ export default async function CashierPage() {
           timeStyle: 'short',
         }).format(new Date(d))
       : '-'
+  const sessions = responseSessions.data
+  const session = responseSessionOpen.data
   const displaySessions: CashSessionListItem[] = (sessions ?? []).map(
     (s: ZCashSession) => ({
       id: s.id,
       openedAt: formatDate(s.openedAt),
+      openedById: s.openedById,
       closedAt: formatDate(s.closedAt),
       initialAmount: currency(s.initialAmount),
       finalAmount: currency(s.finalAmount),
       status: s.status,
     }),
   )
-  if (errorOpen?.message || errorList?.message) {
-    return (
-      <ErrorState
-        title="Erro ao carregar dados do caixa"
-        message={String(errorOpen?.message ?? errorList?.message)}
-      />
-    )
-  }
 
   return (
     <ContainerDashboard>
-      <div className="p-[5vw] lg:p-[2.5vw] w-full h-full flex flex-col justify-start items-center gap-4">
+      <div className="p-4 md:p-6 w-full h-full flex flex-col justify-start items-center gap-4">
         <div className="w-full">
           <Breadcrumb />
         </div>
@@ -59,10 +63,9 @@ export default async function CashierPage() {
         </div>
 
         <div className="w-full mt-4 grid gap-8">
-          {session && <StatusCard session={session ?? null} />}
-          <OpenForm visible={!session} />
-
           <div className="w-full">
+            {session && <StatusCard session={session ?? null} />}
+            <OpenForm visible={!session} />
             <Listing
               title={infoListCashSessions.title}
               list={displaySessions}

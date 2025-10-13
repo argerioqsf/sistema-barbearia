@@ -1,5 +1,9 @@
-import { PointOfSale } from '@/modules/sales-pos/ui'
+import { redirect } from 'next/navigation'
 
-export default function POSPage({ params }: { params: { id: string } }) {
-  return <PointOfSale id={params.id} />
+export default function LegacyPOSPage({
+  params,
+}: {
+  params: { id: string; locale: string }
+}) {
+  redirect(`/${params.locale}/point-of-sale/${params.id}`)
 }

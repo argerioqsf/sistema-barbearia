@@ -5,6 +5,8 @@ const saleDto: SaleDTO = {
   id: 'sale-123',
   gross_value: 180,
   total: 170,
+  status: 'CREATED',
+  completionDate: null,
   items: [
     {
       id: '1',
@@ -25,7 +27,6 @@ const saleDto: SaleDTO = {
       plan: null,
       barber: null,
       coupon: null,
-      appointment: null,
       discounts: [],
       couponCode: null,
     },
@@ -48,7 +49,6 @@ const saleDto: SaleDTO = {
       plan: null,
       barber: null,
       coupon: null,
-      appointment: null,
       discounts: [
         {
           id: 'discount-1',

@@ -36,6 +36,12 @@
       "profile": {
         "title": "Perfil SIM",
         "description": "Perfil da plataforma SIM"
+      },
+      "users": {
+        "register": {
+          "title": "Cadastro de usuário",
+          "description": "Faça o cadastro de um novo usuário"
+        }
       }
     }
   }

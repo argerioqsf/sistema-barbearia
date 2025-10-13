@@ -7,6 +7,8 @@ import { ServiceSchema } from '../services/schemas'
 import { CouponSchema } from '../coupons/schemas'
 import { AppointmentBaseSchema } from '../appointments/schemas'
 import { PlanSchema } from '../plans/schema'
+import { TransactionSchema } from '../transactions/schemas'
+import { SaleBaseSchema } from '../sales/schemas'
 
 export const SaleItemBaseSchema = z.object({
   id: UUID(),
@@ -29,6 +31,7 @@ export const SaleItemBaseSchema = z.object({
   coupon: CouponSchema.nullable().optional(),
   discounts: z.array(DiscountSchema).optional(),
   couponCode: z.string().nullable().optional(),
+  transactions: z.array(TransactionSchema).nullable().optional(),
 })
 
 export const SaleItemSchema = z.lazy(() =>
@@ -38,3 +41,18 @@ export const SaleItemSchema = z.lazy(() =>
 )
 
 export type ZSaleItem = z.infer<typeof SaleItemSchema>
+
+export const ZSaleItemWithRemainingValueSchema = z.lazy(() =>
+  SaleItemBaseSchema.extend({
+    sale: SaleBaseSchema,
+    remainingValue: z.number(),
+  }),
+)
+
+export type ZSaleItemWithRemainingValue = z.infer<
+  typeof ZSaleItemWithRemainingValueSchema
+>
+
+export const ListUnpaidSaleItemsResponseSchema = z.array(
+  ZSaleItemWithRemainingValueSchema,
+)

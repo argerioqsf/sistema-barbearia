@@ -1,5 +1,5 @@
 import { listSelectUnits } from '@/actions/unit'
-import { registerUserProfile } from '@/actions/user'
+import { createUserAction } from '@/actions/user'
 import { ContainerDashboard } from '@/components/molecules'
 import Breadcrumb from '@/components/molecules/Breadcrumb'
 import FormDashboard from '@/components/organisms/FormDashboard'
@@ -20,7 +20,7 @@ const submitRegisterUser = async (
   formData: FormData,
 ): Promise<InitialState<User | Profile>> => {
   'use server'
-  const result = await registerUserProfile(
+  const result = await createUserAction(
     prevState as InitialState<ZUser>,
     formData,
   )

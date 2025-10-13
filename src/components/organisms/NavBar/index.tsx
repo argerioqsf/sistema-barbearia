@@ -1,43 +1,88 @@
+'use client'
+
 import { Button } from '@/components/atoms'
 import { handleIcons } from '@/utils/handleIcons'
-import React, { Dispatch, SetStateAction } from 'react'
+import { RoleName } from '@/features/roles/schemas'
+import type { ZUnit } from '@/features/units/schemas'
+import { useRouter } from 'next/navigation'
+import React from 'react'
 import { twMerge } from 'tailwind-merge'
+import { UnitSwitcher } from './UnitSwitcher'
+import { useGeneral } from '@/contexts/general-context'
+import { cn } from '@/lib/utils'
 
 type NavBarProps = {
-  setOpenMenu: Dispatch<SetStateAction<boolean | null>>
-  openMenu: boolean | null
+  openMenu: boolean
+  role?: RoleName
+  units?: ZUnit[]
+  currentUnitId?: string
 }
 
-const NavBar: React.FC<NavBarProps> = ({ openMenu }) => {
+const NavBar: React.FC<NavBarProps> = ({
+  openMenu,
+  role,
+  units,
+  currentUnitId,
+}) => {
+  const router = useRouter()
   const UserIcon = handleIcons('User')
+  const MenuIcon = handleIcons('Menu')
+  const CloseIcon = handleIcons('X')
+  const { setOpenMenu } = useGeneral()
+
+  const sidebarExpandedClass = 'lg:pl-10'
+  const sidebarCollapsedClass = 'lg:pl-10'
 
   return (
     <nav
       className={twMerge(
-        'w-screen z-40 h-auto items-center fixed whitespace-nowrap bg-gray-300',
+        'fixed z-20 bg-white/85 shadow-sm backdrop-blur-md transition-colors',
+        openMenu
+          ? 'lg:w-[calc(100vw-var(--width-side-menu))] w-screen'
+          : 'lg:w-[calc(100vw-var(--width-side-menu-collapsed))] w-screen',
       )}
     >
       <div
         className={twMerge(
-          'h-[var(--navbar-height)]',
-          'flex w-full flex-row relative flex-nowrap items-center justify-between',
-          !openMenu ? 'px-6' : 'md:px-6',
+          'flex w-full h-[var(--navbar-height)] items-center justify-between gap-4 px-4 py-3',
+          'sm:px-6 sm:py-4',
+          openMenu ? sidebarExpandedClass : sidebarCollapsedClass,
         )}
       >
-        {/* Botão de abrir menu removido. O toggle fica ao lado do menu lateral. */}
+        <div className="flex flex-1 items-center gap-3 md:max-w-xl">
+          <Button
+            type="button"
+            variant="ghost"
+            className={cn(
+              'h-11 w-11 items-center justify-center rounded-full border border-slate-200 text-slate-500 shadow-sm transition hover:bg-slate-100',
+              openMenu ? 'hidden' : 'flex lg:hidden',
+            )}
+            onClick={() => setOpenMenu((prev) => !prev)}
+            aria-label={openMenu ? 'Fechar menu' : 'Abrir menu'}
+          >
+            {openMenu
+              ? CloseIcon && <CloseIcon size={22} />
+              : MenuIcon && <MenuIcon size={22} />}
+          </Button>
+          <div className="min-w-0 flex-1">
+            <UnitSwitcher
+              role={role}
+              units={units}
+              currentUnitId={currentUnitId}
+            />
+          </div>
+        </div>
+
         <div
           className={twMerge(
-            'ml-auto flex flex-row gap-2',
-            openMenu && 'hidden md:flex',
+            'flex shrink-0 items-center justify-end gap-2',
+            openMenu && 'md:justify-end',
           )}
         >
           <Button
             type="button"
-            className="h-11 w-11 md:h-12 md:w-12 rounded-full bg-secondary-50 hover:bg-secondary-100/80 transition-colors flex items-center justify-center shadow"
-            onClick={() => {
-              // simple client-side redirect to profile
-              window.location.href = '/dashboard/profile'
-            }}
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-secondary-50 shadow transition-colors hover:bg-secondary-100/80 md:h-12 md:w-12"
+            onClick={() => router.push('/dashboard/profile')}
             aria-label="Perfil"
           >
             <UserIcon size={24} className="stroke-white" />

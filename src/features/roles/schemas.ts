@@ -19,9 +19,6 @@ export const RoleSchema = z
   })
   .passthrough()
 
-export const RolesListSchema = z.object({
-  roles: z.array(RoleSchema),
-  count: z.number().optional(),
-})
+export const RolesListSchema = z.array(RoleSchema)
 
 export type ZRole = z.infer<typeof RoleSchema>

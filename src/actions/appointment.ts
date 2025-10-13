@@ -1,15 +1,20 @@
 'use server'
 
-import type { ZAppointment as Appointment } from '@/features/appointments/schemas'
+import type {
+  ZAppointment as Appointment,
+  ZAppointment,
+} from '@/features/appointments/schemas'
 import {
   createAppointment,
   fetchAppointmentBarbers,
   fetchAppointments,
+  fetchUnpaidAppointments,
   updateAppointment,
 } from '@/features/appointments/api'
-import type { InitialState, ReturnList } from '@/types/general'
+import type { InitialState, ReturnList, ReturnRequest } from '@/types/general'
 import type { JsonObject, QueryParams } from '@/types/http'
 import { toNormalizedError } from '@/shared/errors/to-normalized-error'
+import { handleRequestError } from '@/shared/errors/handlerRequestError'
 
 export async function listAppointments(
   page?: string,
@@ -76,5 +81,19 @@ export async function listAppointmentBarbers() {
         e instanceof Error ? e.message : 'Error unknown',
       ),
     }
+  }
+}
+
+export async function getUnpaidAppointments(
+  userId: string,
+): Promise<ReturnRequest<ZAppointment[]>> {
+  try {
+    const saleList = await fetchUnpaidAppointments(userId)
+    return { ok: true, data: saleList }
+  } catch (err) {
+    const normalized = handleRequestError(err, {
+      rethrow: false,
+    })
+    return { ok: false, error: normalized }
   }
 }

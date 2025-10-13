@@ -16,13 +16,16 @@ export const UnitSchema = z
     id: z.string(),
     name: z.string(),
     createdAt: z.string().optional(),
+    totalBalance: z.number(),
   })
   .passthrough()
 
-export const UnitsListResponseSchema = z.object({
+export const UnitsListPaginatedResponseSchema = z.object({
   units: z.array(UnitSchema),
   count: z.number(),
 })
+
+export const UnitsListResponseSchema = z.array(UnitSchema)
 
 // Some APIs may return unit directly or wrapped
 export const UnitDetailWrappedSchema = z.object({

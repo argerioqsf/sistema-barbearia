@@ -39,6 +39,9 @@ type FormDashboardProps<T> = {
   id?: string
   toastInfo?: Toast
   roleUser?: RoleName
+  renderHeader?: boolean
+  submitLabel?: string
+  formId?: string
 }
 
 export default function FormDashboard<T>({
@@ -54,6 +57,9 @@ export default function FormDashboard<T>({
   toastInfo,
   pathSuccess,
   roleUser,
+  renderHeader = true,
+  submitLabel,
+  formId,
 }: FormDashboardProps<T>) {
   const { register, watch } = useForm<T & FieldValues>({
     values: defaultValues ?? undefined,
@@ -162,11 +168,11 @@ export default function FormDashboard<T>({
     }
 
     return (
-      <div key={idx} className="w-[90vw] md:w-full mt-10 lg:mt-8">
+      <div key={idx} className="w-full mt-10 lg:mt-8">
         <div
           className={twMerge(
             grid.gridCols[gridColsGeral - 1],
-            'w-[90vw] md:w-full grid gap-4 py-6 rounded-b-xl lg:rounded-xl lg:rounded-tl-none',
+            'w-full grid gap-4 py-6 rounded-b-xl lg:rounded-xl lg:rounded-tl-none',
           )}
         >
           {!loading && !errorMessage ? (
@@ -187,22 +193,27 @@ export default function FormDashboard<T>({
     )
   }
 
+  const computedSubmitLabel = submitLabel ?? templateForm?.textButton
+
   return (
     <div className="w-full">
-      <Form action={handleAction} className="mb-8">
-        <div className="w-[90vw] md:w-full flex flex-row justify-between items-center">
-          <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
-            {title ?? templateForm?.title}
-          </Text>
-          {!loading && templateForm?.textButton && (
-            <Button
-              className="rounded-xl h-10 flex justify-center items-center px-2 sm:px-5 md:px-10 bg-secondary-50 text-white"
-              type="submit"
-            >
-              {templateForm?.textButton}
-            </Button>
-          )}
-        </div>
+      <Form action={handleAction} className="mb-8" id={formId}>
+        {renderHeader && (
+          <div className="w-full flex flex-row justify-between items-center">
+            <Text className="uppercase font-bold text-2xl lg:text-4xl text-black whitespace-nowrap overflow-hidden text-ellipsis">
+              {title ?? templateForm?.title}
+            </Text>
+            {!loading && computedSubmitLabel && (
+              <Button
+                className="h-10 rounded-xl px-2 sm:px-5 md:px-10"
+                type="submit"
+                variant="secondary"
+              >
+                {computedSubmitLabel}
+              </Button>
+            )}
+          </div>
+        )}
 
         {(state?.errors?.request || errorRequest) && (
           <Text
