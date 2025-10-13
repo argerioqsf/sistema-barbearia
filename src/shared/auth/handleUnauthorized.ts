@@ -13,27 +13,52 @@
  *    -> se false, vai direto para loginPath
  */
 
-export async function handleUnauthorized(options?: {
+type HandleUnauthorizedOptions = {
   loginPath?: string
   serverUsesLogoutRoute?: boolean
-}): Promise<never | void> {
+}
+
+function resolveBaseUrl() {
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
+  return (
+    process.env.NEXT_PUBLIC_BASE_URL ??
+    process.env.BASE_URL ??
+    process.env.NEXTAUTH_URL ??
+    ''
+  )
+}
+
+function resolveLoginUrl(loginPath: string) {
+  const baseUrl = resolveBaseUrl()
+  if (!baseUrl) return loginPath
+  try {
+    return new URL(loginPath, baseUrl).toString()
+  } catch {
+    return loginPath
+  }
+}
+
+export async function handleUnauthorized(
+  options?: HandleUnauthorizedOptions,
+): Promise<never | void> {
   const loginPath = options?.loginPath ?? '/auth/signin'
+  const loginUrl = resolveLoginUrl(loginPath)
   const useLogoutRoute = options?.serverUsesLogoutRoute ?? true
 
   // CLIENT
   if (typeof window !== 'undefined') {
-    console.log('Unauthorized Client')
     const { signOut } = await import('next-auth/react')
-    await signOut({ redirect: true, callbackUrl: loginPath })
+    await signOut({ redirect: true, callbackUrl: loginUrl })
     return
   }
 
   // SERVER (Server Component / Route Handler / Server Action)
   const { redirect } = await import('next/navigation')
-  console.log('Unauthorized Server')
   if (useLogoutRoute) {
-    redirect('/api/logout') // sua rota que apaga cookies e já redireciona ao login
+    redirect('/api/logout')
   } else {
-    redirect(loginPath)
+    redirect(loginUrl)
   }
 }
