@@ -88,7 +88,7 @@ export function SaleItem({ saleItem, barbers, saleId }: SaleItemProps) {
   }, [saleItem.quantity, saleItem.customPrice, saleItem.barberId])
 
   const barbersMapSelect = [
-    { value: 'null', label: 'Sem colaborador' },
+    { value: 'null', label: 'Venda da unidade' },
     ...barbers.map((barber) => ({ value: barber.id, label: barber.name })),
   ]
 

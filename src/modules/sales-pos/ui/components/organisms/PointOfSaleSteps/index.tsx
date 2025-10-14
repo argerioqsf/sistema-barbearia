@@ -41,7 +41,9 @@ const stepsMeta: StepsMeta[] = [
 export function Steps({ saleId, isPaid, redirectBasePath }: StepsProps) {
   const { sale, totals, setCustomer, paySale, setPaymentMethod } =
     useSale(saleId)
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(
+    sale?.clientId ? (sale.items.length > 0 ? 3 : 2) : 1,
+  )
   const [showSuccess, setShowSuccess] = useState(isPaid)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null)

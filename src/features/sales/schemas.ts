@@ -10,6 +10,7 @@ export const paymentMethodSchema = z.enum([
   'PIX',
   'CREDIT_CARD',
   'DEBIT_CARD',
+  'EXEMPT',
 ])
 
 export const saleStatusSchema = z.enum([

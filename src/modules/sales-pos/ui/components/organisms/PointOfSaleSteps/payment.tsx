@@ -7,7 +7,13 @@ import {
   useState,
 } from 'react'
 import { Button, TitleForm } from '@/components/atoms'
-import { CreditCard, DollarSign, LucideProps, QrCode } from 'lucide-react'
+import {
+  CreditCard,
+  DollarSign,
+  LucideProps,
+  QrCode,
+  CircleSlash,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { GetSaleOutput } from '@/modules/sales/application'
 import { PaymentMethod } from '@/features/sales/schemas'
@@ -52,6 +58,12 @@ const paymentMethodsList: paymentMethodsList[] = [
     name: 'Dinheiro',
     description: 'Registre pagamentos presenciais com troco.',
     icon: DollarSign,
+  },
+  {
+    id: 'EXEMPT',
+    name: 'ISENTO',
+    description: 'Venda izenta de pagamento',
+    icon: CircleSlash,
   },
 ] as const
 

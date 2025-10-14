@@ -110,6 +110,20 @@ export const siteConfig: SiteConfig = [
         icon: 'Circle',
         userAction: 'financial.withdrawals',
       },
+      {
+        id: '4',
+        label: 'Caixa',
+        href: '/dashboard/cashier',
+        icon: 'Wallet',
+        userAction: 'cashier.view',
+      },
+      {
+        id: '5',
+        label: 'Vendas',
+        href: '/dashboard/sales',
+        icon: 'ShoppingCart',
+        userAction: 'sales.view',
+      },
     ],
   },
   {
@@ -213,20 +227,6 @@ export const siteConfig: SiteConfig = [
     href: '/dashboard/appointments',
     icon: 'CalendarCheck',
     userAction: 'appointments.view',
-  },
-  {
-    id: '6',
-    label: 'Caixa',
-    href: '/dashboard/cashier',
-    icon: 'Wallet',
-    userAction: 'cashier.view',
-  },
-  {
-    id: '7',
-    label: 'Vendas',
-    href: '/dashboard/sales',
-    icon: 'ShoppingCart',
-    userAction: 'sales.view',
   },
   {
     id: '7',
