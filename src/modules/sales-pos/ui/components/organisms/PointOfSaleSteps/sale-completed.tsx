@@ -19,6 +19,7 @@ const paymentMethodLabel: Record<
   CASH: 'Dinheiro',
   CREDIT_CARD: 'Cartão de crédito',
   DEBIT_CARD: 'Cartão de débito',
+  EXEMPT: 'Isento de pagamento',
 }
 
 type SaleCompletedProps = {
