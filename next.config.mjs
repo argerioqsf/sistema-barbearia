@@ -1,6 +1,13 @@
 import createNextIntlPlugin from 'next-intl/plugin'
 
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts')
+function resolveApiBaseUrl() {
+  const base =
+    process.env.API_BASE_URL ??
+    process.env.NEXT_PUBLIC_API_BASE_URL ??
+    'http://localhost:3333'
+  return base.endsWith('/') ? base.slice(0, -1) : base
+}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -32,10 +39,11 @@ const nextConfig = {
   async rewrites() {
     // Avoid clashing with Next.js API routes and NextAuth at /api/*.
     // Use a dedicated prefix to proxy to the backend.
+    const apiBaseUrl = resolveApiBaseUrl()
     return [
       {
         source: '/backend/:path*',
-        destination: `${process.env.API_BASE_URL}/:path*`,
+        destination: `${apiBaseUrl}/:path*`,
       },
     ]
   },
