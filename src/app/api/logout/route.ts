@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import cookiesName from '@/constants/cookies_name.json'
+import { resolveLoginUrl } from '@/shared/auth/handleUnauthorized'
 
 // TODO: Modernizar a lógica de logout para uma Server Action dedicada.
 // Atualmente, o logout é frequentemente acionado por uma chamada de cliente para uma API Route
@@ -44,9 +45,18 @@ function clearAllCookies() {
   }
 }
 
+const LOGIN_PATH = '/auth/signin'
+
 function redirectToSignin(req: Request) {
-  // usa a origem da própria requisição para construir a URL absoluta
-  const url = new URL('/auth/signin', req.url)
+  const resolvedLoginUrl = resolveLoginUrl(LOGIN_PATH)
+  let absoluteUrl = resolvedLoginUrl
+  try {
+    absoluteUrl = new URL(resolvedLoginUrl).toString()
+  } catch {
+    absoluteUrl = new URL(resolvedLoginUrl, req.url).toString()
+  }
+
+  const url = new URL(absoluteUrl)
   const res = NextResponse.redirect(url, { status: 302 })
   res.headers.set('Cache-Control', 'no-store')
   return res

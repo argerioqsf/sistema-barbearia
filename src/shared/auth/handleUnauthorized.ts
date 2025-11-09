@@ -32,7 +32,7 @@ function resolveBaseUrl() {
   )
 }
 
-function resolveLoginUrl(loginPath: string) {
+export function resolveLoginUrl(loginPath: string) {
   const baseUrl = resolveBaseUrl()
   if (!baseUrl) return loginPath
   try {
