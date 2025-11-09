@@ -13,6 +13,9 @@ jobs:
     env:
       REGISTRY_IMAGE: ghcr.io/${{ github.repository }}
       IMAGE_TAG: ${{ github.event.release.tag_name }}
+      API_BASE_URL: ${{ vars.API_BASE_URL }}
+      BASE_URL: ${{ vars.BASE_URL }}
+      NEXT_INTL_TIMEZONE: ${{ vars.NEXT_INTL_TIMEZONE }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -37,5 +40,9 @@ jobs:
           tags: |
             ${{ env.REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }}
             ${{ env.REGISTRY_IMAGE }}:latest
+          build-args: |
+            API_BASE_URL=${{ env.API_BASE_URL }}
+            BASE_URL=${{ env.BASE_URL }}
+            NEXT_INTL_TIMEZONE=${{ env.NEXT_INTL_TIMEZONE }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
