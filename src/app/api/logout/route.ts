@@ -33,7 +33,7 @@ const CUSTOM_COOKIES = [
   cookiesName.ROLES_SIM_COOKIE,
 ].filter(Boolean)
 
-function clearAllCookies() {
+function clearAllCookiesFromRequest() {
   const jar = cookies()
   for (const name of [...NEXTAUTH_COOKIES, ...CUSTOM_COOKIES]) {
     try {
@@ -47,6 +47,21 @@ function clearAllCookies() {
 
 const LOGIN_PATH = '/auth/signin'
 
+function expireCookiesOnResponse(res: NextResponse) {
+  for (const name of [...NEXTAUTH_COOKIES, ...CUSTOM_COOKIES]) {
+    try {
+      res.cookies.set({
+        name,
+        value: '',
+        path: '/',
+        expires: new Date(0),
+      })
+    } catch {
+      // noop
+    }
+  }
+}
+
 function redirectToSignin(req: Request) {
   const resolvedLoginUrl = resolveLoginUrl(LOGIN_PATH)
   let absoluteUrl = resolvedLoginUrl
@@ -58,16 +73,17 @@ function redirectToSignin(req: Request) {
 
   const url = new URL(absoluteUrl)
   const res = NextResponse.redirect(url, { status: 302 })
+  expireCookiesOnResponse(res)
   res.headers.set('Cache-Control', 'no-store')
   return res
 }
 
 export async function GET(req: Request) {
-  clearAllCookies()
+  clearAllCookiesFromRequest()
   return redirectToSignin(req)
 }
 
 export async function POST(req: Request) {
-  clearAllCookies()
+  clearAllCookiesFromRequest()
   return redirectToSignin(req)
 }
