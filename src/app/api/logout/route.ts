@@ -24,6 +24,8 @@ const NEXTAUTH_COOKIES = [
   '__Secure-next-auth.session-token',
   'next-auth.csrf-token',
   '__Host-next-auth.csrf-token',
+  'next-auth.callback-url',
+  '__Secure-next-auth.callback-url',
 ]
 
 // se você tiver outras chaves próprias, adicione aqui
@@ -49,12 +51,15 @@ const LOGIN_PATH = '/auth/signin'
 
 function expireCookiesOnResponse(res: NextResponse) {
   for (const name of [...NEXTAUTH_COOKIES, ...CUSTOM_COOKIES]) {
+    const needsSecure =
+      name.startsWith('__Secure-') || name.startsWith('__Host-')
     try {
-      res.cookies.set({
-        name,
-        value: '',
+      res.cookies.set(name, '', {
         path: '/',
         expires: new Date(0),
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: needsSecure || process.env.NODE_ENV === 'production',
       })
     } catch {
       // noop

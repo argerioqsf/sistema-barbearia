@@ -15,7 +15,8 @@ const PUBLIC_PATHS = ['/auth/signin', '/sim/indicator'] as const
 
 function getLocale(request: NextRequestWithAuth): string {
   const seg = request.nextUrl.pathname.split('/').filter(Boolean)[0]
-  return seg || defaultLocale
+  if (!seg) return defaultLocale
+  return (locales as readonly string[]).includes(seg) ? seg : defaultLocale
 }
 
 function isPublicPath(pathname: string, locale: string): boolean {
