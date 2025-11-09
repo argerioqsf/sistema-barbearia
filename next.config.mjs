@@ -5,6 +5,7 @@ const withNextIntl = createNextIntlPlugin('./src/i18n.ts')
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  output: 'standalone',
   // Redirects are handled by middleware (auth + i18n)
   async headers() {
     const headers = [
