@@ -58,7 +58,7 @@ export default async function CashierPage() {
 
         <div className="w-full mt-4">
           <Text className="uppercase font-bold text-xl lg:text-2xl text-black">
-            Caixa
+            Caixa teste
           </Text>
         </div>
 
