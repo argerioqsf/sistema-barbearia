@@ -62,10 +62,8 @@ export async function handleUnauthorized(
   // SERVER (Server Component / Route Handler / Server Action)
   const { redirect } = await import('next/navigation')
   if (useLogoutRoute) {
-    logger.debug({ loginUrl }, 'client useLogoutRoute')
     redirect('/api/logout')
   } else {
-    logger.debug({ loginUrl }, 'client')
     redirect(loginUrl)
   }
 }

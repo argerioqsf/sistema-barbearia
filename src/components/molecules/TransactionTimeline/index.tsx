@@ -1,6 +1,13 @@
 import { cn } from '@/lib/utils'
-import { ArrowDownCircle, ArrowUpCircle, Store, UserCircle } from 'lucide-react'
+import {
+  ArrowDownCircle,
+  ArrowUpCircle,
+  Store,
+  UserCircle,
+  UserCheck,
+} from 'lucide-react'
 import type { ZTransaction } from '@/features/transactions/schemas'
+import { buildTransactionNarrative } from '@/features/transactions/formatters'
 
 const defaultCurrencyFormatter = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -42,7 +49,13 @@ export function TransactionTimeline({
           const formattedDate = transaction.createdAt
             ? dateFormatter.format(new Date(transaction.createdAt))
             : 'Sem data'
-          const affectedUser = transaction.affectedUserId
+          const narrative = buildTransactionNarrative(transaction)
+          const actorName = narrative.actor?.name
+          const affectedName = narrative.affectedUser?.name
+          const showContextBadges =
+            withContextBadge && (actorName || affectedName)
+          const showContextFallback =
+            withContextBadge && !actorName && !affectedName
 
           return (
             <div
@@ -58,17 +71,46 @@ export function TransactionTimeline({
                   </span>
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-slate-900">
-                      {transaction.description ?? 'Movimentação'}
+                      {narrative.reasonLabel}
                     </p>
                     <p className="text-xs text-slate-500">{formattedDate}</p>
-                    {withContextBadge && (
-                      <div className="mt-2 flex items-center gap-1 text-xs text-slate-500">
-                        {affectedUser ? (
-                          <UserCircle className="h-4 w-4 text-slate-400" />
-                        ) : (
-                          <Store className="h-4 w-4 text-slate-400" />
+                    {narrative.description && (
+                      <p className="mt-1 break-words text-xs text-slate-500">
+                        {narrative.description}
+                      </p>
+                    )}
+                    {showContextBadges && (
+                      <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-500">
+                        {actorName && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1">
+                            <UserCircle className="h-3.5 w-3.5 text-slate-400" />
+                            <span className="font-medium text-slate-600">
+                              {actorName}
+                            </span>
+                            <span className="hidden sm:inline text-slate-400">
+                              • responsável
+                            </span>
+                          </span>
                         )}
-                        <span>{affectedUser ? 'Usuário' : 'Unidade'}</span>
+                        {affectedName && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1">
+                            <UserCheck className="h-3.5 w-3.5 text-slate-400" />
+                            <span className="font-medium text-slate-600">
+                              {affectedName}
+                            </span>
+                            <span className="hidden sm:inline text-slate-400">
+                              • impactado
+                            </span>
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    {showContextFallback && (
+                      <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 text-xs text-slate-500">
+                        <Store className="h-3.5 w-3.5 text-slate-400" />
+                        <span className="font-medium text-slate-600">
+                          Movimentação da unidade
+                        </span>
                       </div>
                     )}
                   </div>
@@ -80,7 +122,7 @@ export function TransactionTimeline({
                     {amount}
                   </span>
                   <span className="text-xs uppercase tracking-wide text-slate-400">
-                    {isAddition ? 'Entrada' : 'Saída'}
+                    {narrative.typeLabel}
                   </span>
                 </div>
               </div>

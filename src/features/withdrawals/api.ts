@@ -18,6 +18,7 @@ export async function createWithdrawal(
     affectedUserId: payload.get('affectedUserId'),
     receipt: payload.get('receipt'),
     unitId: payload.get('unitId'),
+    reason: payload.get('reason'),
   })
 
   if (!validationResult.success) {

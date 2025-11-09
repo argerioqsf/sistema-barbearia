@@ -1,5 +1,24 @@
 import { z } from 'zod'
 import { UUID } from '../schemas'
+import { ReasonTransactionSchema } from '../transactions/schemas'
+
+type ReasonType = z.infer<typeof ReasonTransactionSchema>
+
+const REASON_REQUIRED_MESSAGE = 'O campo motivo é obrigatório.'
+
+const ReasonFieldSchema = z
+  .string({
+    required_error: REASON_REQUIRED_MESSAGE,
+    invalid_type_error: REASON_REQUIRED_MESSAGE,
+  })
+  .refine(
+    (value): value is ReasonType =>
+      ReasonTransactionSchema.options.includes(value as ReasonType),
+    {
+      message: REASON_REQUIRED_MESSAGE,
+    },
+  )
+  .transform((value) => value as ReasonType)
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024
 
@@ -13,6 +32,7 @@ const ACCEPTED_IMAGE_TYPES = [
 export const WithdrawalFormSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('COLLABORATOR'),
+    reason: ReasonFieldSchema,
     amount: z.coerce
       .number({ invalid_type_error: 'O valor deve ser um número.' })
       .positive('O valor da retirada deve ser positivo.'),
@@ -33,6 +53,7 @@ export const WithdrawalFormSchema = z.discriminatedUnion('type', [
   z.object({
     unitId: z.string(),
     type: z.literal('UNIT'),
+    reason: ReasonFieldSchema,
     amount: z.coerce
       .number({ invalid_type_error: 'O valor deve ser um número.' })
       .positive('O valor da retirada deve ser positivo.'),

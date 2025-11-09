@@ -9,6 +9,8 @@ import { useToast } from '@/components/ui/use-toast'
 import { useEffect, useMemo, useState } from 'react'
 import { useFormState } from 'react-dom'
 import { logger } from '@/shared/logger'
+import { ReasonTransaction } from '@/features/transactions/schemas'
+import { NormalizedError } from '@/shared/errors/types'
 
 export function useWithdrawal(unitId?: string) {
   const [formState, formAction] = useFormState(createWithdrawalAction, {
@@ -28,6 +30,14 @@ export function useWithdrawal(unitId?: string) {
   >()
   const [amount, setAmount] = useState<number | undefined>()
   const [affectedUserId, setAffectedUserId] = useState<string>('')
+  const [reason, setReason] = useState<ReasonTransaction | ''>('')
+  const [errors, setErrors] = useState<NormalizedError>({
+    type: 'validation',
+    issues: {
+      issues: [],
+    },
+    message: '',
+  })
 
   const [collaborators, setCollaborators] = useState<ZUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -70,6 +80,7 @@ export function useWithdrawal(unitId?: string) {
   // Handle form submission feedback
   useEffect(() => {
     if (formState.ok === false && formState.error && formState.error.message) {
+      setErrors(formState.error)
       toast({
         title: 'Erro ao registrar retirada',
         description: formState.error?.message,
@@ -83,6 +94,13 @@ export function useWithdrawal(unitId?: string) {
         description: 'A retirada foi registrada com sucesso.',
         variant: 'success',
       })
+      setErrors({
+        type: 'validation',
+        issues: {
+          issues: [],
+        },
+        message: '',
+      })
 
       if (withdrawalType === 'UNIT') {
         refreshUnitData()
@@ -92,7 +110,7 @@ export function useWithdrawal(unitId?: string) {
 
       // Reset form
       setAmount(undefined)
-      // setAffectedUserId('')
+      setReason('')
       // setWithdrawalType(undefined)
       setReceiptFile(undefined)
       // setFormKey(Date.now())
@@ -149,6 +167,8 @@ export function useWithdrawal(unitId?: string) {
       currentBalance,
       selectedUser,
       receiptFile,
+      reason,
+      errors,
     },
     setters: {
       setWithdrawalType,
@@ -156,6 +176,7 @@ export function useWithdrawal(unitId?: string) {
       setAffectedUserId,
       setAffectedUser,
       setReceiptFile,
+      setReason,
     },
   }
 }

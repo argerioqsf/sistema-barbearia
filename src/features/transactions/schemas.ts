@@ -1,6 +1,19 @@
 import { z } from 'zod'
+import { UserBaseSchema } from '../users/schemas'
 
 export const TransactionTypeSchema = z.enum(['ADDITION', 'WITHDRAWAL'])
+export const ReasonTransactionSchema = z.enum([
+  'OTHER',
+  'UNIT_MAINTENANCE',
+  'LOAN',
+  'CASH_OPENING',
+  'PAY_LOAN',
+  'PAY_COMMISSION',
+  'PAY_PLAN_DEBT',
+  'ADD_COMMISSION',
+])
+
+export type ReasonTransaction = z.infer<typeof ReasonTransactionSchema>
 
 export const TransactionSchema = z
   .object({
@@ -10,6 +23,9 @@ export const TransactionSchema = z
     affectedUserId: z.string().optional().nullable(),
     createdAt: z.string().optional(),
     type: TransactionTypeSchema,
+    reason: ReasonTransactionSchema,
+    user: UserBaseSchema.optional().nullable(),
+    affectedUser: UserBaseSchema.optional().nullable(),
   })
   .passthrough()
 

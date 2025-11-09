@@ -6,6 +6,10 @@ import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
 import { ImageInput } from '@/components/organisms/Form/ImageInput'
+import { FormField } from '@/components/organisms/Form/FormField'
+import { TRANSACTION_REASON_OPTIONS } from '@/features/transactions/constants'
+import { ReasonTransaction } from '@/features/transactions/schemas'
+import { NormalizedError } from '@/shared/errors/types'
 
 interface WithdrawalFormProps {
   formId: string
@@ -16,15 +20,18 @@ interface WithdrawalFormProps {
     withdrawalType?: 'UNIT' | 'COLLABORATOR'
     amount?: number
     affectedUserId: string
-    collaboratorOptions: ComboboxOption[]
+    collaboratorOptions: ComboboxOption<string>[]
     isLoading: boolean
     receiptFile?: File
+    reason: ReasonTransaction | ''
+    errors: NormalizedError
   }
   setters: {
     setWithdrawalType: (value: 'UNIT' | 'COLLABORATOR') => void
     setAmount: (value?: number) => void
-    setAffectedUser: (value: string) => void
+    setAffectedUser: (value: string | '') => void
     setReceiptFile: (file?: File) => void
+    setReason: (value: ReasonTransaction | '') => void
   }
 }
 
@@ -43,10 +50,17 @@ export function WithdrawalForm({
     collaboratorOptions,
     isLoading,
     receiptFile,
+    reason,
+    errors,
   } = states
 
-  const { setWithdrawalType, setAmount, setAffectedUser, setReceiptFile } =
-    setters
+  const {
+    setWithdrawalType,
+    setAmount,
+    setAffectedUser,
+    setReceiptFile,
+    setReason,
+  } = setters
 
   async function handleFormAction(formData: FormData) {
     if (receiptFile) {
@@ -59,28 +73,30 @@ export function WithdrawalForm({
     <form key={formKey} id={formId} action={handleFormAction}>
       <input type="hidden" name="amount" value={amount || 0} />
       <input type="hidden" name="unitId" value={unitId} />
+      <input type="hidden" name="reason" value={reason} />
 
       <div className="mt-6 space-y-6">
         <div className="space-y-2">
-          <Label>Tipo de Retirada</Label>
-          <RadioGroup
-            name="type"
-            value={withdrawalType}
-            onValueChange={(value: 'UNIT' | 'COLLABORATOR') => {
-              setWithdrawalType(value)
-              setAffectedUser('')
-            }}
-            className="flex items-center gap-4"
-          >
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="UNIT" id="unit" />
-              <Label htmlFor="unit">Da Unidade</Label>
-            </div>
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="COLLABORATOR" id="collaborator" />
-              <Label htmlFor="collaborator">De Colaborador</Label>
-            </div>
-          </RadioGroup>
+          <FormField label="Tipo de Retirada" htmlFor="type">
+            <RadioGroup
+              name="type"
+              value={withdrawalType}
+              onValueChange={(value: 'UNIT' | 'COLLABORATOR') => {
+                setWithdrawalType(value)
+                setAffectedUser('')
+              }}
+              className="flex items-center gap-4"
+            >
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="UNIT" id="unit" />
+                <Label htmlFor="unit">Da Unidade</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="COLLABORATOR" id="collaborator" />
+                <Label htmlFor="collaborator">De Colaborador</Label>
+              </div>
+            </RadioGroup>
+          </FormField>
         </div>
 
         {withdrawalType === 'COLLABORATOR' && (
@@ -100,6 +116,21 @@ export function WithdrawalForm({
             />
           </div>
         )}
+
+        <FormField
+          errors={
+            errors.type === 'validation' ? errors.issues?.issues : undefined
+          }
+          label="Motivo da Retirada"
+          htmlFor="reason"
+        >
+          <Combobox<ReasonTransaction | ''>
+            options={TRANSACTION_REASON_OPTIONS}
+            onValueChange={setReason}
+            value={reason}
+            placeholder="Selecione o motivo de retirada..."
+          />
+        </FormField>
 
         <div className="space-y-2">
           <Label htmlFor="amount">Valor da Retirada</Label>

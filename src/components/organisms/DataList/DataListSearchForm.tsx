@@ -22,7 +22,7 @@ export function DataListSearchForm({
 }: DataListSearchFormProps) {
   return (
     <form>
-      <DataListToolbar>
+      <DataListToolbar className="border-0 p-0">
         <div className="flex-1 min-w-0">
           <input
             type="search"

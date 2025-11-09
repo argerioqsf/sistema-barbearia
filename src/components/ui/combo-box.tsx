@@ -19,22 +19,22 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 
-export type ComboboxOption = {
-  value: string
+export type ComboboxOption<T> = {
+  value: T
   label: string
 }
 
-interface ComboboxProps {
-  options: ComboboxOption[]
-  value?: string
-  onValueChange: (value: string) => void
+interface ComboboxProps<T> {
+  options: ComboboxOption<T>[]
+  value?: T
+  onValueChange: (value: T | '') => void
   placeholder?: string
   searchPlaceholder?: string
   emptyPlaceholder?: string
   disabled?: boolean
 }
 
-export function Combobox({
+export function Combobox<T>({
   options,
   value,
   onValueChange,
@@ -42,7 +42,7 @@ export function Combobox({
   searchPlaceholder = 'Busque uma opção...',
   emptyPlaceholder = 'Nenhuma opção encontrada.',
   disabled = false,
-}: ComboboxProps) {
+}: ComboboxProps<T>) {
   const [open, setOpen] = React.useState(false)
 
   const selectedOption = options.find((option) => option.value === value)
@@ -67,9 +67,9 @@ export function Combobox({
           <CommandList>
             <CommandEmpty>{emptyPlaceholder}</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => (
+              {options.map((option, idx) => (
                 <CommandItem
-                  key={option.value}
+                  key={idx}
                   value={option.label} // value is used for filtering
                   onSelect={() => {
                     console.log('onSelect')

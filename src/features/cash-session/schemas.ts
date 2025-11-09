@@ -21,7 +21,12 @@ export const CashSessionSchema = z
     finalAmount: z.number().nullable().optional(),
     transactions: z.array(TransactionSchema).nullable().optional(),
     commissionCheckpoints: z
-      .array(CheckpointCommissionProfileSchema)
+      .array(
+        z.object({
+          profileId: CheckpointCommissionProfileSchema.shape.profileId,
+          totalBalance: CheckpointCommissionProfileSchema.shape.totalBalance,
+        }),
+      )
       .optional()
       .nullable(),
   })
