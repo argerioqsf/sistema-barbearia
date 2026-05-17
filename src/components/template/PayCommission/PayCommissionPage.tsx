@@ -5,7 +5,6 @@ import { checkUserPermissions } from '@/utils/checkUserPermissions'
 import { listUsersAllAction } from '@/actions/user'
 import { FormLayout } from '@/components/organisms/Form/FormLayout'
 import { PayCommissionForm } from './components/PayCommissionForm'
-import { logger } from '@/shared/logger'
 import { ErrorRequestHandler } from '@/components/organisms/ErrorRequestHandler'
 import { SearchParams } from '@/types/general'
 import { cn } from '@/lib/utils'
@@ -31,7 +30,6 @@ export default async function PayCommissionPage({
     )
   }
   const users = usersResult.data
-  logger.debug({ users }, 'users')
 
   return (
     <div className={cn('px-6 py-6 pb-16', 'sm:px-8 sm:py-8 sm:pb-20')}>

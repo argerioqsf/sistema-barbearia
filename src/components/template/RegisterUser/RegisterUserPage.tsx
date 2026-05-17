@@ -4,7 +4,6 @@ import { listServicesAll } from '@/actions/service'
 import { listProducts } from '@/actions/product'
 import { RegisterUserForm } from './components/RegisterUserForm'
 import { FormLayout } from '@/components/organisms/Form/FormLayout'
-import { logger } from '@/shared/logger'
 import { cn } from '@/lib/utils'
 
 export default async function RegisterUserPage() {
@@ -12,33 +11,6 @@ export default async function RegisterUserPage() {
   const permissionsResult = await listPermissionsAction()
   const servicesResult = await listServicesAll()
   const productsResult = await listProducts()
-
-  if (!permissionsResult.ok) {
-    logger.debug(
-      {
-        error: permissionsResult.error,
-      },
-      'Erro ao buscar permissões:',
-    )
-  }
-
-  if (!servicesResult.ok) {
-    logger.debug(
-      {
-        error: servicesResult.error,
-      },
-      'Erro ao buscar serviços:',
-    )
-  }
-
-  if (!productsResult.response) {
-    logger.debug(
-      {
-        error: productsResult.error,
-      },
-      'Erro ao buscar produtos:',
-    )
-  }
 
   const permissions = permissionsResult.ok ? permissionsResult.data : []
   const services = servicesResult.ok ? servicesResult.data : []

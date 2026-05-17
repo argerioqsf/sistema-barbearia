@@ -1,7 +1,7 @@
 'use client'
 
 import { changeActiveUnit } from '@/actions/session'
-import { useTokenSync } from '@/hooks/use-token-sync'
+import { useRefreshSessionToken } from '@/hooks/use-refresh-session-token'
 import type { RoleName } from '@/features/roles/schemas'
 import type { ZUnit } from '@/features/units/schemas'
 import { useToast } from '@/components/ui/use-toast'
@@ -33,7 +33,7 @@ export function UnitSwitcher({
 
   const { toast } = useToast()
   const router = useRouter()
-  const { apply: applyToken } = useTokenSync()
+  const { refresh: refreshSessionToken } = useRefreshSessionToken()
   const [selectedUnit, setSelectedUnit] = useState(currentUnitId ?? '')
   const [isPending, startTransition] = useTransition()
   const autoSelectTriggeredRef = useRef(false)
@@ -54,13 +54,13 @@ export function UnitSwitcher({
         throw new Error(result.error ?? 'Falha ao atualizar unidade')
       }
       lastSuccessfulUnitRef.current = unitId
-      await applyToken({ token: result.token, unitId })
+      await refreshSessionToken({ unitId })
       if (showSuccessToast) {
         toast({ title: 'Unidade atualizada' })
       }
       router.refresh()
     },
-    [applyToken, router, toast],
+    [refreshSessionToken, router, toast],
   )
 
   useEffect(() => {

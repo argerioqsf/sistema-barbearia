@@ -127,8 +127,6 @@ export async function createUserAction(
       products: mapperProductsUser(products),
     }
 
-    logger.debug({ rawData }, 'rawData')
-    logger.debug({ products: rawData.products }, 'products')
     const data = await createCollaborator(rawData)
     revalidateTag('users')
     return { ok: true, data }
@@ -160,8 +158,6 @@ export async function updateUserAction(
       : undefined
     const commissionPercentage = Number(formData.get('commissionPercentage'))
 
-    logger.debug({ commissionPercentage }, 'commissionPercentage')
-
     const rawData: UserUpdateBody = {
       name: formData.get('name') as string,
       roleId: formData.get('roleId') as string,
@@ -180,15 +176,6 @@ export async function updateUserAction(
       removeProductIds,
     }
 
-    logger.debug({ rawData }, 'rawData updateUserAction')
-    logger.debug(
-      { services: rawData.services },
-      'rawData.services updateUserAction',
-    )
-    logger.debug(
-      { services: rawData.products },
-      'rawData.products updateUserAction',
-    )
     const data = await updateUser(userId, rawData)
     revalidateTag('users')
     revalidateTag(userId)

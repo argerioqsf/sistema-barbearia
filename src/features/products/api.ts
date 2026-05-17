@@ -16,7 +16,6 @@ import { safeJson, readMessage } from '@/shared/http'
 import type { QueryParams } from '@/types/http'
 import { HttpError } from '@/shared/errors/httpError'
 
-import { logger } from '@/shared/logger'
 import { ValidationError } from '@/shared/errors/validationError'
 import { revalidateTag } from 'next/cache'
 
@@ -27,7 +26,6 @@ export async function updateProduct(
   const validatedFields = UpdateProductFormSchema.safeParse(body)
 
   if (!validatedFields.success) {
-    logger.debug({ errors: validatedFields.error }, 'errors updateProduct')
     throw ValidationError.fromZod(
       validatedFields.error,
       'Invalid body for updating product',
@@ -53,7 +51,6 @@ export async function updateProduct(
   const parsed = registerProductResponseSchema.safeParse(json)
 
   if (!parsed.success) {
-    logger.debug({ errors: parsed.error }, 'errors parsed updateProduct')
     throw ValidationError.fromZod(
       parsed.error,
       'Invalid response when updating product',
@@ -90,7 +87,6 @@ export async function fetchProducts(
   }
   const json = await safeJson(response)
   if (withPaginate) {
-    logger.debug({ json }, 'json fetchProducts')
     const parsed = ProductsListPaginateResponseSchema.safeParse(json)
     if (!parsed.success) {
       console.error('Validation error:', parsed.error)
@@ -144,7 +140,6 @@ export async function createProduct(
   const validatedFields = RegisterProductFormSchema.safeParse(body)
 
   if (!validatedFields.success) {
-    logger.debug({ errors: validatedFields.error }, 'errors createProduct')
     throw ValidationError.fromZod(
       validatedFields.error,
       'Invalid body for creating product',
@@ -170,7 +165,6 @@ export async function createProduct(
   const parsed = registerProductResponseSchema.safeParse(json)
 
   if (!parsed.success) {
-    logger.debug({ errors: parsed.error }, 'errors parsed createProduct')
     throw ValidationError.fromZod(
       parsed.error,
       'Invalid response when creating product',

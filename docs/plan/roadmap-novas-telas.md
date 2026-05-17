@@ -54,7 +54,7 @@ Critérios gerais de aceite
 - Regras de acesso/visibilidade respeitadas por role
 - Navegação coerente no menu com rotas e breadcrumbs
 - Progresso atual
-- [x] M0 — Seleção de Unidade: seletor no header (`NavBar`) para ADMIN/OWNER, server action `changeActiveUnit` (PATCH `/sessions/unit`) retornando token, `useSession().update` e refresh do dashboard.
+- [x] M0 — Seleção de Unidade: seletor no header (`NavBar`) para ADMIN/OWNER, server action `changeActiveUnit` (PATCH `/sessions/unit`), refresh forçado da sessão NextAuth e refresh do dashboard.
 - [x] Categorias — rotas de listagem/registro/detalhe conectadas às templates existentes.
 - [x] Produtos — listagem no novo padrão DataList/DataTable.
 - [x] Serviços — listagem refatorada (DataList + ações).
@@ -84,4 +84,3 @@ Tela para registrar saídas de dinheiro do caixa da unidade ou de um colaborador
 - **UI:** `PageCard`, `SectionHeader`, `RadioGroup`, `ComboBox`.
 - **Lógica:** Server Action para a mutação, processando `FormData`. Validação via Zod. React Query (`useQuery`) para buscar a lista de colaboradores e saldos.
 - **Feedback:** `useToast` para notificações de sucesso/erro e invalidação de queries de saldo.
-

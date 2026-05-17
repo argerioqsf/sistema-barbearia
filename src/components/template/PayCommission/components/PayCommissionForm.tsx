@@ -21,7 +21,6 @@ import { ZAppointment } from '@/features/appointments/schemas'
 import { getUnpaidSaleItems } from '@/actions/sale'
 import { getUnpaidAppointments } from '@/actions/appointment'
 import { ZSaleItemWithRemainingValue } from '@/features/saleItems/schema'
-import { logger } from '@/shared/logger'
 import { DataListEmptyState } from '@/components/organisms/DataList'
 import { formatDateCustom } from '@/shared/date'
 import { Combobox } from '@/components/ui/combo-box'
@@ -147,7 +146,6 @@ export function PayCommissionForm({
       })
     }
   }, [state, router, toast, generalErrorMessage])
-  logger.debug({ unpaidSaleItems })
 
   return (
     <form action={formAction} className="space-y-8">

@@ -11,7 +11,6 @@ import {
 } from './schemas'
 import { HttpError } from '@/shared/errors/httpError'
 import { ValidationError } from '@/shared/errors/validationError'
-import { logger } from '@/shared/logger'
 
 export async function fetchAppointments(
   params?: QueryParams<ZAppointment>,
@@ -105,10 +104,6 @@ export async function fetchUnpaidAppointments(id: string) {
   const parsed = ListUnpaidAppointmentsResponseSchema.safeParse(json)
 
   if (!parsed.success) {
-    logger.debug(
-      { errors: parsed.error },
-      'errors parsed fetchUnpaidAppointments',
-    )
     throw ValidationError.fromZod(
       parsed.error,
       `Invalid response when list unpaid appointments for collaborator ${id}`,

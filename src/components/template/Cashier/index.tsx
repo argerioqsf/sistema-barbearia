@@ -11,11 +11,12 @@ import { ErrorRequestHandler } from '@/components/organisms/ErrorRequestHandler'
 
 export default async function CashierPage() {
   const responseSessionOpen = await getOpenCashSession()
-  const responseSessions = await getCashSessions()
 
   if (!responseSessionOpen.ok) {
     return <ErrorRequestHandler result={responseSessionOpen} />
   }
+
+  const responseSessions = await getCashSessions()
 
   if (!responseSessions.ok) {
     return <ErrorRequestHandler result={responseSessions} />
@@ -58,7 +59,7 @@ export default async function CashierPage() {
 
         <div className="w-full mt-4">
           <Text className="uppercase font-bold text-xl lg:text-2xl text-black">
-            Caixa teste
+            Caixa
           </Text>
         </div>
 

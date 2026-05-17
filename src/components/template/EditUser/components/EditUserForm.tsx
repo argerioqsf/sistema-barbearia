@@ -31,7 +31,6 @@ import {
 } from '@/components/ui/select'
 import { FormMultiSelect } from '@/components/organisms/Form/FormMultiSelect'
 import { DatePicker } from '@/components/ui/datepicker'
-import { logger } from '@/shared/logger'
 
 interface UserEditTemplateProps {
   formId: string
@@ -83,8 +82,6 @@ export function EditUserForm({
       id: p.productId,
     })) || [],
   )
-
-  logger.debug({ selectedServices }, 'selectedServices')
 
   const issues =
     !state.ok && state.error?.type === 'validation'
@@ -141,9 +138,6 @@ export function EditUserForm({
         !selectedProducts.some((current) => current.id === initial.id),
     )
     .map((p: ItemData) => p.id)
-  logger.debug({
-    commissionPercentage: user.profile?.commissionPercentage,
-  })
   return (
     <form id={formId} action={formAction} className="lg:col-span-2 space-y-6">
       <input type="hidden" name="roleId" value={roleId} />

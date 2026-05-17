@@ -122,7 +122,6 @@ export async function fetchUsersPaginated(
     throw new HttpError(response.status, message)
   }
   const json = await safeJson(response)
-  logger.debug({ json }, 'fetchUsersPaginated')
   const parsed = usersListPaginateResponseSchema.safeParse(json)
   if (!parsed.success) {
     logger.debug({ errors: parsed.error }, 'parsed')

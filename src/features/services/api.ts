@@ -128,7 +128,6 @@ export async function fetchServices(
     throw new HttpError(response.status, message)
   }
   const json = await safeJson(response)
-  logger.debug({ json }, 'fetchServices')
   const parsed = ServicesListResponseSchema.safeParse(json)
   if (!parsed.success) {
     throw ValidationError.fromZod(

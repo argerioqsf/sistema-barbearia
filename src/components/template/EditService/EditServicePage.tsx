@@ -3,7 +3,6 @@ import { getService } from '@/actions/service'
 import { listCategories } from '@/actions/category'
 import { FormLayout } from '@/components/organisms/Form/FormLayout'
 import { EditServiceForm } from './components/EditServiceForm'
-import { logger } from '@/shared/logger'
 
 interface ServiceEditPageProps {
   params: {
@@ -16,9 +15,6 @@ async function fetchData(serviceId: string) {
     getService(serviceId),
     listCategories(),
   ])
-  logger.debug({ serviceResult }, 'serviceResult')
-  logger.debug({ categoriesResult }, 'categoriesResult')
-
   const service = serviceResult.response
   if (!service) {
     notFound()

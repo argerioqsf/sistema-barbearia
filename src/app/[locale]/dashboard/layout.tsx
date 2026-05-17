@@ -10,7 +10,6 @@ import { authOptions } from '@/auth/options'
 import { fetchUnitsSelect } from '@/features/units/api'
 import { RoleName } from '@/features/roles/schemas'
 import type { ZUnit } from '@/features/units/schemas'
-import { logger } from '@/shared/logger'
 
 export default async function RootLayout({
   children,
@@ -25,7 +24,6 @@ export default async function RootLayout({
   if (role === 'ADMIN' || role === 'OWNER') {
     try {
       const unitsResponse = await fetchUnitsSelect()
-      logger.debug(unitsResponse, 'unitsResponse')
       units = Array.isArray(unitsResponse) ? unitsResponse : []
     } catch {
       units = []

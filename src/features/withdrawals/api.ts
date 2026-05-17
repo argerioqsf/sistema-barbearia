@@ -48,6 +48,5 @@ export async function createWithdrawal(
     revalidateTag('users')
   }
   const json = response.json()
-  // logger.debug({ json })
   return json
 }

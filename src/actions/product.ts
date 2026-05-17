@@ -21,7 +21,6 @@ import { getBackendToken } from '@/utils/authServer'
 import { revalidateTag } from 'next/cache'
 import { toNormalizedError } from '@/shared/errors/to-normalized-error'
 import type { QueryParams } from '@/types/http'
-import { logger } from '@/shared/logger'
 import { handleRequestError } from '@/shared/errors/handlerRequestError'
 
 export async function listProducts(): Promise<ReturnList<Product>> {
@@ -83,7 +82,6 @@ export async function registerProduct(
       image: formData.get('image'),
     }
 
-    logger.debug({ rawData }, 'rawData registerProduct')
     const data = await createProduct(rawData)
     revalidateTag('users')
     return { ok: true, data }

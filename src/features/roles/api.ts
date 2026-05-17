@@ -5,7 +5,6 @@ import { readMessage, safeJson } from '@/shared/http'
 import type { JsonObject } from '@/types/http'
 import { HttpError } from '@/shared/errors/httpError'
 import { ValidationError } from '@/shared/errors/validationError'
-import { logger } from '@/shared/logger'
 
 export async function listRoles(): Promise<ZRole[]> {
   const token = await getBackendToken()
@@ -19,10 +18,8 @@ export async function listRoles(): Promise<ZRole[]> {
     throw new HttpError(response.status, message)
   }
   const json = await safeJson(response)
-  logger.debug({ json })
   const parsed = RolesListSchema.safeParse(json)
   if (!parsed.success) {
-    logger.debug({ errors: parsed.error }, 'parsed listRoles')
     throw ValidationError.fromZod(parsed.error, 'Invalid response list roles')
   }
   return parsed.data

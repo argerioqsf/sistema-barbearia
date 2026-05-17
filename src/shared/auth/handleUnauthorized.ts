@@ -36,10 +36,8 @@ export function resolveLoginUrl(loginPath: string) {
   const baseUrl = resolveBaseUrl()
   if (!baseUrl) return loginPath
   try {
-    logger.debug('baseUrl')
     return new URL(loginPath, baseUrl).toString()
   } catch {
-    logger.debug('loginPath')
     return loginPath
   }
 }
@@ -54,7 +52,6 @@ export async function handleUnauthorized(
   // CLIENT
   if (typeof window !== 'undefined') {
     const { signOut } = await import('next-auth/react')
-    logger.debug({ loginUrl }, 'client')
     await signOut({ redirect: true, callbackUrl: loginUrl })
     return
   }
@@ -62,10 +59,8 @@ export async function handleUnauthorized(
   // SERVER (Server Component / Route Handler / Server Action)
   const { redirect } = await import('next/navigation')
   if (useLogoutRoute) {
-    logger.debug('server: /api/logout')
     redirect('/api/logout')
   } else {
-    logger.debug({ loginUrl }, 'server')
     redirect(loginUrl)
   }
 }

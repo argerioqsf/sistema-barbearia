@@ -8,7 +8,6 @@ import { ZUser } from '@/features/users/schemas'
 import { useToast } from '@/components/ui/use-toast'
 import { useEffect, useMemo, useState } from 'react'
 import { useFormState } from 'react-dom'
-import { logger } from '@/shared/logger'
 import { ReasonTransaction } from '@/features/transactions/schemas'
 import { NormalizedError } from '@/shared/errors/types'
 
@@ -136,16 +135,13 @@ export function useWithdrawal(unitId?: string) {
     (withdrawalType === 'COLLABORATOR' && !!selectedUser)
 
   const setAffectedUser = (userId: string) => {
-    logger.debug({ userId }, 'userId')
     const userSelected = collaborators.find(
       (collaborator) => collaborator.id === userId,
     )
     if (userSelected) {
-      logger.debug({ userSelected }, 'user encontrado')
       setSelectedUser(userSelected)
       setAffectedUserId(userId)
     } else {
-      logger.debug('user não encontrado')
       setSelectedUser(null)
       setAffectedUserId('')
     }

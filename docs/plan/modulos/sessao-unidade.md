@@ -2,7 +2,7 @@
 
 Contexto
 - Usuários ADMIN e OWNER escolhem a unidade ativa diretamente no header do dashboard.
-- Backend: `PATCH /sessions/unit` pode devolver novo token no corpo (`token`) ou header `x-new-token`.
+- Backend: `PATCH /sessions/unit` invalida o access token atual; o frontend força renovação via `POST /sessions/refresh`.
 - `GET /units` mantém filtro por organização para OWNER.
 
 Componente
@@ -15,7 +15,7 @@ Tasks
    - [x] Passar dados para `ContainerLayoutDashboard` → `NavBar`
 2) Server Action — escolher unidade
    - [x] Criar `changeActiveUnit` (`src/actions/session.ts`) chamando `PATCH /sessions/unit`
-   - [x] Sincronizar token (header/body) e revalidar caches (`units`, `users`)
+   - [x] Revalidar caches (`units`, `users`) e deixar a UI forçar refresh da sessão NextAuth
 3) Componente de seleção
    - [x] Mostrar seletor apenas para ADMIN/OWNER
    - [x] Desabilitar durante envio (`useTransition`) e exibir toast de sucesso/erro
@@ -27,7 +27,7 @@ Tasks
 
 Critérios de aceite
 - Apenas ADMIN/OWNER visualizam o seletor; lista já filtrada pelo backend
-- Troca de unidade atualiza token/sessão e reflete no dashboard (refresh)
+- Troca de unidade força refresh da sessão e reflete no dashboard (`router.refresh()`)
 - Comportamento consistente com ui-layout-guidelines (ajustes finos pendentes)
 
 Referências

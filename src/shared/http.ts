@@ -1,4 +1,4 @@
-// Helpers for HTTP JSON and token refresh
+// Helpers for HTTP JSON utilities
 
 export type JsonLike =
   | Record<string, unknown>
@@ -27,9 +27,4 @@ export async function readMessage(res: Response): Promise<string> {
   }
 
   return message
-}
-export function extractNewToken(res: Response): string | undefined {
-  const raw = res.headers.get('x-new-token') ?? res.headers.get('X-New-Token')
-  if (!raw) return undefined
-  return raw.startsWith('Bearer ') ? raw.slice(7) : raw
 }

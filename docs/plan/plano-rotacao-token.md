@@ -1,104 +1,56 @@
-# Plano de Melhoria — Rotação de Token (x-new-token)
+# Plano de Melhoria — Rotação de Token com Refresh Token
 
-Este documento padroniza como o frontend atualiza o accessToken quando o backend devolve um token novo via header `x-new-token`, mantendo compatibilidade com Next.js 14.1 e NextAuth 4.24 (strategy `jwt`).
+Este documento padroniza como o frontend renova o access token do backend usando o refresh token armazenado na sessão do NextAuth.
 
 ## Objetivo
-- Garantir atualização correta do token no frontend quando o backend o rotacionar.
-- Evitar manipulação manual de cookies; usar o pipeline oficial do NextAuth.
-- Permitir adoção progressiva sem quebrar requests existentes.
+- Usar a sessão JWT do NextAuth como fonte de verdade para `accessToken`, `refreshToken` e expirações.
+- Renovar o access token via `POST /sessions/refresh`, sem depender de token retornado em header.
+- Evitar escrita manual de cookies e manter o fluxo compatível com Server Components.
 
 ## Contexto e Premissas
 - Sessão gerida pelo NextAuth v4 com `session.strategy = 'jwt'`.
-- Backend envia o token novo exclusivamente no header `x-new-token` (prefixo opcional `Bearer `).
-- Server Components leem dados no servidor usando o token do request; para refletir o token novo na rota atual, um refresh de rota é necessário.
+- `POST /sessions` retorna `{ token, refreshToken, tokenExpiresIn, refreshTokenExpiresIn, user, roles? }`.
+- `POST /sessions/refresh` recebe `{ refreshToken }` e retorna novo par `{ token, refreshToken, tokenExpiresIn, refreshTokenExpiresIn }`.
+- Rotas protegidas podem responder `401 { message: 'TOKEN_EXPIRED' }` quando o access token atual foi invalidado.
 
-## Decisão Técnica (Padrão)
-- Fonte de verdade do token: sessão do NextAuth (JWT).
-- Detecção de token novo: ler somente o header `x-new-token` (ou `X-New-Token`).
-- Atualização da sessão: no cliente, via `useSession().update({ accessToken: token })`.
-- Server Actions não escrevem cookies/sessão; apenas retornam `{ ok, token? }` ao cliente.
-- SSR: após `session.update`, usar `router.refresh()` quando a tela atual depende de dados carregados no servidor com o token.
+## Decisão Técnica
+- Fonte de verdade do token: JWT interno do NextAuth.
+- Renovação programada: o callback `jwt` renova o access token quando ele está próximo do vencimento.
+- Renovação forçada: fluxos que invalidam o token atual, como troca de unidade, chamam `useSession().update({ accessTokenExpires: Date.now() })` para forçar o callback `jwt` a chamar `/sessions/refresh`.
+- Erro de refresh: o callback `session` expõe `session.error`; o provider client faz logout/redirecionamento quando recebe `RefreshAccessTokenError` ou `RefreshTokenExpired`.
+- SSR: após renovar a sessão em uma tela que depende de dados carregados no servidor, usar `router.refresh()`.
 
-## Fluxo (alto nível)
-1) UI (cliente) dispara uma mutação (ex.: trocar unidade) que chama uma Server Action.
-2) A Server Action chama o backend e extrai `x-new-token` da resposta.
-3) A Server Action retorna `{ ok, token? }` para a UI (sem efeitos colaterais em cookies).
-4) A UI, ao receber `token`, executa `useSession().update({ accessToken: token })` e, se necessário, `router.refresh()`.
+## Fluxo de Login
+1. UI chama NextAuth Credentials.
+2. `authorize` chama `POST /sessions`.
+3. O callback `jwt` persiste access token, refresh token e expirações.
+4. O callback `session` expõe `session.accessToken` e metadados necessários ao client.
 
-## Alterações Técnicas
-- NextAuth Callbacks
-  - `jwt`: tratar `trigger === 'update'` copiando `session.accessToken` → `token.accessToken`.
-  - `session`: expor `session.accessToken = token.accessToken`.
-- HTTP Helper
-  - `updateTokenFromResponse(res): string | undefined` — retornar apenas o token do header (sem side effects).
-- Server Action (piloto)
-  - `changeActiveUnit(unitId)`: retornar `{ ok, token? }` usando `updateTokenFromResponse`.
-- UI (piloto)
-  - Componente client (NavBar): após sucesso, se houver `token`, chamar `useSession().update({ accessToken: token })` e `router.refresh()` se a página atual tiver leitura server-side dependente do token.
+## Fluxo de Renovação Automática
+1. Algum código chama `getServerSession`, `useSession` ou atualiza a sessão.
+2. O callback `jwt` compara `accessTokenExpires` com a hora atual.
+3. Se estiver no intervalo de segurança, chama `POST /sessions/refresh`.
+4. Se o refresh falhar, grava erro na sessão para o client encerrar a sessão.
 
-## Helpers Recomendados (evolução)
-- `extractNewToken(res: Response): string | undefined`
-  - Centraliza a leitura do header `x-new-token` (equivalente ao `updateTokenFromResponse` atual).
-- `useTokenSync()` (client)
-  - `apply(token?: string)`: chama `useSession().update({ accessToken: token })` quando existir.
-  - Facilita reutilização em várias UIs.
-- (Opcional) `useClientApi()`
-  - Wrapper de fetch no client que injeta `Authorization` (da sessão) e, ao receber resposta, chama `useTokenSync().apply(headerToken)` quando disponível.
+## Fluxo de Troca de Unidade
+1. `UnitSwitcher` chama `changeActiveUnit(unitId)`.
+2. A Server Action chama `PATCH /sessions/unit` com o access token atual.
+3. Em caso de sucesso, a UI chama `useRefreshSessionToken({ unitId })`.
+4. O hook força `accessTokenExpires = Date.now()` via `useSession().update`.
+5. O callback `jwt` chama `/sessions/refresh` e persiste o novo par de tokens.
+6. A UI chama `router.refresh()` para refazer leituras server-side com o token renovado.
 
-## SSR e Server Components
-- Por que `router.refresh()`? Ele força o Next (App Router) a refazer o payload RSC e reexecutar Server Components no servidor com os cookies atualizados, garantindo que o token novo seja usado nos fetches server-side.
-- Quando usar:
-  - Após `session.update`, se a rota atual exibe dados carregados no servidor com o token.
-  - Se haverá navegação (`router.push/replace`), o refresh é desnecessário.
-
-## Adoção Progressiva
-- Fase 0 (base)
-  - [x] `updateTokenFromResponse(res)` retorna apenas o token (string | undefined).
-  - [x] Callbacks do NextAuth ajustados (`jwt` com `trigger === 'update'`; `session` com `accessToken`).
-- Fase 1 (piloto)
-  - [x] `changeActiveUnit` retorna `{ ok, token? }`.
-  - [x] NavBar aplica `useSession().update` + `router.refresh()` após troca.
-- Fase 2 (padronização)
-  - [x] Criar `useTokenSync()` e usar em todas as UIs que aplicam rotação (piloto em `NavBar`).
-  - [x] Unificar leitura do header em `extractNewToken` (alias de `updateTokenFromResponse`).
-  - [ ] Padronizar retorno `{ ok, token?, error? }` em todas as Server Actions que possam girar token (permissões/role, organização, etc.).
-- Fase 3 (client fetch)
-  - [ ] Introduzir `useClientApi()` para mutations client-side e adotar em 1–2 fluxos de alto uso.
-- Fase 4 (rollout)
-  - [ ] Propagar padrão às demais mutações com rotação de token.
-  - [ ] Atualizar docs/README com o padrão e exemplos.
-
-## Tarefas Detalhadas
-1) Helper
-   - [x] Renomear/duplicar `updateTokenFromResponse` → `extractNewToken` mantendo assinatura.
-   - [x] Cobrir o prefixo `Bearer` (se presente) e normalizar o valor.
-2) Hook client
-   - [x] Criar `src/hooks/use-token-sync.ts` com `apply(token?: string)` chamando `useSession().update` quando houver token.
-3) Server Actions
-   - [ ] Garantir que todas as actions que podem rotacionar o token usem `extractNewToken` e retornem `{ ok, token? }`.
-   - [ ] Não fazer `redirect` dentro da Action; retornar status e deixar UI decidir navegação/refresh.
-4) UI
-   - [x] Substituir chamadas diretas por `useTokenSync().apply(result.token)` + `router.refresh()` quando fizer sentido (piloto em `NavBar`).
-5) Client fetch wrapper (opcional)
-   - [ ] Criar `useClientApi()` para mutations client-side e adotar em fluxo piloto.
-6) Documentação
-   - [ ] Adicionar guia “Como lidar com x-new-token” com exemplos de Server Action + UI + SSR.
+## Arquivos Envolvidos
+- `src/auth/options.ts`: login, persistência dos tokens, refresh automático e erros de sessão.
+- `src/types/next-auth.d.ts`: tipos extras da sessão/JWT.
+- `src/app/[locale]/providers.tsx`: watcher de erro de sessão.
+- `src/hooks/use-refresh-session-token.ts`: força renovação em fluxos que invalidam o token.
+- `src/actions/session.ts`: troca de unidade sem retornar token ao client.
+- `src/components/organisms/NavBar/UnitSwitcher.tsx`: troca de unidade, refresh de sessão e `router.refresh()`.
 
 ## Critérios de Aceite
-- Após trocar unidade/permissões/organização:
-  - O client tem `session.accessToken` atualizado sem reload completo.
-  - A tela atual, quando dependente de SSR, reflete os dados do novo contexto após `router.refresh()`.
-  - Nenhum fluxo antigo quebra (endpoints que não retornam `x-new-token` continuam funcionando).
-- Não há escrita manual de cookies para o token.
-
-## Riscos e Mitigações
-- Requisições subsequentes acontecerem antes de `session.update` finalizar
-  - Mitigar chamando `await updateSession(...)` e após isso `router.refresh()`/navegação.
-- Rotação ocorrendo em chamadas server-only (sem boundary client)
-  - Evitar; quando inevitável, combinar grace period no backend (token antigo ainda válido por curto período) e/ou mover o gatilho para um client boundary.
-- Múltiplas rotações em sequência
-  - O padrão é idempotente; a última atualização prevalece.
-
-## Referências
-- NextAuth v4 — callbacks `jwt` (trigger 'update') e `session` (expor dados adicionais na sessão)
-- App Router — `router.refresh()` para revalidar RSC e refazer leitura server-side
+- Login armazena access token, refresh token e expirações no NextAuth.
+- Access token é renovado antes de expirar.
+- Troca de unidade renova a sessão sem depender de header de rotação.
+- Refresh expirado ou inválido encerra a sessão de forma controlada.
+- Nenhum token sensível é escrito em logs ou arquivos locais versionáveis.

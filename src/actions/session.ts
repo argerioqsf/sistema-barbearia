@@ -2,13 +2,11 @@
 
 import { api } from '@/data/api'
 import { getBackendToken } from '@/utils/authServer'
-import { extractNewToken, readMessage } from '@/shared/http'
+import { readMessage } from '@/shared/http'
 import { revalidateTag } from 'next/cache'
-import { logger } from '@/shared/logger'
 
 type ChangeUnitResult = {
   ok: boolean
-  token?: string
   error?: string
 }
 
@@ -33,18 +31,15 @@ export async function changeActiveUnit(
       },
       body: JSON.stringify({ unitId }),
     })
-    logger.debug({ response }, 'response changeActiveUnit')
 
     if (!response.ok) {
       const message = await readMessage(response)
       return { ok: false, error: message }
     }
 
-    const tokenUpdated = extractNewToken(response)
-
     revalidateTag('users')
     revalidateTag('units')
-    return { ok: true, token: tokenUpdated }
+    return { ok: true }
   } catch (error) {
     const message =
       error instanceof Error ? error.message : 'Erro ao alterar unidade'

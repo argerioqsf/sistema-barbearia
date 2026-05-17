@@ -57,7 +57,6 @@ export async function fetchUnitsSelect(): Promise<ZUnit[]> {
     headers: { Authorization: `Bearer ${token}` },
     next: { tags: ['units'], revalidate: 60 * 4 },
   })
-  logger.debug({ response }, 'response')
 
   if (!response.ok) {
     const message = await readMessage(response)
